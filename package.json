@@ -1,0 +1,16 @@
+{
+  "name": "commerce-sdk-react",
+  "version": "1.0.0",
+  "description": "Salesforce Commerce SDK for React",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SalesforceCommerceCloud/commerce-sdk-react.git"
+  },
+  "author": "",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/SalesforceCommerceCloud/commerce-sdk-react/issues"
+  },
+  "homepage": "https://github.com/SalesforceCommerceCloud/commerce-sdk-react#readme"
+}
