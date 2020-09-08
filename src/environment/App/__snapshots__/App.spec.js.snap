@@ -3,28 +3,33 @@
 exports[`environment > App renders without crashing 1`] = `
 <DocumentFragment>
   <div
-    class="container"
+    class="{classes.search-component}"
   >
-    <div
-      class="counter"
+    <form
+      class="{classes.search-bar}"
     >
-      <h2
-        class="header"
+      <label
+        class="{classes.search-label}"
       >
-        Counter
-      </h2>
-      <button
-        class="button"
-        type="button"
-      >
-        Increment by one
-      </button>
-      <div>
-        Total value: 
-        <strong>
-          0
-        </strong>
-      </div>
+        Product Search
+        <input
+          class="{classes.search-box}"
+          type="text"
+          value=""
+        />
+      </label>
+      <input
+        class="{classes.search-button}"
+        type="submit"
+        value="Search"
+      />
+    </form>
+    <div
+      class="{classes.product-component}"
+    >
+      <h3>
+        Nothing!
+      </h3>
     </div>
   </div>
 </DocumentFragment>
