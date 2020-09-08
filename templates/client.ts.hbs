@@ -1,0 +1,65 @@
+
+import _ from "lodash";
+
+import {ClientConfig} from "./clientConfig";
+import {TemplateURL} from "./templateUrl";
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace {{name.upperCamelCase}} {
+  {{#each dataTypes}}
+      {{#if (isTypeDefinition .)}}
+      export type {{getValue name}} = {{> dtoPartial typeDto=.}}
+      {{/if}}
+  {{/each}}
+}
+
+/**
+* [{{{metadata.name}}}](https://developer.commercecloud.com/s/api-details/{{{getObjectIdByAssetId metadata.assetId}}})
+* ==================================
+*
+* *{{metadata.description}}*<br />
+*
+* Simple example:
+*
+* ```typescript
+*   import { {{pascalcase metadata.categories.[CC API Family].[0]}}, ClientConfig } from "commerce-sdk";
+*
+*   const clientConfig: ClientConfig = { ... };
+*   const {{name.lowerCamelCase}}Client = new {{pascalcase metadata.categories.[CC API Family].[0]}}.{{name.upperCamelCase}}(clientConfig);
+* ```
+*
+* Example with shopper auth
+* ```typescript
+* const clientConfig: ClientConfig = {
+*   parameters: {
+*     clientId: "XXXXXX",
+*     organizationId: "XXXX",
+*     shortCode: "XXX",
+*     siteId: "XX"
+*   }
+* };
+* token = await helpers.getShopperToken(clientConfig, { type: "guest" });
+* clientConfig.headers["authorization"] = token.getBearerHeader();
+* const {{name.lowerCamelCase}}Client = new {{pascalcase metadata.categories.[CC API Family].[0]}}.{{name.upperCamelCase}}(clientConfig);
+* ```
+*
+* <span style="font-size:.7em; display:block; text-align: right">
+* API Version: {{metadata.version}}<br />
+* Last Updated: {{metadata.updatedDate}}<br />  
+* </span>
+{{#if (eq (lowercase metadata.categories.[CC Version Status].[0]) "beta")}}
+* @beta 
+* {{/if}}
+* 
+
+*/
+export class {{name.upperCamelCase}} {
+  constructor(public clientConfig = new ClientConfig()) {
+    if (!!!clientConfig.baseUri) {
+      this.clientConfig.baseUri = "{{getBaseUriFromDocument model}}";
+    }
+  }
+
+  {{> operationsPartial model}}
+
+}

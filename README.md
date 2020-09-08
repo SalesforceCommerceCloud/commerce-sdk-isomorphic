@@ -4,6 +4,24 @@
 
 The Salesforce Commerce SDK for React allows easy interaction with the Salesforce B2C Commerce platform Shopper APIs.
 
+## Building
+
+To create the SDK package:
+
+```
+# Install dependencies needed to run generation
+$ yarn install
+
+# Parse API files and render templates to renderedTemplates folder
+$ yarn run renderTemplates
+
+# Execute TypeScript compilation of rendered templates to src/lib
+$ yarn run tsc
+
+# Launch sample application
+$ yarn start
+```
+
 ## License Information
 
 The Commerce SDK for React is licensed under BSD-3-Clause license. See the [license](./LICENSE.txt) for details.

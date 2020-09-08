@@ -10,7 +10,6 @@
   "bugs": {
     "url": "https://github.com/SalesforceCommerceCloud/commerce-sdk-react/issues"
   },
-  "homepage": "https://github.com/SalesforceCommerceCloud/commerce-sdk-react#readme",
   "private": false,
   "dependencies": {
     "prop-types": "^15.7.2",
@@ -28,7 +27,9 @@
     "lint:style": "npx stylelint ./src/",
     "fix:style": "npx stylelint ./src/ --fix",
     "start:docs": "docz dev",
-    "build:docs": "docz build"
+    "build:docs": "docz build",
+    "renderTemplates": "ts-node --compiler-options '{\"esModuleInterop\":true, \"target\": \"ES6\"}' generate.ts",
+    "tsc": "tsc --build generate.tsconfig.json"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -78,6 +79,7 @@
     "eslint-plugin-prettier": "3.1.4",
     "eslint-plugin-react": "7.20.5",
     "eslint-plugin-react-hooks": "4.0.8",
+    "handlebars-helpers": "^0.10.0",
     "husky": "4.2.5",
     "jest-environment-jsdom-sixteen": "1.0.3",
     "lint-staged": "10.2.11",
@@ -110,5 +112,6 @@
   ],
   "engines": {
     "node": ">=10"
-  }
+  },
+  "proxy": "https://SHORT_CODE.api.commercecloud.salesforce.com"
 }
