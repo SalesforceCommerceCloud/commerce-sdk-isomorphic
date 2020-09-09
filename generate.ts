@@ -4,15 +4,18 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+import path from "path";
 
 import { copySync } from "fs-extra";
 import { generate } from "@commerce-apps/raml-toolkit";
+
 import { registerHelpers, registerPartials, setupApis } from "./scripts/utils";
 
-const API_DIRECTORY =
-  process.env.COMMERCE_SDK_INPUT_DIR || `${__dirname}/apis`;
-const OUTPUT_DIRECTORY = `${__dirname}/renderedTemplates`;
-const STATIC_DIRECTORY = `${__dirname}/static`;
+const API_DIRECTORY = process.env.COMMERCE_SDK_INPUT_DIR
+  ? path.resolve(process.env.COMMERCE_SDK_INPUT_DIR)
+  : path.join(__dirname, "apis");
+const OUTPUT_DIRECTORY = path.join(__dirname, "renderedTemplates");
+const STATIC_DIRECTORY = path.join(__dirname, "static");
 
 registerHelpers();
 registerPartials();
