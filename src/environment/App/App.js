@@ -51,8 +51,8 @@ class App extends Component {
   async doSearch() {
     this.setState({result: 'searching...'});
     const results = await this.getSearchResults(this.state.searchText);
-    console.log(results.hits[0]);
-    if (results.hits[0]) {
+    console.log(results?.hits[0]);
+    if (results?.hits[0]) {
       this.setState({...results.hits[0]})
     } else {
       this.setState({productId: null})
