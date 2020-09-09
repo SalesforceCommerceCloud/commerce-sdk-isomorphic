@@ -11,6 +11,7 @@ import { CommonParameters } from "./commonParameters";
  */
 export class ClientConfig {
   public baseUri?: string;
+  public proxy?: string;
   public headers?: { [key: string]: string };
   public parameters?: CommonParameters;
 }

@@ -15,11 +15,31 @@ export class TemplateURL extends URL {
   constructor(
     url: string,
     base?: string,
-    pathParams?: { [key: string]: string },
-    queryParams?: { [key: string]: any }
+    parameters?: {
+      pathParams?: { [key: string]: string },
+      queryParams?: { [key: string]: any },
+      origin?: string
+    }
   ) {
-    super(TemplateURL.renderTemplateUri(`${base}/${url}`, pathParams));
-    this.addQueryParams(queryParams);
+    super(TemplateURL.renderTemplateUri(`${base}/${url}`, parameters?.pathParams));
+    this.addQueryParams(parameters?.queryParams);
+    if (origin) {
+      this.replaceOrigin(origin);
+    }
+  }
+
+  /**
+   * Replace the origin (protocol/host) portion of the URL with a new origin.
+   * The path portition is retained and concated with any path included in the
+   * new origin. Thee primary use of this function is to use a proxy.
+   * 
+   * @param newOriginString - The new origin to substitute (ex: https://example.com)
+   */
+  replaceOrigin(newOriginString: string) {
+    const newOriginUrl = new URL(newOriginString);
+    this.protocol = newOriginUrl.protocol;
+    this.host = newOriginUrl.host;
+    this.pathname = newOriginUrl.pathname + this.pathname;
   }
 
   /**

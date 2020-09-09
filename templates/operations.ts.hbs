@@ -103,7 +103,7 @@
     * @beta
     * {{/if}}
     */
-    {{name}}(
+    async {{name}}(
       options{{#or (is method "get") (is method "delete")}}?{{/or}}: {
         parameters?: {
           {{#each ../parameters}}
@@ -142,12 +142,14 @@
         {{/if}}
       {{/each}}
 
-//TODO handle shortcode and version
       const url = new TemplateURL(
         "{{{../path}}}",
         this.clientConfig.baseUri,
-        { shortCode: this.clientConfig.parameters['shortCode'], version: 'v1', ...pathParameters },
-        queryParameters
+        {
+          pathParams: { version: 'v1', ...this.clientConfig.parameters, ...pathParameters },
+          queryParams: { siteId: this.clientConfig.parameters?.siteId, ...queryParameters},
+          origin: this.clientConfig?.proxy
+        }
       );
       console.log(url.toString());
 
@@ -157,8 +159,6 @@
         ...options?.headers
       };
 
-      //TODO check method type to include body conditionally
-        
       const req = new Request(
         url.toString(),
         {
@@ -168,21 +168,12 @@
         }
       );
       console.log(req);
-      return fetch(req);
-    /*
-      return fetch
-      // @ts-ignore
-      return StaticClient.{{method}}({
-        client: this,
-        rawResponse: rawResponse,
-        path: "{{../path}}",
-        pathParameters: pathParameters,
-        queryParameters: queryParameters,
-        retrySettings: (options || {}).retrySettings,
-        headers: (options || {}).headers{{#or (is method "patch") (is method "post") (is method "put")}}, 
-        body: (options || {}).body{{/or}}
-      });
-      */
+      const response = await fetch(req);
+      if (rawResponse) {
+        return response;
+      } else {
+        return await response.json();
+      }
     }
 
   {{/each}}

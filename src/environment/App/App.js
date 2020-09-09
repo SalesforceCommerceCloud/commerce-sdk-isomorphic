@@ -1,17 +1,9 @@
 import React, {Component} from 'react';
 import {ShopperSearch} from 'lib';
+import {config} from '../config';
 import classes from './App.module.css';
 
-const searchClient = new ShopperSearch({
-  baseUri: 'https://localhost:3000/search/shopper-search/v1',
-  headers: {},
-  parameters: {
-    clientId: 'CLIENT_ID',
-    organizationId: 'ORGANIZATION_ID',
-    shortCode: 'SHORT_CODE',
-    siteId: 'SITE_ID',
-  },
-});
+const searchClient = new ShopperSearch(config);
 console.log(searchClient);
 
 class App extends Component {
@@ -37,7 +29,7 @@ class App extends Component {
 
   getToken = async () => {
     const response = await fetch(
-      `https://localhost:3000/customer/shopper-customers/v1/organizations/${this.searchClient.clientConfig.parameters.organizationId}/customers/actions/login?siteId=${this.searchClient.clientConfig.parameters.siteId}&clientId=${this.searchClient.clientConfig.parameters.clientId}`,
+      `/customer/shopper-customers/v1/organizations/${this.searchClient.clientConfig.parameters.organizationId}/customers/actions/login?siteId=${this.searchClient.clientConfig.parameters.siteId}&clientId=${this.searchClient.clientConfig.parameters.clientId}`,
       {
         body: "{ \"type\": \"guest\" }",
         method: "POST",
@@ -58,9 +50,7 @@ class App extends Component {
 
   async doSearch() {
     this.setState({result: 'searching...'});
-    const response = await this.getSearchResults(this.state.searchText);
-    console.log(response);
-    const results = await response.json();
+    const results = await this.getSearchResults(this.state.searchText);
     console.log(results.hits[0]);
     if (results.hits[0]) {
       this.setState({...results.hits[0]})
