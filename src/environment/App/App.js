@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {ShopperSearch} from 'lib';
 import {config} from '../config';
-import classes from './App.module.css';
+import './App.css';
 
 const searchClient = new ShopperSearch(config);
 console.log(searchClient);
@@ -65,13 +65,13 @@ class App extends Component {
 
   render() {
     return (
-      <div className="{classes.search-component}">
-        <form className="{classes.search-bar}" onSubmit={this.handleSubmit}>
-          <label className="{classes.search-label}">
+      <div className="search-component">
+        <form className="search-bar" onSubmit={this.handleSubmit}>
+          <label className="search-label">
             Product Search 
-            <input className="{classes.search-box}" type="text" value={this.state.searchTerm} onChange={this.handleChange} />
+            <input className="search-box" type="text" value={this.state.searchTerm} onChange={this.handleChange} />
           </label>
-          <input className="{classes.search-button}" type="submit" value="Search" />
+          <input className="search-button" type="submit" value="Search" />
         </form>
         <Product
           currency={this.state.currency}
@@ -87,17 +87,17 @@ class App extends Component {
 function Product(props) {
   if (!props.id) {
     return (
-      <div className="{classes.product-component}">
+      <div className="product-component">
         <h3>Nothing!</h3>
       </div>
     )
   }
 
   return (
-    <div className="{classes.product-component}">
+    <div className="product-component">
       <h3>{props.name}</h3>
-      <p className="{classes.product-price}">${props.price}<span className="{classes.product-currency}"> {props.currency}</span></p>
-      <p className="{classes.product-id}">ID {props.id}</p>
+      <p className="product-price">${props.price}<span className="product-currency"> {props.currency}</span></p>
+      <p className="product-id">ID {props.id}</p>
     </div>
     );
 }
