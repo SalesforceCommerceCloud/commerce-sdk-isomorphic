@@ -3,29 +3,29 @@
 exports[`environment > App renders without crashing 1`] = `
 <DocumentFragment>
   <div
-    class="{classes.search-component}"
+    class="search-component"
   >
     <form
-      class="{classes.search-bar}"
+      class="search-bar"
     >
       <label
-        class="{classes.search-label}"
+        class="search-label"
       >
         Product Search
         <input
-          class="{classes.search-box}"
+          class="search-box"
           type="text"
           value=""
         />
       </label>
       <input
-        class="{classes.search-button}"
+        class="search-button"
         type="submit"
         value="Search"
       />
     </form>
     <div
-      class="{classes.product-component}"
+      class="product-component"
     >
       <h3>
         Nothing!
