@@ -3,34 +3,26 @@
 exports[`environment > App renders without crashing 1`] = `
 <DocumentFragment>
   <div
-    class="search-component"
+    class="App"
   >
-    <form
-      class="search-bar"
+    <header
+      class="App-header"
     >
-      <label
-        class="search-label"
-      >
-        Product Search
-        <input
-          class="search-box"
-          type="text"
-          value=""
-        />
-      </label>
-      <input
-        class="search-button"
-        type="submit"
-        value="Search"
+      <img
+        alt="logo"
+        class="App-logo"
+        src="logo.svg"
       />
-    </form>
-    <div
-      class="product-component"
-    >
-      <h3>
-        Nothing!
-      </h3>
-    </div>
+      <p>
+        Edit src/App.js and save to reload.
+      </p>
+      <a
+        class="App-link"
+        href="https://reactjs.org"
+        rel="noopener noreferrer"
+        target="_blank"
+      />
+    </header>
   </div>
 </DocumentFragment>
 `;
