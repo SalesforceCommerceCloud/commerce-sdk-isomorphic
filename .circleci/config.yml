@@ -1,13 +1,81 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
-version: 2.1
-# Use a package of configuration called an orb.
-orbs:
-  # Declare a dependency on the welcome-orb
-  welcome: circleci/welcome-orb@0.4.1
-# Orchestrate or schedule a set of jobs
+# DEFAULTS
+defaults: &defaults
+  working_directory: ~/build_only
+
+# COMMANDS
+commands:
+  build:
+    steps:
+      - checkout
+      - node/with-cache:
+          steps:
+            - run: yarn install
+      - run: yarn run renderTemplates
+      - run: yarn run tsc
+      - run: yarn build:lib
+  test:
+    steps:
+      - run: yarn test
+      - store_test_results:
+          path: reports
+
+# EXECUTORS
+executors:
+  node-10:
+    <<: *defaults
+    docker:
+      - image: circleci/node:10.20.1
+  node-12:
+    <<: *defaults
+    docker:
+      - image: circleci/node:12.16.3
+  node-14:
+    <<: *defaults
+    docker:
+      - image: circleci/node:14.2.0
+
+# JOBS
+jobs:
+  build-node-10:
+    executor: node-10
+    steps:
+      - build
+      - test
+
+  build-node-12:
+    executor: node-12
+    steps:
+      - build
+      - test
+
+  build-node-14:
+    executor: node-14
+    steps:
+      - build
+      - test
+
+# WORKFLOWS
 workflows:
-  # Name the workflow "welcome"
-  welcome:
-    # Run the welcome/run job in its own container
+  version: 2
+  build-and-test:
     jobs:
-      - welcome/run
+      - build-node-10:
+          filters:
+            tags:
+              ignore: /^v.*/
+      - build-node-12:
+          filters:
+            tags:
+              ignore: /^v.*/
+      - build-node-14:
+          filters:
+            tags:
+              ignore: /^v.*/
+
+# ORBS
+orbs:
+  node: circleci/node@1.1
+
+#VERSION
+version: 2.1
+
