@@ -9,6 +9,7 @@ module.exports = {
         targets: pkg.browserslist.production,
       },
     ],
+    '@babel/typescript',
     '@babel/preset-react',
   ],
   ignore: ['node_modules/**'],

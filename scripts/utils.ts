@@ -22,7 +22,8 @@ import * as helpers from "./templateHelpers";
  * Register the custom helpers defined in our pipeline
  */
 export function registerHelpers(): void {
-  for (const helper of Object.keys(helpers)) {
+  const keys:string[] = Object.keys(helpers);
+  for (const helper of keys) {
     Handlebars.registerHelper(helper, helpers[helper]);
   }
 }

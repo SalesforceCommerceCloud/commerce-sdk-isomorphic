@@ -19,7 +19,7 @@
     * @param body - The data to send as the request body.
     {{/or}}
     *
-    * @returns A promise of type {{addNamespace (getReturnTypeFromOperation .) @root.name.upperCamelCase}}.
+    * @returns A promise of type {{getReturnTypeFromOperation .}}.
     * {{#if (eq (lowercase @root.metadata.categories.[CC Version Status].[0]) "beta")}}
     * @beta
     * {{/if}}
@@ -36,9 +36,9 @@
           {{/each}}
         },
         headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
-        body: {{{addNamespace (getPayloadTypeFromRequest request) @root.name.upperCamelCase}}}{{/or}}
+        body: {{{getPayloadTypeFromRequest request}}}{{/or}}
       }
-    ): Promise<{{addNamespace (getReturnTypeFromOperation .) @root.name.upperCamelCase}}>;
+    ): Promise<{{getReturnTypeFromOperation .}}>;
 
     /**
     * {{{formatForTsDoc description}}}
@@ -58,7 +58,7 @@
     {{/or}}
     * @param rawResponse - Set to true to return entire Response object instead of DTO.
     *
-    * @returns A promise of type Response if rawResponse is true, a promise of type {{addNamespace (getReturnTypeFromOperation .) @root.name.upperCamelCase}} otherwise.
+    * @returns A promise of type Response if rawResponse is true, a promise of type {{getReturnTypeFromOperation .}} otherwise.
     * {{#if (eq (lowercase @root.metadata.categories.[CC Version Status].[0]) "beta")}}
     * @beta
     * {{/if}}
@@ -75,10 +75,10 @@
           {{/each}}
         },
         headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}}, 
-        body: {{{addNamespace (getPayloadTypeFromRequest request) @root.name.upperCamelCase}}}{{/or}}
+        body: {{{getPayloadTypeFromRequest request}}}{{/or}}
       },
       rawResponse?: T
-    ): Promise<T extends true ? Response : {{addNamespace (getReturnTypeFromOperation .) @root.name.upperCamelCase}}>;
+    ): Promise<T extends true ? Response : {{getReturnTypeFromOperation .}}>;
 
     /**
     * {{{formatForTsDoc description}}}
@@ -98,7 +98,7 @@
     {{/or}}
     * @param rawResponse - Set to true to return entire Response object instead of DTO.
     *
-    * @returns A promise of type Response if rawResponse is true, a promise of type {{addNamespace (getReturnTypeFromOperation .) @root.name.upperCamelCase}} otherwise.
+    * @returns A promise of type Response if rawResponse is true, a promise of type {{getReturnTypeFromOperation .}} otherwise.
     * {{#if (eq (lowercase @root.metadata.categories.[CC Version Status].[0]) "beta")}}
     * @beta
     * {{/if}}
@@ -115,10 +115,10 @@
           {{/each}}
         },
         headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}}, 
-        body: {{{addNamespace (getPayloadTypeFromRequest request) @root.name.upperCamelCase}}}{{/or}}
+        body: {{{getPayloadTypeFromRequest request}}}{{/or}}
       },
       rawResponse?: boolean,
-    ): Promise<Response | {{addNamespace (getReturnTypeFromOperation .) @root.name.upperCamelCase}}> {
+    ): Promise<Response | {{getReturnTypeFromOperation .}}> {
     
       const parameters = (options && options.parameters) ? options.parameters : {};
       
@@ -138,7 +138,7 @@
         {{#if (isCommonQueryParameter name)}}
         queryParameters["{{{name}}}"] =
           queryParameters["{{{name}}}"] !== undefined 
-            ? parameters["{{{name}}}"] : this.clientConfig.parameters["{{{name}}}"];
+            ? parameters["{{{name}}}"].toString() : this.clientConfig.parameters["{{{name}}}"].toString();
         {{/if}}
       {{/each}}
 

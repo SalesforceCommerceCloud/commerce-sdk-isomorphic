@@ -16,8 +16,8 @@ export class TemplateURL extends URL {
     url: string,
     base?: string,
     parameters?: {
-      pathParams?: { [key: string]: string },
-      queryParams?: { [key: string]: any },
+      pathParams?: { [key: string]: unknown },
+      queryParams?: { [key: string]: unknown },
       origin?: string
     }
   ) {
@@ -47,12 +47,12 @@ export class TemplateURL extends URL {
    * are allowed and are appended using the "repeat" convention where the \{ a:
    * ["1", "2"] \} becomes "?a=1&a=2"
    */
-  addQueryParams(queryParams: { [key: string]: any }): void {
+  addQueryParams(queryParams: { [key: string]: unknown }): void {
     if (queryParams) {
       Object.keys(queryParams).forEach((key) => {
         if (Array.isArray(queryParams[key])) {
-          for (let i = 0; i < queryParams[key].length; i++) {
-            this.searchParams.append(key, queryParams[key][i]);
+          for (let i = 0; i < (queryParams[key] as unknown[]).length; i++) {
+            this.searchParams.append(key, queryParams[key][i].toString());
           }
         } else {
           this.searchParams.append(key, queryParams[key].toString());
@@ -71,11 +71,11 @@ export class TemplateURL extends URL {
    */
   static renderTemplateUri(
     template: string,
-    parameters: { [key: string]: string }
+    parameters: { [key: string]: unknown }
   ): string {
     return template.replace(
       /\{([^\}]+)\}/g,
-      (match, param) => parameters[param]
+      (match, param) => parameters[param].toString()
     );
   }
 }

@@ -14,7 +14,7 @@ import { registerHelpers, registerPartials, setupApis } from "./scripts/utils";
 const API_DIRECTORY = process.env.COMMERCE_SDK_INPUT_DIR
   ? path.resolve(process.env.COMMERCE_SDK_INPUT_DIR)
   : path.join(__dirname, "apis");
-const OUTPUT_DIRECTORY = path.join(__dirname, "renderedTemplates");
+const OUTPUT_DIRECTORY = path.join(__dirname, "src/lib");
 const STATIC_DIRECTORY = path.join(__dirname, "static");
 
 registerHelpers();

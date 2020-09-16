@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {ShopperSearch} from 'lib';
+import {ShopperCustomers,ShopperSearch} from 'lib';
 import {config} from '../config';
 import './App.css';
 
+const customerClient = new ShopperCustomers(config);
 const searchClient = new ShopperSearch(config);
-console.log(searchClient);
 
 class App extends Component {
   constructor(props) {
@@ -28,15 +28,8 @@ class App extends Component {
   }
 
   getToken = async () => {
-    const response = await fetch(
-      `/customer/shopper-customers/v1/organizations/${this.searchClient.clientConfig.parameters.organizationId}/customers/actions/login?siteId=${this.searchClient.clientConfig.parameters.siteId}&clientId=${this.searchClient.clientConfig.parameters.clientId}`,
-      {
-        body: "{ \"type\": \"guest\" }",
-        method: "POST",
-        headers: { "Content-Type": "application/json" }
-      }
-    );
-    this.state.token = response.headers.get('Authorization');
+    const authResponse = await customerClient.authorizeCustomer({ body: { type: 'guest' } }, true);
+    this.state.token = authResponse.headers.get('authorization');
   }
 
   getSearchResults = async (text) => {
