@@ -21,10 +21,15 @@ export class TemplateURL extends URL {
       origin?: string
     }
   ) {
-    super(TemplateURL.renderTemplateUri(`${base}/${url}`, parameters?.pathParams));
+    super(
+      TemplateURL.renderTemplateUri(
+        `${base}/${url}`.replace(/\/\/+/g, '/'),
+        parameters?.pathParams
+      )
+    );
     this.addQueryParams(parameters?.queryParams);
-    if (origin) {
-      this.replaceOrigin(origin);
+    if (parameters?.origin) {
+      this.replaceOrigin(parameters?.origin);
     }
   }
 

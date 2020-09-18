@@ -7,7 +7,7 @@
 
 import { ASSET_OBJECT_MAP } from "./config";
 
-import { commonParameterPositions } from "../static/commonParameters";
+import { commonParameterPositions } from "../src/static/commonParameters";
 
 /**
  * Given an individual type or an array of types in the format Array\<Foo | Baa\>
