@@ -12,11 +12,8 @@ To create the SDK package:
 # Install dependencies needed to run generation
 $ yarn install
 
-# Parse API files and render templates to renderedTemplates folder
+# Parse API files, render templates to src/lib folder and copy static files to src/lib
 $ yarn run renderTemplates
-
-# Execute TypeScript compilation of rendered templates to src/lib
-$ yarn run tsc
 
 # Launch sample application
 $ yarn start
