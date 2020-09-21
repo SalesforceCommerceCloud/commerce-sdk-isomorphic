@@ -44,7 +44,7 @@ export class TemplateURL extends URL {
     const newOriginUrl = new URL(newOriginString);
     this.protocol = newOriginUrl.protocol;
     this.host = newOriginUrl.host;
-    this.pathname = newOriginUrl.pathname + this.pathname;
+    this.pathname = `${newOriginUrl.pathname}/${this.pathname}`.replace(/\/\/+/g, '/');
   }
 
   /**
