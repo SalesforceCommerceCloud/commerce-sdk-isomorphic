@@ -22,7 +22,8 @@ registerPartials();
 
 console.log(`Creating SDK for ${API_DIRECTORY}`);
 
-copySync(STATIC_DIRECTORY, OUTPUT_DIRECTORY);
+const skipTestFiles = (src:string):boolean => !/\.test\.[a-z]+$/.test(src);
+copySync(STATIC_DIRECTORY, OUTPUT_DIRECTORY, { filter: skipTestFiles });
 
 setupApis(API_DIRECTORY, OUTPUT_DIRECTORY).then((apis: generate.ApiMetadata) =>
   apis.render()
