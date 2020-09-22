@@ -27,7 +27,6 @@
   },
   "private": false,
   "dependencies": {
-    "fs-extra": "^9.0.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
@@ -96,6 +95,7 @@
     "eslint-plugin-prettier": "3.1.4",
     "eslint-plugin-react": "7.20.5",
     "eslint-plugin-react-hooks": "4.0.8",
+    "fs-extra": "^9.0.1",
     "handlebars-helpers": "^0.10.0",
     "husky": "4.2.5",
     "jest-environment-jsdom-sixteen": "1.0.3",
@@ -125,7 +125,9 @@
     "react-dom": ">=16.8.0"
   },
   "files": [
-    "lib"
+    "lib",
+    "LICENSE.txt",
+    "README.md"
   ],
   "engines": {
     "node": ">=10"
