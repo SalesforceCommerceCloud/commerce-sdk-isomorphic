@@ -1,5 +1,20 @@
 {
   "name": "commerce-sdk-react",
+  "jest": {
+    "collectCoverageFrom": [
+      "src/static/**/*.{js,jsx,ts,tsx}",
+      "!<rootDir>/node_modules/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
+    },
+    "coverageReporters": ["text"]
+  },
   "version": "0.1.0",
   "description": "Salesforce Commerce SDK for React",
   "repository": {
