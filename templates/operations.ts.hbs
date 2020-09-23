@@ -19,7 +19,7 @@
     * @param body - The data to send as the request body.
     {{/or}}
     *
-    * @returns A promise of type {{getReturnTypeFromOperation .}}.
+    * @returns A promise of type {{getReturnTypeFromOperation this}}.
     * {{#if (eq (lowercase @root.metadata.categories.[CC Version Status].[0]) "beta")}}
     * @beta
     * {{/if}}
@@ -29,16 +29,16 @@
         parameters?: {
           {{#each ../parameters}}
           {{! common parameters can be configured at the client level and therefore are not required }}
-          {{name}}{{#if (isCommonPathParameter name)}}?{{/if}}: {{{ getTypeFromParameter .}}}
+          {{name}}{{#if (isCommonPathParameter name)}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
-          {{#each request/queryParameters}}
-          {{name}}{{#if (or (not (is required "true")) (isCommonQueryParameter name))}}?{{/if}}: {{{ getTypeFromParameter .}}}
+          {{#each request.queryParameters}}
+          {{name}}{{#if (or (not (is required "true")) (isCommonQueryParameter name))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
         },
         headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
         body: {{{getPayloadTypeFromRequest request}}}{{/or}}
       }
-    ): Promise<{{getReturnTypeFromOperation .}}>;
+    ): Promise<{{getReturnTypeFromOperation this}}>;
 
     /**
     * {{{formatForTsDoc description}}}
@@ -48,7 +48,7 @@
     {{#each ../parameters }}
     * @param {{{name}}} - {{#if (getValue description)}}{{{getValue description}}}{{/if}}
     {{/each}}
-    {{#each request/queryParameters}}
+    {{#each request.queryParameters}}
     * @param {{{name}}} - {{#if (getValue description)}}{{{getValue description}}}{{/if}}
     {{/each}}
     * @param headers - An object literal of key value pairs of the headers to be
@@ -58,7 +58,7 @@
     {{/or}}
     * @param rawResponse - Set to true to return entire Response object instead of DTO.
     *
-    * @returns A promise of type Response if rawResponse is true, a promise of type {{getReturnTypeFromOperation .}} otherwise.
+    * @returns A promise of type Response if rawResponse is true, a promise of type {{getReturnTypeFromOperation this}} otherwise.
     * {{#if (eq (lowercase @root.metadata.categories.[CC Version Status].[0]) "beta")}}
     * @beta
     * {{/if}}
@@ -68,17 +68,17 @@
         parameters?: {
           {{#each ../parameters}}
           {{! common parameters can be configured at the client level and therefore are not required }}
-          {{name}}{{#if (isCommonPathParameter name)}}?{{/if}}: {{{ getTypeFromParameter .}}}
+          {{name}}{{#if (isCommonPathParameter name)}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
-          {{#each request/queryParameters}}
-          {{name}}{{#if (or (not (is required "true")) (isCommonQueryParameter name))}}?{{/if}}: {{{ getTypeFromParameter .}}}
+          {{#each request.queryParameters}}
+          {{name}}{{#if (or (not (is required "true")) (isCommonQueryParameter name))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
         },
         headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}}, 
         body: {{{getPayloadTypeFromRequest request}}}{{/or}}
       },
       rawResponse?: T
-    ): Promise<T extends true ? Response : {{getReturnTypeFromOperation .}}>;
+    ): Promise<T extends true ? Response : {{getReturnTypeFromOperation this}}>;
 
     /**
     * {{{formatForTsDoc description}}}
@@ -88,7 +88,7 @@
     {{#each ../parameters }}
     * @param {{{name}}} - {{#if (getValue description)}}{{{getValue description}}}{{/if}}
     {{/each}}
-    {{#each request/queryParameters}}
+    {{#each request.queryParameters}}
     * @param {{{name}}} - {{#if (getValue description)}}{{{getValue description}}}{{/if}}
     {{/each}}
     * @param headers - An object literal of key value pairs of the headers to be
@@ -98,7 +98,7 @@
     {{/or}}
     * @param rawResponse - Set to true to return entire Response object instead of DTO.
     *
-    * @returns A promise of type Response if rawResponse is true, a promise of type {{getReturnTypeFromOperation .}} otherwise.
+    * @returns A promise of type Response if rawResponse is true, a promise of type {{getReturnTypeFromOperation this}} otherwise.
     * {{#if (eq (lowercase @root.metadata.categories.[CC Version Status].[0]) "beta")}}
     * @beta
     * {{/if}}
@@ -108,17 +108,17 @@
         parameters?: {
           {{#each ../parameters}}
           {{! common parameters can be configured at the client level and therefore are not required }}
-          {{name}}{{#if (isCommonPathParameter name)}}?{{/if}}: {{{ getTypeFromParameter .}}}
+          {{name}}{{#if (isCommonPathParameter name)}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
-          {{#each request/queryParameters}}
-          {{name}}{{#if (or (not (is required "true")) (isCommonQueryParameter name))}}?{{/if}}: {{{ getTypeFromParameter .}}}
+          {{#each request.queryParameters}}
+          {{name}}{{#if (or (not (is required "true")) (isCommonQueryParameter name))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
         },
         headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}}, 
         body: {{{getPayloadTypeFromRequest request}}}{{/or}}
       },
       rawResponse?: boolean,
-    ): Promise<Response | {{getReturnTypeFromOperation .}}> {
+    ): Promise<Response | {{getReturnTypeFromOperation this}}> {
     
       const parameters = (options && options.parameters) ? options.parameters : {};
       
@@ -166,7 +166,6 @@
           method: "{{{method}}}"
         }
       );
-      console.log(req);
       const response = await fetch(req);
       if (rawResponse) {
         return response;

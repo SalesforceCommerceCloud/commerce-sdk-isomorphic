@@ -6,8 +6,8 @@ import {TemplateURL} from "./templateUrl";
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
 {{#each dataTypes}}
-    {{#if (isTypeDefinition .)}}
-    export type {{getValue name}} = {{> dtoPartial typeDto=.}}
+    {{#if (isTypeDefinition this)}}
+    export type {{getValue name}} = {{> dtoPartial typeDto=this}}
     {{/if}}
 {{/each}}
 
