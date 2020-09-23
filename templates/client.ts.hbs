@@ -5,13 +5,11 @@ import {ClientConfig} from "./clientConfig";
 import {TemplateURL} from "./templateUrl";
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
-export namespace {{name.upperCamelCase}} {
-  {{#each dataTypes}}
-      {{#if (isTypeDefinition .)}}
-      export type {{getValue name}} = {{> dtoPartial typeDto=.}}
-      {{/if}}
-  {{/each}}
-}
+{{#each dataTypes}}
+    {{#if (isTypeDefinition this)}}
+    export type {{getValue name}} = {{> dtoPartial typeDto=this}}
+    {{/if}}
+{{/each}}
 
 /**
 * [{{{metadata.name}}}](https://developer.commercecloud.com/s/api-details/{{{getObjectIdByAssetId metadata.assetId}}})
@@ -54,8 +52,12 @@ export namespace {{name.upperCamelCase}} {
 
 */
 export class {{name.upperCamelCase}} {
-  constructor(public clientConfig = new ClientConfig()) {
-    if (!!!clientConfig.baseUri) {
+  public clientConfig: ClientConfig;
+
+  constructor(config = new ClientConfig()) {
+    this.clientConfig = new ClientConfig(config);
+
+    if (!this.clientConfig.baseUri) {
       this.clientConfig.baseUri = "{{getBaseUriFromDocument model}}";
     }
   }

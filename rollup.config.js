@@ -11,6 +11,10 @@ import postcssPresetEnv from 'postcss-preset-env';
 import {terser} from 'rollup-plugin-terser';
 import pkg from './package.json';
 
+const extensions = [
+  '.js', '.jsx', '.ts', '.tsx',
+];
+
 const outputs = [
   {
     file: process.env.REACT_APP_PKG_MAIN || pkg.main,
@@ -31,7 +35,7 @@ const postcssPlugins = [
 ];
 
 const config = outputs.map(({file, format}) => ({
-  input: 'src/lib/index.js',
+  input: 'src/lib/index.ts',
   output: {
     file,
     format,
@@ -59,11 +63,13 @@ const config = outputs.map(({file, format}) => ({
       plugins: postcssPlugins,
     }),
     babel({
+      extensions,
       babelHelpers: 'bundled',
       exclude: 'node_modules/**',
       configFile: './babel.config.rollup.js',
     }),
     resolve({
+      extensions,
       browser: true,
     }),
     commonjs(),

@@ -1,39 +1,46 @@
 {
   "name": "commerce-sdk-react",
   "version": "0.1.0",
+  "private": false,
   "description": "Salesforce Commerce SDK for React",
+  "bugs": {
+    "url": "https://github.com/SalesforceCommerceCloud/commerce-sdk-react/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SalesforceCommerceCloud/commerce-sdk-react.git"
   },
   "license": "BSD-3-Clause",
-  "bugs": {
-    "url": "https://github.com/SalesforceCommerceCloud/commerce-sdk-react/issues"
-  },
-  "private": false,
-  "dependencies": {
-    "fs-extra": "^9.0.1",
-    "prop-types": "^15.7.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
-  },
+  "main": "lib/index.cjs.js",
+  "module": "lib/index.esm.js",
+  "style": "lib/default.css",
+  "files": [
+    "lib",
+    "LICENSE.txt",
+    "README.md"
+  ],
   "scripts": {
-    "start": "HTTPS=true react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
-    "eject": "react-scripts eject",
+    "build:docs": "docz build",
     "build:lib": "npx rollup -c",
+    "eject": "react-scripts eject",
     "fix:js": "npx eslint --fix ./src/",
+    "fix:style": "npx stylelint ./src/ --fix",
     "lint:js": "npx eslint ./src/",
     "lint:style": "npx stylelint ./src/",
-    "fix:style": "npx stylelint ./src/ --fix",
+    "renderTemplates": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' generate.ts",
+    "start": "HTTPS=true react-scripts start",
     "start:docs": "docz dev",
-    "build:docs": "docz build",
-    "renderTemplates": "ts-node --compiler-options '{\"esModuleInterop\":true, \"target\": \"ES6\"}' generate.ts",
-    "tsc": "tsc --build generate.tsconfig.json"
+    "test": "react-scripts test --env=jest-environment-jsdom-sixteen"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "CI=true yarn test --passWithNoTests"
+    }
+  },
+  "lint-staged": {
+    "package.json": "sort-package-json"
   },
   "browserslist": {
     "production": [
@@ -47,20 +54,37 @@
       "last 1 safari version"
     ]
   },
-  "main": "lib/index.cjs.js",
-  "module": "lib/index.esm.js",
-  "style": "lib/default.css",
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "CI=true yarn test --passWithNoTests"
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/static/**/*.{js,jsx,ts,tsx}",
+      "!<rootDir>/node_modules/"
+    ],
+    "coverageReporters": [
+      "text"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
     }
+  },
+  "dependencies": {
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   },
   "devDependencies": {
     "@babel/cli": "7.10.5",
     "@babel/core": "7.10.5",
     "@babel/preset-env": "7.10.4",
     "@babel/preset-react": "7.10.1",
+    "@babel/preset-typescript": "^7.10.4",
     "@commerce-apps/raml-toolkit": "^0.5.0",
     "@rollup/plugin-babel": "5.1.0",
     "@rollup/plugin-commonjs": "13.0.0",
@@ -69,6 +93,7 @@
     "@testing-library/react": "10.4.7",
     "@testing-library/react-hooks": "3.4.1",
     "@testing-library/user-event": "12.0.17",
+    "@types/fs-extra": "^9.0.1",
     "autoprefixer": "9.8.5",
     "docz": "2.3.1",
     "eslint": "6.8.0",
@@ -80,6 +105,7 @@
     "eslint-plugin-prettier": "3.1.4",
     "eslint-plugin-react": "7.20.5",
     "eslint-plugin-react-hooks": "4.0.8",
+    "fs-extra": "^9.0.1",
     "handlebars-helpers": "^0.10.0",
     "husky": "4.2.5",
     "jest-environment-jsdom-sixteen": "1.0.3",
@@ -99,6 +125,7 @@
     "rollup-plugin-postcss": "3.1.3",
     "rollup-plugin-stylelint": "1.0.0",
     "rollup-plugin-terser": "6.1.0",
+    "sort-package-json": "^1.46.0",
     "stylelint": "13.6.1",
     "stylelint-config-standard": "20.0.0",
     "stylelint-order": "4.1.0",
@@ -108,11 +135,8 @@
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
   },
-  "files": [
-    "lib"
-  ],
   "engines": {
     "node": ">=10"
   },
-  "proxy": "https://SHORT_CODE.api.commercecloud.salesforce.com"
+  "proxy": "https://SHORTCODE.api.commercecloud.salesforce.com"
 }
