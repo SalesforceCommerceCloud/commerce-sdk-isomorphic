@@ -1,0 +1,74 @@
+{
+    "env": {
+        "browser": true,
+        "es2020": true,
+        "node": true,
+        "jest/globals": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint",
+        "jest",
+        "header"
+    ],
+    "rules": {
+      "import/extensions": ["error", "ignorePackages", {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }],
+      "max-lines": [
+        "error",
+        {
+          "max": 500
+        }
+      ],
+      "header/header": [
+        2,
+        "block",
+        [
+          "",
+          {
+            "pattern": "^ \\* Copyright \\(c\\) \\d{4}, salesforce.com, inc\\.$",
+            "template": " * Copyright (c) 2020, salesforce.com, inc."
+          },
+          " * All rights reserved.",
+          " * SPDX-License-Identifier: BSD-3-Clause",
+          " * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause",
+          " "
+        ]
+      ]
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      },
+      "import/resolver": {
+        "node": {
+          "extensions": [
+            ".js",
+            ".jsx",
+            ".ts",
+            ".tsx"
+          ],
+          "moduleDirectory": [
+            "node_modules",
+            "src"
+          ]
+        }
+      }
+    }
+}

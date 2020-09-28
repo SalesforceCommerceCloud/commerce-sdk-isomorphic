@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2020, salesforce.com, inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
 import babel from '@rollup/plugin-babel';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
@@ -8,7 +14,7 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import autoprefixer from 'autoprefixer';
 import stylelint from 'rollup-plugin-stylelint';
 import postcssPresetEnv from 'postcss-preset-env';
-import {terser} from 'rollup-plugin-terser';
+import { terser } from 'rollup-plugin-terser';
 import pkg from './package.json';
 
 const extensions = [
@@ -34,7 +40,7 @@ const postcssPlugins = [
   autoprefixer(),
 ];
 
-const config = outputs.map(({file, format}) => ({
+const config = outputs.map(({ file, format }) => ({
   input: 'src/lib/index.ts',
   output: {
     file,

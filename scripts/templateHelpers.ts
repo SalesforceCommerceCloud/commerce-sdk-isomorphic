@@ -5,9 +5,9 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { ASSET_OBJECT_MAP } from "./config";
+import { ASSET_OBJECT_MAP } from './config';
 
-import { commonParameterPositions } from "../src/static/commonParameters";
+import { commonParameterPositions } from '../src/static/commonParameters';
 
 /**
  * Given an individual type or an array of types in the format Array\<Foo | Baa\>
@@ -21,11 +21,11 @@ import { commonParameterPositions } from "../src/static/commonParameters";
 export function addNamespace(content: string, namespace: any): string {
   // Not handling invalid content.
   if (!content) {
-    throw new Error("Invalid content");
+    throw new Error('Invalid content');
   }
   // Not handling invalid namespace.
   if (!namespace) {
-    throw new Error("Invalid namespace");
+    throw new Error('Invalid namespace');
   }
 
   // if the content is an array, extract all of the elements
@@ -34,7 +34,7 @@ export function addNamespace(content: string, namespace: any): string {
   const types = matched?.[1] || content;
 
   // Get a handle on individual types
-  const typesToProcess = types.split("|");
+  const typesToProcess = types.split('|');
   const namespaceTypes: string[] = [];
 
   // for each type
@@ -42,12 +42,12 @@ export function addNamespace(content: string, namespace: any): string {
     // trim the fat
     const actualType = checkType.trim();
     // check if there's an actual type present
-    if (actualType === "") {
-      throw new Error("Empty type found");
+    if (actualType === '') {
+      throw new Error('Empty type found');
     }
 
     // void and object types don't get a namespace
-    if (["void", "object"].includes(actualType.toLocaleLowerCase())) {
+    if (['void', 'object'].includes(actualType.toLocaleLowerCase())) {
       namespaceTypes.push(actualType);
     } else {
       // everything else does
@@ -56,7 +56,7 @@ export function addNamespace(content: string, namespace: any): string {
   });
 
   // reconstruct the passed in type with the namespace
-  const processedTypes = namespaceTypes.join(" | ");
+  const processedTypes = namespaceTypes.join(' | ');
 
   // Re-add Array if required
   if (arrayType) {
@@ -73,7 +73,7 @@ export function addNamespace(content: string, namespace: any): string {
  * @returns The custom object id as a string
  */
 export const getObjectIdByAssetId = (assetId: string): string => {
-  if (ASSET_OBJECT_MAP.hasOwnProperty(assetId)) {
+  if (Object.prototype.hasOwnProperty.call(ASSET_OBJECT_MAP, assetId)) {
     return ASSET_OBJECT_MAP[assetId];
   }
   // When this error occurs, find the corresponding API in the CCDC and copy the
@@ -94,13 +94,13 @@ export const formatForTsDoc = (str: string): string => {
   // Brackets are special to TSDoc and less than / greater than are interpreted as HTML
   const symbolsEscaped = str
     .toString()
-    .replace(/([^\\])(["{}<>]+)/g, (m) => Array.from(m).join("\\"));
+    .replace(/([^\\])(["{}<>]+)/g, (m) => Array.from(m).join('\\'));
   // Double escaped newlines are replaced with real newlines
-  const newlinesUnescaped = symbolsEscaped.replace(/\\n/g, "\n");
+  const newlinesUnescaped = symbolsEscaped.replace(/\\n/g, '\n');
   // Double escaped tabs are replaced with a single space
-  const tabsUnescaped = newlinesUnescaped.replace(/(\\t)+/g, " ");
+  const tabsUnescaped = newlinesUnescaped.replace(/(\\t)+/g, ' ');
   // Collapse leading whitespace of 4 or more to avoid triggering code block formatting
-  const collapsedLeadingWhitespace = tabsUnescaped.replace(/\n {4,}/g, "\n   ");
+  const collapsedLeadingWhitespace = tabsUnescaped.replace(/\n {4,}/g, '\n   ');
 
   return collapsedLeadingWhitespace;
 };
@@ -112,10 +112,9 @@ export const formatForTsDoc = (str: string): string => {
  *
  * @returns true if the parameter is a common parameter
  */
-export const isCommonPathParameter = (property: string): boolean =>
-  property
-    ? commonParameterPositions.pathParameters.includes(property.toString())
-    : false;
+export const isCommonPathParameter = (property: string): boolean => (property
+  ? commonParameterPositions.pathParameters.includes(property.toString())
+  : false);
 
 /**
  * Checks if a query parameter is one of the set that are configurable at the client level
@@ -124,7 +123,6 @@ export const isCommonPathParameter = (property: string): boolean =>
  *
  * @returns true if the parameter is a common parameter
  */
-export const isCommonQueryParameter = (property: string): boolean =>
-  property
-    ? commonParameterPositions.queryParameters.includes(property.toString())
-    : false;
+export const isCommonQueryParameter = (property: string): boolean => (property
+  ? commonParameterPositions.queryParameters.includes(property.toString())
+  : false);

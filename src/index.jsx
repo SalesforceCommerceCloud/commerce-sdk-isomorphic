@@ -4,4 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-export { default } from './App';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './environment/App';
+
+ReactDOM.render(<App />, document.getElementById('root'));
