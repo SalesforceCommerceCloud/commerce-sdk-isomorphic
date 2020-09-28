@@ -12,14 +12,12 @@ import { updateApis } from "./scripts/utils";
 const API_NAMES = [
   "shopper-baskets",
   "shopper-customers",
-  "shopper-discovery-query",
   "shopper-gift-certificates",
   "shopper-login",
   "shopper-orders",
   "shopper-products",
   "shopper-promotions",
-  "shopper-search",
-  "shopper-stores"
+  "shopper-search"
 ];
 
 const PRODUCTION_API_PATH = path.join(__dirname, "apis");

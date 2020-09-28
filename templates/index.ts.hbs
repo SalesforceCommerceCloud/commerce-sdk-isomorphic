@@ -1,12 +1,8 @@
 {{#each children}}
-  {{#each children}}
 import { {{~name.upperCamelCase~}} } from "./{{name.lowerCamelCase}}";
-  {{/each}}
 {{/each}}
 export {
 {{#each children}}
-  {{#each children}}
-    {{name.upperCamelCase}},
-  {{/each}}
+  {{name.upperCamelCase}},
 {{/each}}
 }
