@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { generate, download } from '@commerce-apps/raml-toolkit';
 import path from 'path';
 
@@ -15,7 +15,7 @@ const TEMPLATE_DIRECTORY = `${__dirname}/../templates`;
 // -------HELPER REGISTRATION-------
 const Handlebars = generate.HandlebarsWithAmfHelpers;
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-extraneous-dependencies
 require('handlebars-helpers')({ handlebars: Handlebars });
 
 /**

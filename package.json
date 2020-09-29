@@ -24,9 +24,9 @@
     "build:docs": "docz build",
     "build:lib": "npx rollup -c",
     "eject": "react-scripts eject",
-    "fix:js": "npx eslint --ext js,jsx,ts,tsx --fix ./src ./scripts",
+    "fix": "npx eslint --ext js,jsx,ts,tsx --fix ./src ./scripts",
     "fix:style": "npx stylelint ./src/ --fix",
-    "lint:js": "npx eslint --ext js,jsx,ts,tsx ./src ./scripts",
+    "lint": "npx eslint --ext js,jsx,ts,tsx ./src ./scripts",
     "lint:style": "npx stylelint ./src/",
     "renderTemplates": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' generate.ts",
     "start": "HTTPS=true react-scripts start",
@@ -72,8 +72,6 @@
     }
   },
   "dependencies": {
-    "@commerce-apps/raml-toolkit": "^0.5.1",
-    "handlebars-helpers": "^0.10.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
@@ -84,6 +82,7 @@
     "@babel/preset-env": "7.10.4",
     "@babel/preset-react": "7.10.1",
     "@babel/preset-typescript": "^7.10.4",
+    "@commerce-apps/raml-toolkit": "^0.5.1",
     "@rollup/plugin-babel": "5.1.0",
     "@rollup/plugin-commonjs": "13.0.0",
     "@rollup/plugin-node-resolve": "8.4.0",
@@ -106,6 +105,7 @@
     "eslint-plugin-react": "7.20.5",
     "eslint-plugin-react-hooks": "4.0.8",
     "fs-extra": "^9.0.1",
+    "handlebars-helpers": "^0.10.0",
     "husky": "4.2.5",
     "jest-environment-jsdom-sixteen": "1.0.3",
     "lint-staged": "10.2.11",
