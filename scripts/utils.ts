@@ -107,7 +107,7 @@ export async function updateApis(
       throw new Error(`No results in Exchange for '${name}'`);
     }
     const apis = [matchedApis.find((api) => api?.assetId === name)];
-    if (!(apis?.length > 0)) {
+    if (!(apis?.length === 1)) {
       throw new Error(`No exact match in Exchange for '${name}'`);
     }
     await download.downloadRestApis(apis, rootPath);
