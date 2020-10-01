@@ -23,6 +23,7 @@
         "jest",
         "header"
     ],
+    "reportUnusedDisableDirectives": true,
     "rules": {
       "import/extensions": ["error", "ignorePackages", {
         "js": "never",

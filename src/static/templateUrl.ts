@@ -32,7 +32,7 @@ export default class TemplateURL extends URL {
 
   /**
    * Replace the origin (protocol/host) portion of the URL with a new origin.
-   * The path portition is retained and concated with any path included in the
+   * The path portion is retained and concatenated with any path included in the
    * new origin. Thee primary use of this function is to use a proxy.
    *
    * @param newOriginString - The new origin to substitute (ex: https://example.com)
@@ -64,7 +64,7 @@ export default class TemplateURL extends URL {
   }
 
   /**
-   * Replace bracketed URL template paramters with values from parameters object
+   * Replace bracketed URL template parameters with values from parameters object
    *
    * @param template - The URL template string to make substitutions in
    * @param parameters - The object literal that provides the values to substitute
@@ -76,7 +76,7 @@ export default class TemplateURL extends URL {
     parameters: { [key: string]: unknown },
   ): string {
     return template.replace(
-      /{([^}]+)}/g,
+      /\{([^\}]+)\}/g, /* eslint-disable-line no-useless-escape */
       (match, param) => parameters[param].toString(),
     );
   }

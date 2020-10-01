@@ -29,12 +29,12 @@ class App extends Component {
     this.doSearch(searchText);
   }
 
-  getToken = async () => {
+  async getToken() {
     const authResponse = await customerClient.authorizeCustomer({ body: { type: 'guest' } }, true);
     this.state.token = authResponse.headers.get('authorization');
   }
 
-  getSearchResults = async (text) => {
+  async getSearchResults(text) {
     await this.getToken();
     const { token } = this.state;
     this.searchClient.clientConfig.headers.authorization = token;
