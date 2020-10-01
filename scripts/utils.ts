@@ -101,17 +101,13 @@ export async function updateApis(
   deployment: RegExp,
   rootPath: string
 ): Promise<void> {
-  try {
-    const matchedApis = await download.search(`"${name}"`, deployment);
-    if (!(matchedApis?.length > 0)) {
-      throw new Error(`No results in Exchange for '${name}'`);
-    }
-    const apis = [matchedApis.find((api) => api?.assetId === name)];
-    if (!(apis?.length === 1)) {
-      throw new Error(`No exact match in Exchange for '${name}'`);
-    }
-    await download.downloadRestApis(apis, rootPath);
-  } catch (e) {
-    console.error(e);
+  const matchedApis = await download.search(`"${name}"`, deployment);
+  if (!(matchedApis?.length > 0)) {
+    throw new Error(`No results in Exchange for '${name}'`);
   }
+  const api = matchedApis.find((api) => api?.assetId === name);
+  if (!api) {
+    throw new Error(`No exact match in Exchange for '${name}'`);
+  }
+  await download.downloadRestApis([api], rootPath);
 }
