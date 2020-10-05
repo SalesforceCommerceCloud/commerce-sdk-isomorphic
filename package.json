@@ -31,6 +31,7 @@
     "renderTemplates": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' generate.ts",
     "start": "HTTPS=true react-scripts start",
     "start:docs": "docz dev",
+    "pretest": "npm run lint && npm run lint:style",
     "test": "jest --coverage",
     "testReact": "react-scripts test --env=jest-environment-jsdom-sixteen",
     "updateApis": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' updateApis.ts"

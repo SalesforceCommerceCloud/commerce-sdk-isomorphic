@@ -15,7 +15,7 @@ const TEMPLATE_DIRECTORY = `${__dirname}/../templates`;
 // -------HELPER REGISTRATION-------
 const Handlebars = generate.HandlebarsWithAmfHelpers;
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-extraneous-dependencies
+// eslint-disable-next-line import/no-extraneous-dependencies
 require('handlebars-helpers')({ handlebars: Handlebars });
 
 /**
@@ -30,7 +30,6 @@ export function registerHelpers(): void {
  * Register any customer partials we have in our pipeline
  */
 export function registerPartials(): void {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   generate.registerPartial(
     'dtoPartial',
     path.join(TEMPLATE_DIRECTORY, 'dtoPartial.ts.hbs'),
@@ -100,7 +99,7 @@ export async function updateApis(
   if (!(matchedApis?.length > 0)) {
     throw new Error(`No results in Exchange for '${name}'`);
   }
-  const api = matchedApis.find((api) => api?.assetId === name);
+  const api = matchedApis.find((matchedApi) => matchedApi?.assetId === name);
   if (!api) {
     throw new Error(`No exact match in Exchange for '${name}'`);
   }
