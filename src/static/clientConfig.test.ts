@@ -34,9 +34,18 @@ test('that clientConfig clones correctly', () => {
   newConfig.proxy = 'new proxy';
   expect(newConfig.proxy).not.toEqual(originalConfig.proxy);
 
-  newConfig.headers.authorization = 'newToken';
+  if (newConfig.headers) {
+    newConfig.headers.authorization = 'newToken';
+  } else {
+    newConfig.headers = { authorization: 'newToken' };
+  }
   expect(newConfig.headers.authorization).not.toEqual(originalConfig.headers.authorization);
 
+  if (newConfig.parameters) {
+    newConfig.parameters.p1 = 'newToken';
+  } else {
+    newConfig.parameters = { p1: 'new value' };
+  }
   newConfig.parameters.p1 = 'new value';
   expect(newConfig.parameters.p1).not.toEqual(originalConfig.parameters.p1);
 });
