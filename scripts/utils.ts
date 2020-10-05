@@ -50,13 +50,11 @@ function addTemplates(
     path.join(outputBasePath, 'index.ts'),
   );
 
-  apis.children.forEach((child: generate.ApiMetadata) => {
-    child.children.forEach(async (api: generate.ApiModel) => {
-      api.addTemplate(
-        path.join(TEMPLATE_DIRECTORY, 'client.ts.hbs'),
-        path.join(outputBasePath, `${api.name.lowerCamelCase}.ts`),
-      );
-    });
+  apis.children.forEach((api: generate.ApiMetadata) => {
+    api.addTemplate(
+      path.join(TEMPLATE_DIRECTORY, 'client.ts.hbs'),
+      path.join(outputBasePath, `${api.name.lowerCamelCase}.ts`),
+    );
   });
   return apis;
 }
