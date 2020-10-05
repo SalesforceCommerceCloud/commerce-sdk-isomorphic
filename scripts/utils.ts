@@ -8,20 +8,24 @@
 import { generate, download } from '@commerce-apps/raml-toolkit';
 import path from 'path';
 
-import * as helpers from './templateHelpers';
+import * as templateHelpers from './templateHelpers';
 
 const TEMPLATE_DIRECTORY = `${__dirname}/../templates`;
+const { registerPartial, loadApiDirectory } = generate;
+type ApiMetadata = generate.ApiMetadata;
+type ApiModel = generate.ApiModel;
 
 // -------HELPER REGISTRATION-------
 const Handlebars = generate.HandlebarsWithAmfHelpers;
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-extraneous-dependencies
+// eslint-disable-next-line import/no-extraneous-dependencies
 require('handlebars-helpers')({ handlebars: Handlebars });
 
 /**
  * Register the custom helpers defined in our pipeline
  */
 export function registerHelpers(): void {
+  const helpers: {[key: string]: Handlebars.HelperDelegate} = templateHelpers;
   const keys:string[] = Object.keys(helpers);
   keys.forEach((helper) => Handlebars.registerHelper(helper, helpers[helper]));
 }
@@ -30,29 +34,28 @@ export function registerHelpers(): void {
  * Register any customer partials we have in our pipeline
  */
 export function registerPartials(): void {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  generate.registerPartial(
+  registerPartial(
     'dtoPartial',
     path.join(TEMPLATE_DIRECTORY, 'dtoPartial.ts.hbs'),
   );
-  generate.registerPartial(
+  registerPartial(
     'operationsPartial',
     path.join(TEMPLATE_DIRECTORY, 'operations.ts.hbs'),
   );
 }
 
 function addTemplates(
-  apis: generate.ApiMetadata,
+  apis: ApiMetadata,
   outputBasePath: string,
-): generate.ApiMetadata {
+): ApiMetadata {
   apis.addTemplate(
     path.join(TEMPLATE_DIRECTORY, 'index.ts.hbs'),
     path.join(outputBasePath, 'index.ts'),
   );
 
-  apis.children.forEach((child: generate.ApiMetadata) => {
-    child.children.forEach(async (api: generate.ApiModel) => {
-      api.addTemplate(
+  apis.children.forEach((child: ApiMetadata) => {
+    child.children.forEach(async (api: ApiMetadata) => {
+      (api as ApiModel).addTemplate(
         path.join(TEMPLATE_DIRECTORY, 'client.ts.hbs'),
         path.join(outputBasePath, `${api.name.lowerCamelCase}.ts`),
       );
@@ -72,8 +75,8 @@ function addTemplates(
 export async function setupApis(
   inputDir: string,
   outputDir: string,
-): Promise<generate.ApiMetadata> {
-  let apis = generate.loadApiDirectory(inputDir);
+): Promise<ApiMetadata> {
+  let apis = loadApiDirectory(inputDir);
   await apis.init();
 
   apis = addTemplates(apis, outputDir);

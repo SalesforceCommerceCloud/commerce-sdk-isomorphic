@@ -12,7 +12,7 @@ export const PRIMITIVE_DATA_TYPE_MAP = {
   'http://www.w3.org/2001/XMLSchema#float': 'number',
   'http://www.w3.org/2001/XMLSchema#boolean': 'boolean',
 };
-export const ASSET_OBJECT_MAP = {
+export const ASSET_OBJECT_MAP: {[key: string]: string} = {
   assignments: 'a003k00000UHvoaAAD',
   campaigns: 'a003k00000UHvobAAD',
   catalogs: 'a003k00000UHvofAAD',
