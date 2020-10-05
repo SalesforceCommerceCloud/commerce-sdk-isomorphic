@@ -8,10 +8,13 @@
 /**
  * Configuration parameters common to Commerce SDK clients
  */
-export class ClientConfig {
+export default class ClientConfig {
   public baseUri?: string;
+
   public proxy?: string;
+
   public headers?: { [key: string]: string };
+
   public parameters?: { [ key: string]: unknown };
 
   constructor(config?: ClientConfig) {
@@ -25,10 +28,10 @@ export class ClientConfig {
       this.proxy = config.proxy;
     }
     if (config.headers) {
-      this.headers = { ...config.headers }
+      this.headers = { ...config.headers };
     }
     if (config.parameters) {
-      this.parameters = { ...config.parameters }
+      this.parameters = { ...config.parameters };
     }
   }
 }

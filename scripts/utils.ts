@@ -4,28 +4,26 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { generate, download } from '@commerce-apps/raml-toolkit';
+import path from 'path';
 
-import { generate, download } from "@commerce-apps/raml-toolkit";
-import path from "path";
+import * as helpers from './templateHelpers';
 
 const TEMPLATE_DIRECTORY = `${__dirname}/../templates`;
 
-//////// HELPER REGISTRATION ////////
+// -------HELPER REGISTRATION-------
 const Handlebars = generate.HandlebarsWithAmfHelpers;
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require("handlebars-helpers")({ handlebars: Handlebars });
-
-import * as helpers from "./templateHelpers";
+// eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-extraneous-dependencies
+require('handlebars-helpers')({ handlebars: Handlebars });
 
 /**
  * Register the custom helpers defined in our pipeline
  */
 export function registerHelpers(): void {
   const keys:string[] = Object.keys(helpers);
-  for (const helper of keys) {
-    Handlebars.registerHelper(helper, helpers[helper]);
-  }
+  keys.forEach((helper) => Handlebars.registerHelper(helper, helpers[helper]));
 }
 
 /**
@@ -34,34 +32,29 @@ export function registerHelpers(): void {
 export function registerPartials(): void {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   generate.registerPartial(
-    "dtoPartial",
-    path.join(TEMPLATE_DIRECTORY, "dtoPartial.ts.hbs")
+    'dtoPartial',
+    path.join(TEMPLATE_DIRECTORY, 'dtoPartial.ts.hbs'),
   );
   generate.registerPartial(
-    "operationsPartial",
-    path.join(TEMPLATE_DIRECTORY, "operations.ts.hbs")
+    'operationsPartial',
+    path.join(TEMPLATE_DIRECTORY, 'operations.ts.hbs'),
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function addTemplates(
   apis: generate.ApiMetadata,
-  outputBasePath: string
+  outputBasePath: string,
 ): generate.ApiMetadata {
   apis.addTemplate(
-    path.join(TEMPLATE_DIRECTORY, "index.ts.hbs"),
-    path.join(outputBasePath, "index.ts")
+    path.join(TEMPLATE_DIRECTORY, 'index.ts.hbs'),
+    path.join(outputBasePath, 'index.ts'),
   );
-  //apis.addTemplate(
-  //  path.join(TEMPLATE_DIRECTORY, "helpers.ts.hbs"),
-  //  path.join(outputBasePath, "helpers.ts")
-  //);
 
   apis.children.forEach((child: generate.ApiMetadata) => {
     child.children.forEach(async (api: generate.ApiModel) => {
       api.addTemplate(
-        path.join(TEMPLATE_DIRECTORY, "client.ts.hbs"),
-        path.join(outputBasePath, `${api.name.lowerCamelCase}.ts`)
+        path.join(TEMPLATE_DIRECTORY, 'client.ts.hbs'),
+        path.join(outputBasePath, `${api.name.lowerCamelCase}.ts`),
       );
     });
   });
@@ -78,7 +71,7 @@ function addTemplates(
  */
 export async function setupApis(
   inputDir: string,
-  outputDir: string
+  outputDir: string,
 ): Promise<generate.ApiMetadata> {
   let apis = generate.loadApiDirectory(inputDir);
   await apis.init();
@@ -103,12 +96,12 @@ export async function setupApis(
 export async function updateApis(
   apiFamily: string,
   deployment: RegExp,
-  rootPath: string
+  rootPath: string,
 ): Promise<void> {
   try {
     const apis = await download.search(
       `category:"CC API Family" = "${apiFamily}"`,
-      deployment
+      deployment,
     );
     await download.downloadRestApis(apis, path.join(rootPath, apiFamily));
   } catch (e) {

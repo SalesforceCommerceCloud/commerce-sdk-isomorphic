@@ -24,10 +24,10 @@
     "build:docs": "docz build",
     "build:lib": "npx rollup -c",
     "eject": "react-scripts eject",
-    "fix:js": "npx eslint --fix ./src/",
-    "fix:style": "npx stylelint ./src/ --fix",
-    "lint:js": "npx eslint ./src/",
-    "lint:style": "npx stylelint ./src/",
+    "fix": "npm run lint -- --fix",
+    "fix:style": "npm run lint:style -- --fix",
+    "lint": "eslint --ext js,jsx,ts,tsx ./src ./scripts",
+    "lint:style": "stylelint ./src/",
     "renderTemplates": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' generate.ts",
     "start": "HTTPS=true react-scripts start",
     "start:docs": "docz dev",
@@ -53,9 +53,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -85,7 +82,7 @@
     "@babel/preset-env": "7.10.4",
     "@babel/preset-react": "7.10.1",
     "@babel/preset-typescript": "^7.10.4",
-    "@commerce-apps/raml-toolkit": "^0.5.0",
+    "@commerce-apps/raml-toolkit": "^0.5.1",
     "@rollup/plugin-babel": "5.1.0",
     "@rollup/plugin-commonjs": "13.0.0",
     "@rollup/plugin-node-resolve": "8.4.0",
@@ -100,7 +97,9 @@
     "eslint-config-airbnb": "18.1.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-fp": "2.3.0",
+    "eslint-plugin-header": "^3.1.0",
     "eslint-plugin-import": "2.21.2",
+    "eslint-plugin-jest": "^24.0.2",
     "eslint-plugin-jsx-a11y": "6.3.1",
     "eslint-plugin-prettier": "3.1.4",
     "eslint-plugin-react": "7.20.5",
