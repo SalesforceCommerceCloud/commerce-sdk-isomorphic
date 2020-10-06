@@ -120,13 +120,13 @@
       rawResponse?: boolean,
     ): Promise<Response | {{getReturnTypeFromOperation this}}> {
     
-      const parameters = (options && options.parameters) ? options.parameters : {};
+      const parameters = (options && options.parameters) ? options.parameters : {} as {[key: string]: string};
       
       const pathParameters = {
       {{#each ../parameters}}
         "{{{name}}}": parameters["{{{name}}}"]
         {{! if it is a common path parameter, fallback to client config for undefined }}
-        {{#if (isCommonPathParameter name)}} !== undefined ? parameters["{{{name}}}"] : this.clientConfig.parameters["{{{name}}}"]{{/if}}
+        {{#if (isCommonPathParameter name)}} !== undefined ? parameters["{{{name}}}"] : this.clientConfig.parameters?.{{{name}}}{{/if}}
         {{#unless @last}},{{/unless}}
       {{/each}}
       };
@@ -136,9 +136,9 @@
       {{#each request.queryParameters}}
         {{! for queryParameters that are common query parameters, fallback to client config for undefined }}
         {{#if (isCommonQueryParameter name)}}
-        queryParameters["{{{name}}}"] =
+        queryParameters.{{{name}}} =
           queryParameters["{{{name}}}"] !== undefined 
-            ? parameters["{{{name}}}"].toString() : this.clientConfig.parameters["{{{name}}}"].toString();
+            ? String(parameters["{{{name}}}"]) : String(this.clientConfig.parameters?.{{{name}}});
         {{/if}}
       {{/each}}
 
