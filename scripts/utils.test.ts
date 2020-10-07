@@ -73,11 +73,10 @@ describe('setupApis', () => {
     const children = apis.children.map((child) => child.name.original);
     expect(children).toEqual(
       expect.arrayContaining([
-        'pricing',
-        'customer',
-        'checkout',
-        'search',
-        'product',
+        'shopper-baskets',
+        'shopper-customers',
+        'shopper-products',
+        'shopper-search',
       ]),
     );
   });
