@@ -53,13 +53,11 @@ function addTemplates(
     path.join(outputBasePath, 'index.ts'),
   );
 
-  apis.children.forEach((child: ApiMetadata) => {
-    child.children.forEach(async (api: ApiMetadata) => {
-      (api as ApiModel).addTemplate(
-        path.join(TEMPLATE_DIRECTORY, 'client.ts.hbs'),
-        path.join(outputBasePath, `${api.name.lowerCamelCase}.ts`),
-      );
-    });
+  apis.children.forEach((api: ApiMetadata) => {
+    api.addTemplate(
+      path.join(TEMPLATE_DIRECTORY, 'client.ts.hbs'),
+      path.join(outputBasePath, `${api.name.lowerCamelCase}.ts`),
+    );
   });
   return apis;
 }
@@ -84,30 +82,30 @@ export async function setupApis(
 }
 
 /**
- * Updates a set of APIs for an api family and saves it to a path.
+ * Searches for an API by name and downloads it to a folder.
  *
  * NOTE: Coverage passes without this function being covered.
  *  We should have some followup to figure out how to cover it.
  *  Ive spent hours trying to mock download
  *
- * @param apiFamily - Api family to download
+ * @param name - Api name to search for
  * @param deployment - What deployment to build for
  * @param rootPath - Root path to download to
  *
  * @returns a promise that we will complete
  */
 export async function updateApis(
-  apiFamily: string,
+  name: string,
   deployment: RegExp,
   rootPath: string,
 ): Promise<void> {
-  try {
-    const apis = await download.search(
-      `category:"CC API Family" = "${apiFamily}"`,
-      deployment,
-    );
-    await download.downloadRestApis(apis, path.join(rootPath, apiFamily));
-  } catch (e) {
-    console.error(e);
+  const matchedApis = await download.search(`"${name}"`, deployment);
+  if (!(matchedApis?.length > 0)) {
+    throw new Error(`No results in Exchange for '${name}'`);
   }
+  const api = matchedApis.find((matchedApi) => matchedApi?.assetId === name);
+  if (!api) {
+    throw new Error(`No exact match in Exchange for '${name}'`);
+  }
+  await download.downloadRestApis([api], rootPath);
 }

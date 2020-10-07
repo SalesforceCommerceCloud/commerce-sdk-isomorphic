@@ -11,7 +11,6 @@ commands:
           steps:
             - run: yarn install
       - run: yarn run renderTemplates
-      - run: yarn run tsc
       - run: yarn build:lib
   test:
     steps:
