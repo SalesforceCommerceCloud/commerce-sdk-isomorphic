@@ -1,14 +1,17 @@
-
+{{#if (isArrayType typeDto)}}
+{{{getDataType typeDto}}};
+{{else}}
 {
 {{#each (getProperties typeDto)}}
 {{#if (isRequiredProperty .)}}
-    {{{getValue name}}}: {{#or (eq (getTypeFromProperty this) "object")}}{{> dtoPartial typeDto=range }}{{else}}{{{getTypeFromProperty this}}}{{/or}};
+  {{{getValue name}}}: {{#or (eq (getTypeFromProperty this) "object")}}{{> dtoPartial typeDto=range }}{{else}}{{{getTypeFromProperty this}}}{{/or}};
 {{else if (isOptionalProperty .)}}
-    {{{getValue name}}}?: {{#or (eq (getTypeFromProperty this) "object")}}{{> dtoPartial typeDto=range }}{{else}}{{{getTypeFromProperty this}}}{{/or}};
+  {{{getValue name}}}?: {{#or (eq (getTypeFromProperty this) "object")}}{{> dtoPartial typeDto=range }}{{else}}{{{getTypeFromProperty this}}}{{/or}};
 {{/if}}
 {{/each}}
 }
-{{~#if (isAdditionalPropertiesAllowed typeDto)}}
-& { [key: string]: any }
-{{/if}}
 
+{{~#if (isAdditionalPropertiesAllowed typeDto)}}
+ & { [key: string]: any }
+{{/if}}
+{{/if}}
