@@ -37,6 +37,9 @@
           "max": 500
         }
       ],
+      "import/no-extraneous-dependencies": ["error", {
+      	"devDependencies": ["**/*.test.*", "**/*.spec.*"]
+      }],
       "header/header": [
         2,
         "block",
