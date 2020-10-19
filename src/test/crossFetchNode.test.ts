@@ -18,7 +18,6 @@ import config from '../environment/config';
 
 const customerClient = new ShopperCustomers(config);
 const searchClient = new ShopperSearch(config);
-// const shopperProducts = new ShopperProducts(config);
 
 beforeEach(async () => {
   nock.cleanAll();
