@@ -76,6 +76,8 @@
     }
   },
   "dependencies": {
+    "cross-fetch": "^3.0.6",
+    "nock": "^13.0.4",
     "prop-types": "^15.7.2"
   },
   "devDependencies": {
@@ -119,6 +121,7 @@
     "react-scripts": "3.4.3",
     "react-test-renderer": "16.13.1",
     "recursive-copy": "2.0.10",
+    "request": "^2.88.2",
     "rimraf": "3.0.2",
     "rollup": "2.22.2",
     "rollup-plugin-eslint": "7.0.0",
