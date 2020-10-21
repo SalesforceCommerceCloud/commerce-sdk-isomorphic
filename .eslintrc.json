@@ -37,6 +37,7 @@
           "max": 500
         }
       ],
+      "import/no-extraneous-dependencies": "off",
       "header/header": [
         2,
         "block",
@@ -53,6 +54,16 @@
         ]
       ]
     },
+    "overrides": [
+      {
+        "files": [
+          "src/lib/**"
+        ],
+        "rules": {
+          "import/no-extraneous-dependencies": "error"
+        }
+      }
+    ],
     "settings": {
       "react": {
         "version": "detect"
