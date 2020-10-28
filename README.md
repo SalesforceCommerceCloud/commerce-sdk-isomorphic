@@ -17,6 +17,12 @@ $ yarn run renderTemplates
 
 # Launch sample application
 $ yarn start
+
+# Transpile and minify
+$ yarn build:lib
+
+# Run tests
+$ yarn test
 ```
 
 ## License Information
