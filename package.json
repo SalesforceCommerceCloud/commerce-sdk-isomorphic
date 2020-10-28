@@ -23,15 +23,16 @@
     "build": "react-scripts build",
     "build:docs": "docz build",
     "build:lib": "npx rollup -c",
+    "checkSize": "npm-pack-all --output commerce-sdk-react-with-deps.tgz && bundlesize",
     "eject": "react-scripts eject",
-    "fix": "npm run lint -- --fix",
-    "fix:style": "npm run lint:style -- --fix",
+    "fix": "yarn run lint -- --fix",
+    "fix:style": "yarn run lint:style -- --fix",
     "lint": "eslint --ext js,jsx,ts,tsx ./src ./scripts",
     "lint:style": "stylelint ./src/",
     "renderTemplates": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' generate.ts",
     "start": "HTTPS=true react-scripts start",
     "start:docs": "docz dev",
-    "pretest": "npm run lint && npm run lint:style",
+    "pretest": "yarn run lint && yarn run lint:style && yarn run checkSize",
     "test": "jest --coverage",
     "testReact": "react-scripts test --env=jest-environment-jsdom-sixteen",
     "updateApis": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' updateApis.ts"
@@ -94,6 +95,7 @@
     "@testing-library/user-event": "12.0.17",
     "@types/fs-extra": "^9.0.1",
     "autoprefixer": "9.8.5",
+    "bundlesize": "^0.18.0",
     "docz": "2.3.1",
     "eslint": "6.8.0",
     "eslint-config-airbnb": "18.1.0",
@@ -112,6 +114,7 @@
     "jest-environment-jsdom-sixteen": "1.0.3",
     "lint-staged": "10.2.11",
     "nock": "^13.0.4",
+    "npm-pack-all": "^1.12.3",
     "npm-run-all": "4.1.5",
     "postcss-preset-env": "6.7.0",
     "prettier": "2.0.5",
@@ -143,5 +146,15 @@
   "engines": {
     "node": ">=10"
   },
+  "bundlesize": [
+    {
+      "path": "lib/**/*.js",
+      "maxSize": "100 kB"
+    },
+    {
+      "path": "commerce-sdk-react-with-deps.tgz",
+      "maxSize": "300 kB"
+    }
+  ],
   "proxy": "https://SHORTCODE.api.commercecloud.salesforce.com"
 }
