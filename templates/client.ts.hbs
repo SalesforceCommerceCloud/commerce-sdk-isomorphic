@@ -21,25 +21,17 @@ export type {{getValue name}} = {{> dtoPartial typeDto=this}}
 * Simple example:
 *
 * ```typescript
-*   import { {{pascalcase metadata.categories.[CC API Family].[0]}}, ClientConfig } from "commerce-sdk";
+*   import { {{name.upperCamelCase}} } from "commerce-sdk-react";
 *
-*   const clientConfig: ClientConfig = { ... };
-*   const {{name.lowerCamelCase}}Client = new {{pascalcase metadata.categories.[CC API Family].[0]}}.{{name.upperCamelCase}}(clientConfig);
-* ```
-*
-* Example with shopper auth
-* ```typescript
-* const clientConfig: ClientConfig = {
-*   parameters: {
-*     clientId: "XXXXXX",
-*     organizationId: "XXXX",
-*     shortCode: "XXX",
-*     siteId: "XX"
-*   }
-* };
-* token = await helpers.getShopperToken(clientConfig, { type: "guest" });
-* clientConfig.headers["authorization"] = token.getBearerHeader();
-* const {{name.lowerCamelCase}}Client = new {{pascalcase metadata.categories.[CC API Family].[0]}}.{{name.upperCamelCase}}(clientConfig);
+*   const clientConfig = {
+*     parameters: {
+*       clientId: "XXXXXX",
+*       organizationId: "XXXX",
+*       shortCode: "XXX",
+*       siteId: "XX"
+*     }
+*   };
+*   const {{name.lowerCamelCase}}Client = new {{name.upperCamelCase}}(clientConfig);
 * ```
 *
 * <span style="font-size:.7em; display:block; text-align: right">
