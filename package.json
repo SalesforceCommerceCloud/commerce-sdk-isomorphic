@@ -21,7 +21,6 @@
   ],
   "scripts": {
     "build": "react-scripts build",
-    "build:docs": "docz build",
     "build:lib": "npx rollup -c",
     "doc": "npm run doc:generate",
     "doc:generate": "typedoc --mode modules src/lib/** --external-modulemap \".*/src/lib/([\\w]+\\.ts)\" --exclude \"src/lib/index.ts\"",
@@ -32,7 +31,6 @@
     "lint:style": "stylelint ./src/",
     "renderTemplates": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' generate.ts",
     "start": "HTTPS=true react-scripts start",
-    "start:docs": "docz dev",
     "pretest": "npm run lint && npm run lint:style",
     "test": "jest --coverage",
     "testReact": "react-scripts test --env=jest-environment-jsdom-sixteen",
@@ -96,7 +94,6 @@
     "@testing-library/user-event": "12.0.17",
     "@types/fs-extra": "^9.0.1",
     "autoprefixer": "9.8.5",
-    "docz": "2.3.1",
     "eslint": "6.8.0",
     "eslint-config-airbnb": "18.1.0",
     "eslint-config-prettier": "6.11.0",
