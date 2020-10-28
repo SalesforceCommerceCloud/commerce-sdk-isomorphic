@@ -24,7 +24,7 @@
     "build:lib": "npx rollup -c",
     "checkSize": "npm-pack-all --output commerce-sdk-react-with-deps.tgz && bundlesize",
     "doc": "npm run doc:generate",
-    "doc:generate": "typedoc --mode modules src/lib/** --external-modulemap \".*/src/lib/([\\w]+\\.ts)\" --exclude \"src/lib/index.ts\"",
+    "doc:generate": "typedoc --mode modules src/lib/** --external-modulemap \".*/src/lib/([\\w]+)\" --exclude \"src/lib/index.ts\"",
     "eject": "react-scripts eject",
     "fix": "yarn run lint -- --fix",
     "fix:style": "yarn run lint:style -- --fix",
