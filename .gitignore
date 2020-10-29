@@ -26,10 +26,6 @@ yarn-error.log*
 # lib
 /lib
 
-# docz
-/docz
-/.docz
-
 # Optional npm cache directory
 .npm
 

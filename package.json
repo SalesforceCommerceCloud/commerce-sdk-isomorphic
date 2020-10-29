@@ -21,9 +21,10 @@
   ],
   "scripts": {
     "build": "react-scripts build",
-    "build:docs": "docz build",
     "build:lib": "npx rollup -c",
     "checkSize": "npm-pack-all --output commerce-sdk-react-with-deps.tgz && bundlesize",
+    "doc": "npm run doc:generate",
+    "doc:generate": "typedoc --mode modules src/lib/** --external-modulemap \".*/src/lib/([\\w]+)\" --exclude \"src/lib/index.ts\"",
     "eject": "react-scripts eject",
     "fix": "yarn run lint -- --fix",
     "fix:style": "yarn run lint:style -- --fix",
@@ -31,7 +32,6 @@
     "lint:style": "stylelint ./src/",
     "renderTemplates": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' generate.ts",
     "start": "HTTPS=true react-scripts start",
-    "start:docs": "docz dev",
     "pretest": "yarn run lint && yarn run lint:style && yarn run checkSize",
     "test": "jest --coverage",
     "testReact": "react-scripts test --env=jest-environment-jsdom-sixteen",
@@ -96,7 +96,6 @@
     "@types/fs-extra": "^9.0.1",
     "autoprefixer": "9.8.5",
     "bundlesize": "^0.18.0",
-    "docz": "2.3.1",
     "eslint": "6.8.0",
     "eslint-config-airbnb": "18.1.0",
     "eslint-config-prettier": "6.11.0",
@@ -137,6 +136,9 @@
     "stylelint": "13.6.1",
     "stylelint-config-standard": "20.0.0",
     "stylelint-order": "4.1.0",
+    "typedoc": "^0.17.7",
+    "typedoc-plugin-external-module-map": "^1.2.1",
+    "typedoc-plugin-nojekyll": "^1.0.1",
     "typescript": "^4.0.2"
   },
   "peerDependencies": {

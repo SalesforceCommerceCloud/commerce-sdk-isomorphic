@@ -1,8 +1,16 @@
 {{#each children}}
 import { {{~name.upperCamelCase~}} } from "./{{name.lowerCamelCase}}";
 {{/each}}
+import {CommonParameters} from "./commonParameters";
+import ClientConfig from "./clientConfig";
+import TemplateURL from "./templateUrl";
+
 export {
 {{#each children}}
   {{name.upperCamelCase}},
 {{/each}}
+  ClientConfig,
+  TemplateURL,
 }
+
+export type { CommonParameters };
