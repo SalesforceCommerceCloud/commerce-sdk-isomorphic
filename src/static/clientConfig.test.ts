@@ -50,7 +50,6 @@ test('that clientConfig clones correctly', () => {
   newConfig.parameters.p1 = 'new value';
   expect(newConfig.parameters.p1).not.toEqual(originalConfig.parameters.p1);
 
-  newConfig.fetchOptions = {timeout: 400};
+  newConfig.fetchOptions = { timeout: 400 };
   expect(newConfig.fetchOptions.timeout).not.toEqual(originalConfig.fetchOptions.timeout);
-
 });
