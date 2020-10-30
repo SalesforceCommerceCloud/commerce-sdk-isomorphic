@@ -17,6 +17,8 @@ export default class ClientConfig {
 
   public parameters?: { [ key: string]: unknown };
 
+  public fetchOptions?: { [key: string]: unknown };
+
   constructor(config?: ClientConfig) {
     if (!config) {
       return;
@@ -32,6 +34,9 @@ export default class ClientConfig {
     }
     if (config.parameters) {
       this.parameters = { ...config.parameters };
+    }
+    if (config.fetchOptions) {
+      this.fetchOptions = { ...config.fetchOptions };
     }
   }
 }
