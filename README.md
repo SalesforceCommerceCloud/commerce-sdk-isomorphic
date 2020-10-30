@@ -17,6 +17,12 @@ $ yarn run renderTemplates
 
 # Launch sample application
 $ yarn start
+
+# Transpile and minify
+$ yarn build:lib
+
+# Run tests
+$ yarn test
 ```
 
 ## License Information
@@ -24,5 +30,5 @@ $ yarn start
 The Commerce SDK for React is licensed under BSD-3-Clause license. See the [license](./LICENSE.txt) for details.
 
 <!-- Markdown link & img dfn's -->
-[circleci-image]: https://circleci.com/gh/SalesforceCommerceCloud/commerce-sdk-react.svg?style=svg&circle-token=c68cee5cb20ee75f00cbda1b0eec5b5484c58b2a
+[circleci-image]: https://circleci.com/gh/SalesforceCommerceCloud/commerce-sdk-react.svg?style=svg&circle-token=379eaa6f00e0840e10dd80585b2b045d02a8f3b7
 [circleci-url]: https://circleci.com/gh/SalesforceCommerceCloud/commerce-sdk-react
