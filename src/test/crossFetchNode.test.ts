@@ -113,7 +113,7 @@ test('should use timeout from fetch options and throw timeout error', async () =
     expect(response).toBe(null);
   } catch (e) {
     expect(e).toEqual({
-      message: 'network timeout at: https://localhost:3000/search/shopper-search/v1/organizations/f_ecom_bdqd_s12/product-search?siteId=RefArch&q=sony',
+      message: 'network timeout at: https://localhost:3000/search/shopper-search/v1/organizations/ORGANIZATION_ID/product-search?siteId=SITE_ID&q=sony',
       type: 'request-timeout',
     });
   }
