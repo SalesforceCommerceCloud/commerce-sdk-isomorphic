@@ -25,6 +25,72 @@ $ yarn build:lib
 $ yarn test
 ```
 
+## Usage 
+
+An example React App is available at `./src/environment/App` directory. To use the sample application, configure these parameters in `./src/environment/config.js` file.
+
+> **Note:** These are required parameters.
+
+| Parameter      | Description                                                                                                                             |
+| -------------- | :-------------------------------------------------------------------------------------------------------------------------------------- |
+| clientId       | ID of the client account created with Salesforce Commerce.                                                                              |
+| organizationId | The unique identifier for your Salesforce identity.                                                                                     |
+| shortCode      | Region specific merchant ID.                                                                                                            |
+| siteId         | A unique site ID (for example, RefArch or SiteGenesis).                                                                                 |
+
+```javascript
+/**
+ * Configure required parameters
+ * 
+ * To learn more about the parameters please refer to https://developer.commercecloud.com/s/article/CommerceAPI-Get-Started
+ */
+// Create a configuration to use when creating API clients
+const config = {
+    proxy: 'https://localhost:3000',
+    headers: {},
+    parameters: {
+      clientId: '<your-client-id>',
+      organizationId: '<your-org-id>',
+      shortCode: '<your-short-code>',
+      siteId: '<your-site-id>'
+    }
+}
+```
+Launch the sample application using `yarn start`. Access the sample application using a new browser window at this url `localhost:3000`. 
+
+#### Advanced options
+
+Commerce SDK React supports advanced [Fetch API options](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) by a simple configuration. 
+This sample code shows how to configure HTTP timeout and agent options in `./src/environment/config.js` file
+
+```javascript
+ /**
+  * Configure advanced timeout and agent parameters
+  * 
+  * To learn more about the parameters please refer to https://developer.commercecloud.com/s/article/CommerceAPI-Get-Started
+  */
+ // Create a configuration to use when creating API clients
+const https = require("https");
+
+const config = {
+    proxy: 'https://localhost:3000',
+    headers: {},
+    parameters: {
+        clientId: '<your-client-id>',
+        organizationId: '<your-org-id>',
+        shortCode: '<your-short-code>',
+        siteId: '<your-site-id>'
+    },
+    fetchOptions: {
+      timeout: 2000, //request times out after 2 seconds
+      agent: new https.agent({ // a custom http agent
+        keepAlive: true
+      })
+    } 
+}
+ ```
+
+
 ## License Information
 
 The Commerce SDK for React is licensed under BSD-3-Clause license. See the [license](./LICENSE.txt) for details.
