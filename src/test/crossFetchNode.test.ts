@@ -107,10 +107,10 @@ test('should use timeout from fetch options and throw timeout error', async () =
 
   try {
     const client = new ShopperSearch(clientConfig);
-    await client.productSearch({
+    const response = await client.productSearch({
       parameters: { q: 'sony' }, headers: { authorization: 'Bearer test-auth' },
     });
-    fail('should not reach here');
+    expect(response).toBe(null);
   } catch (e) {
     expect(e).toEqual({
       message: 'network timeout at: https://localhost:3000/search/shopper-search/v1/organizations/f_ecom_bdqd_s12/product-search?siteId=RefArch&q=sony',
