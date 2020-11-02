@@ -105,18 +105,14 @@ test('should use timeout from fetch options and throw timeout error', async () =
     },
   };
 
-  try {
-    const client = new ShopperSearch(clientConfig);
-    const response = await client.productSearch({
-      parameters: { q: 'sony' }, headers: { authorization: 'Bearer test-auth' },
-    });
-    expect(response).toBe(null);
-  } catch (e) {
-    expect(e).toEqual({
-      message: 'network timeout at: https://localhost:3000/search/shopper-search/v1/organizations/ORGANIZATION_ID/product-search?siteId=SITE_ID&q=sony',
-      type: 'request-timeout',
-    });
-  }
+  expect.assertions(1);
+  const client = new ShopperSearch(clientConfig);
+  await expect(client.productSearch({
+    parameters: { q: 'sony' }, headers: { authorization: 'Bearer test-auth' },
+  })).rejects.toEqual({
+    message: 'network timeout at: https://localhost:3000/search/shopper-search/v1/organizations/ORGANIZATION_ID/product-search?siteId=SITE_ID&q=sony',
+    type: 'request-timeout',
+  });
 });
 
 test('should use timeout from fetch options and succeed when service responds quicker', async () => {
