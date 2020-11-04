@@ -22,6 +22,7 @@ test('that clientConfig clones correctly', () => {
   originalConfig.proxy = 'http://www.proxy.com';
   originalConfig.headers = { authorization: 'token', 'Accept-Language': 'en-US,en;q=0.5' };
   originalConfig.parameters = { p1: 'v1', p2: 2 };
+  originalConfig.fetchOptions = { timeout: 20 };
 
   const newConfig = new ClientConfig(originalConfig);
   expect(newConfig).not.toBe(originalConfig);
@@ -48,4 +49,7 @@ test('that clientConfig clones correctly', () => {
   }
   newConfig.parameters.p1 = 'new value';
   expect(newConfig.parameters.p1).not.toEqual(originalConfig.parameters.p1);
+
+  newConfig.fetchOptions = { timeout: 400 };
+  expect(newConfig.fetchOptions.timeout).not.toEqual(originalConfig.fetchOptions.timeout);
 });

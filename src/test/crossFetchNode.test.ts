@@ -88,3 +88,96 @@ test('performing a search with a get operation', async () => {
 
   expect(searchResponse).toEqual(mockSearchResponse);
 });
+
+test('should use timeout from fetch options and throw timeout error', async () => {
+  nock('https://localhost:3000')
+    .get(`/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`)
+    .matchHeader('authorization', 'Bearer test-auth')
+    .delayConnection(400)
+    .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
+
+  const clientConfig = {
+    ...config,
+    ...{
+      fetchOptions: {
+        timeout: 200,
+      },
+    },
+  };
+
+  expect.assertions(1);
+  const client = new ShopperSearch(clientConfig);
+  await expect(client.productSearch({
+    parameters: { q: 'sony' }, headers: { authorization: 'Bearer test-auth' },
+  })).rejects.toEqual({
+    message: 'network timeout at: https://localhost:3000/search/shopper-search/v1/organizations/ORGANIZATION_ID/product-search?siteId=SITE_ID&q=sony',
+    type: 'request-timeout',
+  });
+});
+
+test('should use timeout from fetch options and succeed when service responds quicker', async () => {
+  nock('https://localhost:3000')
+    .get(`/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`)
+    .matchHeader('authorization', 'Bearer test-auth')
+    .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
+
+  const clientConfig = {
+    ...config,
+    ...{
+      fetchOptions: {
+        timeout: 1000,
+      },
+    },
+  };
+
+  const client = new ShopperSearch(clientConfig);
+  const response = await client.productSearch({
+    parameters: { q: 'sony' }, headers: { authorization: 'Bearer test-auth' },
+  });
+  expect(response).toEqual({});
+});
+
+test('should use default value when timeout is not configured in fetch options and succeed', async () => {
+  nock('https://localhost:3000')
+    .get(`/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`)
+    .matchHeader('authorization', 'Bearer test-auth')
+    .delayConnection(400)
+    .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
+
+  const clientConfig = {
+    ...config,
+    ...{
+      fetchOptions: {
+      },
+    },
+  };
+
+  const client = new ShopperSearch(clientConfig);
+  const response = await client.productSearch({
+    parameters: { q: 'sony' }, headers: { authorization: 'Bearer test-auth' },
+  });
+  expect(response).toEqual({});
+});
+
+test('should not fail when arbitrary parameters are configured in fetchOptions', async () => {
+  nock('https://localhost:3000')
+    .get(`/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`)
+    .matchHeader('authorization', 'Bearer test-auth')
+    .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
+
+  const clientConfig = {
+    ...config,
+    ...{
+      fetchOptions: {
+        somekey: 'some value',
+        timeout: 1000,
+      },
+    },
+  };
+
+  const client = new ShopperSearch(clientConfig);
+  const response = await client.productSearch({
+    parameters: { q: 'sony' }, headers: { authorization: 'Bearer test-auth' },
+  });
+  expect(response).toEqual({});
+});

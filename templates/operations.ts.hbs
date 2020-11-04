@@ -2,9 +2,9 @@
   {{#each operations}}
     /**
     * {{{formatForTsDoc description}}}
-    * 
+    *
     * If you would like to get a raw Response object use the other {{name}} function.
-    * 
+    *
     * @param options - An object containing the options for this method.
     * @param parameters - An object containing the parameters for this method.
     {{#each ../parameters }}
@@ -74,7 +74,7 @@
           {{name}}{{#if (or (not (is required "true")) (isCommonQueryParameter name))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
         },
-        headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}}, 
+        headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
         body: {{{getPayloadTypeFromRequest request}}}{{/or}}
       },
       rawResponse?: T
@@ -114,14 +114,14 @@
           {{name}}{{#if (or (not (is required "true")) (isCommonQueryParameter name))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
         },
-        headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}}, 
+        headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
         body: {{{getPayloadTypeFromRequest request}}}{{/or}}
       },
       rawResponse?: boolean,
     ): Promise<Response | {{getReturnTypeFromOperation this}}> {
-    
+
       const parameters = (options && options.parameters) ? options.parameters : {} as {[key: string]: string};
-      
+
       const pathParameters = {
       {{#each ../parameters}}
         "{{{name}}}": parameters["{{{name}}}"]
@@ -137,7 +137,7 @@
         {{! for queryParameters that are common query parameters, fallback to client config for undefined }}
         {{#if (isCommonQueryParameter name)}}
         queryParameters.{{{name}}} =
-          queryParameters["{{{name}}}"] !== undefined 
+          queryParameters["{{{name}}}"] !== undefined
             ? String(parameters["{{{name}}}"]) : String(this.clientConfig.parameters?.{{{name}}});
         {{/if}}
       {{/each}}
@@ -161,6 +161,7 @@
       const req = new Request(
         url.toString(),
         {
+          ...this.clientConfig.fetchOptions,
           {{#or (is method "patch") (is method "post") (is method "put")}}body: JSON.stringify(options?.body),{{/or}}
           headers: headers,
           method: "{{{method}}}"
