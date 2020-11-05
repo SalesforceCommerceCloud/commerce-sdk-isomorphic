@@ -33,8 +33,8 @@
     "renderTemplates": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' generate.ts",
     "start": "HTTPS=true react-scripts start",
     "pretest": "yarn run lint && yarn run lint:style && yarn run checkSize",
-    "test": "jest --coverage",
-    "testReact": "react-scripts test --env=jest-environment-jsdom-sixteen",
+    "test": "jest --coverage --testPathIgnorePatterns node_modules src/environment && CI=true yarn testReact",
+    "testReact": "react-scripts test --env=jest-environment-jsdom-sixteen src/environment",
     "updateApis": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' updateApis.ts"
   },
   "husky": {

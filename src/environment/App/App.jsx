@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+
+/* eslint-disable react/require-default-props */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ShopperCustomers, ShopperSearch } from 'lib';
@@ -87,42 +89,31 @@ class App extends Component {
   }
 }
 
-function Product(props) {
-  const {
-    id, name, price, currency,
-  } = props;
-  if (!id) {
-    return (
-      <div className="product-component">
-        <h3>Nothing!</h3>
-      </div>
-    );
-  }
-
-  return (
-    <div className="product-component">
-      <h3>{name}</h3>
-      <p className="product-price">
-        $
-        {price}
-        <span className="product-currency">
-          {' '}
-          {currency}
-        </span>
-      </p>
-      <p className="product-id">
-        ID
-        {id}
-      </p>
-    </div>
-  );
-}
+const Product = ({
+  id = '', name = '', price = 0, currency = '',
+}) => (
+  <div className="product-component">
+    <h3>{name}</h3>
+    <p className="product-price">
+      $
+      {price}
+      <span className="product-currency">
+        {' '}
+        {currency}
+      </span>
+    </p>
+    <p className="product-id">
+      ID
+      {id}
+    </p>
+  </div>
+);
 
 Product.propTypes = {
-  id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  currency: PropTypes.string.isRequired,
+  id: PropTypes.string,
+  name: PropTypes.string,
+  price: PropTypes.number,
+  currency: PropTypes.string,
 };
 
 export default App;
