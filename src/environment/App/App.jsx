@@ -6,6 +6,7 @@
  */
 
 /* eslint-disable react/require-default-props */
+// eslint-disable-next-line no-use-before-define
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ShopperCustomers, ShopperSearch } from 'lib';
@@ -15,6 +16,32 @@ import './App.css';
 const customerClient = new ShopperCustomers(config);
 const searchClient = new ShopperSearch(config);
 
+const Product = ({
+  id = '', name = '', price = 0, currency = '',
+}) => (
+  <div className="product-component">
+    <h3>{name}</h3>
+    <p className="product-price">
+      $
+      {price}
+      <span className="product-currency">
+        {' '}
+        {currency}
+      </span>
+    </p>
+    <p className="product-id">
+      ID
+      {id}
+    </p>
+  </div>
+);
+
+Product.propTypes = {
+  id: PropTypes.string,
+  name: PropTypes.string,
+  price: PropTypes.number,
+  currency: PropTypes.string,
+};
 class App extends Component {
   constructor(props) {
     super(props);
@@ -88,32 +115,5 @@ class App extends Component {
     );
   }
 }
-
-const Product = ({
-  id = '', name = '', price = 0, currency = '',
-}) => (
-  <div className="product-component">
-    <h3>{name}</h3>
-    <p className="product-price">
-      $
-      {price}
-      <span className="product-currency">
-        {' '}
-        {currency}
-      </span>
-    </p>
-    <p className="product-id">
-      ID
-      {id}
-    </p>
-  </div>
-);
-
-Product.propTypes = {
-  id: PropTypes.string,
-  name: PropTypes.string,
-  price: PropTypes.number,
-  currency: PropTypes.string,
-};
 
 export default App;
