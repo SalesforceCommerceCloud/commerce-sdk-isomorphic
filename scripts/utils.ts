@@ -12,7 +12,6 @@ import * as templateHelpers from './templateHelpers';
 const TEMPLATE_DIRECTORY = `${__dirname}/../templates`;
 const { registerPartial, loadApiDirectory } = generate;
 type ApiMetadata = generate.ApiMetadata;
-type ApiModel = generate.ApiModel;
 
 // -------HELPER REGISTRATION-------
 const Handlebars = generate.HandlebarsWithAmfHelpers;
@@ -23,6 +22,7 @@ require('handlebars-helpers')({ handlebars: Handlebars });
  * Register the custom helpers defined in our pipeline
  */
 export function registerHelpers(): void {
+  // eslint-disable-next-line no-undef
   const helpers: {[key: string]: Handlebars.HelperDelegate} = templateHelpers;
   const keys:string[] = Object.keys(helpers);
   keys.forEach((helper) => Handlebars.registerHelper(helper, helpers[helper]));

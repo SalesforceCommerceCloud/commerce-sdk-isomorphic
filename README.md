@@ -90,6 +90,9 @@ const config = {
 }
  ```
 
+## Testing
+
+Two types of tests occur when running `yarn test`. First, unit tests are executed with jest including an enforced coverage level. This is all tests not contained within the sample app path of `src/environment`. If that passes, tests within the sample app path are executed using the `react-scripts` configuration. These allow for testing of the SDK within a sample React application.
 
 ## License Information
 
