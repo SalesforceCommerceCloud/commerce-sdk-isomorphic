@@ -58,7 +58,7 @@ const config = {
 ```
 Launch the sample application using `yarn start`. Access the sample application using a new browser window at this url `localhost:3000`. 
 
-#### Advanced options
+### Advanced options
 
 Commerce SDK React supports advanced [Fetch API options](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) by a simple configuration. 
 This sample code shows how to configure HTTP timeout and agent options in `./src/environment/config.js` file
@@ -89,6 +89,40 @@ const config = {
     } 
 }
  ```
+### ECMAScript Modules
+
+Applications that run on Node.js v13 and above can import commerce-sdk-react as [ECMAScript Modules](https://nodejs.org/docs/latest-v13.x/api/esm.html#esm_ecmascript_modules). 
+Node.js v13 and above will treat the following sample code as ES module by default when saved with `.mjs` file extension or when the nearest parent package.json file contains a top-level field "type" with a value of "module". 
+Refer to [Enabling ECMAScript Modules](https://nodejs.org/docs/latest-v13.x/api/esm.html#esm_enabling) for additional information to enable ES module support.
+
+This sample code can be passed to node using `node app.mjs`. 
+
+```javascript
+//file name -> app.mjs
+import CommerceSdkReact from "commerce-sdk-react";
+
+const config = {
+    proxy: 'https://localhost:3000',
+    headers: {},
+    parameters: {
+        clientId: '<your-client-id>',
+        organizationId: '<your-org-id>',
+        shortCode: '<your-short-code>',
+        siteId: '<your-site-id>'
+    }
+}
+
+const customerClient = new CommerceSdkReact.ShopperCustomers(config);
+
+```
+
+You can enable the support for ECMAScript modules in Node.js v10 to v12 by using `--experimental-modules` flag.
+
+```
+node --experimental-modules app.mjs
+```
+
+When running with `--experimental-modules` flag, Node will display a console warning like `ExperimentalWarning: The ESM module loader is experimental.` 
 
 ## Testing
 
