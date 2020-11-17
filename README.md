@@ -92,37 +92,15 @@ const config = {
 ### ECMAScript Modules
 
 Applications that run on Node.js v13 and above can import commerce-sdk-react as [ECMAScript Modules](https://nodejs.org/docs/latest-v13.x/api/esm.html#esm_ecmascript_modules). 
-Node.js v13 and above will treat the following sample code as ES module by default when saved with `.mjs` file extension or when the nearest parent package.json file contains a top-level field "type" with a value of "module". 
+You can import the SDK using `import CommerceSdkReact from "commerce-sdk-react";` syntax on Node.js v13 and above. Node will treat the files ending with `.mjs` as ES module by default or when the nearest parent package.json file contains a top-level field "type" with a value of "module". 
 Refer to [Enabling ECMAScript Modules](https://nodejs.org/docs/latest-v13.x/api/esm.html#esm_enabling) for additional information to enable ES module support.
-
-This sample code can be passed to node using `node app.mjs`. 
 
 ```javascript
 //file name -> app.mjs
 import CommerceSdkReact from "commerce-sdk-react";
-
-const config = {
-    proxy: 'https://localhost:3000',
-    headers: {},
-    parameters: {
-        clientId: '<your-client-id>',
-        organizationId: '<your-org-id>',
-        shortCode: '<your-short-code>',
-        siteId: '<your-site-id>'
-    }
-}
-
-const customerClient = new CommerceSdkReact.ShopperCustomers(config);
-
 ```
 
-You can enable the support for ECMAScript modules in Node.js v10 to v12 by using `--experimental-modules` flag.
-
-```
-node --experimental-modules app.mjs
-```
-
-When running with `--experimental-modules` flag, Node will display a console warning like `ExperimentalWarning: The ESM module loader is experimental.` 
+For Node.js v12 and below only `require` is supported. 
 
 ## Testing
 
