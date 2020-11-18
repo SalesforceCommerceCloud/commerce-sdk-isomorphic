@@ -58,7 +58,7 @@ const config = {
 ```
 Launch the sample application using `yarn start`. Access the sample application using a new browser window at this url `localhost:3000`. 
 
-#### Advanced options
+### Advanced options
 
 Commerce SDK React supports advanced [Fetch API options](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) by a simple configuration. 
 This sample code shows how to configure HTTP timeout and agent options in `./src/environment/config.js` file
@@ -89,6 +89,13 @@ const config = {
     } 
 }
  ```
+### ECMAScript Modules
+
+Applications that run on Node.js v13 and above can import commerce-sdk-react as [ECMAScript Modules](https://nodejs.org/docs/latest-v13.x/api/esm.html#esm_ecmascript_modules). 
+You can import the SDK using `import CommerceSdkReact from "commerce-sdk-react";` syntax on Node.js v13 and above. Node will treat the files ending with `.mjs` as ES module by default or when the nearest parent package.json file contains a top-level field "type" with a value of "module". 
+Refer to [Enabling ECMAScript Modules](https://nodejs.org/docs/latest-v13.x/api/esm.html#esm_enabling) for additional information to enable ES module support.
+
+For Node.js v12 and below only `require` is supported. 
 
 ## Testing
 
