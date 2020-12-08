@@ -1,14 +1,14 @@
 {
-  "name": "commerce-sdk-react",
+  "name": "commerce-isomorphic-sdk",
   "version": "0.1.0",
   "private": false,
-  "description": "Salesforce Commerce SDK for React",
+  "description": "Salesforce Commerce Isomorphic SDK",
   "bugs": {
-    "url": "https://github.com/SalesforceCommerceCloud/commerce-sdk-react/issues"
+    "url": "https://github.com/SalesforceCommerceCloud/commerce-isomorphic-sdk/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SalesforceCommerceCloud/commerce-sdk-react.git"
+    "url": "git+https://github.com/SalesforceCommerceCloud/commerce-isomorphic-sdk.git"
   },
   "license": "BSD-3-Clause",
   "main": "lib/index.cjs.js",
@@ -22,7 +22,7 @@
   "scripts": {
     "build": "react-scripts build",
     "build:lib": "npx rollup -c",
-    "checkSize": "npm-pack-all --output commerce-sdk-react-with-deps.tgz && bundlesize",
+    "checkSize": "npm-pack-all --output commerce-isomorphic-sdk-with-deps.tgz && bundlesize",
     "doc": "npm run doc:generate",
     "doc:generate": "typedoc --mode modules src/lib/** --external-modulemap \".*/src/lib/([\\w]+)\" --exclude \"src/lib/index.ts\"",
     "eject": "react-scripts eject",
@@ -155,7 +155,7 @@
       "maxSize": "100 kB"
     },
     {
-      "path": "commerce-sdk-react-with-deps.tgz",
+      "path": "commerce-isomorphic-sdk-with-deps.tgz",
       "maxSize": "300 kB"
     }
   ],
