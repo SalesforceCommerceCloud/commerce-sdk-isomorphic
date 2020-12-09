@@ -1,8 +1,8 @@
-# commerce-sdk-react
+# commerce-sdk-isomorphic
 
 [![CircleCI][circleci-image]][circleci-url]
 
-The Salesforce Commerce SDK for React allows easy interaction with the Salesforce B2C Commerce platform Shopper APIs.
+The Salesforce Commerce SDK Isomorphic allows easy interaction with the Salesforce B2C Commerce platform Shopper APIs.
 
 ## Building
 
@@ -60,7 +60,7 @@ Launch the sample application using `yarn start`. Access the sample application 
 
 ### Advanced options
 
-Commerce SDK React supports advanced [Fetch API options](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) by a simple configuration. 
+Commerce SDK Isomorphic supports advanced [Fetch API options](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) by a simple configuration. 
 This sample code shows how to configure HTTP timeout and agent options in `./src/environment/config.js` file
 
 ```javascript
@@ -91,8 +91,8 @@ const config = {
  ```
 ### ECMAScript Modules
 
-Applications that run on Node.js v13 and above can import commerce-sdk-react as [ECMAScript Modules](https://nodejs.org/docs/latest-v13.x/api/esm.html#esm_ecmascript_modules). 
-You can import the SDK using `import CommerceSdkReact from "commerce-sdk-react";` syntax on Node.js v13 and above. Node will treat the files ending with `.mjs` as ES module by default or when the nearest parent package.json file contains a top-level field "type" with a value of "module". 
+Applications that run on Node.js v13 and above can import commerce-sdk-isomorphic as [ECMAScript Modules](https://nodejs.org/docs/latest-v13.x/api/esm.html#esm_ecmascript_modules). 
+You can import the SDK using `import sdk from "commerce-sdk-isomorphic";` syntax on Node.js v13 and above. Node will treat the files ending with `.mjs` as ES module by default or when the nearest parent package.json file contains a top-level field "type" with a value of "module". 
 Refer to [Enabling ECMAScript Modules](https://nodejs.org/docs/latest-v13.x/api/esm.html#esm_enabling) for additional information to enable ES module support.
 
 For Node.js v12 and below only `require` is supported. 
@@ -103,8 +103,8 @@ Two types of tests occur when running `yarn test`. First, unit tests are execute
 
 ## License Information
 
-The Commerce SDK for React is licensed under BSD-3-Clause license. See the [license](./LICENSE.txt) for details.
+The Commerce SDK Isomorphic is licensed under BSD-3-Clause license. See the [license](./LICENSE.txt) for details.
 
 <!-- Markdown link & img dfn's -->
-[circleci-image]: https://circleci.com/gh/SalesforceCommerceCloud/commerce-sdk-react.svg?style=svg&circle-token=379eaa6f00e0840e10dd80585b2b045d02a8f3b7
-[circleci-url]: https://circleci.com/gh/SalesforceCommerceCloud/commerce-sdk-react
+[circleci-image]: https://circleci.com/gh/SalesforceCommerceCloud/commerce-sdk-isomorphic.svg?style=svg&circle-token=379eaa6f00e0840e10dd80585b2b045d02a8f3b7
+[circleci-url]: https://circleci.com/gh/SalesforceCommerceCloud/commerce-sdk-isomorphic
