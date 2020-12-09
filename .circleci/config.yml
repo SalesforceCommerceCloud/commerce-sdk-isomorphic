@@ -53,6 +53,18 @@ jobs:
       - build
       - test
 
+  publish:
+    executor:
+      name: node/default
+      tag: '10.20.1'
+    working_directory: ~/publish
+    steps:
+      - build
+      - run:
+          name: Create npmrc file to authenticate with npm registry.
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN" > ~/.npmrc
+      - run: npm publish
+
 # WORKFLOWS
 workflows:
   version: 2
@@ -70,6 +82,46 @@ workflows:
           filters:
             tags:
               ignore: /^v.*/
+  build-test-deploy:
+    jobs:
+      - build-node-10:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - build-node-12:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - build-node-14:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - confirm-publish-if-tagged:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+          type: approval
+          requires:
+            - build-node-10
+            - build-node-12
+            - build-node-14
+      - publish:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+          requires:
+            - confirm-publish-if-tagged
+
 
 # ORBS
 orbs:
