@@ -89,13 +89,6 @@ const config = {
     } 
 }
  ```
-### ECMAScript Modules
-
-Applications that run on Node.js v13 and above can import commerce-sdk-isomorphic as [ECMAScript Modules](https://nodejs.org/docs/latest-v13.x/api/esm.html#esm_ecmascript_modules). 
-You can import the SDK using `import sdk from "commerce-sdk-isomorphic";` syntax on Node.js v13 and above. Node will treat the files ending with `.mjs` as ES module by default or when the nearest parent package.json file contains a top-level field "type" with a value of "module". 
-Refer to [Enabling ECMAScript Modules](https://nodejs.org/docs/latest-v13.x/api/esm.html#esm_enabling) for additional information to enable ES module support.
-
-For Node.js v12 and below only `require` is supported. 
 
 ## Testing
 
