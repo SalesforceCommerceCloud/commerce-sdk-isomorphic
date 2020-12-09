@@ -54,9 +54,7 @@ jobs:
       - test
 
   publish:
-    executor:
-      name: node/default
-      tag: '10.20.1'
+    executor: node-10
     working_directory: ~/publish
     steps:
       - build
