@@ -1165,7 +1165,7 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@commerce-apps/raml-toolkit@^0.5.2":
+"@commerce-apps/raml-toolkit@^0.5.5":
   version "0.5.5"
   resolved "https://registry.yarnpkg.com/@commerce-apps/raml-toolkit/-/raml-toolkit-0.5.5.tgz#c30acf96ef93625d61be295afa383b61d94532d1"
   integrity sha512-U9QcBtu9j8vfb5hjcTcSv7+QGmnzSy2xgSY5u5tiI6Y2/ZOEU0pNAgNYZ0quTunYZs38S3nJ93yEnHB7OGl3Iw==
