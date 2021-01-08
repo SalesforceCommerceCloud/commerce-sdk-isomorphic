@@ -2,7 +2,7 @@
 
 [![CircleCI][circleci-image]][circleci-url]
 
-The Salesforce Commerce SDK Isomorphic allows easy interaction with the Salesforce B2C Commerce platform Shopper APIs through a lightweight SDK that works both on browsers and nodejs applications.  If you are looking for a more fully features SDK that includes our B2C Data APIs in addition to the Shopper APIs please refer to our [Commerce SDK](https://github.com/SalesforceCommerceCloud/commerce-sdk).
+The Salesforce Commerce SDK Isomorphic allows easy interaction with the Salesforce B2C Commerce platform Shopper APIs through a lightweight SDK that works both on browsers and nodejs applications.  If you are looking for a more fully features SDK...' to "For a more robust SDK, which includes our B2C Data APIS and Shopper APIs, see [our Node.js Commerce SDK](https://github.com/SalesforceCommerceCloud/commerce-sdk).
 
 ## Building
 
