@@ -164,7 +164,7 @@
           ...this.clientConfig.fetchOptions,
           {{#or (is method "patch") (is method "post") (is method "put")}}body: JSON.stringify(options?.body),{{/or}}
           headers: headers,
-          method: "{{{method}}}"
+          method: "{{loud method}}"
         }
       );
       const response = await fetch(req);

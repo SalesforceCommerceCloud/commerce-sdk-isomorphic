@@ -11,6 +11,7 @@ import {
   getObjectIdByAssetId,
   isCommonPathParameter,
   isCommonQueryParameter,
+  loud,
 } from './templateHelpers';
 import { commonParameterPositions } from '../src/static/commonParameters';
 import { ASSET_OBJECT_MAP } from './config';
@@ -202,5 +203,19 @@ describe('Test getObjectIdByAssetId template helper function', () => {
 
   it('throws for \'KEY_NOT_FOUND\' input', () => {
     expect(() => getObjectIdByAssetId('KEY_NOT_FOUND')).toThrowError('Missing CCDC object ID for "KEY_NOT_FOUND"');
+  });
+});
+
+describe('Test loud template helper function', () => {
+  it('returns \'FOO\' for \'foo\' input', () => {
+    expect(loud('foo')).toBe('FOO');
+  });
+
+  it('returns \'FOO\' for \'FOO\' input', () => {
+    expect(loud('FOO')).toBe('FOO');
+  });
+
+  it('returns \'\' for \'\' input', () => {
+    expect(loud('')).toBe('');
   });
 });
