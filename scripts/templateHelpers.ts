@@ -126,3 +126,13 @@ export const isCommonPathParameter = (property: string): boolean => (property
 export const isCommonQueryParameter = (property: string): boolean => (property
   ? commonParameterPositions.queryParameters.includes(property.toString())
   : false);
+
+
+/**
+ * Forces the input to all caps.
+ *
+ * @param input - The string you want to change to all caps
+ *
+ * @returns string in all caps
+ */
+export const loud = (input: string): string => String(input).toUpperCase();
