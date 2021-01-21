@@ -127,7 +127,6 @@ export const isCommonQueryParameter = (property: string): boolean => (property
   ? commonParameterPositions.queryParameters.includes(property.toString())
   : false);
 
-
 /**
  * Forces the input to all caps.
  *

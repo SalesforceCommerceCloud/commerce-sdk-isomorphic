@@ -206,18 +206,16 @@ describe('Test getObjectIdByAssetId template helper function', () => {
   });
 });
 
-
 describe('Test loud template helper function', () => {
-  it(`returns 'FOO' for 'foo' input`, () => {
-    expect(loud('foo')).toBe("FOO");
+  it('returns \'FOO\' for \'foo\' input', () => {
+    expect(loud('foo')).toBe('FOO');
   });
 
-  it(`returns 'FOO' for 'FOO' input`, () => {
-    expect(loud('FOO')).toBe("FOO");
+  it('returns \'FOO\' for \'FOO\' input', () => {
+    expect(loud('FOO')).toBe('FOO');
   });
 
-  it(`returns '' for '' input`, () => {
-    expect(loud("")).toBe("");
+  it('returns \'\' for \'\' input', () => {
+    expect(loud('')).toBe('');
   });
-
 });
