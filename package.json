@@ -39,8 +39,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "CI=true yarn test --passWithNoTests"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
