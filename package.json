@@ -32,6 +32,7 @@
     "lint:style": "stylelint ./src/",
     "renderTemplates": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' generate.ts",
     "start": "HTTPS=true react-scripts start",
+    "prepare": "snyk protect",
     "pretest": "yarn run lint && yarn run lint:style && yarn run checkSize",
     "test": "jest --coverage --testPathIgnorePatterns node_modules src/environment --silent && CI=true yarn testReact",
     "testReact": "react-scripts test --env=jest-environment-jsdom-sixteen src/environment",
@@ -77,7 +78,8 @@
     }
   },
   "dependencies": {
-    "cross-fetch": "^3.0.6"
+    "cross-fetch": "^3.0.6",
+    "snyk": "^1.452.0"
   },
   "devDependencies": {
     "@babel/cli": "7.10.5",
@@ -159,5 +161,6 @@
       "maxSize": "300 kB"
     }
   ],
-  "proxy": "https://SHORTCODE.api.commercecloud.salesforce.com"
+  "proxy": "https://SHORTCODE.api.commercecloud.salesforce.com",
+  "snyk": true
 }
