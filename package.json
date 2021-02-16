@@ -21,9 +21,9 @@
   ],
   "scripts": {
     "build": "react-scripts build",
-    "build:lib": "npx rollup -c",
+    "build:lib": "rollup -c",
     "checkSize": "npm-pack-all --output commerce-sdk-isomorphic-with-deps.tgz && bundlesize",
-    "doc": "npm run doc:generate",
+    "doc": "yarn run doc:generate",
     "doc:generate": "typedoc --mode modules src/lib/** --external-modulemap \".*/src/lib/([\\w]+)\" --exclude \"src/lib/index.ts\"",
     "eject": "react-scripts eject",
     "fix": "yarn run lint -- --fix",
