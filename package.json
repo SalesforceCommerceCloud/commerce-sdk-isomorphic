@@ -28,7 +28,7 @@
     "eject": "react-scripts eject",
     "fix": "yarn run lint -- --fix",
     "fix:style": "yarn run lint:style -- --fix",
-    "lint": "eslint --ext js,jsx,ts,tsx ./src ./scripts",
+    "lint": "eslint --ext js,jsx,ts,tsx .",
     "lint:style": "stylelint ./src/",
     "renderTemplates": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' generate.ts",
     "start": "HTTPS=true react-scripts start",
