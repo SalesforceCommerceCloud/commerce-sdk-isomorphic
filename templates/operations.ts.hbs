@@ -131,7 +131,12 @@
       {{/each}}
       };
 
-      const queryParameters = _.omit(parameters, _.keys(pathParameters));
+      const queryParameters: { [key: string]: string } = {};
+      Object.keys(parameters).forEach(key => {
+        if (!(key in pathParameters)) {
+          queryParameters[key] = parameters[key];
+        }
+      });
 
       {{#each request.queryParameters}}
         {{! for queryParameters that are common query parameters, fallback to client config for undefined }}
