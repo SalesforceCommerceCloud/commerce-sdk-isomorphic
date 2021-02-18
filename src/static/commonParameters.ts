@@ -22,3 +22,13 @@ export type CommonParameters = {
   siteId?: string;
   version?: string;
 };
+
+export interface PathParameters {
+  [key: string]: string | number | boolean;
+}
+
+export interface QueryParameters {
+  [key: string]: string | number | boolean | string[] | number[];
+}
+
+export type UrlParameters = PathParameters | QueryParameters;

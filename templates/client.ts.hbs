@@ -1,6 +1,7 @@
 import ClientConfig from "./clientConfig";
 import TemplateURL from "./templateUrl";
 import { fetch, Request }  from "cross-fetch";
+import type { PathParameters, QueryParameters, UrlParameters } from "./commonParameters";
 
 {{#each dataTypes}}
     {{#if (or (isTypeDefinition this) (isArrayType this))}}

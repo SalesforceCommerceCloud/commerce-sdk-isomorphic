@@ -4,6 +4,11 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+import type { RequestInit as NodeRequestInit } from 'node-fetch';
+import type { UrlParameters } from './commonParameters';
+
+// eslint-disable-next-line no-undef
+type BrowserRequestInit = RequestInit; // alias for clarity
 
 /**
  * Configuration parameters common to Commerce SDK clients
@@ -15,9 +20,9 @@ export default class ClientConfig {
 
   public headers?: { [key: string]: string };
 
-  public parameters?: { [ key: string]: unknown };
+  public parameters?: UrlParameters;
 
-  public fetchOptions?: { [key: string]: unknown };
+  public fetchOptions?: BrowserRequestInit & NodeRequestInit;
 
   constructor(config?: ClientConfig) {
     if (!config) {

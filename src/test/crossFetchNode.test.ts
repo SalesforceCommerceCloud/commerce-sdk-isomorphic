@@ -6,7 +6,7 @@
  */
 
 import nock from 'nock';
-import { ShopperCustomers, ShopperSearch } from '../lib';
+import { ClientConfig, ShopperCustomers, ShopperSearch } from '../lib';
 import config from '../environment/config';
 
 /**
@@ -96,12 +96,10 @@ test('should use timeout from fetch options and throw timeout error', async () =
     .delayConnection(400)
     .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
 
-  const clientConfig = {
+  const clientConfig: ClientConfig = {
     ...config,
-    ...{
-      fetchOptions: {
-        timeout: 200,
-      },
+    fetchOptions: {
+      timeout: 200,
     },
   };
 
@@ -121,12 +119,10 @@ test('should use timeout from fetch options and succeed when service responds qu
     .matchHeader('authorization', 'Bearer test-auth')
     .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
 
-  const clientConfig = {
+  const clientConfig: ClientConfig = {
     ...config,
-    ...{
-      fetchOptions: {
-        timeout: 1000,
-      },
+    fetchOptions: {
+      timeout: 1000,
     },
   };
 
@@ -144,12 +140,9 @@ test('should use default value when timeout is not configured in fetch options a
     .delayConnection(400)
     .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
 
-  const clientConfig = {
+  const clientConfig: ClientConfig = {
     ...config,
-    ...{
-      fetchOptions: {
-      },
-    },
+    fetchOptions: {},
   };
 
   const client = new ShopperSearch(clientConfig);
@@ -165,14 +158,12 @@ test('should not fail when arbitrary parameters are configured in fetchOptions',
     .matchHeader('authorization', 'Bearer test-auth')
     .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
 
-  const clientConfig = {
+  const clientConfig: ClientConfig = {
     ...config,
-    ...{
-      fetchOptions: {
-        somekey: 'some value',
-        timeout: 1000,
-      },
-    },
+    fetchOptions: {
+      somekey: 'some value',
+      timeout: 1000,
+    } as any,
   };
 
   const client = new ShopperSearch(clientConfig);
