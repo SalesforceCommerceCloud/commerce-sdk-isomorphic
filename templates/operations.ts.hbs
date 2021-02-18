@@ -132,9 +132,9 @@
       };
 
       const queryParameters: { [key: string]: string } = {};
-      Object.keys(parameters).forEach(key => {
+      (Object.keys(parameters) as Array<keyof typeof parameters>).forEach(key => {
         if (!(key in pathParameters)) {
-          queryParameters[key] = parameters[key];
+          queryParameters[key] = parameters[key] as string;
         }
       });
 
