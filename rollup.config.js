@@ -45,7 +45,7 @@ const config = outputs.map(({ file, format }) => ({
   output: {
     file,
     format,
-    name: 'ReactCalendarToolkit',
+    name: 'CommerceSdk',
     globals: {
       react: 'React',
       'react-dom': 'ReactDOM',
