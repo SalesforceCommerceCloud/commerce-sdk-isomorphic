@@ -156,7 +156,6 @@
       );
 
       const headers = {
-        "Content-Type": "application/json",
         ...this.clientConfig.headers,
         ...options?.headers
       };
@@ -166,7 +165,7 @@
         {
           ...this.clientConfig.fetchOptions,
           {{#or (is method "patch") (is method "post") (is method "put")}}body: this.clientConfig.transformRequest(options.body, headers),{{/or}}
-          headers: headers,
+          headers,
           method: "{{loud method}}"
         }
       );

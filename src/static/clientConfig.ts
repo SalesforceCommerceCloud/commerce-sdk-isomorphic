@@ -17,7 +17,7 @@ export interface ClientConfigInit {
   parameters?: UrlParameters;
   fetchOptions?: FetchOptions;
   // eslint-disable-next-line no-unused-vars
-  transformRequest?: (data: any, headers?: { [key: string]: string }) => Required<FetchOptions>['body'];
+  transformRequest?: (data: any, headers: { [key: string]: string }) => Required<FetchOptions>['body'];
 }
 
 /**
@@ -53,17 +53,22 @@ export default class ClientConfig implements ClientConfigInit {
 
   static readonly defaults: Pick<Required<ClientConfigInit>, 'transformRequest'> = {
     /**
-     * Transforms data into a JSON string if it is a plain object, otherwise
-     * returns the data unmodified.
-     * @param data Data to transform
+     * If data is a plain object, converts it to JSON and sets the Content-Type header
+     * to application/json. All other data is returned unmodified.
+     * @param data - Data to transform
      * @returns A JSON string or the unmodified data
      */
-    transformRequest<T>(data: T): T | string {
+    transformRequest<T>(data: T, headers: { [key: string]: string }): T | string {
       if (data == null || typeof data !== 'object') {
         return data;
       }
       const proto = Object.getPrototypeOf(data);
-      return proto === null || proto === Object.prototype ? JSON.stringify(data) : data;
+      if (proto === null || proto === Object.prototype) {
+        // eslint-disable-next-line no-param-reassign
+        headers['Content-Type'] = 'application/json';
+        return JSON.stringify(data);
+      }
+      return data;
     },
   };
 }

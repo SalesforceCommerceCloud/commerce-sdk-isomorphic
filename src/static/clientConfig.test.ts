@@ -66,15 +66,23 @@ test('that clientConfig clones correctly', () => {
 
 test('default transform request should only transform plain objects', () => {
   const transform = ClientConfig.defaults.transformRequest;
-  // non-objects should not be modified
-  expect(transform(null)).toBeNull();
-  expect(transform(undefined)).toBeUndefined();
-  expect(transform('a string')).toBe('a string');
+  let headers = {};
+  // non-objects should not be modified, and should not modify headers
+  expect(transform(null, headers)).toBeNull();
+  expect(headers).toEqual({});
+  expect(transform(undefined, {})).toBeUndefined();
+  expect(headers).toEqual({});
+  expect(transform('a string', {})).toBe('a string');
+  expect(headers).toEqual({});
   // instances of classes should not be modified
   const blob = new Blob();
-  expect(transform(blob)).toBe(blob);
-  // plain objects should be converted to JSON
-  expect(transform({ plain: 'object' })).toBe('{"plain":"object"}');
+  expect(transform(blob, {})).toBe(blob);
+  expect(headers).toEqual({});
+  // plain objects should be converted to JSON and set Content-Type to stuff
+  expect(transform({ plain: 'object' }, headers)).toBe('{"plain":"object"}');
+  expect(headers).toEqual({ 'Content-Type': 'application/json' });
+  headers = {};
   const protoless = Object.create(null);
-  expect(transform(protoless)).toBe('{}');
+  expect(transform(protoless, headers)).toBe('{}');
+  expect(headers).toEqual({ 'Content-Type': 'application/json' });
 });
