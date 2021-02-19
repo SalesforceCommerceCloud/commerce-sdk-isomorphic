@@ -10,38 +10,41 @@ import type { UrlParameters } from './commonParameters';
 // eslint-disable-next-line no-undef
 type BrowserRequestInit = RequestInit; // alias for clarity
 
+export interface ClientConfigInit {
+  baseUri?: string;
+  proxy?: string;
+  headers?: { [key: string]: string };
+  parameters?: UrlParameters;
+  fetchOptions?: BrowserRequestInit & NodeRequestInit;
+}
+
 /**
  * Configuration parameters common to Commerce SDK clients
  */
-export default class ClientConfig {
+export default class ClientConfig implements ClientConfigInit {
   public baseUri?: string;
 
   public proxy?: string;
 
-  public headers?: { [key: string]: string };
+  public headers: { [key: string]: string };
 
-  public parameters?: UrlParameters;
+  public parameters: UrlParameters;
 
-  public fetchOptions?: BrowserRequestInit & NodeRequestInit;
+  public fetchOptions: BrowserRequestInit & NodeRequestInit;
 
-  constructor(config?: ClientConfig) {
-    if (!config) {
-      return;
-    }
+  constructor(config = ClientConfig.defaults) {
+    this.headers = { ...config.headers };
+    this.parameters = { ...config.parameters };
+    this.fetchOptions = { ...config.fetchOptions };
+
+    // Optional properties
     if (config.baseUri) {
       this.baseUri = config.baseUri;
     }
     if (config.proxy) {
       this.proxy = config.proxy;
     }
-    if (config.headers) {
-      this.headers = { ...config.headers };
-    }
-    if (config.parameters) {
-      this.parameters = { ...config.parameters };
-    }
-    if (config.fetchOptions) {
-      this.fetchOptions = { ...config.fetchOptions };
-    }
   }
+
+  static readonly defaults: ClientConfigInit = {};
 }

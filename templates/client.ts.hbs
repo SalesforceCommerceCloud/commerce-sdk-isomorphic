@@ -1,4 +1,4 @@
-import ClientConfig from "./clientConfig";
+import ClientConfig, { ClientConfigInit } from "./clientConfig";
 import TemplateURL from "./templateUrl";
 import { fetch, Request }  from "cross-fetch";
 import type { PathParameters, QueryParameters, UrlParameters } from "./commonParameters";
@@ -44,12 +44,13 @@ export type {{getValue name}} = {{> dtoPartial typeDto=this}}
 export class {{name.upperCamelCase}} {
   public clientConfig: ClientConfig;
 
-  constructor(config = new ClientConfig()) {
-    this.clientConfig = new ClientConfig(config);
+  static readonly defaultBaseUri = "{{getBaseUriFromDocument model}}";
 
-    if (!this.clientConfig.baseUri) {
-      this.clientConfig.baseUri = "{{getBaseUriFromDocument model}}";
-    }
+  constructor(config?: ClientConfigInit) {
+    this.clientConfig = new ClientConfig({
+      baseUri: new.target.defaultBaseUri,
+      ...config
+    });
   }
 
   {{> operationsPartial model}}
