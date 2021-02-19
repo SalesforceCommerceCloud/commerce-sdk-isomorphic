@@ -8,14 +8,16 @@ import type { RequestInit as NodeRequestInit } from 'node-fetch';
 import type { UrlParameters } from './commonParameters';
 
 // eslint-disable-next-line no-undef
-type BrowserRequestInit = RequestInit; // alias for clarity
+type FetchOptions = RequestInit & NodeRequestInit;
 
 export interface ClientConfigInit {
   baseUri?: string;
   proxy?: string;
   headers?: { [key: string]: string };
   parameters?: UrlParameters;
-  fetchOptions?: BrowserRequestInit & NodeRequestInit;
+  fetchOptions?: FetchOptions;
+  // eslint-disable-next-line no-unused-vars
+  transformRequest?: (data: any, headers?: { [key: string]: string }) => Required<FetchOptions>['body'];
 }
 
 /**
@@ -30,12 +32,15 @@ export default class ClientConfig implements ClientConfigInit {
 
   public parameters: UrlParameters;
 
-  public fetchOptions: BrowserRequestInit & NodeRequestInit;
+  public fetchOptions: FetchOptions;
 
-  constructor(config = ClientConfig.defaults) {
+  public transformRequest: NonNullable<ClientConfigInit['transformRequest']>;
+
+  constructor(config: ClientConfigInit = ClientConfig.defaults) {
     this.headers = { ...config.headers };
     this.parameters = { ...config.parameters };
     this.fetchOptions = { ...config.fetchOptions };
+    this.transformRequest = config.transformRequest || ClientConfig.defaults.transformRequest;
 
     // Optional properties
     if (config.baseUri) {
@@ -46,5 +51,19 @@ export default class ClientConfig implements ClientConfigInit {
     }
   }
 
-  static readonly defaults: ClientConfigInit = {};
+  static readonly defaults: Pick<Required<ClientConfigInit>, 'transformRequest'> = {
+    /**
+     * Transforms data into a JSON string if it is a plain object, otherwise
+     * returns the data unmodified.
+     * @param data Data to transform
+     * @returns A JSON string or the unmodified data
+     */
+    transformRequest<T>(data: T): T | string {
+      if (data == null || typeof data !== 'object') {
+        return data;
+      }
+      const proto = Object.getPrototypeOf(data);
+      return proto === null || proto === Object.prototype ? JSON.stringify(data) : data;
+    },
+  };
 }

@@ -4,10 +4,29 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import ClientConfig from './clientConfig';
+import ClientConfig, { ClientConfigInit } from './clientConfig';
 
 test('that empty clientConfig is created', () => {
-  expect(new ClientConfig()).toEqual(expect.anything());
+  const expected: ClientConfig = {
+    fetchOptions: {},
+    headers: {},
+    parameters: {},
+    transformRequest: ClientConfig.defaults.transformRequest,
+  };
+  expect(new ClientConfig()).toEqual(expected);
+});
+
+test('should be created from init object', () => {
+  // `init` is Required to ensure that all init options are tested
+  const init: Required<ClientConfigInit> = {
+    baseUri: 'https://example.com',
+    fetchOptions: { keepalive: false },
+    headers: { authorization: 'token' },
+    parameters: { param: 'param' },
+    proxy: 'https://proxy.com',
+    transformRequest: (v) => v,
+  };
+  expect(new ClientConfig(init)).toEqual({ ...init });
 });
 
 test('the empty ClientConfig can be cloned', () => {
@@ -35,21 +54,27 @@ test('that clientConfig clones correctly', () => {
   newConfig.proxy = 'new proxy';
   expect(newConfig.proxy).not.toEqual(originalConfig.proxy);
 
-  if (newConfig.headers) {
-    newConfig.headers.authorization = 'newToken';
-  } else {
-    newConfig.headers = { authorization: 'newToken' };
-  }
+  newConfig.headers.authorization = 'newToken';
   expect(newConfig.headers.authorization).not.toEqual(originalConfig.headers.authorization);
 
-  if (newConfig.parameters) {
-    newConfig.parameters.p1 = 'newToken';
-  } else {
-    newConfig.parameters = { p1: 'new value' };
-  }
   newConfig.parameters.p1 = 'new value';
   expect(newConfig.parameters.p1).not.toEqual(originalConfig.parameters.p1);
 
   newConfig.fetchOptions = { timeout: 400 };
   expect(newConfig.fetchOptions.timeout).not.toEqual(originalConfig.fetchOptions.timeout);
+});
+
+test('default transform request should only transform plain objects', () => {
+  const transform = ClientConfig.defaults.transformRequest;
+  // non-objects should not be modified
+  expect(transform(null)).toBeNull();
+  expect(transform(undefined)).toBeUndefined();
+  expect(transform('a string')).toBe('a string');
+  // instances of classes should not be modified
+  const blob = new Blob();
+  expect(transform(blob)).toBe(blob);
+  // plain objects should be converted to JSON
+  expect(transform({ plain: 'object' })).toBe('{"plain":"object"}');
+  const protoless = Object.create(null);
+  expect(transform(protoless)).toBe('{}');
 });

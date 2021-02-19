@@ -142,7 +142,7 @@
       } else if (configParams["{{{name}}}"]) {
         queryParams["{{{name}}}"] = configParams["{{{name}}}"];
       {{/if}}
-      }
+      };
       {{/each}}
 
       const url = new TemplateURL(
@@ -165,7 +165,7 @@
         url.toString(),
         {
           ...this.clientConfig.fetchOptions,
-          {{#or (is method "patch") (is method "post") (is method "put")}}body: JSON.stringify(options?.body),{{/or}}
+          {{#or (is method "patch") (is method "post") (is method "put")}}body: this.clientConfig.transformRequest(options.body, headers),{{/or}}
           headers: headers,
           method: "{{loud method}}"
         }
