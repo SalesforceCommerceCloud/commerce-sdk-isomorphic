@@ -22,7 +22,8 @@
   "scripts": {
     "build": "react-scripts build",
     "build:lib": "rollup -c",
-    "checkSize": "npm-pack-all --output commerce-sdk-isomorphic-with-deps.tgz && bundlesize",
+    "check:size": "npm-pack-all --output commerce-sdk-isomorphic-with-deps.tgz && bundlesize",
+    "check:types": "tsc --noEmit",
     "doc": "yarn run doc:generate",
     "doc:generate": "typedoc --mode modules src/lib/** --external-modulemap \".*/src/lib/([\\w]+)\" --exclude \"src/lib/index.ts\"",
     "eject": "react-scripts eject",
@@ -32,9 +33,10 @@
     "lint:style": "stylelint ./src/",
     "renderTemplates": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' generate.ts",
     "start": "HTTPS=true react-scripts start",
-    "pretest": "yarn run lint && yarn run lint:style && yarn run checkSize",
-    "test": "jest --coverage --testPathIgnorePatterns node_modules src/environment --silent && CI=true yarn testReact",
-    "testReact": "react-scripts test --env=jest-environment-jsdom-sixteen src/environment",
+    "pretest": "yarn run lint && yarn run lint:style && yarn run check:size",
+    "test": "yarn run check:types && yarn run test:unit && CI=true yarn run test:react",
+    "test:react": "react-scripts test --env=jest-environment-jsdom-sixteen src/environment",
+    "test:unit": "jest --coverage --testPathIgnorePatterns node_modules src/environment --silent",
     "updateApis": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' updateApis.ts"
   },
   "husky": {
