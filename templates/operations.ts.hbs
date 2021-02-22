@@ -123,7 +123,6 @@
       const configParams = this.clientConfig.parameters || {};
 
       const pathParams = {
-        version: 'v1',
       {{#each ../parameters}}
         "{{{name}}}": optionParams["{{{name}}}"]
         {{! if it is a common path parameter, fall back to client config }}
@@ -133,23 +132,27 @@
       // Type assertion is safe because the object is generated from known params
       } as PathParameters;
 
-      const queryParams: QueryParameters = {};
+      // Query parameters are assumed to be any parameters that aren't path parameters
+      const queryParams = { ...optionParams } as QueryParameters;
+      // Delete path parameters
+      {{#each ../parameters}}
+      delete queryParams["{{{name}}}"];
+      {{/each}}
+      // Fall back to config for common query parameters
       {{#each request.queryParameters}}
-      if (optionParams["{{{name}}}"]) {
-        queryParams["{{{name}}}"] = optionParams["{{{name}}}"];
       {{#if (isCommonQueryParameter name)}}
-      {{! if it is a common query parameter, fall back to client config }}
-      } else if (configParams["{{{name}}}"]) {
+      if (queryParams["{{{name}}}"] === undefined && configParams["{{{name}}}"] !== undefined) {
         queryParams["{{{name}}}"] = configParams["{{{name}}}"];
+      }
       {{/if}}
-      };
       {{/each}}
 
       const url = new TemplateURL(
         "{{{../path}}}",
         this.clientConfig.baseUri,
         {
-          pathParams,
+          // All unknown params from optionParams are passed as both path and query params
+          pathParams: { version: 'v1', ...optionParams as PathParameters, ...pathParams },
           queryParams,
           origin: this.clientConfig.proxy
         }
