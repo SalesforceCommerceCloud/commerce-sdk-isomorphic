@@ -6,7 +6,7 @@
  */
 
 import nock from 'nock';
-import { ShopperCustomers, ShopperSearch } from '../lib';
+import { ClientConfigInit, ShopperCustomers, ShopperSearch } from '../lib';
 import config from '../environment/config';
 
 /**
@@ -96,12 +96,10 @@ test('should use timeout from fetch options and throw timeout error', async () =
     .delayConnection(400)
     .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
 
-  const clientConfig = {
+  const clientConfig: ClientConfigInit = {
     ...config,
-    ...{
-      fetchOptions: {
-        timeout: 200,
-      },
+    fetchOptions: {
+      timeout: 200,
     },
   };
 
@@ -110,7 +108,7 @@ test('should use timeout from fetch options and throw timeout error', async () =
   await expect(client.productSearch({
     parameters: { q: 'sony' }, headers: { authorization: 'Bearer test-auth' },
   })).rejects.toEqual({
-    message: 'network timeout at: https://localhost:3000/search/shopper-search/v1/organizations/ORGANIZATION_ID/product-search?siteId=SITE_ID&q=sony',
+    message: 'network timeout at: https://localhost:3000/search/shopper-search/v1/organizations/ORGANIZATION_ID/product-search?q=sony&siteId=SITE_ID',
     type: 'request-timeout',
   });
 });
@@ -121,12 +119,10 @@ test('should use timeout from fetch options and succeed when service responds qu
     .matchHeader('authorization', 'Bearer test-auth')
     .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
 
-  const clientConfig = {
+  const clientConfig: ClientConfigInit = {
     ...config,
-    ...{
-      fetchOptions: {
-        timeout: 1000,
-      },
+    fetchOptions: {
+      timeout: 1000,
     },
   };
 
@@ -144,12 +140,9 @@ test('should use default value when timeout is not configured in fetch options a
     .delayConnection(400)
     .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
 
-  const clientConfig = {
+  const clientConfig: ClientConfigInit = {
     ...config,
-    ...{
-      fetchOptions: {
-      },
-    },
+    fetchOptions: {},
   };
 
   const client = new ShopperSearch(clientConfig);
@@ -165,14 +158,12 @@ test('should not fail when arbitrary parameters are configured in fetchOptions',
     .matchHeader('authorization', 'Bearer test-auth')
     .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
 
-  const clientConfig = {
+  const clientConfig: ClientConfigInit = {
     ...config,
-    ...{
-      fetchOptions: {
-        somekey: 'some value',
-        timeout: 1000,
-      },
-    },
+    fetchOptions: {
+      somekey: 'some value',
+      timeout: 1000,
+    } as any,
   };
 
   const client = new ShopperSearch(clientConfig);

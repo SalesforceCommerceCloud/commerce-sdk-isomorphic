@@ -119,47 +119,47 @@
       },
       rawResponse?: boolean,
     ): Promise<Response | {{getReturnTypeFromOperation this}}> {
+      const optionParams = options?.parameters || {} as UrlParameters;
+      const configParams = this.clientConfig.parameters || {};
 
-      const parameters = (options && options.parameters) ? options.parameters : {} as {[key: string]: string};
-
-      const pathParameters = {
+      const pathParams = {
       {{#each ../parameters}}
-        "{{{name}}}": parameters["{{{name}}}"]
-        {{! if it is a common path parameter, fallback to client config for undefined }}
-        {{#if (isCommonPathParameter name)}} !== undefined ? parameters["{{{name}}}"] : this.clientConfig.parameters?.{{{name}}}{{/if}}
+        "{{{name}}}": optionParams["{{{name}}}"]
+        {{! if it is a common path parameter, fall back to client config }}
+        {{#if (isCommonPathParameter name)}}  ?? configParams["{{{name}}}"]{{/if}}
         {{#unless @last}},{{/unless}}
       {{/each}}
-      };
+      // Type assertion is safe because the object is generated from known params
+      } as PathParameters;
 
-      const queryParameters: { [key: string]: string } = {};
-      (Object.keys(parameters) as Array<keyof typeof parameters>).forEach(key => {
-        if (!(key in pathParameters)) {
-          queryParameters[key] = parameters[key] as string;
-        }
-      });
-
+      // Query parameters are assumed to be any parameters that aren't path parameters
+      const queryParams = { ...optionParams } as QueryParameters;
+      // Delete path parameters
+      {{#each ../parameters}}
+      delete queryParams["{{{name}}}"];
+      {{/each}}
+      // Fall back to config for common query parameters
       {{#each request.queryParameters}}
-        {{! for queryParameters that are common query parameters, fallback to client config for undefined }}
-        {{#if (isCommonQueryParameter name)}}
-        queryParameters.{{{name}}} =
-          queryParameters["{{{name}}}"] !== undefined
-            ? String(parameters["{{{name}}}"]) : String(this.clientConfig.parameters?.{{{name}}});
-        {{/if}}
+      {{#if (isCommonQueryParameter name)}}
+      if (queryParams["{{{name}}}"] === undefined && configParams["{{{name}}}"] !== undefined) {
+        queryParams["{{{name}}}"] = configParams["{{{name}}}"];
+      }
+      {{/if}}
       {{/each}}
 
       const url = new TemplateURL(
         "{{{../path}}}",
         this.clientConfig.baseUri,
         {
-          pathParams: { version: 'v1', ...this.clientConfig.parameters, ...pathParameters },
-          queryParams: { siteId: this.clientConfig.parameters?.siteId, ...queryParameters},
-          origin: this.clientConfig?.proxy
+          // All unknown params from optionParams are passed as both path and query params
+          pathParams: { version: 'v1', ...optionParams as PathParameters, ...pathParams },
+          queryParams,
+          origin: this.clientConfig.proxy
         }
       );
 
       const headers = {
-        "Content-Type": "application/json",
-        ...this.clientConfig?.headers,
+        ...this.clientConfig.headers,
         ...options?.headers
       };
 
@@ -167,8 +167,8 @@
         url.toString(),
         {
           ...this.clientConfig.fetchOptions,
-          {{#or (is method "patch") (is method "post") (is method "put")}}body: JSON.stringify(options?.body),{{/or}}
-          headers: headers,
+          {{#or (is method "patch") (is method "post") (is method "put")}}body: this.clientConfig.transformRequest(options.body, headers),{{/or}}
+          headers,
           method: "{{loud method}}"
         }
       );
