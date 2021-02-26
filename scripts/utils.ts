@@ -105,5 +105,10 @@ export async function updateApis(
   if (!api) {
     throw new Error(`No exact match in Exchange for '${name}'`);
   }
-  await download.downloadRestApis([api], rootPath);
+  try {
+    await download.downloadRestApis([api], rootPath);
+  } catch (err) {
+    err.message = `Failed to download ${name}: ${err.message}`;
+    throw err;
+  }
 }

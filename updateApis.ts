@@ -20,10 +20,14 @@ const API_NAMES = [
   'shopper-search',
 ];
 
+const OLD_APIS_PATH = path.join(__dirname, 'temp/oldApis');
 const PRODUCTION_API_PATH = path.join(__dirname, 'apis');
 
 // DOWNLOAD PRODUCTION DATA
-fs.remove(PRODUCTION_API_PATH);
+fs.moveSync(PRODUCTION_API_PATH, OLD_APIS_PATH, { overwrite: true });
 fs.ensureDirSync(PRODUCTION_API_PATH);
 
-API_NAMES.map((name) => updateApis(name, /production/i, PRODUCTION_API_PATH));
+API_NAMES.forEach((name) => {
+  // eslint-disable-next-line no-console
+  updateApis(name, /production/i, PRODUCTION_API_PATH).catch(console.error);
+});
