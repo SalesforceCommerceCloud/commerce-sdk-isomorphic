@@ -122,19 +122,24 @@
       const optionParams = options?.parameters || {} as UrlParameters;
       const configParams = this.clientConfig.parameters || {};
 
+      // All config parameters are assumed to be path parameters
       const pathParams = {
         version: 'v1',
-        // All config params are assumed to be path params
-        ...configParams,
-      {{#each ../parameters}}
-        "{{{name}}}": optionParams["{{{name}}}"],
-      {{/each}}
-      // Type assertion is safe because the object is generated from known params
+        ...configParams
       } as PathParameters;
+      // Merge in known path parameters from options
+      {{#each ../parameters}}
+      if (optionParams["{{{name}}}"] !== undefined) {
+        pathParams["{{{name}}}"] = optionParams["{{{name}}}"] as PathParameters[keyof PathParameters];
+      }
+      {{/each}}
 
       // Query parameters are assumed to be any parameters that aren't path parameters
-      const queryParams = { ...optionParams } as QueryParameters;
-      // Delete path parameters
+      const queryParams = {
+        siteId: configParams.siteId,
+        ...optionParams
+      } as QueryParameters;
+      // Delete known path parameters
       {{#each ../parameters}}
       delete queryParams["{{{name}}}"];
       {{/each}}
