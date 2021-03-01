@@ -123,11 +123,11 @@
       const configParams = this.clientConfig.parameters || {};
 
       const pathParams = {
+        version: 'v1',
+        // All config params are assumed to be path params
+        ...configParams,
       {{#each ../parameters}}
-        "{{{name}}}": optionParams["{{{name}}}"]
-        {{! if it is a common path parameter, fall back to client config }}
-        {{#if (isCommonPathParameter name)}}  ?? configParams["{{{name}}}"]{{/if}}
-        {{#unless @last}},{{/unless}}
+        "{{{name}}}": optionParams["{{{name}}}"],
       {{/each}}
       // Type assertion is safe because the object is generated from known params
       } as PathParameters;
@@ -151,8 +151,7 @@
         "{{{../path}}}",
         this.clientConfig.baseUri,
         {
-          // All unknown params from optionParams are passed as both path and query params
-          pathParams: { version: 'v1', ...optionParams as PathParameters, ...pathParams },
+          pathParams,
           queryParams,
           origin: this.clientConfig.proxy
         }
