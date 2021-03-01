@@ -108,7 +108,7 @@ test('should use timeout from fetch options and throw timeout error', async () =
   await expect(client.productSearch({
     parameters: { q: 'sony' }, headers: { authorization: 'Bearer test-auth' },
   })).rejects.toEqual({
-    message: 'network timeout at: https://localhost:3000/search/shopper-search/v1/organizations/ORGANIZATION_ID/product-search?q=sony&siteId=SITE_ID',
+    message: 'network timeout at: https://localhost:3000/search/shopper-search/v1/organizations/ORGANIZATION_ID/product-search?siteId=SITE_ID&q=sony',
     type: 'request-timeout',
   });
 });
