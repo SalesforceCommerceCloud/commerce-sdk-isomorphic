@@ -1,5 +1,9 @@
 # CHANGELOG
-## 1.1.0
+
+## v1.1.1
+* Fixed issue causing `shortCode` to not be properly set
+
+## v1.1.0
 #### **API Changes**
 *Shopper Baskets API*
  * Endpoint Added
