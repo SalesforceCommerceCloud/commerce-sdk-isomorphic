@@ -122,19 +122,24 @@
       const optionParams = options?.parameters || {} as UrlParameters;
       const configParams = this.clientConfig.parameters || {};
 
+      // All config parameters are assumed to be path parameters
       const pathParams = {
-      {{#each ../parameters}}
-        "{{{name}}}": optionParams["{{{name}}}"]
-        {{! if it is a common path parameter, fall back to client config }}
-        {{#if (isCommonPathParameter name)}}  ?? configParams["{{{name}}}"]{{/if}}
-        {{#unless @last}},{{/unless}}
-      {{/each}}
-      // Type assertion is safe because the object is generated from known params
+        version: 'v1',
+        ...configParams
       } as PathParameters;
+      // Merge in known path parameters from options
+      {{#each ../parameters}}
+      if (optionParams["{{{name}}}"] !== undefined) {
+        pathParams["{{{name}}}"] = optionParams["{{{name}}}"] as PathParameters[keyof PathParameters];
+      }
+      {{/each}}
 
       // Query parameters are assumed to be any parameters that aren't path parameters
-      const queryParams = { ...optionParams } as QueryParameters;
-      // Delete path parameters
+      const queryParams = {
+        siteId: configParams.siteId,
+        ...optionParams
+      } as QueryParameters;
+      // Delete known path parameters
       {{#each ../parameters}}
       delete queryParams["{{{name}}}"];
       {{/each}}
@@ -151,8 +156,7 @@
         "{{{../path}}}",
         this.clientConfig.baseUri,
         {
-          // All unknown params from optionParams are passed as both path and query params
-          pathParams: { version: 'v1', ...optionParams as PathParameters, ...pathParams },
+          pathParams,
           queryParams,
           origin: this.clientConfig.proxy
         }
