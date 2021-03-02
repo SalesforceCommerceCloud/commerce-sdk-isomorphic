@@ -24,6 +24,7 @@
     "build:lib": "rollup -c",
     "check:size": "npm-pack-all --output commerce-sdk-isomorphic-with-deps.tgz && bundlesize",
     "check:types": "tsc --noEmit",
+    "diffApis": "raml-toolkit diff --dir temp/oldApis apis -f console -o temp/diffApis.txt",
     "doc": "yarn run doc:generate",
     "doc:generate": "typedoc --mode modules src/lib/** --external-modulemap \".*/src/lib/([\\w]+)\" --exclude \"src/lib/index.ts\"",
     "eject": "react-scripts eject",
