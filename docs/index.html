@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title></title>
-	<meta name="description" content="Documentation for ">
+	<title>commerce-sdk-isomorphic</title>
+	<meta name="description" content="Documentation for commerce-sdk-isomorphic">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title"></a>
+					<a href="index.html" class="title">commerce-sdk-isomorphic</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -56,7 +56,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1></h1>
+			<h1>commerce-sdk-isomorphic</h1>
 		</div>
 	</div>
 </header>
@@ -64,6 +64,115 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
+				<a href="#commerce-sdk-isomorphic" id="commerce-sdk-isomorphic" style="color: inherit; text-decoration: none;">
+					<h1>commerce-sdk-isomorphic</h1>
+				</a>
+				<p><a href="https://circleci.com/gh/SalesforceCommerceCloud/commerce-sdk-isomorphic"><img src="https://circleci.com/gh/SalesforceCommerceCloud/commerce-sdk-isomorphic.svg?style=svg&circle-token=379eaa6f00e0840e10dd80585b2b045d02a8f3b7" alt="CircleCI"></a></p>
+				<p>The Salesforce Commerce SDK Isomorphic allows easy interaction with the Salesforce B2C Commerce platform Shopper APIs through a lightweight SDK that works both on browsers and nodejs applications.  For a more robust SDK, which includes our B2C Data APIS and Shopper APIs, see <a href="https://github.com/SalesforceCommerceCloud/commerce-sdk">our Node.js Commerce SDK</a>.</p>
+				<a href="#building" id="building" style="color: inherit; text-decoration: none;">
+					<h2>Building</h2>
+				</a>
+				<p>To create the SDK package:</p>
+				<pre><code><span class="hljs-comment"># Install dependencies needed to run generation</span>
+$ yarn install
+
+<span class="hljs-comment"># Parse API files, render templates to src/lib folder and copy static files to src/lib</span>
+$ yarn run renderTemplates
+
+<span class="hljs-comment"># Launch sample application</span>
+$ yarn start
+
+<span class="hljs-comment"># Transpile and minify</span>
+$ yarn <span class="hljs-symbol">build:</span><span class="hljs-class"><span class="hljs-keyword">lib</span></span>
+
+<span class="hljs-comment"># Run tests</span>
+$ yarn test</code></pre>
+				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
+					<h2>Usage</h2>
+				</a>
+				<p>An example React App is available at <code>./src/environment/App</code> directory. To use the sample application, configure these parameters in <code>./src/environment/config.js</code> file.</p>
+				<blockquote>
+					<p><strong>Note:</strong> These are required parameters.</p>
+				</blockquote>
+				<table>
+					<thead>
+						<tr>
+							<th>Parameter</th>
+							<th align="left">Description</th>
+						</tr>
+					</thead>
+					<tbody><tr>
+							<td>clientId</td>
+							<td align="left">ID of the client account created with Salesforce Commerce.</td>
+						</tr>
+						<tr>
+							<td>organizationId</td>
+							<td align="left">The unique identifier for your Salesforce identity.</td>
+						</tr>
+						<tr>
+							<td>shortCode</td>
+							<td align="left">Region specific merchant ID.</td>
+						</tr>
+						<tr>
+							<td>siteId</td>
+							<td align="left">A unique site ID (for example, RefArch or SiteGenesis).</td>
+						</tr>
+				</tbody></table>
+				<pre><code class="language-javascript"><span class="hljs-comment">/**
+ * Configure required parameters
+ * 
+ * To learn more about the parameters please refer to https://developer.commercecloud.com/s/article/CommerceAPI-Get-Started
+ */</span>
+<span class="hljs-comment">// Create a configuration to use when creating API clients</span>
+<span class="hljs-keyword">const</span> config = {
+    <span class="hljs-attr">proxy</span>: <span class="hljs-string">&#x27;https://localhost:3000&#x27;</span>,
+    <span class="hljs-attr">headers</span>: {},
+    <span class="hljs-attr">parameters</span>: {
+      <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;&lt;your-client-id&gt;&#x27;</span>,
+      <span class="hljs-attr">organizationId</span>: <span class="hljs-string">&#x27;&lt;your-org-id&gt;&#x27;</span>,
+      <span class="hljs-attr">shortCode</span>: <span class="hljs-string">&#x27;&lt;your-short-code&gt;&#x27;</span>,
+      <span class="hljs-attr">siteId</span>: <span class="hljs-string">&#x27;&lt;your-site-id&gt;&#x27;</span>
+    }
+}</code></pre>
+				<p>Launch the sample application using <code>yarn start</code>. Access the sample application using a new browser window at this url <code>localhost:3000</code>. </p>
+				<a href="#advanced-options" id="advanced-options" style="color: inherit; text-decoration: none;">
+					<h3>Advanced options</h3>
+				</a>
+				<p>Commerce SDK Isomorphic supports advanced <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API">Fetch API options</a> by a simple configuration.
+				This sample code shows how to configure HTTP timeout and agent options in <code>./src/environment/config.js</code> file</p>
+				<pre><code class="language-javascript"> <span class="hljs-comment">/**
+  * Configure advanced timeout and agent parameters
+  * 
+  * To learn more about the parameters please refer to https://developer.commercecloud.com/s/article/CommerceAPI-Get-Started
+  */</span>
+ <span class="hljs-comment">// Create a configuration to use when creating API clients</span>
+<span class="hljs-keyword">const</span> https = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;https&quot;</span>);
+
+<span class="hljs-keyword">const</span> config = {
+    <span class="hljs-attr">proxy</span>: <span class="hljs-string">&#x27;https://localhost:3000&#x27;</span>,
+    <span class="hljs-attr">headers</span>: {},
+    <span class="hljs-attr">parameters</span>: {
+        <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;&lt;your-client-id&gt;&#x27;</span>,
+        <span class="hljs-attr">organizationId</span>: <span class="hljs-string">&#x27;&lt;your-org-id&gt;&#x27;</span>,
+        <span class="hljs-attr">shortCode</span>: <span class="hljs-string">&#x27;&lt;your-short-code&gt;&#x27;</span>,
+        <span class="hljs-attr">siteId</span>: <span class="hljs-string">&#x27;&lt;your-site-id&gt;&#x27;</span>
+    },
+    <span class="hljs-attr">fetchOptions</span>: {
+      <span class="hljs-attr">timeout</span>: <span class="hljs-number">2000</span>, <span class="hljs-comment">//request times out after 2 seconds</span>
+      <span class="hljs-attr">agent</span>: <span class="hljs-keyword">new</span> https.agent({ <span class="hljs-comment">// a custom http agent</span>
+        <span class="hljs-attr">keepAlive</span>: <span class="hljs-literal">true</span>
+      })
+    } 
+}</code></pre>
+				<a href="#testing" id="testing" style="color: inherit; text-decoration: none;">
+					<h2>Testing</h2>
+				</a>
+				<p>Two types of tests occur when running <code>yarn test</code>. First, unit tests are executed with jest including an enforced coverage level. This is all tests not contained within the sample app path of <code>src/environment</code>. If that passes, tests within the sample app path are executed using the <code>react-scripts</code> configuration. These allow for testing of the SDK within a sample React application.</p>
+				<a href="#license-information" id="license-information" style="color: inherit; text-decoration: none;">
+					<h2>License Information</h2>
+				</a>
+				<p>The Commerce SDK Isomorphic is licensed under BSD-3-Clause license. See the <a href="./LICENSE.txt">license</a> for details.</p>
+				<!-- Markdown link & img dfn's -->
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -71,6 +180,39 @@
 				<ul>
 					<li class="globals  ">
 						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/clientconfig.html">client<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/commonparameters.html">common<wbr>Parameters</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/shopperbaskets.html">shopper<wbr>Baskets</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/shoppercustomers.html">shopper<wbr>Customers</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/shoppergiftcertificates.html">shopper<wbr>Gift<wbr>Certificates</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/shopperlogin.html">shopper<wbr>Login</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/shopperorders.html">shopper<wbr>Orders</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/shopperproducts.html">shopper<wbr>Products</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/shopperpromotions.html">shopper<wbr>Promotions</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/shoppersearch.html">shopper<wbr>Search</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/templateurl.html">template<wbr>Url</a>
 					</li>
 				</ul>
 			</nav>
@@ -85,6 +227,16 @@
 	<div class="container">
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+			</ul>
 		</div>
 	</div>
 </footer>
