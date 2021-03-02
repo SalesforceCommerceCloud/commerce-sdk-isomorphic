@@ -40,6 +40,27 @@ test('test getting a token with a post operation', async () => {
   expect(token).toEqual('Bearer test-auth');
 });
 
+test('test getting a token without a proxy', async () => {
+  nock('https://short_code.api.commercecloud.salesforce.com')
+    .post(`/customer/shopper-customers/v1/organizations/${config.parameters.organizationId}/customers/actions/login`)
+    .query({ siteId: config.parameters.siteId, clientId: config.parameters.clientId })
+    .reply(200, {
+      authType: 'guest',
+      customerId: 'test-customer-id',
+      preferredLocale: 'en_US',
+    }, { Authorization: 'Bearer test-auth' });
+
+  const proxylessConfig: ClientConfigInit = { ...config };
+  delete proxylessConfig.proxy;
+  const client = new ShopperCustomers(proxylessConfig);
+
+  //  Start by requesting an authorization
+  const authResponse = await client.authorizeCustomer({ body: { type: 'guest' } }, true);
+  // Get the authorization token and validate it is correct
+  const token = await authResponse.headers.get('authorization');
+  expect(token).toEqual('Bearer test-auth');
+});
+
 test('performing a search with a get operation', async () => {
   // Specific response to be returned by search
   const mockSearchResponse = {
