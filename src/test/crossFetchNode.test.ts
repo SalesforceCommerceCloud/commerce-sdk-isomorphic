@@ -61,6 +61,49 @@ test('test getting a token without a proxy', async () => {
   expect(token).toEqual('Bearer test-auth');
 });
 
+test('test getting a token with an invalid short code', async () => {
+  nock('https://invalid-short-code.api.commercecloud.salesforce.com')
+    .post(`/customer/shopper-customers/v1/organizations/${config.parameters.organizationId}/customers/actions/login`)
+    .query({ siteId: config.parameters.siteId, clientId: config.parameters.clientId })
+    .replyWithError('ENOTFOUND-TEST');
+
+  const proxylessConfig: ClientConfigInit = {
+    ...config,
+    parameters: {
+      ...config.parameters,
+      shortCode: 'invalid-short-code',
+    },
+  };
+  delete proxylessConfig.proxy;
+  const client = new ShopperCustomers(proxylessConfig);
+
+  await expect(
+    client.authorizeCustomer({ body: { type: 'guest' } }, true),
+  ).rejects.toEqual({
+    message: 'request to https://invalid-short-code.api.commercecloud.salesforce.com/customer/shopper-customers/v1/organizations/ORGANIZATION_ID/customers/actions/login?siteId=SITE_ID&clientId=CLIENT_ID failed, reason: ENOTFOUND-TEST',
+    type: 'system',
+  });
+});
+
+test('test getting a token with a missing short code', async () => {
+  nock('https://undefined.api.commercecloud.salesforce.com')
+    .post(`/customer/shopper-customers/v1/organizations/${config.parameters.organizationId}/customers/actions/login`)
+    .query({ siteId: config.parameters.siteId, clientId: config.parameters.clientId })
+    .replyWithError('ENOTFOUND-TEST');
+
+  const proxylessConfig: ClientConfigInit = { ...config };
+  delete proxylessConfig.proxy;
+  delete proxylessConfig.parameters?.shortCode;
+  const client = new ShopperCustomers(proxylessConfig);
+
+  await expect(
+    client.authorizeCustomer({ body: { type: 'guest' } }, true),
+  ).rejects.toEqual({
+    message: 'request to https://undefined.api.commercecloud.salesforce.com/customer/shopper-customers/v1/organizations/ORGANIZATION_ID/customers/actions/login?siteId=SITE_ID&clientId=CLIENT_ID failed, reason: ENOTFOUND-TEST',
+    type: 'system',
+  });
+});
+
 test('performing a search with a get operation', async () => {
   // Specific response to be returned by search
   const mockSearchResponse = {
