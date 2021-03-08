@@ -64,25 +64,39 @@ test('that clientConfig clones correctly', () => {
   expect(newConfig.fetchOptions.timeout).not.toEqual(originalConfig.fetchOptions.timeout);
 });
 
-test('default transform request should only transform plain objects', () => {
-  const transform = ClientConfig.defaults.transformRequest;
-  let headers = {};
-  // non-objects should not be modified, and should not modify headers
-  expect(transform(null, headers)).toBeNull();
-  expect(headers).toEqual({});
-  expect(transform(undefined, {})).toBeUndefined();
-  expect(headers).toEqual({});
-  expect(transform('a string', {})).toBe('a string');
-  expect(headers).toEqual({});
-  // instances of classes should not be modified
-  const blob = new Blob();
-  expect(transform(blob, {})).toBe(blob);
-  expect(headers).toEqual({});
-  // plain objects should be converted to JSON and set Content-Type to stuff
-  expect(transform({ plain: 'object' }, headers)).toBe('{"plain":"object"}');
-  expect(headers).toEqual({ 'Content-Type': 'application/json' });
-  headers = {};
-  const protoless = Object.create(null);
-  expect(transform(protoless, headers)).toBe('{}');
-  expect(headers).toEqual({ 'Content-Type': 'application/json' });
+describe('config defaults', () => {
+  describe('transform request', () => {
+    const transform = ClientConfig.defaults.transformRequest;
+    let headers: { [key: string]: string };
+
+    beforeEach(() => {
+      headers = {};
+    });
+
+    test('does not modify body or headers for primitive values', () => {
+      expect(transform(null, headers)).toBeNull();
+      expect(headers).toEqual({});
+
+      expect(transform(undefined, headers)).toBeUndefined();
+      expect(headers).toEqual({});
+
+      expect(transform('a string', headers)).toBe('a string');
+      expect(headers).toEqual({});
+    });
+
+    test('does not modify body or headers for non-plain objects', () => {
+      const blob = new Blob();
+      expect(transform(blob, headers)).toBe(blob);
+      expect(headers).toEqual({});
+    });
+
+    test('converts plain objects to JSON and sets Content-Type header', () => {
+      expect(transform({ plain: 'object' }, headers)).toBe('{"plain":"object"}');
+      expect(headers).toEqual({ 'Content-Type': 'application/json' });
+
+      headers = {};
+      expect(transform(Object.create(null), headers)).toBe('{}');
+      expect(headers).toEqual({ 'Content-Type': 'application/json' });
+    });
+  });
 });
