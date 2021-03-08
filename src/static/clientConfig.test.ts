@@ -98,5 +98,10 @@ describe('config defaults', () => {
       expect(transform(Object.create(null), headers)).toBe('{}');
       expect(headers).toEqual({ 'Content-Type': 'application/json' });
     });
+
+    test('converts arrays to JSON and sets Content-Type header', () => {
+      expect(transform([1, 2, 3], headers)).toBe('[1,2,3]');
+      expect(headers).toEqual({ 'Content-Type': 'application/json' });
+    });
   });
 });
