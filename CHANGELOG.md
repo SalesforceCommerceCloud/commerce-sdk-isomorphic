@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v1.1.2
+* Fixed issue causing endpoints that accept array values to not properly set `Content-Type` header to `application/json`.
+
 ## v1.1.1
 * Fixed issue causing `shortCode` to not be properly set
 
