@@ -53,8 +53,8 @@ export default class ClientConfig implements ClientConfigInit {
 
   static readonly defaults: Pick<Required<ClientConfigInit>, 'transformRequest'> = {
     /**
-     * If data is a plain object, converts it to JSON and sets the Content-Type header
-     * to application/json. All other data is returned unmodified.
+     * If data is a plain object or an array, it is converted to JSON and the Content-Type header is
+     * set to application/json. All other data is returned unmodified.
      * @param data - Data to transform
      * @returns A JSON string or the unmodified data
      */
@@ -63,7 +63,7 @@ export default class ClientConfig implements ClientConfigInit {
         return data;
       }
       const proto = Object.getPrototypeOf(data);
-      if (proto === null || proto === Object.prototype) {
+      if (Array.isArray(data) || proto === Object.prototype || proto === null) {
         // eslint-disable-next-line no-param-reassign
         headers['Content-Type'] = 'application/json';
         return JSON.stringify(data);
