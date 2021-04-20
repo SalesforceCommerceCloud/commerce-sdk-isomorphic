@@ -89,7 +89,7 @@
     "@babel/preset-env": "7.10.4",
     "@babel/preset-react": "7.10.1",
     "@babel/preset-typescript": "^7.10.4",
-    "@commerce-apps/raml-toolkit": "^0.5.6",
+    "@commerce-apps/raml-toolkit": "^0.5.7",
     "@rollup/plugin-babel": "5.1.0",
     "@rollup/plugin-commonjs": "13.0.0",
     "@rollup/plugin-node-resolve": "8.4.0",
