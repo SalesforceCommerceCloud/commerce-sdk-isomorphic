@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+import { amf } from '@commerce-apps/raml-toolkit';
 
 import { ASSET_OBJECT_MAP } from './config';
-
 import { commonParameterPositions } from '../src/static/commonParameters';
 
 /**
@@ -135,3 +135,17 @@ export const isCommonQueryParameter = (property: string): boolean => (property
  * @returns string in all caps
  */
 export const loud = (input: string): string => String(input).toUpperCase();
+
+/**
+ * Checks whether a trait is allowed to be used in the API. Only traits that comply
+ * with API standards are allowed.
+ *
+ * Currently, the only known non-compliant trait is "offset-paginated". It does
+ * not comply because it is not a camel case name. It can be safely ignored because
+ * the compliant "OffsetPaginated" is also available. (The kebab case version has
+ * not been removed to maintain backward compatibility.)
+ *
+ * @param trait - Trait to check
+ * @returns true unless the trait's name is "offset-paginated"
+ */
+export const isAllowedTrait = (trait: amf.model.domain.Trait): boolean => /^[A-Za-z][A-Za-z0-9]*$/.test(trait.name.value());
