@@ -5,10 +5,12 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
+import { amf } from '@commerce-apps/raml-toolkit';
 import {
   addNamespace,
   formatForTsDoc,
   getObjectIdByAssetId,
+  isAllowedTrait,
   isCommonPathParameter,
   isCommonQueryParameter,
   loud,
@@ -217,5 +219,37 @@ describe('Test loud template helper function', () => {
 
   it('returns \'\' for \'\' input', () => {
     expect(loud('')).toBe('');
+  });
+});
+
+describe('Allowed trait check', () => {
+  it('returns true for upper camel case names', () => {
+    const trait = new amf.model.domain.Trait();
+    trait.withName('OffsetPaginated');
+    expect(isAllowedTrait(trait)).toBe(true);
+  });
+
+  it('returns true for lower camel case names', () => {
+    const trait = new amf.model.domain.Trait();
+    trait.withName('offsetPaginated');
+    expect(isAllowedTrait(trait)).toBe(true);
+  });
+
+  it('returns false for kebab case names', () => {
+    const trait = new amf.model.domain.Trait();
+    trait.withName('offset-paginated');
+    expect(isAllowedTrait(trait)).toBe(false);
+  });
+
+  it('returns false for snake case names', () => {
+    const trait = new amf.model.domain.Trait();
+    trait.withName('offset_paginated');
+    expect(isAllowedTrait(trait)).toBe(false);
+  });
+
+  it('returns false for multi-word names', () => {
+    const trait = new amf.model.domain.Trait();
+    trait.withName('offset paginated');
+    expect(isAllowedTrait(trait)).toBe(false);
   });
 });
