@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v1.2.0
+#### New API
+*SLAS (Shopper Login & API Authentication Service) Administration* is now supported in the SDK
+
+#### API Changes
+*Shopper Customers*
+* New operations
+  * registerExternalProfile
+  * getExternalProfile
+
 ## v1.1.2
 * Fixed issue causing endpoints that accept array values to not properly set `Content-Type` header to `application/json`.
 
