@@ -1,8 +1,6 @@
 # CHANGELOG
 
 ## v1.2.0
-#### New API
-*SLAS (Shopper Login & API Authentication Service) Administration* is now supported in the SDK
 
 #### API Changes
 *Shopper Customers*
