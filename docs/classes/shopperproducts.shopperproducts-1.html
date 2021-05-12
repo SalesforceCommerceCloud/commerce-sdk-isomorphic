@@ -90,7 +90,7 @@
   };
   <span class="hljs-keyword">const</span> shopperProductsClient = <span class="hljs-keyword">new</span> ShopperProducts(clientConfig);</code></pre>
 					<span style="font-size:.7em; display:block; text-align: right">
-						API Version: 0.0.13<br />
+						API Version: 0.0.16<br />
 						Last Updated: <br />
 					</span>
 				</div>
@@ -144,7 +144,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperProducts.ts:396</li>
+									<li>Defined in src/lib/shopperProducts.ts:517</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -166,7 +166,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="clientconfig.clientconfig-1.html" class="tsd-signature-type">ClientConfig</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperProducts.ts:394</li>
+							<li>Defined in src/lib/shopperProducts.ts:515</li>
 						</ul>
 					</aside>
 				</section>
@@ -176,7 +176,7 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Base<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"https://{shortCode}.api.commercecloud.salesforce.com/product/shopper-products/{version}"</span><span class="tsd-signature-symbol"> = &quot;https://{shortCode}.api.commercecloud.salesforce.com/product/shopper-products/{version}&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperProducts.ts:396</li>
+							<li>Defined in src/lib/shopperProducts.ts:517</li>
 						</ul>
 					</aside>
 				</section>
@@ -194,7 +194,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperProducts.ts:749</li>
+									<li>Defined in src/lib/shopperProducts.ts:870</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -220,7 +220,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperProducts.ts:779</li>
+									<li>Defined in src/lib/shopperProducts.ts:900</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -269,7 +269,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperProducts.ts:900</li>
+									<li>Defined in src/lib/shopperProducts.ts:1021</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -297,7 +297,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperProducts.ts:932</li>
+									<li>Defined in src/lib/shopperProducts.ts:1053</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -348,12 +348,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperProducts.ts:586</li>
+									<li>Defined in src/lib/shopperProducts.ts:707</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Allows access to product details for a single product ID. Only products that are online and assigned to a site catalog are returned. Along with product details, the availability,images,price,bundled_products,set_products,recommedations,productoptions,variation and promotion data for the products will be included as appropriate.</p>
+									<p>Allows access to product details for a single product ID. Only products that are online and assigned to a site catalog are returned. Along with product details, the availability, images, price, bundled_products, set_products, recommedations, product options, variations, and promotions for the products will be included, as appropriate.</p>
 								</div>
 								<p>If you would like to get a raw Response object use the other getProduct function.</p>
 							</div>
@@ -374,12 +374,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperProducts.ts:620</li>
+									<li>Defined in src/lib/shopperProducts.ts:741</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Allows access to product details for a single product ID. Only products that are online and assigned to a site catalog are returned. Along with product details, the availability,images,price,bundled_products,set_products,recommedations,productoptions,variation and promotion data for the products will be included as appropriate.</p>
+									<p>Allows access to product details for a single product ID. Only products that are online and assigned to a site catalog are returned. Along with product details, the availability, images, price, bundled_products, set_products, recommedations, product options, variations, and promotions for the products will be included, as appropriate.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -423,12 +423,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperProducts.ts:425</li>
+									<li>Defined in src/lib/shopperProducts.ts:546</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Allows access to multiple products by a single request. Only products that are online and assigned to a site catalog are returned. The maximum number of productIDs that can be requested are 24. Alongwith product details, the availability, images, price, promotion and variations data for the valid products will be included as appropriate.</p>
+									<p>Allows access to multiple products by a single request. Only products that are online and assigned to a site catalog are returned. The maximum number of productIDs that can be requested are 24. Along with product details, the availability, images, price, promotions, and variations for the valid products will be included, as appropriate.</p>
 								</div>
 								<p>If you would like to get a raw Response object use the other getProducts function.</p>
 							</div>
@@ -449,12 +449,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperProducts.ts:459</li>
+									<li>Defined in src/lib/shopperProducts.ts:580</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Allows access to multiple products by a single request. Only products that are online and assigned to a site catalog are returned. The maximum number of productIDs that can be requested are 24. Alongwith product details, the availability, images, price, promotion and variations data for the valid products will be included as appropriate.</p>
+									<p>Allows access to multiple products by a single request. Only products that are online and assigned to a site catalog are returned. The maximum number of productIDs that can be requested are 24. Along with product details, the availability, images, price, promotions, and variations for the valid products will be included, as appropriate.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
