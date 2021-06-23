@@ -8,17 +8,9 @@
 import path from 'path';
 import fs from 'fs-extra';
 import { updateApis } from './scripts/utils';
+import { ASSET_OBJECT_MAP } from './scripts/config';
 
-const API_NAMES = [
-  'shopper-baskets',
-  'shopper-customers',
-  'shopper-gift-certificates',
-  'shopper-login',
-  'shopper-orders',
-  'shopper-products',
-  'shopper-promotions',
-  'shopper-search',
-];
+const API_NAMES = Object.keys(ASSET_OBJECT_MAP);
 
 const OLD_APIS_PATH = path.join(__dirname, 'temp/oldApis');
 const PRODUCTION_API_PATH = path.join(__dirname, 'apis');

@@ -199,8 +199,8 @@ describe('Test isCommonQueryParameter template help function', () => {
 });
 
 describe('Test getObjectIdByAssetId template helper function', () => {
-  it(`returns ${ASSET_OBJECT_MAP.assignments} for 'assignments' input`, () => {
-    expect(getObjectIdByAssetId('assignments')).toBe(ASSET_OBJECT_MAP.assignments);
+  it('returns correct ID for known input', () => {
+    expect(getObjectIdByAssetId('shopper-baskets')).toBe(ASSET_OBJECT_MAP['shopper-baskets']);
   });
 
   it('throws for \'KEY_NOT_FOUND\' input', () => {

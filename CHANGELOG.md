@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v1.3.0
+#### New APIs
+* *Shopper Discovery Search* has been added to the SDK.
+
+#### API Changes
+*Shopper Login*
+* New operation: `getTrustedSystemAccessToken`
+
 ## v1.2.0
 
 #### API Changes
