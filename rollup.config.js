@@ -15,6 +15,7 @@ import autoprefixer from 'autoprefixer';
 import stylelint from 'rollup-plugin-stylelint';
 import postcssPresetEnv from 'postcss-preset-env';
 import { terser } from 'rollup-plugin-terser';
+import ts from 'rollup-plugin-ts';
 import pkg from './package.json';
 
 const extensions = [
@@ -67,6 +68,11 @@ const config = outputs.map(({ file, format }) => ({
       extract: process.env.REACT_APP_PKG_STYLE || pkg.style,
       inline: false,
       plugins: postcssPlugins,
+    }),
+    ts({
+      transpiler: 'babel',
+      tsconfig: (resolvedConfig) => ({ ...resolvedConfig, noEmit: false }),
+      exclude: 'node_modules/**',
     }),
     babel({
       extensions,

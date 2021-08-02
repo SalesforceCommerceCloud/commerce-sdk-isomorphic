@@ -41,6 +41,5 @@ module.exports = (api) => {
       '@babel/typescript',
       '@babel/preset-react',
     ],
-    ignore: ['node_modules/**'],
   };
 };
