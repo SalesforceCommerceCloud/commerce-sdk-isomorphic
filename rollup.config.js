@@ -72,7 +72,6 @@ const config = outputs.map(({ file, format }) => ({
       extensions,
       babelHelpers: 'bundled',
       exclude: 'node_modules/**',
-      configFile: './babel.config.rollup.js',
     }),
     resolve({
       extensions,

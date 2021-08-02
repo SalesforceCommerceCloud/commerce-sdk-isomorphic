@@ -4,19 +4,43 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-// This file is used by jest
-module.exports = {
-  plugins: ['@babel/plugin-proposal-class-properties'],
-  presets: [
-    [
-      '@babel/preset-env',
-      {
-        targets: {
-          node: 'current',
+const pkg = require('./package.json');
+
+module.exports = (api) => {
+  const isTest = api.env('test');
+  if (isTest) {
+    return {
+      plugins: ['@babel/plugin-proposal-class-properties'],
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            targets: {
+              node: 'current',
+            },
+          },
+        ],
+        '@babel/typescript',
+      ],
+      ignore: ['node_modules/**'],
+    };
+  }
+
+  return {
+    plugins: ['@babel/plugin-proposal-class-properties'],
+    presets: [
+      [
+        '@babel/preset-env',
+        {
+          useBuiltIns: 'usage',
+          corejs: 3,
+          modules: false,
+          targets: pkg.browserslist.production,
         },
-      },
+      ],
+      '@babel/typescript',
+      '@babel/preset-react',
     ],
-    '@babel/typescript',
-  ],
-  ignore: ['node_modules/**'],
+    ignore: ['node_modules/**'],
+  };
 };
