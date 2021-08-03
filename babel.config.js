@@ -4,26 +4,13 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+const jest = require('./babel.config.jest');
 const pkg = require('./package.json');
 
 module.exports = (api) => {
   const isTest = api.env('test');
   if (isTest) {
-    return {
-      plugins: ['@babel/plugin-proposal-class-properties'],
-      presets: [
-        [
-          '@babel/preset-env',
-          {
-            targets: {
-              node: 'current',
-            },
-          },
-        ],
-        '@babel/typescript',
-      ],
-      ignore: ['node_modules/**'],
-    };
+    return jest;
   }
 
   return {

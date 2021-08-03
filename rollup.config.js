@@ -71,6 +71,7 @@ const config = outputs.map(({ file, format }) => ({
     }),
     ts({
       transpiler: 'babel',
+      // Setting noEmit directly in the tsconfig triggers a react testing bug so we override it here
       tsconfig: (resolvedConfig) => ({ ...resolvedConfig, noEmit: false }),
       exclude: 'node_modules/**',
     }),
