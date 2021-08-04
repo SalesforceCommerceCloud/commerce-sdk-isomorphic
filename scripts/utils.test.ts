@@ -69,7 +69,9 @@ describe('setupApis', () => {
     );
 
     expect(apis.name.original).toEqual('apis');
+    expect(apis.metadata.sdkVersion).not.toBeNull();
     const children = apis.children.map((child) => child.name.original);
+    apis.children.forEach((child) => expect(child.metadata.sdkVersion))
     expect(children).toEqual(
       expect.arrayContaining([
         'shopper-baskets',

@@ -22,6 +22,9 @@ import type { PathParameters, QueryParameters, UrlParameters } from "./commonPar
     {{/if}}
 {{/each}}
 
+const USER_AGENT_HEADER = "user-agent";
+const USER_AGENT_VALUE = "commerce-sdk-isomorphic@{{metadata.sdkVersion}};"
+
 /**
 * [{{{metadata.name}}}](https://developer.commercecloud.com/s/api-details/{{{getObjectIdByAssetId metadata.assetId}}})
 * ==================================
