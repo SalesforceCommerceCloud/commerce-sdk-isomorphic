@@ -1,4 +1,6 @@
 import ClientConfig, { ClientConfigInit } from "./clientConfig";
+import {USER_AGENT_HEADER, USER_AGENT_VALUE} from "./version";
+
 import TemplateURL from "./templateUrl";
 import { fetch, Request }  from "cross-fetch";
 import type { PathParameters, QueryParameters, UrlParameters } from "./commonParameters";
@@ -21,9 +23,6 @@ import type { PathParameters, QueryParameters, UrlParameters } from "./commonPar
         {{/if}}
     {{/if}}
 {{/each}}
-
-const USER_AGENT_HEADER = "user-agent";
-const USER_AGENT_VALUE = "commerce-sdk-isomorphic@{{metadata.sdkVersion}};"
 
 /**
 * [{{{metadata.name}}}](https://developer.commercecloud.com/s/api-details/{{{getObjectIdByAssetId metadata.assetId}}})
