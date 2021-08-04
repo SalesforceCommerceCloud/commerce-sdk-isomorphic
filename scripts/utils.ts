@@ -55,11 +55,11 @@ function addTemplates(
     path.join(outputBasePath, 'index.ts'),
   );
 
-  //add version template
+  // add version template
   apis.addTemplate(
     path.join(TEMPLATE_DIRECTORY, 'version.ts.hbs'),
     path.join(outputBasePath, 'version.ts'),
-  )
+  );
 
   apis.children.forEach((api: ApiMetadata) => {
     api.addTemplate(
