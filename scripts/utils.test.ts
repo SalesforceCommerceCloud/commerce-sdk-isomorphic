@@ -11,6 +11,7 @@ import {
 
 const Handlebars = generate.HandlebarsWithAmfHelpers;
 const API_DIRECTORY = `${__dirname}/../apis`;
+const pkg = require('../package.json');
 
 describe('registerHelper', () => {
   it('registers our custom helpers', () => {
@@ -69,7 +70,7 @@ describe('setupApis', () => {
     );
 
     expect(apis.name.original).toEqual('apis');
-    expect(apis.metadata.sdkVersion).not.toBeNull();
+    expect(apis.metadata.sdkVersion).toContain(pkg.version);
     const children = apis.children.map((child) => child.name.original);
     expect(children).toEqual(
       expect.arrayContaining([
