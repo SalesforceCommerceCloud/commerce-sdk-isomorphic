@@ -6,8 +6,12 @@
  */
 import { generate, download } from '@commerce-apps/raml-toolkit';
 import path from 'path';
+import { readJsonSync } from 'fs-extra';
 
 import * as templateHelpers from './templateHelpers';
+
+const PROJECT_ROOT = path.join(__dirname, '..');
+const PACKAGE_JSON = path.join(PROJECT_ROOT, 'package.json');
 
 const TEMPLATE_DIRECTORY = `${__dirname}/../templates`;
 const { registerPartial, loadApiDirectory } = generate;
@@ -51,6 +55,12 @@ function addTemplates(
     path.join(outputBasePath, 'index.ts'),
   );
 
+  // add version template
+  apis.addTemplate(
+    path.join(TEMPLATE_DIRECTORY, 'version.ts.hbs'),
+    path.join(outputBasePath, 'version.ts'),
+  );
+
   apis.children.forEach((api: ApiMetadata) => {
     api.addTemplate(
       path.join(TEMPLATE_DIRECTORY, 'client.ts.hbs'),
@@ -73,6 +83,9 @@ export async function setupApis(
   outputDir: string,
 ): Promise<ApiMetadata> {
   let apis = loadApiDirectory(inputDir);
+  // SDK version is not API metadata, so it is not included in the file, but it
+  // is necessary for generating the SDK (as part of the user agent header).
+  apis.metadata.sdkVersion = await readJsonSync(PACKAGE_JSON).version;
   await apis.init();
 
   apis = addTemplates(apis, outputDir);
