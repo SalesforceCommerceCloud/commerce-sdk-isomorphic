@@ -15,6 +15,7 @@ import autoprefixer from 'autoprefixer';
 import stylelint from 'rollup-plugin-stylelint';
 import postcssPresetEnv from 'postcss-preset-env';
 import { terser } from 'rollup-plugin-terser';
+import ts from 'rollup-plugin-ts';
 import pkg from './package.json';
 
 const extensions = [
@@ -68,11 +69,16 @@ const config = outputs.map(({ file, format }) => ({
       inline: false,
       plugins: postcssPlugins,
     }),
+    ts({
+      transpiler: 'babel',
+      // Setting noEmit directly in the tsconfig triggers a react testing bug so we override it here
+      tsconfig: (resolvedConfig) => ({ ...resolvedConfig, noEmit: false }),
+      exclude: 'node_modules/**',
+    }),
     babel({
       extensions,
       babelHelpers: 'bundled',
       exclude: 'node_modules/**',
-      configFile: './babel.config.rollup.js',
     }),
     resolve({
       extensions,

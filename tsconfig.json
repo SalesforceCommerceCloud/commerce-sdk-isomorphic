@@ -3,6 +3,7 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": "src",
+    "declaration": true,
     "esModuleInterop": true,
     "target": "esnext",
     "lib": [
