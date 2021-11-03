@@ -58,9 +58,14 @@ class App extends Component {
     this.doSearch(searchText);
   }
 
-  async getToken() {
-    const authResponse = await customerClient.authorizeCustomer({ body: { type: 'guest' } }, true);
-    this.state.token = authResponse.headers.get('authorization');
+  handleChange(event) {
+    this.setState({ searchText: event.target.value });
+  }
+
+  handleSubmit(event) {
+    const { searchText } = this.state;
+    this.doSearch(searchText);
+    event.preventDefault();
   }
 
   async getSearchResults(text) {
@@ -72,14 +77,9 @@ class App extends Component {
     });
   }
 
-  handleSubmit(event) {
-    const { searchText } = this.state;
-    this.doSearch(searchText);
-    event.preventDefault();
-  }
-
-  handleChange(event) {
-    this.setState({ searchText: event.target.value });
+  async getToken() {
+    const authResponse = await customerClient.authorizeCustomer({ body: { type: 'guest' } }, true);
+    this.state.token = authResponse.headers.get('authorization');
   }
 
   async doSearch() {
