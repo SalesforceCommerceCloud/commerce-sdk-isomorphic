@@ -6,22 +6,27 @@ import { fetch, Request }  from "cross-fetch";
 import type { PathParameters, QueryParameters } from "./commonParameters";
 
 {{#each dataTypes}}
-    {{!-- TODO: Remove this special case handling once namespaced types are added --}}
-    {{#if (eq (getValue name) "ResourceBadRequest")}}
+  {{!-- TODO: Remove this special case handling once namespaced types are added --}}
+  {{#if (eq (getValue name) "ResourceBadRequest")}}
 // This is a known deviation from the RAML definition, required due to limitations in
-  // the SDK generation. The full definition will be included in the next major release.
-  export type ResourceBadRequest = { [key: string]: any };
-    {{else if (or (isTypeDefinition this) (isArrayType this))}}
-  export type {{getValue name}} = {{> dtoPartial typeDto=this}}
-      {{/if}}
-      {{!-- Traits are internal types and do not need to be exported --}}
-      {{#if (isTraitDefinition this)}}
-        {{#if (isAllowedTrait this) }}
-  type {{getValue name}} = {{> dtoPartial typeDto=this}}
-        {{else}}
-        {{log "Cannot convert invalid trait to type:" (getValue name) lavel="warn"}}
-        {{/if}}
+// the SDK generation. The full definition will be included in the next major release.
+export type ResourceBadRequest = { [key: string]: any };
+  {{else if (or (isTypeDefinition this) (isArrayType this))}}
+export type {{getValue name}} = {{> dtoPartial typeDto=this}}
+  {{/if}}
+  {{!-- There exists both a type `RangeFilter` and a trait `RangeFilter` in
+  some APIs. This causes a name collision bug where the type is not included
+  in the generated file. The bug was incorrectly "fixed" by including traits
+  as types. They are not types, and will eventually be removed. --}}
+  {{#if (isTraitDefinition this)}}
+    {{#if (isAllowedTrait this) }}
+    {{!-- Because we know that a trait "type" is either (a) unused or (b) replacing
+    a real type whose definition we have lost, we don't want to be restrictive --}}
+type {{getValue name}} = { [key: string]: any }
+    {{else}}
+      {{log "Cannot convert invalid trait to type:" (getValue name) lavel="warn"}}
     {{/if}}
+  {{/if}}
 {{/each}}
 
 /**
