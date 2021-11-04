@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, salesforce.com, inc.
+ * Copyright (c) 2021, salesforce.com, inc.
  * All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
@@ -7,8 +7,18 @@
 import type { RequestInit as NodeRequestInit } from 'node-fetch';
 import type { UrlParameters } from './commonParameters';
 
+/**
+ * Alias for `RequestInit` from TypeScript's DOM lib, to more clearly differentiate
+ * it from the `RequestInit` provided by node-fetch.
+ */
+// eslint isn't aware that we have browser types available, not sure why...
 // eslint-disable-next-line no-undef
-type FetchOptions = RequestInit & NodeRequestInit;
+type BrowserRequestInit = RequestInit;
+/**
+ * Any properties supported in either the browser or node are accepted.
+ * Using the right properties in the right context is left to the user.
+ */
+type FetchOptions = BrowserRequestInit & NodeRequestInit;
 
 export interface ClientConfigInit {
   baseUri?: string;
@@ -16,6 +26,8 @@ export interface ClientConfigInit {
   headers?: { [key: string]: string };
   parameters?: UrlParameters;
   fetchOptions?: FetchOptions;
+  // eslint thinks that the names used in the function signature are variables
+  // instead of part of the type, not sure why...
   // eslint-disable-next-line no-unused-vars
   transformRequest?: (data: any, headers: { [key: string]: string }) => Required<FetchOptions>['body'];
 }
