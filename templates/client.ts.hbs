@@ -3,7 +3,7 @@ import {USER_AGENT_HEADER, USER_AGENT_VALUE} from "./version";
 
 import TemplateURL from "./templateUrl";
 import { fetch, Request }  from "cross-fetch";
-import type { PathParameters, QueryParameters, UrlParameters } from "./commonParameters";
+import type { PathParameters, QueryParameters } from "./commonParameters";
 
 {{#each dataTypes}}
     {{!-- TODO: Remove this special case handling once namespaced types are added --}}

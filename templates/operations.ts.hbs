@@ -119,7 +119,7 @@
       },
       rawResponse?: boolean,
     ): Promise<Response | {{getReturnTypeFromOperation this}}> {
-      const optionParams = options?.parameters || {} as UrlParameters;
+      const optionParams = options?.parameters || {} as NonNullable<NonNullable<typeof options>["parameters"]>;
       const configParams = this.clientConfig.parameters || {};
 
       // All config parameters are assumed to be path parameters
