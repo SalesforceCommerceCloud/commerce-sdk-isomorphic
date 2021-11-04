@@ -146,6 +146,6 @@ export const loud = (input: string): string => String(input).toUpperCase();
  * not been removed to maintain backward compatibility.)
  *
  * @param trait - Trait to check
- * @returns true unless the trait's name is "offset-paginated"
+ * @returns Whether the trait name is a valid TypeScript type identifier
  */
 export const isAllowedTrait = (trait: amf.model.domain.Trait): boolean => /^[A-Za-z][A-Za-z0-9]*$/.test(trait.name.value());
