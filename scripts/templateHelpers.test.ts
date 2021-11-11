@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, salesforce.com, inc.
+ * Copyright (c) 2021, salesforce.com, inc.
  * All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
@@ -9,7 +9,10 @@ import { amf } from '@commerce-apps/raml-toolkit';
 import {
   addNamespace,
   formatForTsDoc,
+  getPathParameterTypeMapFromEndpoints,
+  getQueryParameterTypeMapFromEndpoints,
   getObjectIdByAssetId,
+  getParameterTypes,
   isAllowedTrait,
   isCommonPathParameter,
   isCommonQueryParameter,
@@ -17,6 +20,18 @@ import {
 } from './templateHelpers';
 import { commonParameterPositions } from '../src/static/commonParameters';
 import { ASSET_OBJECT_MAP } from './config';
+
+/** Technically, `type` could be much more, but for tests this will do. AMF is tricky. */
+const createParameter = (name: string, type: 'string' | 'boolean') => {
+  const param = new amf.model.domain.Parameter();
+  param.withName(name);
+  const schema = new amf.model.domain.ScalarShape();
+  schema.withDataType(`http://www.w3.org/2001/XMLSchema#${type}`);
+  param.withSchema(schema);
+  return param;
+};
+
+beforeAll(async () => amf.AMF.init());
 
 describe('When adding namespaces to individual content (types)', () => {
   it('Prefixes the namespace successfully ', () => {
@@ -251,5 +266,125 @@ describe('Allowed trait check', () => {
     const trait = new amf.model.domain.Trait();
     trait.withName('offset paginated');
     expect(isAllowedTrait(trait)).toBe(false);
+  });
+});
+
+describe('getParameterTypes', () => {
+  it('converts a list of parameters to a type map', () => {
+    expect(getParameterTypes([
+      createParameter('name', 'string'),
+      createParameter('flag', 'boolean'),
+    ])).toEqual({
+      name: 'string',
+      flag: 'boolean',
+    });
+  });
+
+  it('merges duplicate parameters', () => {
+    expect(getParameterTypes([
+      createParameter('name', 'string'),
+      createParameter('name', 'string'),
+    ])).toEqual({
+      name: 'string',
+    });
+  });
+
+  it('preserves all types for duplicate names but different types', () => {
+    expect(getParameterTypes([
+      createParameter('anything', 'string'),
+      createParameter('anything', 'boolean'),
+    ])).toEqual({
+      anything: 'string | boolean',
+    });
+  });
+
+  it('returns an empty object for an empty list', () => {
+    expect(getParameterTypes([])).toEqual({});
+  });
+});
+
+describe('getPathParameterTypeMapFromEndpoints', () => {
+  const createEndpoint = (parameters: amf.model.domain.Parameter[]) => {
+    const endpoint = new amf.model.domain.EndPoint();
+    endpoint.withParameters(parameters);
+    return endpoint;
+  };
+
+  it('converts a list of endpoints to a map of types from the path parameters', () => {
+    expect(getPathParameterTypeMapFromEndpoints([
+      createEndpoint([createParameter('name', 'string')]),
+      createEndpoint([createParameter('flag', 'boolean')]),
+    ])).toEqual({
+      name: 'string',
+      flag: 'boolean',
+    });
+  });
+
+  it('merges duplicate parameters across endpoints', () => {
+    expect(getPathParameterTypeMapFromEndpoints([
+      createEndpoint([createParameter('name', 'string')]),
+      createEndpoint([createParameter('name', 'string')]),
+    ])).toEqual({
+      name: 'string',
+    });
+  });
+
+  it('preserves all types for duplicate names but different types across endpoints', () => {
+    expect(getPathParameterTypeMapFromEndpoints([
+      createEndpoint([createParameter('name', 'string')]),
+      createEndpoint([createParameter('name', 'boolean')]),
+    ])).toEqual({
+      name: 'string | boolean',
+    });
+  });
+
+  it('returns an empty object for an empty list', () => {
+    expect(getPathParameterTypeMapFromEndpoints([])).toEqual({});
+  });
+});
+
+describe('getQueryParameterTypeMapFromEndpoints', () => {
+  const createEndpoint = (parameters: amf.model.domain.Parameter[]) => {
+    const endpoint = new amf.model.domain.EndPoint();
+    endpoint.withOperations(parameters.map((param) => {
+      const req = new amf.model.domain.Request();
+      req.withQueryParameters([param]);
+      const op = new amf.model.domain.Operation();
+      op.withRequest(req);
+      return op;
+    }));
+    return endpoint;
+  };
+
+  it('converts a list of endpoints to a map of types from the query parameters', () => {
+    expect(getQueryParameterTypeMapFromEndpoints([
+      createEndpoint([createParameter('name', 'string')]),
+      createEndpoint([createParameter('flag', 'boolean')]),
+    ])).toEqual({
+      name: 'string',
+      flag: 'boolean',
+    });
+  });
+
+  it('merges duplicate parameters across endpoints', () => {
+    expect(getQueryParameterTypeMapFromEndpoints([
+      createEndpoint([createParameter('name', 'string')]),
+      createEndpoint([createParameter('name', 'string')]),
+    ])).toEqual({
+      name: 'string',
+    });
+  });
+
+  it('preserves all types for duplicate names but different types across endpoints', () => {
+    expect(getQueryParameterTypeMapFromEndpoints([
+      createEndpoint([createParameter('name', 'string')]),
+      createEndpoint([createParameter('name', 'boolean')]),
+    ])).toEqual({
+      name: 'string | boolean',
+    });
+  });
+
+  it('returns an empty object for an empty list', () => {
+    expect(getQueryParameterTypeMapFromEndpoints([])).toEqual({});
   });
 });

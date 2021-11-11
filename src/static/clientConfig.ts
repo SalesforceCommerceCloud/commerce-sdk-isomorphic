@@ -5,7 +5,6 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import type { RequestInit as NodeRequestInit } from 'node-fetch';
-import type { UrlParameters } from './commonParameters';
 
 /**
  * Alias for `RequestInit` from TypeScript's DOM lib, to more clearly differentiate
@@ -20,11 +19,11 @@ type BrowserRequestInit = RequestInit;
  */
 type FetchOptions = BrowserRequestInit & NodeRequestInit;
 
-export interface ClientConfigInit {
+export interface ClientConfigInit<Params extends object> {
   baseUri?: string;
   proxy?: string;
   headers?: { [key: string]: string };
-  parameters?: UrlParameters;
+  parameters?: Params;
   fetchOptions?: FetchOptions;
   // eslint thinks that the names used in the function signature are variables
   // instead of part of the type, not sure why...
@@ -35,20 +34,22 @@ export interface ClientConfigInit {
 /**
  * Configuration parameters common to Commerce SDK clients
  */
-export default class ClientConfig implements ClientConfigInit {
+export default class ClientConfig<
+  Params extends object
+> implements ClientConfigInit<Partial<Params>> {
   public baseUri?: string;
 
   public proxy?: string;
 
   public headers: { [key: string]: string };
 
-  public parameters: UrlParameters;
+  public parameters: Partial<Params>;
 
   public fetchOptions: FetchOptions;
 
-  public transformRequest: NonNullable<ClientConfigInit['transformRequest']>;
+  public transformRequest: NonNullable<ClientConfigInit<Params>['transformRequest']>;
 
-  constructor(config: ClientConfigInit = ClientConfig.defaults) {
+  constructor(config: ClientConfigInit<Params> = ClientConfig.defaults) {
     this.headers = { ...config.headers };
     this.parameters = { ...config.parameters };
     this.fetchOptions = { ...config.fetchOptions };
@@ -63,7 +64,7 @@ export default class ClientConfig implements ClientConfigInit {
     }
   }
 
-  static readonly defaults: Pick<Required<ClientConfigInit>, 'transformRequest'> = {
+  static readonly defaults: Pick<Required<ClientConfigInit<never>>, 'transformRequest'> = {
     /**
      * If data is a plain object or an array, it is converted to JSON and the Content-Type header is
      * set to application/json. All other data is returned unmodified.

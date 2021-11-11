@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, salesforce.com, inc.
+ * Copyright (c) 2021, salesforce.com, inc.
  * All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
@@ -7,7 +7,7 @@
 import ClientConfig, { ClientConfigInit } from './clientConfig';
 
 test('that empty clientConfig is created', () => {
-  const expected: ClientConfig = {
+  const expected: ClientConfig<{}> = {
     fetchOptions: {},
     headers: {},
     parameters: {},
@@ -18,7 +18,7 @@ test('that empty clientConfig is created', () => {
 
 test('should be created from init object', () => {
   // `init` is Required to ensure that all init options are tested
-  const init: Required<ClientConfigInit> = {
+  const init: Required<ClientConfigInit<any>> = {
     baseUri: 'https://example.com',
     fetchOptions: { keepalive: false },
     headers: { authorization: 'token' },
@@ -36,7 +36,7 @@ test('the empty ClientConfig can be cloned', () => {
 });
 
 test('that clientConfig clones correctly', () => {
-  const originalConfig = new ClientConfig();
+  const originalConfig = new ClientConfig<any>();
   originalConfig.baseUri = 'http://www.example.com';
   originalConfig.proxy = 'http://www.proxy.com';
   originalConfig.headers = { authorization: 'token', 'Accept-Language': 'en-US,en;q=0.5' };

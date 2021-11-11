@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, salesforce.com, inc.
+ * Copyright (c) 2021, salesforce.com, inc.
  * All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
@@ -8,6 +8,8 @@
 import nock from 'nock';
 import { ClientConfigInit, ShopperCustomers, ShopperSearch } from '../lib';
 import config from '../environment/config';
+
+type TestConfigParameters = typeof config.parameters;
 
 /**
  * Validation of integration and use of cross-fetch when run in a node environment.
@@ -50,7 +52,7 @@ test('test getting a token without a proxy', async () => {
       preferredLocale: 'en_US',
     }, { Authorization: 'Bearer test-auth' });
 
-  const proxylessConfig: ClientConfigInit = { ...config };
+  const proxylessConfig: ClientConfigInit<TestConfigParameters> = { ...config };
   delete proxylessConfig.proxy;
   const client = new ShopperCustomers(proxylessConfig);
 
@@ -67,7 +69,7 @@ test('test getting a token with an invalid short code', async () => {
     .query({ siteId: config.parameters.siteId, clientId: config.parameters.clientId })
     .replyWithError('ENOTFOUND-TEST');
 
-  const proxylessConfig: ClientConfigInit = {
+  const proxylessConfig: ClientConfigInit<TestConfigParameters> = {
     ...config,
     parameters: {
       ...config.parameters,
@@ -91,7 +93,7 @@ test('test getting a token with a missing short code', async () => {
     .query({ siteId: config.parameters.siteId, clientId: config.parameters.clientId })
     .replyWithError('ENOTFOUND-TEST');
 
-  const proxylessConfig: ClientConfigInit = { ...config };
+  const proxylessConfig: ClientConfigInit<Partial<TestConfigParameters>> = { ...config };
   delete proxylessConfig.proxy;
   delete proxylessConfig.parameters?.shortCode;
   const client = new ShopperCustomers(proxylessConfig);
@@ -160,7 +162,7 @@ test('should use timeout from fetch options and throw timeout error', async () =
     .delayConnection(400)
     .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
 
-  const clientConfig: ClientConfigInit = {
+  const clientConfig: ClientConfigInit<TestConfigParameters> = {
     ...config,
     fetchOptions: {
       timeout: 200,
@@ -183,7 +185,7 @@ test('should use timeout from fetch options and succeed when service responds qu
     .matchHeader('authorization', 'Bearer test-auth')
     .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
 
-  const clientConfig: ClientConfigInit = {
+  const clientConfig: ClientConfigInit<TestConfigParameters> = {
     ...config,
     fetchOptions: {
       timeout: 1000,
@@ -204,7 +206,7 @@ test('should use default value when timeout is not configured in fetch options a
     .delayConnection(400)
     .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
 
-  const clientConfig: ClientConfigInit = {
+  const clientConfig: ClientConfigInit<TestConfigParameters> = {
     ...config,
     fetchOptions: {},
   };
@@ -222,12 +224,12 @@ test('should not fail when arbitrary parameters are configured in fetchOptions',
     .matchHeader('authorization', 'Bearer test-auth')
     .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
 
-  const clientConfig: ClientConfigInit = {
+  const clientConfig: ClientConfigInit<TestConfigParameters> = {
     ...config,
     fetchOptions: {
       somekey: 'some value',
       timeout: 1000,
-    } as any,
+    } as any, // Type assertion required because we are deliberately violating the type
   };
 
   const client = new ShopperSearch(clientConfig);
