@@ -27,15 +27,15 @@ executors:
   node-12:
     <<: *defaults
     docker:
-      - image: cimg/node:12.22.1
+      - image: cimg/node:12.22.7
   node-14:
     <<: *defaults
     docker:
-      - image: cimg/node:14.17.0
+      - image: cimg/node:14.18.1
   node-16:
     <<: *defaults
     docker:
-      - image: cimg/node:16.1.0
+      - image: cimg/node:16.13.0
 # JOBS
 jobs:
   build-node-10:
