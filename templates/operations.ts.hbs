@@ -26,14 +26,14 @@
     */
     {{name}}(
       options{{#or (is method "get") (is method "delete")}}?{{/or}}: {
-        parameters?: PartialSubset<{
+        parameters?: CompositeParameters<{
           {{#each ../parameters}}
           {{{name}}}: {{{ getTypeFromParameter this}}}
           {{/each}}
           {{#each request.queryParameters}}
           {{{name}}}{{#if (not (is required "true"))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
-        }, RequiredKeys<Params>>,
+        }, Params>,
         headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
         body: {{{getPayloadTypeFromRequest request}}}{{/or}}
       }
@@ -64,14 +64,14 @@
     */
     {{name}}<T extends boolean>(
       options{{#or (is method "get") (is method "delete")}}?{{/or}}: {
-        parameters?: PartialSubset<{
+        parameters?: CompositeParameters<{
           {{#each ../parameters}}
           {{{name}}}: {{{ getTypeFromParameter this}}}
           {{/each}}
           {{#each request.queryParameters}}
           {{{name}}}{{#if (not (is required "true"))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
-        }, RequiredKeys<Params>>,
+        }, Params>,
         headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
         body: {{{getPayloadTypeFromRequest request}}}{{/or}}
       },
@@ -103,14 +103,14 @@
     */
     async {{name}}(
       options{{#or (is method "get") (is method "delete")}}?{{/or}}: {
-        parameters?: PartialSubset<{
+        parameters?: CompositeParameters<{
           {{#each ../parameters}}
           {{{name}}}: {{{ getTypeFromParameter this}}}
           {{/each}}
           {{#each request.queryParameters}}
           {{{name}}}{{#if (not (is required "true"))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
-        }, RequiredKeys<Params>>,
+        }, Params>,
         headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
         body: {{{getPayloadTypeFromRequest request}}}{{/or}}
       },
