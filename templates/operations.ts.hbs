@@ -117,7 +117,7 @@
       rawResponse?: boolean,
     ): Promise<Response | {{getReturnTypeFromOperation this}}> {
       const optionParams = options?.parameters || ({} as Partial<NonNullable<NonNullable<typeof options>["parameters"]>>);
-      const configParams = this.clientConfig.parameters || {};
+      const configParams = this.clientConfig.parameters;
 
       const pathParams: {{{@root.name.upperCamelCase}}}PathParameters & Required<CommonBaseUriParameters> = {
         {{!-- Base URI parameters are well known and unlikely to change, so they are hard-coded for simplicity  --}}
