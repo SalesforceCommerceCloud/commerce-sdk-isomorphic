@@ -119,19 +119,20 @@
       const optionParams = options?.parameters || ({} as Partial<NonNullable<NonNullable<typeof options>["parameters"]>>);
       const configParams = this.clientConfig.parameters || {};
 
-      const pathParams: {{{@root.name.upperCamelCase}}}PathParameters & { version: "v1" } = { version: "v1" };
+      const pathParams: {{{@root.name.upperCamelCase}}}PathParameters & Required<CommonBaseUriParameters> = {
+        {{!-- Base URI parameters are well known and unlikely to change, so they are hard-coded for simplicity  --}}
+        shortCode: configParams.shortCode,
+        version: configParams.version || "v1"
+      };
       {{#each ../parameters}}
       if (optionParams["{{{name}}}"] !== undefined) {
         pathParams["{{{name}}}"] = optionParams["{{{name}}}"];
-      }
-      {{#if (isCommonPathParameter name)}}
-      else if (configParams["{{{name}}}"] !== undefined) {
+      } else if (configParams["{{{name}}}"] !== undefined) {
         pathParams["{{{name}}}"] = configParams["{{{name}}}"];
       }
-      {{/if}}
       {{#if (is required "true")}}
       else {
-        throw new Error('Missing required path parameter "{{{name}}}".');
+        throw new Error('Missing required path parameter: {{{name}}}');
       }
       {{/if}}
       {{/each}}
@@ -141,15 +142,12 @@
       {{#each request.queryParameters}}
       if (optionParams["{{{name}}}"] !== undefined) {
         queryParams["{{{name}}}"] = optionParams["{{{name}}}"];
-      }
-      {{#if (isCommonQueryParameter name)}}
-      else if (configParams["{{{name}}}"] !== undefined) {
+      } else if (configParams["{{{name}}}"] !== undefined) {
         queryParams["{{{name}}}"] = configParams["{{{name}}}"];
       }
-      {{/if}}
       {{#if (is required "true")}}
       else {
-        throw new Error('Missing required query parameter "{{{name}}}".');
+        throw new Error('Missing required query parameter: {{{name}}}');
       }
       {{/if}}
       {{/each}}

@@ -1,7 +1,7 @@
 import { fetch, Request }  from "cross-fetch";
 
 import ClientConfig, { ClientConfigInit } from "./clientConfig";
-import type { CommonParameters } from "./commonParameters";
+import type { CommonParameters, CommonBaseUriParameters } from "./commonParameters";
 import { PartialSubset, RequiredKeys } from "./helpers";
 import TemplateURL from "./templateUrl";
 import { USER_AGENT_HEADER, USER_AGENT_VALUE } from "./version";
@@ -79,7 +79,7 @@ export class {{name.upperCamelCase}}<Params extends {{{name.upperCamelCase}}}Com
 
   static readonly defaultBaseUri = "{{getBaseUriFromDocument model}}";
 
-  constructor(config?: ClientConfigInit<Params>) {
+  constructor(config: ClientConfigInit<Params>) {
     this.clientConfig = new ClientConfig({
       baseUri: new.target.defaultBaseUri,
       ...config

@@ -5,6 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import type { RequestInit as NodeRequestInit } from 'node-fetch';
+import { CommonBaseUriParameters } from './commonParameters';
 
 /**
  * Alias for `RequestInit` from TypeScript's DOM lib, to more clearly differentiate
@@ -19,11 +20,11 @@ type BrowserRequestInit = RequestInit;
  */
 type FetchOptions = BrowserRequestInit & NodeRequestInit;
 
-export interface ClientConfigInit<Params extends object> {
+export interface ClientConfigInit<Params extends CommonBaseUriParameters> {
   baseUri?: string;
   proxy?: string;
   headers?: { [key: string]: string };
-  parameters?: Params;
+  parameters: Params;
   fetchOptions?: FetchOptions;
   // eslint thinks that the names used in the function signature are variables
   // instead of part of the type, not sure why...
@@ -34,24 +35,26 @@ export interface ClientConfigInit<Params extends object> {
 /**
  * Configuration parameters common to Commerce SDK clients
  */
-export default class ClientConfig<
-  Params extends object
-> implements ClientConfigInit<Partial<Params>> {
+export default class ClientConfig<Params extends CommonBaseUriParameters>
+implements ClientConfigInit<Params> {
   public baseUri?: string;
 
   public proxy?: string;
 
   public headers: { [key: string]: string };
 
-  public parameters: Partial<Params>;
+  public parameters: Params;
 
   public fetchOptions: FetchOptions;
 
   public transformRequest: NonNullable<ClientConfigInit<Params>['transformRequest']>;
 
-  constructor(config: ClientConfigInit<Params> = ClientConfig.defaults) {
+  constructor(config: ClientConfigInit<Params>) {
     this.headers = { ...config.headers };
     this.parameters = { ...config.parameters };
+    if (!this.parameters.shortCode) {
+      throw new Error('Missing required parameter: shortCode');
+    }
     this.fetchOptions = { ...config.fetchOptions };
     this.transformRequest = config.transformRequest || ClientConfig.defaults.transformRequest;
 
