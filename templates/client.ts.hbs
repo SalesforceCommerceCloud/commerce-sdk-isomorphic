@@ -1,7 +1,7 @@
 import { fetch, Request }  from "cross-fetch";
 
 import ClientConfig, { ClientConfigInit } from "./clientConfig";
-import type { CommonParameters, CommonBaseUriParameters } from "./commonParameters";
+import type { CommonBaseUriParameters, CommonParameters } from "./commonParameters";
 import type { CompositeParameters } from "./helpers";
 import TemplateURL from "./templateUrl";
 import { USER_AGENT_HEADER, USER_AGENT_VALUE } from "./version";
@@ -30,17 +30,27 @@ type {{getValue name}} = { [key: string]: any }
   {{/if}}
 {{/each}}
 
+/**
+ * All path parameters that are used by at least one {{{name.upperCamelCase}}} method.
+ */
 export type {{name.upperCamelCase}}PathParameters = {
 {{#each (getPathParameterTypeMapFromEndpoints model.encodes.endPoints)}}
   {{{@key}}}?: {{{this}}};
 {{/each}}
 }
+/**
+ * All query parameters that are used by at least one {{{name.upperCamelCase}}} method.
+ */
 export type {{name.upperCamelCase}}QueryParameters = {
 {{#each (getQueryParameterTypeMapFromEndpoints model.encodes.endPoints)}}
   {{{@key}}}?: {{{this}}};
 {{/each}}
 }
-export type {{name.upperCamelCase}}CommonParameters = {{name.upperCamelCase}}PathParameters & {{name.upperCamelCase}}QueryParameters & CommonParameters;
+
+/**
+ * All common parameters and all parameters that are used by {{{name.upperCamelCase}}}.
+ */
+export type {{name.upperCamelCase}}Parameters = {{name.upperCamelCase}}PathParameters & {{name.upperCamelCase}}QueryParameters;
 
 /**
 * [{{{metadata.name}}}](https://developer.commercecloud.com/s/api-details/{{{getObjectIdByAssetId metadata.assetId}}})
@@ -74,7 +84,7 @@ export type {{name.upperCamelCase}}CommonParameters = {{name.upperCamelCase}}Pat
 * 
 
 */
-export class {{name.upperCamelCase}}<Params extends {{{name.upperCamelCase}}}CommonParameters> {
+export class {{name.upperCamelCase}}<Params extends {{{name.upperCamelCase}}}Parameters & CommonParameters> {
   public clientConfig: ClientConfig<Params>;
 
   static readonly defaultBaseUri = "{{getBaseUriFromDocument model}}";
