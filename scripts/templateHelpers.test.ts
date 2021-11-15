@@ -387,4 +387,8 @@ describe('getQueryParameterTypeMapFromEndpoints', () => {
   it('returns an empty object for an empty list', () => {
     expect(getQueryParameterTypeMapFromEndpoints([])).toEqual({});
   });
+
+  it('works when an operation has no requests', () => {
+    new amf.model.domain.EndPoint().withOperations([new amf.model.domain.Operation()]);
+  });
 });

@@ -178,7 +178,7 @@ export const getPathParameterTypeMapFromEndpoints = (endpoints: amf.model.domain
   Record<string, string> => {
   // TODO: Convert .map.reduce to .flatMap when support for node v10 is dropped
   const parameters = endpoints
-    .map((ep) => ep.parameters || [])
+    .map((ep) => ep.parameters)
     .reduce((a, b) => a.concat(b), []);
   return getParameterTypes(parameters);
 };
@@ -187,7 +187,7 @@ export const getQueryParameterTypeMapFromEndpoints = (endpoints: amf.model.domai
   Record<string, string> => {
   // TODO: Convert .map.reduce to .flatMap when support for node v10 is dropped
   const parameters = endpoints
-    .map((ep) => ep.operations || [])
+    .map((ep) => ep.operations)
     .reduce((a, b) => a.concat(b), [])
     .map((op) => (op.request && op.request.queryParameters) || [])
     .reduce((a, b) => a.concat(b), []);
