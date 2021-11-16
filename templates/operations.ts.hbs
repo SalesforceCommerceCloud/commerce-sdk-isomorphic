@@ -25,7 +25,7 @@
     * {{/if}}
     */
     {{name}}(
-      options{{#or (is method "get") (is method "delete")}}?{{/or}}: {
+      options{{#or (is method "get") (is method "delete")}}?{{/or}}: RequireParametersUnlessAllAreOptional<{
         parameters?: CompositeParameters<{
           {{#each ../parameters}}
           {{{name}}}: {{{ getTypeFromParameter this}}}
@@ -36,7 +36,7 @@
         }, ConfigParameters>,
         headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
         body: {{{getPayloadTypeFromRequest request}}}{{/or}}
-      }
+      }>
     ): Promise<{{getReturnTypeFromOperation this}}>;
 
     /**
@@ -63,7 +63,7 @@
     * {{/if}}
     */
     {{name}}<T extends boolean>(
-      options{{#or (is method "get") (is method "delete")}}?{{/or}}: {
+      options{{#or (is method "get") (is method "delete")}}?{{/or}}: RequireParametersUnlessAllAreOptional<{
         parameters?: CompositeParameters<{
           {{#each ../parameters}}
           {{{name}}}: {{{ getTypeFromParameter this}}}
@@ -74,7 +74,7 @@
         }, ConfigParameters>,
         headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
         body: {{{getPayloadTypeFromRequest request}}}{{/or}}
-      },
+      }>,
       rawResponse?: T
     ): Promise<T extends true ? Response : {{getReturnTypeFromOperation this}}>;
 
@@ -102,7 +102,7 @@
     * {{/if}}
     */
     async {{name}}(
-      options{{#or (is method "get") (is method "delete")}}?{{/or}}: {
+      options{{#or (is method "get") (is method "delete")}}?{{/or}}: RequireParametersUnlessAllAreOptional<{
         parameters?: CompositeParameters<{
           {{#each ../parameters}}
           {{{name}}}: {{{ getTypeFromParameter this}}}
@@ -113,7 +113,7 @@
         }, ConfigParameters>,
         headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
         body: {{{getPayloadTypeFromRequest request}}}{{/or}}
-      },
+      }>,
       rawResponse?: boolean,
     ): Promise<Response | {{getReturnTypeFromOperation this}}> {
       const optionParams = options?.parameters || ({} as Partial<NonNullable<NonNullable<typeof options>["parameters"]>>);
