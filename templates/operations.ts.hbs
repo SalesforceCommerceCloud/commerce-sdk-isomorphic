@@ -33,7 +33,7 @@
           {{#each request.queryParameters}}
           {{{name}}}{{#if (not (is required "true"))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
-        }, Params>,
+        }, ConfigParameters>,
         headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
         body: {{{getPayloadTypeFromRequest request}}}{{/or}}
       }
@@ -71,7 +71,7 @@
           {{#each request.queryParameters}}
           {{{name}}}{{#if (not (is required "true"))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
-        }, Params>,
+        }, ConfigParameters>,
         headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
         body: {{{getPayloadTypeFromRequest request}}}{{/or}}
       },
@@ -110,7 +110,7 @@
           {{#each request.queryParameters}}
           {{{name}}}{{#if (not (is required "true"))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
-        }, Params>,
+        }, ConfigParameters>,
         headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
         body: {{{getPayloadTypeFromRequest request}}}{{/or}}
       },

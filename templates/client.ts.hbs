@@ -84,12 +84,12 @@ export type {{name.upperCamelCase}}Parameters = {{name.upperCamelCase}}PathParam
 * 
 
 */
-export class {{name.upperCamelCase}}<Params extends {{{name.upperCamelCase}}}Parameters & CommonParameters> {
-  public clientConfig: ClientConfig<Params>;
+export class {{name.upperCamelCase}}<ConfigParameters extends {{{name.upperCamelCase}}}Parameters & CommonParameters> {
+  public clientConfig: ClientConfig<ConfigParameters>;
 
   static readonly defaultBaseUri = "{{getBaseUriFromDocument model}}";
 
-  constructor(config: ClientConfigInit<Params>) {
+  constructor(config: ClientConfigInit<ConfigParameters>) {
     this.clientConfig = new ClientConfig({
       baseUri: new.target.defaultBaseUri,
       ...config
