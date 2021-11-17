@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import type { RequestInit as NodeRequestInit } from 'node-fetch';
-import { CommonBaseUriParameters } from './commonParameters';
+import { BaseUriParameters } from './helpers';
 
 /**
  * Alias for `RequestInit` from TypeScript's DOM lib, to more clearly differentiate
@@ -20,7 +20,10 @@ type BrowserRequestInit = RequestInit;
  */
 type FetchOptions = BrowserRequestInit & NodeRequestInit;
 
-export interface ClientConfigInit<Params extends CommonBaseUriParameters> {
+/**
+ * Base options that can be passed to the `ClientConfig` class.
+ */
+export interface ClientConfigInit<Params extends BaseUriParameters> {
   baseUri?: string;
   proxy?: string;
   headers?: { [key: string]: string };
@@ -35,7 +38,7 @@ export interface ClientConfigInit<Params extends CommonBaseUriParameters> {
 /**
  * Configuration parameters common to Commerce SDK clients
  */
-export default class ClientConfig<Params extends CommonBaseUriParameters>
+export default class ClientConfig<Params extends BaseUriParameters>
 implements ClientConfigInit<Params> {
   public baseUri?: string;
 

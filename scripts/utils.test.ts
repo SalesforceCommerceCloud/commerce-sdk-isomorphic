@@ -20,8 +20,6 @@ describe('registerHelper', () => {
         'addNamespace',
         'getObjectIdByAssetId',
         'formatForTsDoc',
-        'isCommonPathParameter',
-        'isCommonQueryParameter',
       ]),
     );
 
@@ -32,8 +30,6 @@ describe('registerHelper', () => {
         'addNamespace',
         'getObjectIdByAssetId',
         'formatForTsDoc',
-        'isCommonPathParameter',
-        'isCommonQueryParameter',
       ]),
     );
   });

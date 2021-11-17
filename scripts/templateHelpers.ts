@@ -8,7 +8,6 @@ import { amf } from '@commerce-apps/raml-toolkit';
 import { getTypeFromParameter } from '@commerce-apps/raml-toolkit/lib/generate/handlebarsAmfHelpers';
 
 import { ASSET_OBJECT_MAP } from './config';
-import { commonParameterPositions } from '../src/static/commonParameters';
 
 /**
  * Given an individual type or an array of types in the format Array\<Foo | Baa\>
@@ -105,28 +104,6 @@ export const formatForTsDoc = (str: string): string => {
 
   return collapsedLeadingWhitespace;
 };
-
-/**
- * Checks if a path parameter is one of the set that are configurable at the client level
- *
- * @param property - The string name of the parameter to check
- *
- * @returns true if the parameter is a common parameter
- */
-export const isCommonPathParameter = (property: string): boolean => (property
-  ? commonParameterPositions.pathParameters.includes(property.toString())
-  : false);
-
-/**
- * Checks if a query parameter is one of the set that are configurable at the client level
- *
- * @param property - The string name of the parameter to check
- *
- * @returns true if the parameter is a common parameter
- */
-export const isCommonQueryParameter = (property: string): boolean => (property
-  ? commonParameterPositions.queryParameters.includes(property.toString())
-  : false);
 
 /**
  * Forces the input to all caps.
