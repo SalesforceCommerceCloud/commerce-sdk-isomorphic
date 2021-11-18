@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>clientConfig | commerce-sdk-isomorphic</title>
+	<title>BaseUriParameters | commerce-sdk-isomorphic</title>
 	<meta name="description" content="Documentation for commerce-sdk-isomorphic">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,75 +56,70 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="clientconfig.html">clientConfig</a>
+					<a href="../modules/helpers.html">helpers</a>
+				</li>
+				<li>
+					<a href="helpers.baseuriparameters.html">BaseUriParameters</a>
 				</li>
 			</ul>
-			<h1>Module clientConfig</h1>
+			<h1>Interface BaseUriParameters</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Template parameters used in the base URI of all API endpoints. <code>version</code> will default to <code>&quot;v1&quot;</code>
+						if not specified.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">BaseUriParameters</span>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Classes</h3>
+							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter"><a href="../classes/clientconfig.clientconfig-1.html" class="tsd-kind-icon">Client<wbr>Config</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Interfaces</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter"><a href="../interfaces/clientconfig.clientconfiginit.html" class="tsd-kind-icon">Client<wbr>Config<wbr>Init</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section tsd-is-not-exported">
-							<h3>Type aliases</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported"><a href="clientconfig.html#browserrequestinit" class="tsd-kind-icon">Browser<wbr>Request<wbr>Init</a></li>
-								<li class="tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported"><a href="clientconfig.html#fetchoptions" class="tsd-kind-icon">Fetch<wbr>Options</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="helpers.baseuriparameters.html#shortcode" class="tsd-kind-icon">short<wbr>Code</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="helpers.baseuriparameters.html#version" class="tsd-kind-icon">version</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
-				<h2>Type aliases</h2>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported">
-					<a name="browserrequestinit" class="tsd-anchor"></a>
-					<h3>Browser<wbr>Request<wbr>Init</h3>
-					<div class="tsd-signature tsd-kind-icon">Browser<wbr>Request<wbr>Init<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RequestInit</span></div>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="shortcode" class="tsd-anchor"></a>
+					<h3>short<wbr>Code</h3>
+					<div class="tsd-signature tsd-kind-icon">short<wbr>Code<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/clientConfig.ts:16</li>
+							<li>Defined in src/lib/helpers.ts:20</li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Alias for <code>RequestInit</code> from TypeScript&#39;s DOM lib, to more clearly differentiate
-							it from the <code>RequestInit</code> provided by node-fetch.</p>
-						</div>
-					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported">
-					<a name="fetchoptions" class="tsd-anchor"></a>
-					<h3>Fetch<wbr>Options</h3>
-					<div class="tsd-signature tsd-kind-icon">Fetch<wbr>Options<span class="tsd-signature-symbol">:</span> <a href="clientconfig.html#browserrequestinit" class="tsd-signature-type">BrowserRequestInit</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">NodeRequestInit</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="version" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> version</h3>
+					<div class="tsd-signature tsd-kind-icon">version<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/clientConfig.ts:21</li>
+							<li>Defined in src/lib/helpers.ts:21</li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Any properties supported in either the browser or node are accepted.
-							Using the right properties in the right context is left to the user.</p>
-						</div>
-					</div>
 				</section>
 			</section>
 		</div>
@@ -134,60 +129,78 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/clientconfig.html">client<wbr>Config</a>
+					</li>
 					<li class="current tsd-kind-module">
-						<a href="clientconfig.html">client<wbr>Config</a>
+						<a href="../modules/helpers.html">helpers</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="helpers.html">helpers</a>
+						<a href="../modules/shopperbaskets.html">shopper<wbr>Baskets</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="shopperbaskets.html">shopper<wbr>Baskets</a>
+						<a href="../modules/shoppercustomers.html">shopper<wbr>Customers</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="shoppercustomers.html">shopper<wbr>Customers</a>
+						<a href="../modules/shopperdiscoverysearch.html">shopper<wbr>Discovery<wbr>Search</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="shopperdiscoverysearch.html">shopper<wbr>Discovery<wbr>Search</a>
+						<a href="../modules/shoppergiftcertificates.html">shopper<wbr>Gift<wbr>Certificates</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="shoppergiftcertificates.html">shopper<wbr>Gift<wbr>Certificates</a>
+						<a href="../modules/shopperlogin.html">shopper<wbr>Login</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="shopperlogin.html">shopper<wbr>Login</a>
+						<a href="../modules/shopperorders.html">shopper<wbr>Orders</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="shopperorders.html">shopper<wbr>Orders</a>
+						<a href="../modules/shopperproducts.html">shopper<wbr>Products</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="shopperproducts.html">shopper<wbr>Products</a>
+						<a href="../modules/shopperpromotions.html">shopper<wbr>Promotions</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="shopperpromotions.html">shopper<wbr>Promotions</a>
+						<a href="../modules/shoppersearch.html">shopper<wbr>Search</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="shoppersearch.html">shopper<wbr>Search</a>
+						<a href="../modules/templateurl.html">template<wbr>Url</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="templateurl.html">template<wbr>Url</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="version.html">version</a>
+						<a href="../modules/version.html">version</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../classes/clientconfig.clientconfig-1.html" class="tsd-kind-icon">Client<wbr>Config</a>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-module">
+						<a href="helpers.baseuriparameters.html" class="tsd-kind-icon">Base<wbr>Uri<wbr>Parameters</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="helpers.baseuriparameters.html#shortcode" class="tsd-kind-icon">short<wbr>Code</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="helpers.baseuriparameters.html#version" class="tsd-kind-icon">version</a>
+							</li>
+						</ul>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../interfaces/clientconfig.clientconfiginit.html" class="tsd-kind-icon">Client<wbr>Config<wbr>Init</a>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="helpers.pathparameters.html" class="tsd-kind-icon">Path<wbr>Parameters</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported">
-						<a href="clientconfig.html#browserrequestinit" class="tsd-kind-icon">Browser<wbr>Request<wbr>Init</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="helpers.queryparameters.html" class="tsd-kind-icon">Query<wbr>Parameters</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported">
-						<a href="clientconfig.html#fetchoptions" class="tsd-kind-icon">Fetch<wbr>Options</a>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/helpers.html#compositeparameters" class="tsd-kind-icon">Composite<wbr>Parameters</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/helpers.html#requireparametersunlessallareoptional" class="tsd-kind-icon">Require<wbr>Parameters<wbr>Unless<wbr>All<wbr>Are<wbr>Optional</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/helpers.html#urlparameters" class="tsd-kind-icon">Url<wbr>Parameters</a>
 					</li>
 				</ul>
 			</nav>
@@ -206,6 +219,7 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
