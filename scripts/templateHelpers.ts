@@ -1,13 +1,13 @@
 /*
- * Copyright (c) 2020, salesforce.com, inc.
+ * Copyright (c) 2021, salesforce.com, inc.
  * All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { amf } from '@commerce-apps/raml-toolkit';
+import { getTypeFromParameter } from '@commerce-apps/raml-toolkit/lib/generate/handlebarsAmfHelpers';
 
 import { ASSET_OBJECT_MAP } from './config';
-import { commonParameterPositions } from '../src/static/commonParameters';
 
 /**
  * Given an individual type or an array of types in the format Array\<Foo | Baa\>
@@ -106,28 +106,6 @@ export const formatForTsDoc = (str: string): string => {
 };
 
 /**
- * Checks if a path parameter is one of the set that are configurable at the client level
- *
- * @param property - The string name of the parameter to check
- *
- * @returns true if the parameter is a common parameter
- */
-export const isCommonPathParameter = (property: string): boolean => (property
-  ? commonParameterPositions.pathParameters.includes(property.toString())
-  : false);
-
-/**
- * Checks if a query parameter is one of the set that are configurable at the client level
- *
- * @param property - The string name of the parameter to check
- *
- * @returns true if the parameter is a common parameter
- */
-export const isCommonQueryParameter = (property: string): boolean => (property
-  ? commonParameterPositions.queryParameters.includes(property.toString())
-  : false);
-
-/**
  * Forces the input to all caps.
  *
  * @param input - The string you want to change to all caps
@@ -146,6 +124,50 @@ export const loud = (input: string): string => String(input).toUpperCase();
  * not been removed to maintain backward compatibility.)
  *
  * @param trait - Trait to check
- * @returns true unless the trait's name is "offset-paginated"
+ * @returns Whether the trait name is a valid TypeScript type identifier
  */
 export const isAllowedTrait = (trait: amf.model.domain.Trait): boolean => /^[A-Za-z][A-Za-z0-9]*$/.test(trait.name.value());
+
+export const getParameterTypes = (params: amf.model.domain.Parameter[]): Record<string, string> => {
+  // Aggregate parameters by type
+  const map = new Map<string, Set<string>>();
+  params.forEach((param) => {
+    const name = param.name.value();
+    const type = getTypeFromParameter(param);
+    const set = map.get(name);
+    if (set) {
+      set.add(type);
+    } else {
+      map.set(name, new Set([type]));
+    }
+  });
+
+  // Convert map to object for ease of use in template
+  const obj: Record<string, string> = {};
+  map.forEach((types, name) => {
+    // Convert set of types to single union type
+    obj[name] = Array.from(types).join(' | ');
+  });
+  return obj;
+};
+
+export const getPathParameterTypeMapFromEndpoints = (endpoints: amf.model.domain.EndPoint[]):
+  Record<string, string> => {
+  // TODO: Convert .map.reduce to .flatMap when support for node v10 is dropped
+  const parameters = endpoints
+    .map((ep) => ep.parameters)
+    .reduce((a, b) => a.concat(b), []);
+  return getParameterTypes(parameters);
+};
+
+export const getQueryParameterTypeMapFromEndpoints = (endpoints: amf.model.domain.EndPoint[]):
+  Record<string, string> => {
+  // TODO: Convert .map.reduce to .flatMap when support for node v10 is dropped
+  const parameters = endpoints
+    .map((ep) => ep.operations)
+    .reduce((a, b) => a.concat(b), [])
+    .map((op) => (op.request && op.request.queryParameters) || [])
+    .reduce((a, b) => a.concat(b), []);
+
+  return getParameterTypes(parameters);
+};

@@ -25,19 +25,18 @@
     * {{/if}}
     */
     {{name}}(
-      options{{#or (is method "get") (is method "delete")}}?{{/or}}: {
-        parameters?: {
+      options{{#or (is method "get") (is method "delete")}}?{{/or}}: RequireParametersUnlessAllAreOptional<{
+        parameters?: CompositeParameters<{
           {{#each ../parameters}}
-          {{! common parameters can be configured at the client level and therefore are not required }}
-          {{name}}{{#if (isCommonPathParameter name)}}?{{/if}}: {{{ getTypeFromParameter this}}}
+          {{{name}}}: {{{ getTypeFromParameter this}}}
           {{/each}}
           {{#each request.queryParameters}}
-          {{name}}{{#if (or (not (is required "true")) (isCommonQueryParameter name))}}?{{/if}}: {{{ getTypeFromParameter this}}}
+          {{{name}}}{{#if (not (is required "true"))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
-        },
+        }, ConfigParameters>,
         headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
         body: {{{getPayloadTypeFromRequest request}}}{{/or}}
-      }
+      }>
     ): Promise<{{getReturnTypeFromOperation this}}>;
 
     /**
@@ -64,19 +63,18 @@
     * {{/if}}
     */
     {{name}}<T extends boolean>(
-      options{{#or (is method "get") (is method "delete")}}?{{/or}}: {
-        parameters?: {
+      options{{#or (is method "get") (is method "delete")}}?{{/or}}: RequireParametersUnlessAllAreOptional<{
+        parameters?: CompositeParameters<{
           {{#each ../parameters}}
-          {{! common parameters can be configured at the client level and therefore are not required }}
-          {{name}}{{#if (isCommonPathParameter name)}}?{{/if}}: {{{ getTypeFromParameter this}}}
+          {{{name}}}: {{{ getTypeFromParameter this}}}
           {{/each}}
           {{#each request.queryParameters}}
-          {{name}}{{#if (or (not (is required "true")) (isCommonQueryParameter name))}}?{{/if}}: {{{ getTypeFromParameter this}}}
+          {{{name}}}{{#if (not (is required "true"))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
-        },
+        }, ConfigParameters>,
         headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
         body: {{{getPayloadTypeFromRequest request}}}{{/or}}
-      },
+      }>,
       rawResponse?: T
     ): Promise<T extends true ? Response : {{getReturnTypeFromOperation this}}>;
 
@@ -104,50 +102,51 @@
     * {{/if}}
     */
     async {{name}}(
-      options{{#or (is method "get") (is method "delete")}}?{{/or}}: {
-        parameters?: {
+      options{{#or (is method "get") (is method "delete")}}?{{/or}}: RequireParametersUnlessAllAreOptional<{
+        parameters?: CompositeParameters<{
           {{#each ../parameters}}
-          {{! common parameters can be configured at the client level and therefore are not required }}
-          {{name}}{{#if (isCommonPathParameter name)}}?{{/if}}: {{{ getTypeFromParameter this}}}
+          {{{name}}}: {{{ getTypeFromParameter this}}}
           {{/each}}
           {{#each request.queryParameters}}
-          {{name}}{{#if (or (not (is required "true")) (isCommonQueryParameter name))}}?{{/if}}: {{{ getTypeFromParameter this}}}
+          {{{name}}}{{#if (not (is required "true"))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
-        },
+        }, ConfigParameters>,
         headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
         body: {{{getPayloadTypeFromRequest request}}}{{/or}}
-      },
+      }>,
       rawResponse?: boolean,
     ): Promise<Response | {{getReturnTypeFromOperation this}}> {
-      const optionParams = options?.parameters || {} as UrlParameters;
-      const configParams = this.clientConfig.parameters || {};
+      const optionParams = options?.parameters || ({} as Partial<NonNullable<NonNullable<typeof options>["parameters"]>>);
+      const configParams = this.clientConfig.parameters;
 
-      // All config parameters are assumed to be path parameters
-      const pathParams = {
-        version: 'v1',
-        ...configParams
-      } as PathParameters;
-      // Merge in known path parameters from options
+      const pathParams: {{{@root.name.upperCamelCase}}}PathParameters & Required<BaseUriParameters> = {
+        {{!-- Base URI parameters are well known and unlikely to change, so they are hard-coded for simplicity  --}}
+        shortCode: configParams.shortCode,
+        version: configParams.version || "v1"
+      };
       {{#each ../parameters}}
       if (optionParams["{{{name}}}"] !== undefined) {
-        pathParams["{{{name}}}"] = optionParams["{{{name}}}"] as PathParameters[keyof PathParameters];
+        pathParams["{{{name}}}"] = optionParams["{{{name}}}"];
+      } else if (configParams["{{{name}}}"] !== undefined) {
+        pathParams["{{{name}}}"] = configParams["{{{name}}}"];
       }
+      {{#if (is required "true")}}
+      else {
+        throw new Error('Missing required path parameter: {{{name}}}');
+      }
+      {{/if}}
       {{/each}}
 
-      // Query parameters are assumed to be any parameters that aren't path parameters
-      const queryParams = {
-        siteId: configParams.siteId,
-        ...optionParams
-      } as QueryParameters;
-      // Delete known path parameters
-      {{#each ../parameters}}
-      delete queryParams["{{{name}}}"];
-      {{/each}}
-      // Fall back to config for common query parameters
+      const queryParams: {{{@root.name.upperCamelCase}}}QueryParameters = {};
       {{#each request.queryParameters}}
-      {{#if (isCommonQueryParameter name)}}
-      if (queryParams["{{{name}}}"] === undefined && configParams["{{{name}}}"] !== undefined) {
+      if (optionParams["{{{name}}}"] !== undefined) {
+        queryParams["{{{name}}}"] = optionParams["{{{name}}}"];
+      } else if (configParams["{{{name}}}"] !== undefined) {
         queryParams["{{{name}}}"] = configParams["{{{name}}}"];
+      }
+      {{#if (is required "true")}}
+      else {
+        throw new Error('Missing required query parameter: {{{name}}}');
       }
       {{/if}}
       {{/each}}

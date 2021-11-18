@@ -1,28 +1,59 @@
-import ClientConfig, { ClientConfigInit } from "./clientConfig";
-import {USER_AGENT_HEADER, USER_AGENT_VALUE} from "./version";
-
-import TemplateURL from "./templateUrl";
 import { fetch, Request }  from "cross-fetch";
-import type { PathParameters, QueryParameters, UrlParameters } from "./commonParameters";
+
+import ClientConfig, { ClientConfigInit } from "./clientConfig";
+import type {
+  BaseUriParameters,
+  CompositeParameters,
+  RequireParametersUnlessAllAreOptional
+} from "./helpers";
+import TemplateURL from "./templateUrl";
+import { USER_AGENT_HEADER, USER_AGENT_VALUE } from "./version";
 
 {{#each dataTypes}}
-    {{!-- TODO: Remove this special case handling once namespaced types are added --}}
-    {{#if (eq (getValue name) "ResourceBadRequest")}}
+  {{!-- TODO: Remove this special case handling once namespaced types are added --}}
+  {{#if (eq (getValue name) "ResourceBadRequest")}}
 // This is a known deviation from the RAML definition, required due to limitations in
-  // the SDK generation. The full definition will be included in the next major release.
-  export type ResourceBadRequest = { [key: string]: any };
-    {{else if (or (isTypeDefinition this) (isArrayType this))}}
-  export type {{getValue name}} = {{> dtoPartial typeDto=this}}
-      {{/if}}
-      {{!-- Traits are internal types and do not need to be exported --}}
-      {{#if (isTraitDefinition this)}}
-        {{#if (isAllowedTrait this) }}
-  type {{getValue name}} = {{> dtoPartial typeDto=this}}
-        {{else}}
-        {{log "Cannot convert invalid trait to type:" (getValue name) lavel="warn"}}
-        {{/if}}
+// the SDK generation. The full definition will be included in the next major release.
+export type ResourceBadRequest = { [key: string]: any };
+  {{else if (or (isTypeDefinition this) (isArrayType this))}}
+export type {{getValue name}} = {{> dtoPartial typeDto=this}}
+  {{/if}}
+  {{!-- There exists both a type `RangeFilter` and a trait `RangeFilter` in
+  some APIs. This causes a name collision bug where the type is not included
+  in the generated file. The bug was incorrectly "fixed" by including traits
+  as types. They are not types, and will eventually be removed. --}}
+  {{#if (isTraitDefinition this)}}
+    {{#if (isAllowedTrait this) }}
+    {{!-- Because we know that a trait "type" is either (a) unused or (b) replacing
+    a real type whose definition we have lost, we don't want to be restrictive --}}
+type {{getValue name}} = { [key: string]: any }
+    {{else}}
+      {{log "Cannot convert invalid trait to type:" (getValue name) lavel="warn"}}
     {{/if}}
+  {{/if}}
 {{/each}}
+
+/**
+ * All path parameters that are used by at least one {{{name.upperCamelCase}}} method.
+ */
+export type {{name.upperCamelCase}}PathParameters = {
+{{#each (getPathParameterTypeMapFromEndpoints model.encodes.endPoints)}}
+  {{{@key}}}?: {{{this}}};
+{{/each}}
+}
+/**
+ * All query parameters that are used by at least one {{{name.upperCamelCase}}} method.
+ */
+export type {{name.upperCamelCase}}QueryParameters = {
+{{#each (getQueryParameterTypeMapFromEndpoints model.encodes.endPoints)}}
+  {{{@key}}}?: {{{this}}};
+{{/each}}
+}
+
+/**
+ * All parameters that are used by {{{name.upperCamelCase}}}.
+ */
+export type {{name.upperCamelCase}}Parameters = {{name.upperCamelCase}}PathParameters & BaseUriParameters & {{name.upperCamelCase}}QueryParameters;
 
 /**
 * [{{{metadata.name}}}](https://developer.commercecloud.com/s/api-details/{{{getObjectIdByAssetId metadata.assetId}}})
@@ -56,12 +87,12 @@ import type { PathParameters, QueryParameters, UrlParameters } from "./commonPar
 * 
 
 */
-export class {{name.upperCamelCase}} {
-  public clientConfig: ClientConfig;
+export class {{name.upperCamelCase}}<ConfigParameters extends {{{name.upperCamelCase}}}Parameters & Record<string, unknown>> {
+  public clientConfig: ClientConfig<ConfigParameters>;
 
   static readonly defaultBaseUri = "{{getBaseUriFromDocument model}}";
 
-  constructor(config?: ClientConfigInit) {
+  constructor(config: ClientConfigInit<ConfigParameters>) {
     this.clientConfig = new ClientConfig({
       baseUri: new.target.defaultBaseUri,
       ...config

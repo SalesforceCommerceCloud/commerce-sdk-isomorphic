@@ -120,8 +120,10 @@ export async function updateApis(
   }
   try {
     await download.downloadRestApis([api], rootPath);
-  } catch (err) {
-    err.message = `Failed to download ${name}: ${err.message}`;
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      err.message = `Failed to download ${name}: ${err.message}`;
+    }
     throw err;
   }
 }

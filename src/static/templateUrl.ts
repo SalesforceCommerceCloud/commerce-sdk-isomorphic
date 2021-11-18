@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import type { PathParameters, QueryParameters } from './commonParameters';
+import type { PathParameters, QueryParameters } from './helpers';
 
 export default class TemplateURL extends URL {
   /**

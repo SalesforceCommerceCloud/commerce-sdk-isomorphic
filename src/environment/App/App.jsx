@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, salesforce.com, inc.
+ * Copyright (c) 2021, salesforce.com, inc.
  * All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
@@ -58,9 +58,14 @@ class App extends Component {
     this.doSearch(searchText);
   }
 
-  async getToken() {
-    const authResponse = await customerClient.authorizeCustomer({ body: { type: 'guest' } }, true);
-    this.state.token = authResponse.headers.get('authorization');
+  handleChange(event) {
+    this.setState({ searchText: event.target.value });
+  }
+
+  handleSubmit(event) {
+    const { searchText } = this.state;
+    this.doSearch(searchText);
+    event.preventDefault();
   }
 
   async getSearchResults(text) {
@@ -72,14 +77,9 @@ class App extends Component {
     });
   }
 
-  handleSubmit(event) {
-    const { searchText } = this.state;
-    this.doSearch(searchText);
-    event.preventDefault();
-  }
-
-  handleChange(event) {
-    this.setState({ searchText: event.target.value });
+  async getToken() {
+    const authResponse = await customerClient.authorizeCustomer({ body: { type: 'guest' } }, true);
+    this.state.token = authResponse.headers.get('authorization');
   }
 
   async doSearch() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, salesforce.com, inc.
+ * Copyright (c) 2021, salesforce.com, inc.
  * All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
@@ -8,6 +8,8 @@
 import nock from 'nock';
 import { ClientConfigInit, ShopperCustomers, ShopperSearch } from '../lib';
 import config from '../environment/config';
+
+type TestConfigParameters = typeof config.parameters;
 
 /**
  * Validation of integration and use of cross-fetch when run in a node environment.
@@ -50,7 +52,7 @@ test('test getting a token without a proxy', async () => {
       preferredLocale: 'en_US',
     }, { Authorization: 'Bearer test-auth' });
 
-  const proxylessConfig: ClientConfigInit = { ...config };
+  const proxylessConfig: ClientConfigInit<TestConfigParameters> = { ...config };
   delete proxylessConfig.proxy;
   const client = new ShopperCustomers(proxylessConfig);
 
@@ -67,7 +69,7 @@ test('test getting a token with an invalid short code', async () => {
     .query({ siteId: config.parameters.siteId, clientId: config.parameters.clientId })
     .replyWithError('ENOTFOUND-TEST');
 
-  const proxylessConfig: ClientConfigInit = {
+  const proxylessConfig: ClientConfigInit<TestConfigParameters> = {
     ...config,
     parameters: {
       ...config.parameters,
@@ -80,26 +82,11 @@ test('test getting a token with an invalid short code', async () => {
   await expect(
     client.authorizeCustomer({ body: { type: 'guest' } }, true),
   ).rejects.toEqual({
-    message: 'request to https://invalid-short-code.api.commercecloud.salesforce.com/customer/shopper-customers/v1/organizations/ORGANIZATION_ID/customers/actions/login?siteId=SITE_ID&clientId=CLIENT_ID failed, reason: ENOTFOUND-TEST',
-    type: 'system',
-  });
-});
-
-test('test getting a token with a missing short code', async () => {
-  nock('https://undefined.api.commercecloud.salesforce.com')
-    .post(`/customer/shopper-customers/v1/organizations/${config.parameters.organizationId}/customers/actions/login`)
-    .query({ siteId: config.parameters.siteId, clientId: config.parameters.clientId })
-    .replyWithError('ENOTFOUND-TEST');
-
-  const proxylessConfig: ClientConfigInit = { ...config };
-  delete proxylessConfig.proxy;
-  delete proxylessConfig.parameters?.shortCode;
-  const client = new ShopperCustomers(proxylessConfig);
-
-  await expect(
-    client.authorizeCustomer({ body: { type: 'guest' } }, true),
-  ).rejects.toEqual({
-    message: 'request to https://undefined.api.commercecloud.salesforce.com/customer/shopper-customers/v1/organizations/ORGANIZATION_ID/customers/actions/login?siteId=SITE_ID&clientId=CLIENT_ID failed, reason: ENOTFOUND-TEST',
+    // Did this test fail? It's stable for a build, but flaky across builds. Try swapping which
+    // `message` line is commented out. The order of the query parameters gets swapped.
+    // TODO: Either stop this from happening or just change the assertion to be more flexible.
+    // message: 'request to https://invalid-short-code.api.commercecloud.salesforce.com/customer/shopper-customers/v1/organizations/ORGANIZATION_ID/customers/actions/login?siteId=SITE_ID&clientId=CLIENT_ID failed, reason: ENOTFOUND-TEST',
+    message: 'request to https://invalid-short-code.api.commercecloud.salesforce.com/customer/shopper-customers/v1/organizations/ORGANIZATION_ID/customers/actions/login?clientId=CLIENT_ID&siteId=SITE_ID failed, reason: ENOTFOUND-TEST',
     type: 'system',
   });
 });
@@ -160,7 +147,7 @@ test('should use timeout from fetch options and throw timeout error', async () =
     .delayConnection(400)
     .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
 
-  const clientConfig: ClientConfigInit = {
+  const clientConfig: ClientConfigInit<TestConfigParameters> = {
     ...config,
     fetchOptions: {
       timeout: 200,
@@ -183,7 +170,7 @@ test('should use timeout from fetch options and succeed when service responds qu
     .matchHeader('authorization', 'Bearer test-auth')
     .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
 
-  const clientConfig: ClientConfigInit = {
+  const clientConfig: ClientConfigInit<TestConfigParameters> = {
     ...config,
     fetchOptions: {
       timeout: 1000,
@@ -204,7 +191,7 @@ test('should use default value when timeout is not configured in fetch options a
     .delayConnection(400)
     .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
 
-  const clientConfig: ClientConfigInit = {
+  const clientConfig: ClientConfigInit<TestConfigParameters> = {
     ...config,
     fetchOptions: {},
   };
@@ -222,12 +209,12 @@ test('should not fail when arbitrary parameters are configured in fetchOptions',
     .matchHeader('authorization', 'Bearer test-auth')
     .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
 
-  const clientConfig: ClientConfigInit = {
+  const clientConfig: ClientConfigInit<TestConfigParameters> = {
     ...config,
     fetchOptions: {
       somekey: 'some value',
       timeout: 1000,
-    } as any,
+    } as any, // Type assertion required because we are deliberately violating the type
   };
 
   const client = new ShopperSearch(clientConfig);

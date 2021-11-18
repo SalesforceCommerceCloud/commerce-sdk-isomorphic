@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { generate } from '@commerce-apps/raml-toolkit';
+import { download, generate } from '@commerce-apps/raml-toolkit';
 import {
   registerHelpers, registerPartials, setupApis, updateApis,
 } from './utils';
@@ -20,8 +20,6 @@ describe('registerHelper', () => {
         'addNamespace',
         'getObjectIdByAssetId',
         'formatForTsDoc',
-        'isCommonPathParameter',
-        'isCommonQueryParameter',
       ]),
     );
 
@@ -32,8 +30,6 @@ describe('registerHelper', () => {
         'addNamespace',
         'getObjectIdByAssetId',
         'formatForTsDoc',
-        'isCommonPathParameter',
-        'isCommonQueryParameter',
       ]),
     );
   });
@@ -94,6 +90,14 @@ describe('test updateApis script', () => {
       .rejects.toThrow("No exact match in Exchange for 'noMatch'");
   });
 
-  it('downloads when exact match', async () => expect(updateApis('shopper-customers', /production/i, '/tmp'))
-    .resolves.toBeUndefined());
+  it('downloads when exact match', async () => {
+    await expect(updateApis('shopper-customers', /production/i, '/tmp'))
+      .resolves.toBeUndefined();
+  });
+
+  it('throws error when download fails', async () => {
+    jest.spyOn(download, 'downloadRestApis').mockRejectedValue(new Error('It failed.'));
+    await expect(updateApis('shopper-customers', /production/i, '/tmp'))
+      .rejects.toThrow('Failed to download shopper-customers: It failed.');
+  });
 });
