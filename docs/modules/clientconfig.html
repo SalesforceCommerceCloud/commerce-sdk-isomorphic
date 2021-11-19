@@ -73,18 +73,19 @@
 						<section class="tsd-index-section ">
 							<h3>Classes</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-class tsd-parent-kind-module"><a href="../classes/clientconfig.clientconfig-1.html" class="tsd-kind-icon">Client<wbr>Config</a></li>
+								<li class="tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter"><a href="../classes/clientconfig.clientconfig-1.html" class="tsd-kind-icon">Client<wbr>Config</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/clientconfig.clientconfiginit.html" class="tsd-kind-icon">Client<wbr>Config<wbr>Init</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter"><a href="../interfaces/clientconfig.clientconfiginit.html" class="tsd-kind-icon">Client<wbr>Config<wbr>Init</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-not-exported">
 							<h3>Type aliases</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported"><a href="clientconfig.html#browserrequestinit" class="tsd-kind-icon">Browser<wbr>Request<wbr>Init</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported"><a href="clientconfig.html#fetchoptions" class="tsd-kind-icon">Fetch<wbr>Options</a></li>
 							</ul>
 						</section>
@@ -94,14 +95,36 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
 				<h2>Type aliases</h2>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported">
-					<a name="fetchoptions" class="tsd-anchor"></a>
-					<h3>Fetch<wbr>Options</h3>
-					<div class="tsd-signature tsd-kind-icon">Fetch<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RequestInit</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">NodeRequestInit</span></div>
+					<a name="browserrequestinit" class="tsd-anchor"></a>
+					<h3>Browser<wbr>Request<wbr>Init</h3>
+					<div class="tsd-signature tsd-kind-icon">Browser<wbr>Request<wbr>Init<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RequestInit</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/clientConfig.ts:11</li>
+							<li>Defined in src/lib/clientConfig.ts:16</li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Alias for <code>RequestInit</code> from TypeScript&#39;s DOM lib, to more clearly differentiate
+							it from the <code>RequestInit</code> provided by node-fetch.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported">
+					<a name="fetchoptions" class="tsd-anchor"></a>
+					<h3>Fetch<wbr>Options</h3>
+					<div class="tsd-signature tsd-kind-icon">Fetch<wbr>Options<span class="tsd-signature-symbol">:</span> <a href="clientconfig.html#browserrequestinit" class="tsd-signature-type">BrowserRequestInit</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">NodeRequestInit</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/lib/clientConfig.ts:21</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Any properties supported in either the browser or node are accepted.
+							Using the right properties in the right context is left to the user.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -115,7 +138,7 @@
 						<a href="clientconfig.html">client<wbr>Config</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="commonparameters.html">common<wbr>Parameters</a>
+						<a href="helpers.html">helpers</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="shopperbaskets.html">shopper<wbr>Baskets</a>
@@ -147,15 +170,21 @@
 					<li class=" tsd-kind-module">
 						<a href="templateurl.html">template<wbr>Url</a>
 					</li>
+					<li class=" tsd-kind-module">
+						<a href="version.html">version</a>
+					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-module">
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="../classes/clientconfig.clientconfig-1.html" class="tsd-kind-icon">Client<wbr>Config</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="../interfaces/clientconfig.clientconfiginit.html" class="tsd-kind-icon">Client<wbr>Config<wbr>Init</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported">
+						<a href="clientconfig.html#browserrequestinit" class="tsd-kind-icon">Browser<wbr>Request<wbr>Init</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported">
 						<a href="clientconfig.html#fetchoptions" class="tsd-kind-icon">Fetch<wbr>Options</a>
@@ -170,14 +199,17 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
-				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
 			</ul>
 		</div>
 	</div>
