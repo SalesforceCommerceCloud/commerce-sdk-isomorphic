@@ -1,0 +1,9 @@
+ignores:
+  # Include an explanation why the package is ignored
+  - "@babel/*" # Used in babel.config.js and babel.config.jest.js
+  - jest-environment-jsdom-sixteen # Used by test:react script in package.json
+  - lib # Used in App.jsx, references local directory
+  - node-fetch # False positive - clientConfig.ts imports the type from @types/node-fetch
+  - sort-package-json # Used in lint-staged config in package.json
+  - stylelint-* # Used in .stylelintrc
+  - typedoc-plugin-* # Automatically loaded by typedoc, never directly referenced
