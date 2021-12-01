@@ -1,0 +1,8 @@
+# This file is required because otherwise depcheck will skip checking files in the .gitignore,
+# but we want to check some of those files (namely, the generated code in /src/lib).
+
+# We don't strictly need to ignore /apis and /docs, because there's nothing in them that depcheck
+# recognizes, but we can get a minor performance boost by skipping all of those files.
+/apis
+/docs
+/node_modules
