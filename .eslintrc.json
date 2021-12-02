@@ -7,7 +7,8 @@
     },
     "extends": [
         "plugin:react/recommended",
-        "airbnb"
+        "airbnb",
+        "prettier"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -21,7 +22,8 @@
         "react",
         "@typescript-eslint",
         "jest",
-        "header"
+        "header",
+        "prettier"
     ],
     "reportUnusedDisableDirectives": true,
     "rules": {
@@ -31,12 +33,6 @@
         "ts": "never",
         "tsx": "never"
       }],
-      "max-lines": [
-        "error",
-        {
-          "max": 500
-        }
-      ],
       "import/no-extraneous-dependencies": "off",
       "header/header": [
         2,
@@ -52,7 +48,14 @@
           " * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause",
           " "
         ]
-      ]
+      ],
+      "max-lines": [
+        "error",
+        {
+          "max": 500
+        }
+      ],
+      "prettier/prettier": "warn"
     },
     "overrides": [
       {
