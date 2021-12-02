@@ -4,10 +4,10 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { amf } from '@commerce-apps/raml-toolkit';
-import { getTypeFromParameter } from '@commerce-apps/raml-toolkit/lib/generate/handlebarsAmfHelpers';
+import {amf} from '@commerce-apps/raml-toolkit';
+import {getTypeFromParameter} from '@commerce-apps/raml-toolkit/lib/generate/handlebarsAmfHelpers';
 
-import { ASSET_OBJECT_MAP } from './config';
+import {ASSET_OBJECT_MAP} from './config';
 
 /**
  * Given an individual type or an array of types in the format Array\<Foo | Baa\>
@@ -38,7 +38,7 @@ export function addNamespace(content: string, namespace: any): string {
   const namespaceTypes: string[] = [];
 
   // for each type
-  typesToProcess.forEach((checkType) => {
+  typesToProcess.forEach(checkType => {
     // trim the fat
     const actualType = checkType.trim();
     // check if there's an actual type present
@@ -94,7 +94,7 @@ export const formatForTsDoc = (str: string): string => {
   // Brackets are special to TSDoc and less than / greater than are interpreted as HTML
   const symbolsEscaped = str
     .toString()
-    .replace(/([^\\])(["{}<>]+)/g, (m) => Array.from(m).join('\\'));
+    .replace(/([^\\])(["{}<>]+)/g, m => Array.from(m).join('\\'));
   // Double escaped newlines are replaced with real newlines
   const newlinesUnescaped = symbolsEscaped.replace(/\\n/g, '\n');
   // Double escaped tabs are replaced with a single space
@@ -126,12 +126,15 @@ export const loud = (input: string): string => String(input).toUpperCase();
  * @param trait - Trait to check
  * @returns Whether the trait name is a valid TypeScript type identifier
  */
-export const isAllowedTrait = (trait: amf.model.domain.Trait): boolean => /^[A-Za-z][A-Za-z0-9]*$/.test(trait.name.value());
+export const isAllowedTrait = (trait: amf.model.domain.Trait): boolean =>
+  /^[A-Za-z][A-Za-z0-9]*$/.test(trait.name.value());
 
-export const getParameterTypes = (params: amf.model.domain.Parameter[]): Record<string, string> => {
+export const getParameterTypes = (
+  params: amf.model.domain.Parameter[]
+): Record<string, string> => {
   // Aggregate parameters by type
   const map = new Map<string, Set<string>>();
-  params.forEach((param) => {
+  params.forEach(param => {
     const name = param.name.value();
     const type = getTypeFromParameter(param);
     const set = map.get(name);
@@ -151,22 +154,24 @@ export const getParameterTypes = (params: amf.model.domain.Parameter[]): Record<
   return obj;
 };
 
-export const getPathParameterTypeMapFromEndpoints = (endpoints: amf.model.domain.EndPoint[]):
-  Record<string, string> => {
+export const getPathParameterTypeMapFromEndpoints = (
+  endpoints: amf.model.domain.EndPoint[]
+): Record<string, string> => {
   // TODO: Convert .map.reduce to .flatMap when support for node v10 is dropped
   const parameters = endpoints
-    .map((ep) => ep.parameters)
+    .map(ep => ep.parameters)
     .reduce((a, b) => a.concat(b), []);
   return getParameterTypes(parameters);
 };
 
-export const getQueryParameterTypeMapFromEndpoints = (endpoints: amf.model.domain.EndPoint[]):
-  Record<string, string> => {
+export const getQueryParameterTypeMapFromEndpoints = (
+  endpoints: amf.model.domain.EndPoint[]
+): Record<string, string> => {
   // TODO: Convert .map.reduce to .flatMap when support for node v10 is dropped
   const parameters = endpoints
-    .map((ep) => ep.operations)
+    .map(ep => ep.operations)
     .reduce((a, b) => a.concat(b), [])
-    .map((op) => (op.request && op.request.queryParameters) || [])
+    .map(op => (op.request && op.request.queryParameters) || [])
     .reduce((a, b) => a.concat(b), []);
 
   return getParameterTypes(parameters);

@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import type { RequestInit as NodeRequestInit } from 'node-fetch';
-import { BaseUriParameters } from './helpers';
+import type {RequestInit as NodeRequestInit} from 'node-fetch';
+import {BaseUriParameters} from './helpers';
 
 /**
  * Alias for `RequestInit` from TypeScript's DOM lib, to more clearly differentiate
@@ -26,40 +26,48 @@ type FetchOptions = BrowserRequestInit & NodeRequestInit;
 export interface ClientConfigInit<Params extends BaseUriParameters> {
   baseUri?: string;
   proxy?: string;
-  headers?: { [key: string]: string };
+  headers?: {[key: string]: string};
   parameters: Params;
   fetchOptions?: FetchOptions;
   // eslint thinks that the names used in the function signature are variables
   // instead of part of the type, not sure why...
-  // eslint-disable-next-line no-unused-vars
-  transformRequest?: (data: any, headers: { [key: string]: string }) => Required<FetchOptions>['body'];
+  transformRequest?: (
+    // eslint-disable-next-line no-unused-vars
+    data: any,
+    // eslint-disable-next-line no-unused-vars
+    headers: {[key: string]: string}
+  ) => Required<FetchOptions>['body'];
 }
 
 /**
  * Configuration parameters common to Commerce SDK clients
  */
 export default class ClientConfig<Params extends BaseUriParameters>
-implements ClientConfigInit<Params> {
+  implements ClientConfigInit<Params>
+{
   public baseUri?: string;
 
   public proxy?: string;
 
-  public headers: { [key: string]: string };
+  public headers: {[key: string]: string};
 
   public parameters: Params;
 
   public fetchOptions: FetchOptions;
 
-  public transformRequest: NonNullable<ClientConfigInit<Params>['transformRequest']>;
+  public transformRequest: NonNullable<
+    ClientConfigInit<Params>['transformRequest']
+  >;
 
   constructor(config: ClientConfigInit<Params>) {
-    this.headers = { ...config.headers };
-    this.parameters = { ...config.parameters };
+    this.headers = {...config.headers};
+    this.parameters = {...config.parameters};
     if (!this.parameters.shortCode) {
       throw new Error('Missing required parameter: shortCode');
     }
-    this.fetchOptions = { ...config.fetchOptions };
-    this.transformRequest = config.transformRequest || ClientConfig.defaults.transformRequest;
+    this.fetchOptions = {...config.fetchOptions};
+    this.transformRequest =
+      config.transformRequest || ClientConfig.defaults.transformRequest;
 
     // Optional properties
     if (config.baseUri) {
@@ -70,14 +78,17 @@ implements ClientConfigInit<Params> {
     }
   }
 
-  static readonly defaults: Pick<Required<ClientConfigInit<never>>, 'transformRequest'> = {
+  static readonly defaults: Pick<
+    Required<ClientConfigInit<never>>,
+    'transformRequest'
+  > = {
     /**
      * If data is a plain object or an array, it is converted to JSON and the Content-Type header is
      * set to application/json. All other data is returned unmodified.
      * @param data - Data to transform
      * @returns A JSON string or the unmodified data
      */
-    transformRequest<T>(data: T, headers: { [key: string]: string }): T | string {
+    transformRequest<T>(data: T, headers: {[key: string]: string}): T | string {
       if (data == null || typeof data !== 'object') {
         return data;
       }

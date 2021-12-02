@@ -7,27 +7,21 @@
 
 /* eslint-disable react/require-default-props */
 // eslint-disable-next-line no-use-before-define
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { ShopperCustomers, ShopperSearch } from 'lib';
+import {ShopperCustomers, ShopperSearch} from 'lib';
 import config from '../config';
 import './App.css';
 
 const customerClient = new ShopperCustomers(config);
 const searchClient = new ShopperSearch(config);
 
-const Product = ({
-  id = '', name = '', price = 0, currency = '',
-}) => (
+const Product = ({id = '', name = '', price = 0, currency = ''}) => (
   <div className="product-component">
     <h3>{name}</h3>
     <p className="product-price">
-      $
-      {price}
-      <span className="product-currency">
-        {' '}
-        {currency}
-      </span>
+      ${price}
+      <span className="product-currency"> {currency}</span>
     </p>
     <p className="product-id">
       ID
@@ -54,54 +48,61 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    const { searchText } = this.state;
+    const {searchText} = this.state;
     this.doSearch(searchText);
   }
 
   handleChange(event) {
-    this.setState({ searchText: event.target.value });
+    this.setState({searchText: event.target.value});
   }
 
   handleSubmit(event) {
-    const { searchText } = this.state;
+    const {searchText} = this.state;
     this.doSearch(searchText);
     event.preventDefault();
   }
 
   async getSearchResults(text) {
     await this.getToken();
-    const { token } = this.state;
+    const {token} = this.state;
     this.searchClient.clientConfig.headers.authorization = token;
     return searchClient.productSearch({
-      parameters: { q: text },
+      parameters: {q: text},
     });
   }
 
   async getToken() {
-    const authResponse = await customerClient.authorizeCustomer({ body: { type: 'guest' } }, true);
+    const authResponse = await customerClient.authorizeCustomer(
+      {body: {type: 'guest'}},
+      true
+    );
     this.state.token = authResponse.headers.get('authorization');
   }
 
   async doSearch() {
-    const { searchText } = this.state;
+    const {searchText} = this.state;
     const results = await this.getSearchResults(searchText);
     if (results?.hits[0]) {
-      this.setState({ ...results.hits[0] });
+      this.setState({...results.hits[0]});
     } else {
-      this.setState({ productId: null });
+      this.setState({productId: null});
     }
   }
 
   render() {
-    const {
-      searchTerm, currency, productId, productName, price,
-    } = this.state;
+    const {searchTerm, currency, productId, productName, price} = this.state;
     return (
       <div className="search-component">
         <form className="search-bar" onSubmit={this.handleSubmit}>
           <label className="search-label" htmlFor="item-search">
             Product Search
-            <input id="item-search" className="search-box" type="text" value={searchTerm} onChange={this.handleChange} />
+            <input
+              id="item-search"
+              className="search-box"
+              type="text"
+              value={searchTerm}
+              onChange={this.handleChange}
+            />
           </label>
           <input className="search-button" type="submit" value="Search" />
         </form>

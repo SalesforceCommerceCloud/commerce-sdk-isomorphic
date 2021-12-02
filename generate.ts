@@ -6,10 +6,10 @@
  */
 import path from 'path';
 
-import { copySync } from 'fs-extra';
-import { generate } from '@commerce-apps/raml-toolkit';
+import {copySync} from 'fs-extra';
+import {generate} from '@commerce-apps/raml-toolkit';
 
-import { registerHelpers, registerPartials, setupApis } from './scripts/utils';
+import {registerHelpers, registerPartials, setupApis} from './scripts/utils';
 
 const API_DIRECTORY = process.env.COMMERCE_SDK_INPUT_DIR
   ? path.resolve(process.env.COMMERCE_SDK_INPUT_DIR)
@@ -23,7 +23,9 @@ registerPartials();
 // eslint-disable-next-line no-console
 console.log(`Creating SDK for ${API_DIRECTORY}`);
 
-const skipTestFiles = (src:string):boolean => !/\.test\.[a-z]+$/.test(src);
-copySync(STATIC_DIRECTORY, OUTPUT_DIRECTORY, { filter: skipTestFiles });
+const skipTestFiles = (src: string): boolean => !/\.test\.[a-z]+$/.test(src);
+copySync(STATIC_DIRECTORY, OUTPUT_DIRECTORY, {filter: skipTestFiles});
 
-setupApis(API_DIRECTORY, OUTPUT_DIRECTORY).then((apis: generate.ApiMetadata) => apis.render());
+setupApis(API_DIRECTORY, OUTPUT_DIRECTORY).then((apis: generate.ApiMetadata) =>
+  apis.render()
+);

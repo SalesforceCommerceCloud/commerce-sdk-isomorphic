@@ -6,7 +6,7 @@
  */
 
 import nock from 'nock';
-import { ClientConfigInit, ShopperCustomers, ShopperSearch } from '../lib';
+import {ClientConfigInit, ShopperCustomers, ShopperSearch} from '../lib';
 import config from '../environment/config';
 
 type TestConfigParameters = typeof config.parameters;
@@ -27,16 +27,28 @@ beforeEach(async () => {
 
 test('test getting a token with a post operation', async () => {
   nock('https://localhost:3000')
-    .post(`/customer/shopper-customers/v1/organizations/${config.parameters.organizationId}/customers/actions/login`)
-    .query({ siteId: config.parameters.siteId, clientId: config.parameters.clientId })
-    .reply(200, {
-      authType: 'guest',
-      customerId: 'test-customer-id',
-      preferredLocale: 'en_US',
-    }, { Authorization: 'Bearer test-auth' });
+    .post(
+      `/customer/shopper-customers/v1/organizations/${config.parameters.organizationId}/customers/actions/login`
+    )
+    .query({
+      siteId: config.parameters.siteId,
+      clientId: config.parameters.clientId,
+    })
+    .reply(
+      200,
+      {
+        authType: 'guest',
+        customerId: 'test-customer-id',
+        preferredLocale: 'en_US',
+      },
+      {Authorization: 'Bearer test-auth'}
+    );
 
   //  Start by requesting an authorization
-  const authResponse = await customerClient.authorizeCustomer({ body: { type: 'guest' } }, true);
+  const authResponse = await customerClient.authorizeCustomer(
+    {body: {type: 'guest'}},
+    true
+  );
   // Get the authorization token and validate it is correct
   const token = await authResponse.headers.get('authorization');
   expect(token).toEqual('Bearer test-auth');
@@ -44,20 +56,32 @@ test('test getting a token with a post operation', async () => {
 
 test('test getting a token without a proxy', async () => {
   nock('https://short_code.api.commercecloud.salesforce.com')
-    .post(`/customer/shopper-customers/v1/organizations/${config.parameters.organizationId}/customers/actions/login`)
-    .query({ siteId: config.parameters.siteId, clientId: config.parameters.clientId })
-    .reply(200, {
-      authType: 'guest',
-      customerId: 'test-customer-id',
-      preferredLocale: 'en_US',
-    }, { Authorization: 'Bearer test-auth' });
+    .post(
+      `/customer/shopper-customers/v1/organizations/${config.parameters.organizationId}/customers/actions/login`
+    )
+    .query({
+      siteId: config.parameters.siteId,
+      clientId: config.parameters.clientId,
+    })
+    .reply(
+      200,
+      {
+        authType: 'guest',
+        customerId: 'test-customer-id',
+        preferredLocale: 'en_US',
+      },
+      {Authorization: 'Bearer test-auth'}
+    );
 
-  const proxylessConfig: ClientConfigInit<TestConfigParameters> = { ...config };
+  const proxylessConfig: ClientConfigInit<TestConfigParameters> = {...config};
   delete proxylessConfig.proxy;
   const client = new ShopperCustomers(proxylessConfig);
 
   //  Start by requesting an authorization
-  const authResponse = await client.authorizeCustomer({ body: { type: 'guest' } }, true);
+  const authResponse = await client.authorizeCustomer(
+    {body: {type: 'guest'}},
+    true
+  );
   // Get the authorization token and validate it is correct
   const token = await authResponse.headers.get('authorization');
   expect(token).toEqual('Bearer test-auth');
@@ -65,8 +89,13 @@ test('test getting a token without a proxy', async () => {
 
 test('test getting a token with an invalid short code', async () => {
   nock('https://invalid-short-code.api.commercecloud.salesforce.com')
-    .post(`/customer/shopper-customers/v1/organizations/${config.parameters.organizationId}/customers/actions/login`)
-    .query({ siteId: config.parameters.siteId, clientId: config.parameters.clientId })
+    .post(
+      `/customer/shopper-customers/v1/organizations/${config.parameters.organizationId}/customers/actions/login`
+    )
+    .query({
+      siteId: config.parameters.siteId,
+      clientId: config.parameters.clientId,
+    })
     .replyWithError('ENOTFOUND-TEST');
 
   const proxylessConfig: ClientConfigInit<TestConfigParameters> = {
@@ -80,13 +109,14 @@ test('test getting a token with an invalid short code', async () => {
   const client = new ShopperCustomers(proxylessConfig);
 
   await expect(
-    client.authorizeCustomer({ body: { type: 'guest' } }, true),
+    client.authorizeCustomer({body: {type: 'guest'}}, true)
   ).rejects.toEqual({
     // Did this test fail? It's stable for a build, but flaky across builds. Try swapping which
     // `message` line is commented out. The order of the query parameters gets swapped.
     // TODO: Either stop this from happening or just change the assertion to be more flexible.
     // message: 'request to https://invalid-short-code.api.commercecloud.salesforce.com/customer/shopper-customers/v1/organizations/ORGANIZATION_ID/customers/actions/login?siteId=SITE_ID&clientId=CLIENT_ID failed, reason: ENOTFOUND-TEST',
-    message: 'request to https://invalid-short-code.api.commercecloud.salesforce.com/customer/shopper-customers/v1/organizations/ORGANIZATION_ID/customers/actions/login?clientId=CLIENT_ID&siteId=SITE_ID failed, reason: ENOTFOUND-TEST',
+    message:
+      'request to https://invalid-short-code.api.commercecloud.salesforce.com/customer/shopper-customers/v1/organizations/ORGANIZATION_ID/customers/actions/login?clientId=CLIENT_ID&siteId=SITE_ID failed, reason: ENOTFOUND-TEST',
     type: 'system',
   });
 });
@@ -101,12 +131,13 @@ test('performing a search with a get operation', async () => {
         hitType: 'bundle',
         image: {
           alt: 'Playstation 3 Bundle, , large',
-          disBaseLink: 'https://localhost/on/demandware.static/-/Sites-electronics-m-catalog/default/dw794b23a6/images/large/sony-ps3-bundle.jpg',
+          disBaseLink:
+            'https://localhost/on/demandware.static/-/Sites-electronics-m-catalog/default/dw794b23a6/images/large/sony-ps3-bundle.jpg',
           link: 'https://localhost/on/demandware.static/-/Sites-electronics-m-catalog/default/dw794b23a6/images/large/sony-ps3-bundle.jpg',
           title: 'Playstation 3 Bundle, ',
         },
         orderable: true,
-        price: 449.00,
+        price: 449.0,
         productId: 'sony-ps3-bundleM',
         productName: 'Playstation 3 Bundle',
         productType: {
@@ -129,12 +160,17 @@ test('performing a search with a get operation', async () => {
   };
 
   nock('https://localhost:3000')
-    .get(`/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`)
+    .get(
+      `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
+    )
     .matchHeader('authorization', 'Bearer test-auth')
-    .reply(200, mockSearchResponse, { 'content-type': 'application-json charset=UTF-8' });
+    .reply(200, mockSearchResponse, {
+      'content-type': 'application-json charset=UTF-8',
+    });
 
   const searchResponse = await searchClient.productSearch({
-    parameters: { q: 'sony' }, headers: { authorization: 'Bearer test-auth' },
+    parameters: {q: 'sony'},
+    headers: {authorization: 'Bearer test-auth'},
   });
 
   expect(searchResponse).toEqual(mockSearchResponse);
@@ -142,10 +178,12 @@ test('performing a search with a get operation', async () => {
 
 test('should use timeout from fetch options and throw timeout error', async () => {
   nock('https://localhost:3000')
-    .get(`/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`)
+    .get(
+      `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
+    )
     .matchHeader('authorization', 'Bearer test-auth')
     .delayConnection(400)
-    .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
+    .reply(200, {}, {'content-type': 'application-json charset=UTF-8'});
 
   const clientConfig: ClientConfigInit<TestConfigParameters> = {
     ...config,
@@ -156,19 +194,25 @@ test('should use timeout from fetch options and throw timeout error', async () =
 
   expect.assertions(1);
   const client = new ShopperSearch(clientConfig);
-  await expect(client.productSearch({
-    parameters: { q: 'sony' }, headers: { authorization: 'Bearer test-auth' },
-  })).rejects.toEqual({
-    message: 'network timeout at: https://localhost:3000/search/shopper-search/v1/organizations/ORGANIZATION_ID/product-search?siteId=SITE_ID&q=sony',
+  await expect(
+    client.productSearch({
+      parameters: {q: 'sony'},
+      headers: {authorization: 'Bearer test-auth'},
+    })
+  ).rejects.toEqual({
+    message:
+      'network timeout at: https://localhost:3000/search/shopper-search/v1/organizations/ORGANIZATION_ID/product-search?siteId=SITE_ID&q=sony',
     type: 'request-timeout',
   });
 });
 
 test('should use timeout from fetch options and succeed when service responds quicker', async () => {
   nock('https://localhost:3000')
-    .get(`/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`)
+    .get(
+      `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
+    )
     .matchHeader('authorization', 'Bearer test-auth')
-    .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
+    .reply(200, {}, {'content-type': 'application-json charset=UTF-8'});
 
   const clientConfig: ClientConfigInit<TestConfigParameters> = {
     ...config,
@@ -179,17 +223,20 @@ test('should use timeout from fetch options and succeed when service responds qu
 
   const client = new ShopperSearch(clientConfig);
   const response = await client.productSearch({
-    parameters: { q: 'sony' }, headers: { authorization: 'Bearer test-auth' },
+    parameters: {q: 'sony'},
+    headers: {authorization: 'Bearer test-auth'},
   });
   expect(response).toEqual({});
 });
 
 test('should use default value when timeout is not configured in fetch options and succeed', async () => {
   nock('https://localhost:3000')
-    .get(`/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`)
+    .get(
+      `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
+    )
     .matchHeader('authorization', 'Bearer test-auth')
     .delayConnection(400)
-    .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
+    .reply(200, {}, {'content-type': 'application-json charset=UTF-8'});
 
   const clientConfig: ClientConfigInit<TestConfigParameters> = {
     ...config,
@@ -198,16 +245,19 @@ test('should use default value when timeout is not configured in fetch options a
 
   const client = new ShopperSearch(clientConfig);
   const response = await client.productSearch({
-    parameters: { q: 'sony' }, headers: { authorization: 'Bearer test-auth' },
+    parameters: {q: 'sony'},
+    headers: {authorization: 'Bearer test-auth'},
   });
   expect(response).toEqual({});
 });
 
 test('should not fail when arbitrary parameters are configured in fetchOptions', async () => {
   nock('https://localhost:3000')
-    .get(`/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`)
+    .get(
+      `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
+    )
     .matchHeader('authorization', 'Bearer test-auth')
-    .reply(200, {}, { 'content-type': 'application-json charset=UTF-8' });
+    .reply(200, {}, {'content-type': 'application-json charset=UTF-8'});
 
   const clientConfig: ClientConfigInit<TestConfigParameters> = {
     ...config,
@@ -219,7 +269,8 @@ test('should not fail when arbitrary parameters are configured in fetchOptions',
 
   const client = new ShopperSearch(clientConfig);
   const response = await client.productSearch({
-    parameters: { q: 'sony' }, headers: { authorization: 'Bearer test-auth' },
+    parameters: {q: 'sony'},
+    headers: {authorization: 'Bearer test-auth'},
   });
   expect(response).toEqual({});
 });

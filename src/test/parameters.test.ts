@@ -6,20 +6,24 @@
  */
 
 import nock from 'nock';
-import { ShopperCustomers } from '../lib/shopperCustomers';
+import {ShopperCustomers} from '../lib/shopperCustomers';
 
 const SITE_ID = 'SITE_ID';
 const CLIENT_ID = 'CLIENT_ID';
 const SHORT_CODE = 'SHORT_CODE';
 const ORGANIZATION_ID = 'ORGANIZATION_ID';
 
-const MOCK_RESPONSE = { mockResponse: true };
+const MOCK_RESPONSE = {mockResponse: true};
 
 describe('Parameters', () => {
-  beforeEach(() => nock(`https://${SHORT_CODE}.api.commercecloud.salesforce.com`)
-    .post(`/customer/shopper-customers/v1/organizations/${ORGANIZATION_ID}/customers/actions/login`)
-    .query({ siteId: SITE_ID, clientId: CLIENT_ID })
-    .reply(200, MOCK_RESPONSE));
+  beforeEach(() =>
+    nock(`https://${SHORT_CODE}.api.commercecloud.salesforce.com`)
+      .post(
+        `/customer/shopper-customers/v1/organizations/${ORGANIZATION_ID}/customers/actions/login`
+      )
+      .query({siteId: SITE_ID, clientId: CLIENT_ID})
+      .reply(200, MOCK_RESPONSE)
+  );
 
   it('can all be specified in config (no method parameters object)', async () => {
     const customersClient = new ShopperCustomers({
@@ -33,7 +37,7 @@ describe('Parameters', () => {
     });
 
     const response = await customersClient.authorizeCustomer({
-      body: { type: 'guest' },
+      body: {type: 'guest'},
     });
 
     expect(response).toEqual(MOCK_RESPONSE);
@@ -52,7 +56,7 @@ describe('Parameters', () => {
 
     const response = await customersClient.authorizeCustomer({
       parameters: {},
-      body: { type: 'guest' },
+      body: {type: 'guest'},
     });
 
     expect(response).toEqual(MOCK_RESPONSE);
@@ -72,7 +76,7 @@ describe('Parameters', () => {
         organizationId: ORGANIZATION_ID,
         clientId: CLIENT_ID,
       },
-      body: { type: 'guest' },
+      body: {type: 'guest'},
     });
 
     expect(response).toEqual(MOCK_RESPONSE);
@@ -92,7 +96,7 @@ describe('Parameters', () => {
         organizationId: ORGANIZATION_ID,
         clientId: CLIENT_ID,
       },
-      body: { type: 'guest' },
+      body: {type: 'guest'},
     });
 
     expect(response).toEqual(MOCK_RESPONSE);
@@ -114,7 +118,7 @@ describe('Parameters', () => {
         organizationId: ORGANIZATION_ID,
         clientId: CLIENT_ID,
       },
-      body: { type: 'guest' },
+      body: {type: 'guest'},
     });
 
     expect(response).toEqual(MOCK_RESPONSE);
@@ -131,8 +135,8 @@ describe('Parameters', () => {
     });
 
     // Type assertion is used because we're violating the type to test the implementation
-    expect(customersClient.authorizeCustomer({} as any))
-      .rejects
-      .toEqual(new Error('Missing required path parameter: organizationId'));
+    expect(customersClient.authorizeCustomer({} as any)).rejects.toEqual(
+      new Error('Missing required path parameter: organizationId')
+    );
   });
 });

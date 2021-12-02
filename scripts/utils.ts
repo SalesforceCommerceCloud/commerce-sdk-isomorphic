@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { generate, download } from '@commerce-apps/raml-toolkit';
+import {generate, download} from '@commerce-apps/raml-toolkit';
 import path from 'path';
-import { readJsonSync } from 'fs-extra';
+import {readJsonSync} from 'fs-extra';
 
 import * as templateHelpers from './templateHelpers';
 
@@ -14,13 +14,13 @@ const PROJECT_ROOT = path.join(__dirname, '..');
 const PACKAGE_JSON = path.join(PROJECT_ROOT, 'package.json');
 
 const TEMPLATE_DIRECTORY = `${__dirname}/../templates`;
-const { registerPartial, loadApiDirectory } = generate;
+const {registerPartial, loadApiDirectory} = generate;
 type ApiMetadata = generate.ApiMetadata;
 
 // -------HELPER REGISTRATION-------
 const Handlebars = generate.HandlebarsWithAmfHelpers;
 
-require('handlebars-helpers')({ handlebars: Handlebars });
+require('handlebars-helpers')({handlebars: Handlebars});
 
 /**
  * Register the custom helpers defined in our pipeline
@@ -28,8 +28,8 @@ require('handlebars-helpers')({ handlebars: Handlebars });
 export function registerHelpers(): void {
   // eslint-disable-next-line no-undef
   const helpers: {[key: string]: Handlebars.HelperDelegate} = templateHelpers;
-  const keys:string[] = Object.keys(helpers);
-  keys.forEach((helper) => Handlebars.registerHelper(helper, helpers[helper]));
+  const keys: string[] = Object.keys(helpers);
+  keys.forEach(helper => Handlebars.registerHelper(helper, helpers[helper]));
 }
 
 /**
@@ -38,33 +38,30 @@ export function registerHelpers(): void {
 export function registerPartials(): void {
   registerPartial(
     'dtoPartial',
-    path.join(TEMPLATE_DIRECTORY, 'dtoPartial.ts.hbs'),
+    path.join(TEMPLATE_DIRECTORY, 'dtoPartial.ts.hbs')
   );
   registerPartial(
     'operationsPartial',
-    path.join(TEMPLATE_DIRECTORY, 'operations.ts.hbs'),
+    path.join(TEMPLATE_DIRECTORY, 'operations.ts.hbs')
   );
 }
 
-function addTemplates(
-  apis: ApiMetadata,
-  outputBasePath: string,
-): ApiMetadata {
+function addTemplates(apis: ApiMetadata, outputBasePath: string): ApiMetadata {
   apis.addTemplate(
     path.join(TEMPLATE_DIRECTORY, 'index.ts.hbs'),
-    path.join(outputBasePath, 'index.ts'),
+    path.join(outputBasePath, 'index.ts')
   );
 
   // add version template
   apis.addTemplate(
     path.join(TEMPLATE_DIRECTORY, 'version.ts.hbs'),
-    path.join(outputBasePath, 'version.ts'),
+    path.join(outputBasePath, 'version.ts')
   );
 
   apis.children.forEach((api: ApiMetadata) => {
     api.addTemplate(
       path.join(TEMPLATE_DIRECTORY, 'client.ts.hbs'),
-      path.join(outputBasePath, `${api.name.lowerCamelCase}.ts`),
+      path.join(outputBasePath, `${api.name.lowerCamelCase}.ts`)
     );
   });
   return apis;
@@ -80,7 +77,7 @@ function addTemplates(
  */
 export async function setupApis(
   inputDir: string,
-  outputDir: string,
+  outputDir: string
 ): Promise<ApiMetadata> {
   let apis = loadApiDirectory(inputDir);
   // SDK version is not API metadata, so it is not included in the file, but it
@@ -108,13 +105,13 @@ export async function setupApis(
 export async function updateApis(
   name: string,
   deployment: RegExp,
-  rootPath: string,
+  rootPath: string
 ): Promise<void> {
   const matchedApis = await download.search(`"${name}"`, deployment);
   if (!(matchedApis?.length > 0)) {
     throw new Error(`No results in Exchange for '${name}'`);
   }
-  const api = matchedApis.find((matchedApi) => matchedApi?.assetId === name);
+  const api = matchedApis.find(matchedApi => matchedApi?.assetId === name);
   if (!api) {
     throw new Error(`No exact match in Exchange for '${name}'`);
   }
