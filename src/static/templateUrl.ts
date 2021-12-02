@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import type { PathParameters, QueryParameters } from './helpers';
+import type {PathParameters, QueryParameters} from './helpers';
 
 export default class TemplateURL extends URL {
   /**
@@ -15,16 +15,16 @@ export default class TemplateURL extends URL {
     url: string,
     base?: string,
     parameters?: {
-      pathParams?: PathParameters,
-      queryParams?: QueryParameters,
-      origin?: string
-    },
+      pathParams?: PathParameters;
+      queryParams?: QueryParameters;
+      origin?: string;
+    }
   ) {
     super(
       TemplateURL.renderTemplateUri(
         `${base}/${url}`.replace(/\/\/+/g, '/'),
-        parameters?.pathParams,
-      ),
+        parameters?.pathParams
+      )
     );
     this.addQueryParams(parameters?.queryParams);
     if (parameters?.origin) {
@@ -43,7 +43,10 @@ export default class TemplateURL extends URL {
     const newOriginUrl = new URL(newOriginString);
     this.protocol = newOriginUrl.protocol;
     this.host = newOriginUrl.host;
-    this.pathname = `${newOriginUrl.pathname}/${this.pathname}`.replace(/\/\/+/g, '/');
+    this.pathname = `${newOriginUrl.pathname}/${this.pathname}`.replace(
+      /\/\/+/g,
+      '/'
+    );
   }
 
   /**
@@ -53,7 +56,7 @@ export default class TemplateURL extends URL {
    */
   addQueryParams(queryParams?: QueryParameters): void {
     if (queryParams) {
-      Object.keys(queryParams).forEach((key) => {
+      Object.keys(queryParams).forEach(key => {
         const param = queryParams[key];
         if (Array.isArray(param)) {
           for (let i = 0; i < param.length; i += 1) {
@@ -76,11 +79,13 @@ export default class TemplateURL extends URL {
    */
   static renderTemplateUri(
     template: string,
-    parameters?: PathParameters,
+    parameters?: PathParameters
   ): string {
-    return parameters ? template.replace(
-      /\{([^\}]+)\}/g, /* eslint-disable-line no-useless-escape */
-      (match, param) => String(parameters[param]),
-    ) : template;
+    return parameters
+      ? template.replace(
+          /\{([^\}]+)\}/g /* eslint-disable-line no-useless-escape */,
+          (match, param) => String(parameters[param])
+        )
+      : template;
   }
 }

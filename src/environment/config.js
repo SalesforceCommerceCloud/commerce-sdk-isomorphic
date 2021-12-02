@@ -14,4 +14,4 @@ const config = {
     siteId: 'SITE_ID',
   },
 };
-export { config as default };
+export {config as default};

@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { amf } from '@commerce-apps/raml-toolkit';
+import {amf} from '@commerce-apps/raml-toolkit';
 import {
   addNamespace,
   formatForTsDoc,
@@ -16,7 +16,7 @@ import {
   isAllowedTrait,
   loud,
 } from './templateHelpers';
-import { ASSET_OBJECT_MAP } from './config';
+import {ASSET_OBJECT_MAP} from './config';
 
 /** Technically, `type` could be much more, but for tests this will do. AMF is tricky. */
 const createParameter = (name: string, type: 'string' | 'boolean') => {
@@ -32,8 +32,7 @@ beforeAll(async () => amf.AMF.init());
 
 describe('When adding namespaces to individual content (types)', () => {
   it('Prefixes the namespace successfully ', () => {
-    expect(addNamespace('foo', 'types'))
-      .toStrictEqual('types.foo');
+    expect(addNamespace('foo', 'types')).toStrictEqual('types.foo');
   });
 
   it('Will not prefix void with a namespace', () => {
@@ -41,13 +40,11 @@ describe('When adding namespaces to individual content (types)', () => {
   });
 
   it('Will not prefix object with a namespace', () => {
-    expect(addNamespace('object', 'types'))
-      .toStrictEqual('object');
+    expect(addNamespace('object', 'types')).toStrictEqual('object');
   });
 
   it('Will not prefix Object with a namespace', () => {
-    expect(addNamespace('object', 'types'))
-      .toStrictEqual('object');
+    expect(addNamespace('object', 'types')).toStrictEqual('object');
   });
 
   it('Throws an error when called with undfined content', () => {
@@ -69,13 +66,15 @@ describe('When adding namespaces to individual content (types)', () => {
 
 describe('When adding namespaces to elements in a complex content (an array)', () => {
   it('Prefixes each element with a namespace', () => {
-    expect(addNamespace('Array<Foo | Baa>', 'types'))
-      .toStrictEqual('Array<types.Foo | types.Baa>');
+    expect(addNamespace('Array<Foo | Baa>', 'types')).toStrictEqual(
+      'Array<types.Foo | types.Baa>'
+    );
   });
 
   it('Correctly parses three elements in an array', () => {
-    expect(addNamespace('Array<Foo | Baa | Bar>', 'types'))
-      .toStrictEqual('Array<types.Foo | types.Baa | types.Bar>');
+    expect(addNamespace('Array<Foo | Baa | Bar>', 'types')).toStrictEqual(
+      'Array<types.Foo | types.Baa | types.Bar>'
+    );
   });
 
   it('Throws an error when the array is empty', () => {
@@ -98,7 +97,7 @@ describe('Test formatForTsDoc template help function', () => {
 
   it('returns already escaped tag', () => {
     expect(formatForTsDoc('this is a \\<tag\\>')).toStrictEqual(
-      'this is a \\<tag\\>',
+      'this is a \\<tag\\>'
     );
   });
 
@@ -107,24 +106,26 @@ describe('Test formatForTsDoc template help function', () => {
   });
 
   it('returns escaped tag for html', () => {
-    expect(formatForTsDoc('this is a <tag>')).toStrictEqual('this is a \\<tag\\>');
+    expect(formatForTsDoc('this is a <tag>')).toStrictEqual(
+      'this is a \\<tag\\>'
+    );
   });
 
   it('returns escaped brackets for brackets', () => {
     expect(formatForTsDoc('this is {escaped}')).toStrictEqual(
-      'this is \\{escaped\\}',
+      'this is \\{escaped\\}'
     );
   });
 
   it('returns unescaped newlines for escapeed newlines', () => {
     expect(formatForTsDoc('this is a newline\\n')).toStrictEqual(
-      'this is a newline\n',
+      'this is a newline\n'
     );
   });
 
   it('returns newlines for newlines', () => {
     expect(formatForTsDoc('this is a newline\n')).toStrictEqual(
-      'this is a newline\n',
+      'this is a newline\n'
     );
   });
 
@@ -138,49 +139,53 @@ describe('Test formatForTsDoc template help function', () => {
 
   it('returns leading whitespace for 1 space in front', () => {
     expect(formatForTsDoc('\n this is an indented line')).toStrictEqual(
-      '\n this is an indented line',
+      '\n this is an indented line'
     );
   });
 
   it('returns leading whitespace for 3 spaces in front', () => {
     expect(formatForTsDoc('\n   this is an indented line')).toStrictEqual(
-      '\n   this is an indented line',
+      '\n   this is an indented line'
     );
   });
 
   it('returns collapsed leading whitespace for 5 spaces in front', () => {
     expect(formatForTsDoc('\n     this is an indented line')).toStrictEqual(
-      '\n   this is an indented line',
+      '\n   this is an indented line'
     );
   });
 
   it('returns whitespace for 5 spaces in middle', () => {
     expect(formatForTsDoc('\nthis is a spaced     line')).toStrictEqual(
-      '\nthis is a spaced     line',
+      '\nthis is a spaced     line'
     );
   });
 });
 
 describe('Test getObjectIdByAssetId template helper function', () => {
   it('returns correct ID for known input', () => {
-    expect(getObjectIdByAssetId('shopper-baskets')).toBe(ASSET_OBJECT_MAP['shopper-baskets']);
+    expect(getObjectIdByAssetId('shopper-baskets')).toBe(
+      ASSET_OBJECT_MAP['shopper-baskets']
+    );
   });
 
-  it('throws for \'KEY_NOT_FOUND\' input', () => {
-    expect(() => getObjectIdByAssetId('KEY_NOT_FOUND')).toThrowError('Missing CCDC object ID for "KEY_NOT_FOUND"');
+  it("throws for 'KEY_NOT_FOUND' input", () => {
+    expect(() => getObjectIdByAssetId('KEY_NOT_FOUND')).toThrowError(
+      'Missing CCDC object ID for "KEY_NOT_FOUND"'
+    );
   });
 });
 
 describe('Test loud template helper function', () => {
-  it('returns \'FOO\' for \'foo\' input', () => {
+  it("returns 'FOO' for 'foo' input", () => {
     expect(loud('foo')).toBe('FOO');
   });
 
-  it('returns \'FOO\' for \'FOO\' input', () => {
+  it("returns 'FOO' for 'FOO' input", () => {
     expect(loud('FOO')).toBe('FOO');
   });
 
-  it('returns \'\' for \'\' input', () => {
+  it("returns '' for '' input", () => {
     expect(loud('')).toBe('');
   });
 });
@@ -219,29 +224,35 @@ describe('Allowed trait check', () => {
 
 describe('getParameterTypes', () => {
   it('converts a list of parameters to a type map', () => {
-    expect(getParameterTypes([
-      createParameter('name', 'string'),
-      createParameter('flag', 'boolean'),
-    ])).toEqual({
+    expect(
+      getParameterTypes([
+        createParameter('name', 'string'),
+        createParameter('flag', 'boolean'),
+      ])
+    ).toEqual({
       name: 'string',
       flag: 'boolean',
     });
   });
 
   it('merges duplicate parameters', () => {
-    expect(getParameterTypes([
-      createParameter('name', 'string'),
-      createParameter('name', 'string'),
-    ])).toEqual({
+    expect(
+      getParameterTypes([
+        createParameter('name', 'string'),
+        createParameter('name', 'string'),
+      ])
+    ).toEqual({
       name: 'string',
     });
   });
 
   it('preserves all types for duplicate names but different types', () => {
-    expect(getParameterTypes([
-      createParameter('anything', 'string'),
-      createParameter('anything', 'boolean'),
-    ])).toEqual({
+    expect(
+      getParameterTypes([
+        createParameter('anything', 'string'),
+        createParameter('anything', 'boolean'),
+      ])
+    ).toEqual({
       anything: 'string | boolean',
     });
   });
@@ -259,29 +270,35 @@ describe('getPathParameterTypeMapFromEndpoints', () => {
   };
 
   it('converts a list of endpoints to a map of types from the path parameters', () => {
-    expect(getPathParameterTypeMapFromEndpoints([
-      createEndpoint([createParameter('name', 'string')]),
-      createEndpoint([createParameter('flag', 'boolean')]),
-    ])).toEqual({
+    expect(
+      getPathParameterTypeMapFromEndpoints([
+        createEndpoint([createParameter('name', 'string')]),
+        createEndpoint([createParameter('flag', 'boolean')]),
+      ])
+    ).toEqual({
       name: 'string',
       flag: 'boolean',
     });
   });
 
   it('merges duplicate parameters across endpoints', () => {
-    expect(getPathParameterTypeMapFromEndpoints([
-      createEndpoint([createParameter('name', 'string')]),
-      createEndpoint([createParameter('name', 'string')]),
-    ])).toEqual({
+    expect(
+      getPathParameterTypeMapFromEndpoints([
+        createEndpoint([createParameter('name', 'string')]),
+        createEndpoint([createParameter('name', 'string')]),
+      ])
+    ).toEqual({
       name: 'string',
     });
   });
 
   it('preserves all types for duplicate names but different types across endpoints', () => {
-    expect(getPathParameterTypeMapFromEndpoints([
-      createEndpoint([createParameter('name', 'string')]),
-      createEndpoint([createParameter('name', 'boolean')]),
-    ])).toEqual({
+    expect(
+      getPathParameterTypeMapFromEndpoints([
+        createEndpoint([createParameter('name', 'string')]),
+        createEndpoint([createParameter('name', 'boolean')]),
+      ])
+    ).toEqual({
       name: 'string | boolean',
     });
   });
@@ -294,40 +311,48 @@ describe('getPathParameterTypeMapFromEndpoints', () => {
 describe('getQueryParameterTypeMapFromEndpoints', () => {
   const createEndpoint = (parameters: amf.model.domain.Parameter[]) => {
     const endpoint = new amf.model.domain.EndPoint();
-    endpoint.withOperations(parameters.map((param) => {
-      const req = new amf.model.domain.Request();
-      req.withQueryParameters([param]);
-      const op = new amf.model.domain.Operation();
-      op.withRequest(req);
-      return op;
-    }));
+    endpoint.withOperations(
+      parameters.map(param => {
+        const req = new amf.model.domain.Request();
+        req.withQueryParameters([param]);
+        const op = new amf.model.domain.Operation();
+        op.withRequest(req);
+        return op;
+      })
+    );
     return endpoint;
   };
 
   it('converts a list of endpoints to a map of types from the query parameters', () => {
-    expect(getQueryParameterTypeMapFromEndpoints([
-      createEndpoint([createParameter('name', 'string')]),
-      createEndpoint([createParameter('flag', 'boolean')]),
-    ])).toEqual({
+    expect(
+      getQueryParameterTypeMapFromEndpoints([
+        createEndpoint([createParameter('name', 'string')]),
+        createEndpoint([createParameter('flag', 'boolean')]),
+      ])
+    ).toEqual({
       name: 'string',
       flag: 'boolean',
     });
   });
 
   it('merges duplicate parameters across endpoints', () => {
-    expect(getQueryParameterTypeMapFromEndpoints([
-      createEndpoint([createParameter('name', 'string')]),
-      createEndpoint([createParameter('name', 'string')]),
-    ])).toEqual({
+    expect(
+      getQueryParameterTypeMapFromEndpoints([
+        createEndpoint([createParameter('name', 'string')]),
+        createEndpoint([createParameter('name', 'string')]),
+      ])
+    ).toEqual({
       name: 'string',
     });
   });
 
   it('preserves all types for duplicate names but different types across endpoints', () => {
-    expect(getQueryParameterTypeMapFromEndpoints([
-      createEndpoint([createParameter('name', 'string')]),
-      createEndpoint([createParameter('name', 'boolean')]),
-    ])).toEqual({
+    expect(
+      getQueryParameterTypeMapFromEndpoints([
+        createEndpoint([createParameter('name', 'string')]),
+        createEndpoint([createParameter('name', 'boolean')]),
+      ])
+    ).toEqual({
       name: 'string | boolean',
     });
   });
@@ -337,6 +362,8 @@ describe('getQueryParameterTypeMapFromEndpoints', () => {
   });
 
   it('works when an operation has no requests', () => {
-    new amf.model.domain.EndPoint().withOperations([new amf.model.domain.Operation()]);
+    new amf.model.domain.EndPoint().withOperations([
+      new amf.model.domain.Operation(),
+    ]);
   });
 });

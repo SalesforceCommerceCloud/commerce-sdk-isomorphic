@@ -7,7 +7,7 @@
 const jest = require('./babel.config.jest');
 const pkg = require('./package.json');
 
-module.exports = (api) => {
+module.exports = api => {
   const isTest = api.env('test');
   if (isTest) {
     return jest;
