@@ -161,7 +161,10 @@
         }
       );
 
-      const headers = {
+      const headers: Record<string, string> = {
+        {{#if (and request.payloads.length (or (is method "patch") (is method "post") (is method "put")))}}
+        "Content-Type": "{{{getMediaTypeFromRequest request}}}",
+        {{/if}}
         ...this.clientConfig.headers,
         ...options?.headers
       };

@@ -83,22 +83,32 @@ export default class ClientConfig<Params extends BaseUriParameters>
     'transformRequest'
   > = {
     /**
-     * If data is a plain object or an array, it is converted to JSON and the Content-Type header is
-     * set to application/json. All other data is returned unmodified.
+     * If the `Content-Type` header is `application/json`, the data is converted to a JSON string.
+     * If the `Content-Type` header is `application/x-www-form-urlencoded`, the data is converted to
+     * a `URLSearchParams` object.
+     * In all other cases, the data is returned unmodified.
      * @param data - Data to transform
-     * @returns A JSON string or the unmodified data
+     * @returns A payload appropriate for the specified `Content-Type` header
      */
-    transformRequest<T>(data: T, headers: {[key: string]: string}): T | string {
-      if (data == null || typeof data !== 'object') {
-        return data;
+    transformRequest<T>(
+      data: T,
+      headers: {[key: string]: string}
+    ): T | string | URLSearchParams {
+      switch (headers['Content-Type']) {
+        case 'application/json': {
+          return JSON.stringify(data);
+        }
+        case 'application/x-www-form-urlencoded': {
+          // Only SLAS uses this content type, and all of their payloads are Record<string, string>.
+          // Future APIs are unlikely to use this content type. Additionally, URLSearchParams
+          // actually accepts Record<string, unknown> and converts the values to strings.
+          // Therefore, this type assertion isn't *strictly* safe, but is unlikely to cause issues.
+          return new URLSearchParams(data as unknown as Record<string, string>);
+        }
+        default: {
+          return data;
+        }
       }
-      const proto = Object.getPrototypeOf(data);
-      if (Array.isArray(data) || proto === Object.prototype || proto === null) {
-        // eslint-disable-next-line no-param-reassign
-        headers['Content-Type'] = 'application/json';
-        return JSON.stringify(data);
-      }
-      return data;
     },
   };
 }
