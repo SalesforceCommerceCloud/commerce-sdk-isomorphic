@@ -180,8 +180,13 @@
       const response = await fetch(req);
       if (rawResponse) {
         return response;
-      } else {
-        return response.json();
+      } else if (response.ok || response.status === 304) {
+        const text = await response.text();
+        // It's ideal to get "{}" for an empty response body, but we won't throw if it's truly empty
+        return text ? JSON.parse(text) : {};
+      }
+      else {
+        throw new ResponseError(response);
       }
     }
 
