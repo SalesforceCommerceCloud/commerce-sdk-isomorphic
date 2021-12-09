@@ -15,9 +15,9 @@
     {{/each}}
     * @param headers - An object literal of key value pairs of the headers to be
     * sent with this request.
-    {{#or (is method "patch") (is method "post") (is method "put")}}
+    {{#if (isRequestWithPayload request)}}
     * @param body - The data to send as the request body.
-    {{/or}}
+    {{/if}}
     *
     * @returns A promise of type {{getReturnTypeFromOperation this}}.
     * {{#if (eq (lowercase @root.metadata.categories.[CC Version Status].[0]) "beta")}}
@@ -34,8 +34,10 @@
           {{{name}}}{{#if (not (is required "true"))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
         }, ConfigParameters>,
-        headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
-        body: {{{getPayloadTypeFromRequest request}}}{{/or}}
+        headers?: { [key: string]: string },
+        {{#if (isRequestWithPayload request)}}
+        body: {{{getPayloadTypeFromRequest request}}}
+        {{/if}}
       }>
     ): Promise<{{getReturnTypeFromOperation this}}>;
 
@@ -52,9 +54,9 @@
     {{/each}}
     * @param headers - An object literal of key value pairs of the headers to be
     * sent with this request.
-    {{#or (is method "patch") (is method "post") (is method "put")}}
+    {{#if (isRequestWithPayload request)}}
     * @param body - The data to send as the request body.
-    {{/or}}
+    {{/if}}
     * @param rawResponse - Set to true to return entire Response object instead of DTO.
     *
     * @returns A promise of type Response if rawResponse is true, a promise of type {{getReturnTypeFromOperation this}} otherwise.
@@ -72,8 +74,10 @@
           {{{name}}}{{#if (not (is required "true"))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
         }, ConfigParameters>,
-        headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
-        body: {{{getPayloadTypeFromRequest request}}}{{/or}}
+        headers?: { [key: string]: string },
+        {{#if (isRequestWithPayload request)}}
+        body: {{{getPayloadTypeFromRequest request}}}
+        {{/if}}
       }>,
       rawResponse?: T
     ): Promise<T extends true ? Response : {{getReturnTypeFromOperation this}}>;
@@ -91,9 +95,9 @@
     {{/each}}
     * @param headers - An object literal of key value pairs of the headers to be
     * sent with this request.
-    {{#or (is method "patch") (is method "post") (is method "put")}}
+    {{#if (isRequestWithPayload request)}}
     * @param body - The data to send as the request body.
-    {{/or}}
+    {{/if}}
     * @param rawResponse - Set to true to return entire Response object instead of DTO.
     *
     * @returns A promise of type Response if rawResponse is true, a promise of type {{getReturnTypeFromOperation this}} otherwise.
@@ -111,8 +115,10 @@
           {{{name}}}{{#if (not (is required "true"))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
         }, ConfigParameters>,
-        headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
-        body: {{{getPayloadTypeFromRequest request}}}{{/or}}
+        headers?: { [key: string]: string },
+        {{#if (isRequestWithPayload request)}}
+        body: {{{getPayloadTypeFromRequest request}}}
+        {{/if}}
       }>,
       rawResponse?: boolean,
     ): Promise<Response | {{getReturnTypeFromOperation this}}> {
@@ -162,7 +168,7 @@
       );
 
       const headers: Record<string, string> = {
-        {{#if (and request.payloads.length (or (is method "patch") (is method "post") (is method "put")))}}
+        {{#if (isRequestWithPayload request)}}
         "Content-Type": "{{{getMediaTypeFromRequest request}}}",
         {{/if}}
         ...this.clientConfig.headers,
@@ -175,7 +181,7 @@
         url.toString(),
         {
           ...this.clientConfig.fetchOptions,
-          {{#or (is method "patch") (is method "post") (is method "put")}}body: this.clientConfig.transformRequest(options.body, headers),{{/or}}
+          {{#if (isRequestWithPayload request)}}body: this.clientConfig.transformRequest(options.body, headers),{{/if}}
           headers,
           method: "{{loud method}}"
         }
