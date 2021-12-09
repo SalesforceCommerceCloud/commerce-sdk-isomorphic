@@ -84,6 +84,10 @@
       }
     }
   },
+  "resolutions": {
+    "**/@oclif/command": "<=1.8.3",
+    "**/yargs": "<17"
+  },
   "dependencies": {
     "cross-fetch": "^3.1.4"
   },
