@@ -186,7 +186,7 @@
         return text ? JSON.parse(text) : {};
       }
       else {
-        throw new ResponseError(response);
+        throw new Error('Error ' + response.status + ': ' + response.statusText);
       }
     }
 
