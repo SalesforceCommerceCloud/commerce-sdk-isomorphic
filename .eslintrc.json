@@ -65,6 +65,15 @@
         "rules": {
           "import/no-extraneous-dependencies": "error"
         }
+      },
+      {
+        "files": [
+          "*.jsx",
+          "src/environment/**"
+        ],
+        "rules": {
+          "prettier/prettier": "off"
+        }
       }
     ],
     "settings": {
