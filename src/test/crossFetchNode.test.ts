@@ -274,3 +274,58 @@ test('should not fail when arbitrary parameters are configured in fetchOptions',
   });
   expect(response).toEqual({});
 });
+
+
+test('throws on responses other than and 304 errors', async () => {
+  nock('https://localhost:3000')
+    .get(
+      `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
+    )
+    .matchHeader('authorization', 'Bearer test-auth')
+    .reply(400, {}, {'content-type': 'application-json charset=UTF-8'});
+
+    const standardConfig: ClientConfigInit<TestConfigParameters> = {...config};
+    const client = new ShopperSearch(standardConfig);
+    const response = async () => client.productSearch({
+      parameters: {q: 'sony'},
+      headers: {authorization: 'Bearer test-auth'},
+    })
+
+    expect(response).rejects.toThrow();
+});
+
+test('do not throw in 2xx response',async () => {
+  nock('https://localhost:3000')
+    .get(
+      `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
+    )
+    .matchHeader('authorization', 'Bearer test-auth')
+    .reply(200, {}, {'content-type': 'application-json charset=UTF-8'});
+
+    const standardConfig: ClientConfigInit<TestConfigParameters> = {...config};
+    const client = new ShopperSearch(standardConfig);
+    const response = await client.productSearch({
+      parameters: {q: 'sony'},
+      headers: {authorization: 'Bearer test-auth'},
+    })
+
+    expect(response).toEqual({});
+});
+
+test('do not throw in 304 response',async () => {
+  nock('https://localhost:3000')
+    .get(
+      `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
+    )
+    .matchHeader('authorization', 'Bearer test-auth')
+    .reply(304, {}, {'content-type': 'application-json charset=UTF-8'});
+
+    const standardConfig: ClientConfigInit<TestConfigParameters> = {...config};
+    const client = new ShopperSearch(standardConfig);
+    const response = await client.productSearch({
+      parameters: {q: 'sony'},
+      headers: {authorization: 'Bearer test-auth'},
+    })
+
+    expect(response).toEqual({});
+});
