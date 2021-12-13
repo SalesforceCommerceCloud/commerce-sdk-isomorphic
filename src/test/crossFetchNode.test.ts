@@ -294,7 +294,9 @@ test('throws on error responses', async () => {
       headers: {authorization: 'Bearer test-auth'},
     });
 
-  expect(responsePromise).rejects.toEqual(new Error('Error 400: Bad Request'));
+  await expect(responsePromise).rejects.toEqual(
+    new Error('Error 400: Bad Request')
+  );
 });
 
 test('do not throw in 200 response', async () => {
