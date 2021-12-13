@@ -281,7 +281,11 @@ test('throws on responses other than and 304 errors', async () => {
       `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
     )
     .matchHeader('authorization', 'Bearer test-auth')
-    .reply(400, {}, {'content-type': 'application-json charset=UTF-8'});
+    .reply(
+      400,
+      {content: 'not empty'},
+      {'content-type': 'application-json charset=UTF-8'}
+    );
 
   const standardConfig: ClientConfigInit<TestConfigParameters> = {...config};
   const client = new ShopperSearch(standardConfig);
@@ -294,13 +298,17 @@ test('throws on responses other than and 304 errors', async () => {
   expect(response).rejects.toThrow();
 });
 
-test('do not throw in 2xx response', async () => {
+test('do not throw in 200 response', async () => {
   nock('https://localhost:3000')
     .get(
       `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
     )
     .matchHeader('authorization', 'Bearer test-auth')
-    .reply(200, {}, {'content-type': 'application-json charset=UTF-8'});
+    .reply(
+      200,
+      {content: 'not empty'},
+      {'content-type': 'application-json charset=UTF-8'}
+    );
 
   const standardConfig: ClientConfigInit<TestConfigParameters> = {...config};
   const client = new ShopperSearch(standardConfig);
@@ -309,7 +317,29 @@ test('do not throw in 2xx response', async () => {
     headers: {authorization: 'Bearer test-auth'},
   });
 
-  expect(response).toEqual({});
+  expect(response).toEqual({content: 'not empty'});
+});
+
+test('do not throw in 2xx response', async () => {
+  nock('https://localhost:3000')
+    .get(
+      `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
+    )
+    .matchHeader('authorization', 'Bearer test-auth')
+    .reply(
+      212,
+      {content: 'not empty'},
+      {'content-type': 'application-json charset=UTF-8'}
+    );
+
+  const standardConfig: ClientConfigInit<TestConfigParameters> = {...config};
+  const client = new ShopperSearch(standardConfig);
+  const response = await client.productSearch({
+    parameters: {q: 'sony'},
+    headers: {authorization: 'Bearer test-auth'},
+  });
+
+  expect(response).toEqual({content: 'not empty'});
 });
 
 test('do not throw in 304 response', async () => {
@@ -318,7 +348,29 @@ test('do not throw in 304 response', async () => {
       `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
     )
     .matchHeader('authorization', 'Bearer test-auth')
-    .reply(304, {}, {'content-type': 'application-json charset=UTF-8'});
+    .reply(
+      304,
+      {content: 'not empty'},
+      {'content-type': 'application-json charset=UTF-8'}
+    );
+
+  const standardConfig: ClientConfigInit<TestConfigParameters> = {...config};
+  const client = new ShopperSearch(standardConfig);
+  const response = await client.productSearch({
+    parameters: {q: 'sony'},
+    headers: {authorization: 'Bearer test-auth'},
+  });
+
+  expect(response).toEqual({content: 'not empty'});
+});
+
+test('do not throw in empty json body', async () => {
+  nock('https://localhost:3000')
+    .get(
+      `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
+    )
+    .matchHeader('authorization', 'Bearer test-auth')
+    .reply(200, {}, {'content-type': 'application-json charset=UTF-8'});
 
   const standardConfig: ClientConfigInit<TestConfigParameters> = {...config};
   const client = new ShopperSearch(standardConfig);
