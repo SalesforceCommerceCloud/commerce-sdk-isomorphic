@@ -287,15 +287,14 @@ test('throws on error responses', async () => {
       {'content-type': 'application-json charset=UTF-8'}
     );
 
-  const standardConfig: ClientConfigInit<TestConfigParameters> = {...config};
-  const client = new ShopperSearch(standardConfig);
-  const response = async () =>
+  const client = new ShopperSearch({...config});
+  const responsePromise = () =>
     client.productSearch({
       parameters: {q: 'sony'},
       headers: {authorization: 'Bearer test-auth'},
     });
 
-  expect(response).rejects.toThrow();
+  expect(responsePromise).rejects.toEqual(new Error('Error 400: Bad Request'));
 });
 
 test('do not throw in 200 response', async () => {
@@ -310,8 +309,7 @@ test('do not throw in 200 response', async () => {
       {'content-type': 'application-json charset=UTF-8'}
     );
 
-  const standardConfig: ClientConfigInit<TestConfigParameters> = {...config};
-  const client = new ShopperSearch(standardConfig);
+  const client = new ShopperSearch({...config});
   const response = await client.productSearch({
     parameters: {q: 'sony'},
     headers: {authorization: 'Bearer test-auth'},
@@ -332,8 +330,7 @@ test('do not throw in 2xx response', async () => {
       {'content-type': 'application-json charset=UTF-8'}
     );
 
-  const standardConfig: ClientConfigInit<TestConfigParameters> = {...config};
-  const client = new ShopperSearch(standardConfig);
+  const client = new ShopperSearch({...config});
   const response = await client.productSearch({
     parameters: {q: 'sony'},
     headers: {authorization: 'Bearer test-auth'},
@@ -354,8 +351,7 @@ test('do not throw in 304 response', async () => {
       {'content-type': 'application-json charset=UTF-8'}
     );
 
-  const standardConfig: ClientConfigInit<TestConfigParameters> = {...config};
-  const client = new ShopperSearch(standardConfig);
+  const client = new ShopperSearch({...config});
   const response = await client.productSearch({
     parameters: {q: 'sony'},
     headers: {authorization: 'Bearer test-auth'},
@@ -364,7 +360,7 @@ test('do not throw in 304 response', async () => {
   expect(response).toEqual({content: 'not empty'});
 });
 
-test('do not throw in empty json body', async () => {
+test('do not throw in empty body', async () => {
   nock('https://localhost:3000')
     .get(
       `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
@@ -372,8 +368,7 @@ test('do not throw in empty json body', async () => {
     .matchHeader('authorization', 'Bearer test-auth')
     .reply(200, {}, {'content-type': 'application-json charset=UTF-8'});
 
-  const standardConfig: ClientConfigInit<TestConfigParameters> = {...config};
-  const client = new ShopperSearch(standardConfig);
+  const client = new ShopperSearch({...config});
   const response = await client.productSearch({
     parameters: {q: 'sony'},
     headers: {authorization: 'Bearer test-auth'},
