@@ -275,7 +275,7 @@ test('should not fail when arbitrary parameters are configured in fetchOptions',
   expect(response).toEqual({});
 });
 
-test('throws on responses other than and 304 errors', async () => {
+test('throws on error responses', async () => {
   nock('https://localhost:3000')
     .get(
       `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
