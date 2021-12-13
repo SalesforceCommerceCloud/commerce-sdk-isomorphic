@@ -288,11 +288,10 @@ test('throws on error responses', async () => {
     );
 
   const client = new ShopperSearch({...config});
-  const responsePromise = () =>
-    client.productSearch({
-      parameters: {q: 'sony'},
-      headers: {authorization: 'Bearer test-auth'},
-    });
+  const responsePromise = client.productSearch({
+    parameters: {q: 'sony'},
+    headers: {authorization: 'Bearer test-auth'},
+  });
 
   await expect(responsePromise).rejects.toEqual(
     new Error('Error 400: Bad Request')
