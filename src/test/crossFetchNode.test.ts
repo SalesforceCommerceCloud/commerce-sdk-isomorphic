@@ -366,7 +366,7 @@ test('do not throw in empty body', async () => {
       `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
     )
     .matchHeader('authorization', 'Bearer test-auth')
-    .reply(200, {}, {'content-type': 'application-json charset=UTF-8'});
+    .reply(200);
 
   const client = new ShopperSearch({...config});
   const response = await client.productSearch({
