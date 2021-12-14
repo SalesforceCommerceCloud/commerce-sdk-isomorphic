@@ -124,7 +124,7 @@ describe('Parameters', () => {
     expect(response).toEqual(MOCK_RESPONSE);
   });
 
-  it('will throw if a required parameter is missing', () => {
+  it('will throw if a required parameter is missing', async () => {
     nock.cleanAll(); // Not needed for this test
 
     const customersClient = new ShopperCustomers({
@@ -135,7 +135,8 @@ describe('Parameters', () => {
     });
 
     // Type assertion is used because we're violating the type to test the implementation
-    expect(customersClient.authorizeCustomer({} as any)).rejects.toEqual(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await expect(customersClient.authorizeCustomer({} as any)).rejects.toEqual(
       new Error('Missing required path parameter: organizationId')
     );
   });

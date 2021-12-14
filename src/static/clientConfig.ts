@@ -11,14 +11,12 @@ import {BaseUriParameters} from './helpers';
  * Alias for `RequestInit` from TypeScript's DOM lib, to more clearly differentiate
  * it from the `RequestInit` provided by node-fetch.
  */
-// eslint isn't aware that we have browser types available, not sure why...
-// eslint-disable-next-line no-undef
 type BrowserRequestInit = RequestInit;
 /**
  * Any properties supported in either the browser or node are accepted.
  * Using the right properties in the right context is left to the user.
  */
-type FetchOptions = BrowserRequestInit & NodeRequestInit;
+export type FetchOptions = NodeRequestInit & BrowserRequestInit;
 
 /**
  * Base options that can be passed to the `ClientConfig` class.
@@ -29,12 +27,8 @@ export interface ClientConfigInit<Params extends BaseUriParameters> {
   headers?: {[key: string]: string};
   parameters: Params;
   fetchOptions?: FetchOptions;
-  // eslint thinks that the names used in the function signature are variables
-  // instead of part of the type, not sure why...
-  transformRequest?: (
-    // eslint-disable-next-line no-unused-vars
-    data: any,
-    // eslint-disable-next-line no-unused-vars
+  transformRequest?: <T>(
+    data: T,
     headers: {[key: string]: string}
   ) => Required<FetchOptions>['body'];
 }
@@ -62,6 +56,7 @@ export default class ClientConfig<Params extends BaseUriParameters>
   constructor(config: ClientConfigInit<Params>) {
     this.headers = {...config.headers};
     this.parameters = {...config.parameters};
+    // shortCode is required in the type, but we still check that it is present for the JS users
     if (!this.parameters.shortCode) {
       throw new Error('Missing required parameter: shortCode');
     }
@@ -88,17 +83,22 @@ export default class ClientConfig<Params extends BaseUriParameters>
      * @param data - Data to transform
      * @returns A JSON string or the unmodified data
      */
-    transformRequest<T>(data: T, headers: {[key: string]: string}): T | string {
+    transformRequest<T>(
+      data: T,
+      headers: {[key: string]: string}
+    ): Required<FetchOptions>['body'] {
+      // NOTE: These type assertions are NOT safe, but I plan on immediately replacing this
+      // implementation in a follow-up PR.
       if (data == null || typeof data !== 'object') {
-        return data;
+        return data as unknown as Required<FetchOptions>['body'];
       }
-      const proto = Object.getPrototypeOf(data);
+      const proto: unknown = Object.getPrototypeOf(data);
       if (Array.isArray(data) || proto === Object.prototype || proto === null) {
         // eslint-disable-next-line no-param-reassign
         headers['Content-Type'] = 'application/json';
         return JSON.stringify(data);
       }
-      return data;
+      return data as unknown as Required<FetchOptions>['body'];
     },
   };
 }
