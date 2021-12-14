@@ -377,3 +377,28 @@ test('do not throw in empty body', async () => {
 
   expect(response).toEqual({});
 });
+
+test('handle void methods', async () => {
+  nock('https://localhost:3000')
+    .post(
+      `/customer/shopper-customers/v1/organizations/${config.parameters.organizationId}/customers/password/actions/reset`
+    )
+    .query({
+      siteId: config.parameters.siteId,
+    })
+    .matchHeader('authorization', 'Bearer test-auth')
+    .reply(204);
+
+  const client = new ShopperCustomers({...config});
+  const response = await client.resetPassword({
+    headers: {
+      authorization: 'Bearer test-auth',
+    },
+    body: {
+      resetToken: 'R1e2s3e4t5T6o7k8e9n0',
+      login: 'janedoe@test.com',
+      newPassword: 'p@assword2',
+    },
+  });
+  expect(response);
+});
