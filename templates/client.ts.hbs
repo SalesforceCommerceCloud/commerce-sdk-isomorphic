@@ -88,15 +88,16 @@ export type {{name.upperCamelCase}}Parameters = {{name.upperCamelCase}}PathParam
 
 */
 export class {{name.upperCamelCase}}<ConfigParameters extends {{{name.upperCamelCase}}}Parameters & Record<string, unknown>> {
-  public clientConfig: ClientConfig<ConfigParameters>;
+  // baseUri is not required on ClientConfig, but we know that we provide one in the class constructor
+  public clientConfig: ClientConfig<ConfigParameters> & { baseUri: string };
 
   static readonly defaultBaseUri = "{{getBaseUriFromDocument model}}";
 
   constructor(config: ClientConfigInit<ConfigParameters>) {
-    this.clientConfig = new ClientConfig({
-      baseUri: new.target.defaultBaseUri,
-      ...config
-    });
+    const cfg = {...config}
+    if (!cfg.baseUri) cfg.baseUri = new.target.defaultBaseUri;
+    // Type assertion is safe because ^^^
+    this.clientConfig = new ClientConfig(cfg) as ClientConfig<ConfigParameters> & { baseUri: string };
   }
 
   {{> operationsPartial model}}

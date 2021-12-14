@@ -14,7 +14,8 @@ import {
 
 const Handlebars = generate.HandlebarsWithAmfHelpers;
 const API_DIRECTORY = `${__dirname}/../apis`;
-const pkg = require('../package.json');
+// eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-assignment
+const pkg: {version: string} = require('../package.json');
 
 describe('registerHelper', () => {
   it('registers our custom helpers', () => {
