@@ -67,41 +67,31 @@ describe('ClientConfig constructor', () => {
 describe('ClientConfig defaults', () => {
   describe('transform request', () => {
     const transform = ClientConfig.defaults.transformRequest;
-    let headers: {[key: string]: string};
 
-    beforeEach(() => {
-      headers = {};
+    test('converts to JSON for Content-Type application/json', () => {
+      expect(
+        transform({json: true}, {'Content-Type': 'application/json'})
+      ).toEqual('{"json":true}');
     });
 
-    test('does not modify body or headers for primitive values', () => {
-      expect(transform(null, headers)).toBeNull();
-      expect(headers).toEqual({});
-
-      expect(transform(undefined, headers)).toBeUndefined();
-      expect(headers).toEqual({});
-
-      expect(transform('a string', headers)).toBe('a string');
-      expect(headers).toEqual({});
+    test('creates a URLSearchParams object for Content-Type application/x-www-form-urlencoded', () => {
+      const actual = transform(
+        {url: 'search', params: true},
+        {'Content-Type': 'application/x-www-form-urlencoded'}
+      );
+      expect(actual).toBeInstanceOf(URLSearchParams);
+      // Wrapping in a Map so that .toEqual will work properly
+      expect(new Map(actual as URLSearchParams)).toEqual(
+        new Map([
+          ['url', 'search'],
+          ['params', 'true'],
+        ])
+      );
     });
 
-    test('does not modify body or headers for non-plain objects', () => {
-      const blob = new Blob();
-      expect(transform(blob, headers)).toBe(blob);
-      expect(headers).toEqual({});
-    });
-
-    test('converts plain objects to JSON and sets Content-Type header', () => {
-      expect(transform({plain: 'object'}, headers)).toBe('{"plain":"object"}');
-      expect(headers).toEqual({'Content-Type': 'application/json'});
-
-      headers = {};
-      expect(transform(Object.create(null), headers)).toBe('{}');
-      expect(headers).toEqual({'Content-Type': 'application/json'});
-    });
-
-    test('converts arrays to JSON and sets Content-Type header', () => {
-      expect(transform([1, 2, 3], headers)).toBe('[1,2,3]');
-      expect(headers).toEqual({'Content-Type': 'application/json'});
+    test('does nothing for unknown Content-Type', () => {
+      const input = {some: 'input'};
+      expect(transform(input, {})).toBe(input);
     });
   });
 });
