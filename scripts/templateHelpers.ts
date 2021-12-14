@@ -18,7 +18,7 @@ import {ASSET_OBJECT_MAP} from './config';
  * @param namespace - to be prefixed to types
  * @returns the content prefixed with the namespace
  */
-export function addNamespace(content: string, namespace: any): string {
+export function addNamespace(content: string, namespace: string): string {
   // Not handling invalid content.
   if (!content) {
     throw new Error('Invalid content');
@@ -29,9 +29,12 @@ export function addNamespace(content: string, namespace: any): string {
   }
 
   // if the content is an array, extract all of the elements
-  const matched = content.match(/^Array<(.*?)>$/);
-  const arrayType = !!matched;
-  const types = matched?.[1] || content;
+  const matched = /^Array<(.*?)>$/.exec(content);
+  if (matched && !matched[1]) {
+    throw new Error(`Array type has no content.`);
+  }
+  const isArrayType = !!matched;
+  const types = matched ? matched[1] : content;
 
   // Get a handle on individual types
   const typesToProcess = types.split('|');
@@ -59,7 +62,7 @@ export function addNamespace(content: string, namespace: any): string {
   const processedTypes = namespaceTypes.join(' | ');
 
   // Re-add Array if required
-  if (arrayType) {
+  if (isArrayType) {
     return `Array<${processedTypes}>`;
   }
   return processedTypes;

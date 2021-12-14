@@ -6,6 +6,7 @@
  */
 
 import nock from 'nock';
+import {FetchOptions} from '../static/clientConfig';
 import {ClientConfigInit, ShopperCustomers, ShopperSearch} from '../lib';
 import config from '../environment/config';
 
@@ -21,9 +22,7 @@ type TestConfigParameters = typeof config.parameters;
 const customerClient = new ShopperCustomers(config);
 const searchClient = new ShopperSearch(config);
 
-beforeEach(async () => {
-  nock.cleanAll();
-});
+beforeEach(() => nock.cleanAll());
 
 test('test getting a token with a post operation', async () => {
   nock('https://localhost:3000')
@@ -50,7 +49,7 @@ test('test getting a token with a post operation', async () => {
     true
   );
   // Get the authorization token and validate it is correct
-  const token = await authResponse.headers.get('authorization');
+  const token = authResponse.headers.get('authorization');
   expect(token).toEqual('Bearer test-auth');
 });
 
@@ -83,7 +82,7 @@ test('test getting a token without a proxy', async () => {
     true
   );
   // Get the authorization token and validate it is correct
-  const token = await authResponse.headers.get('authorization');
+  const token = authResponse.headers.get('authorization');
   expect(token).toEqual('Bearer test-auth');
 });
 
@@ -264,7 +263,7 @@ test('should not fail when arbitrary parameters are configured in fetchOptions',
     fetchOptions: {
       somekey: 'some value',
       timeout: 1000,
-    } as any, // Type assertion required because we are deliberately violating the type
+    } as FetchOptions, // Type assertion required because we are deliberately violating the type
   };
 
   const client = new ShopperSearch(clientConfig);

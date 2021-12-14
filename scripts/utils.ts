@@ -5,6 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import {generate, download} from '@commerce-apps/raml-toolkit';
+import addHelpers from 'handlebars-helpers';
 import path from 'path';
 import {readJsonSync} from 'fs-extra';
 
@@ -20,13 +21,12 @@ type ApiMetadata = generate.ApiMetadata;
 // -------HELPER REGISTRATION-------
 const Handlebars = generate.HandlebarsWithAmfHelpers;
 
-require('handlebars-helpers')({handlebars: Handlebars});
+addHelpers({handlebars: Handlebars});
 
 /**
  * Register the custom helpers defined in our pipeline
  */
 export function registerHelpers(): void {
-  // eslint-disable-next-line no-undef
   const helpers: {[key: string]: Handlebars.HelperDelegate} = templateHelpers;
   const keys: string[] = Object.keys(helpers);
   keys.forEach(helper => Handlebars.registerHelper(helper, helpers[helper]));
@@ -82,6 +82,7 @@ export async function setupApis(
   let apis = loadApiDirectory(inputDir);
   // SDK version is not API metadata, so it is not included in the file, but it
   // is necessary for generating the SDK (as part of the user agent header).
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   apis.metadata.sdkVersion = await readJsonSync(PACKAGE_JSON).version;
   await apis.init();
 

@@ -13,7 +13,7 @@ export default class TemplateURL extends URL {
    */
   constructor(
     url: string,
-    base?: string,
+    base: string,
     parameters?: {
       pathParams?: PathParameters;
       queryParams?: QueryParameters;
@@ -39,7 +39,7 @@ export default class TemplateURL extends URL {
    *
    * @param newOriginString - The new origin to substitute (ex: https://example.com)
    */
-  replaceOrigin(newOriginString: string) {
+  replaceOrigin(newOriginString: string): void {
     const newOriginUrl = new URL(newOriginString);
     this.protocol = newOriginUrl.protocol;
     this.host = newOriginUrl.host;
@@ -84,7 +84,7 @@ export default class TemplateURL extends URL {
     return parameters
       ? template.replace(
           /\{([^\}]+)\}/g /* eslint-disable-line no-useless-escape */,
-          (match, param) => String(parameters[param])
+          (match, param: string) => String(parameters[param])
         )
       : template;
   }
