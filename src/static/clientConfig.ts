@@ -11,14 +11,12 @@ import {BaseUriParameters} from './helpers';
  * Alias for `RequestInit` from TypeScript's DOM lib, to more clearly differentiate
  * it from the `RequestInit` provided by node-fetch.
  */
-// eslint isn't aware that we have browser types available, not sure why...
-// eslint-disable-next-line no-undef
 type BrowserRequestInit = RequestInit;
 /**
  * Any properties supported in either the browser or node are accepted.
  * Using the right properties in the right context is left to the user.
  */
-type FetchOptions = BrowserRequestInit & NodeRequestInit;
+export type FetchOptions = NodeRequestInit & BrowserRequestInit;
 
 /**
  * Base options that can be passed to the `ClientConfig` class.
@@ -29,12 +27,8 @@ export interface ClientConfigInit<Params extends BaseUriParameters> {
   headers?: {[key: string]: string};
   parameters: Params;
   fetchOptions?: FetchOptions;
-  // eslint thinks that the names used in the function signature are variables
-  // instead of part of the type, not sure why...
   transformRequest?: (
-    // eslint-disable-next-line no-unused-vars
-    data: any,
-    // eslint-disable-next-line no-unused-vars
+    data: unknown,
     headers: {[key: string]: string}
   ) => Required<FetchOptions>['body'];
 }
@@ -62,6 +56,7 @@ export default class ClientConfig<Params extends BaseUriParameters>
   constructor(config: ClientConfigInit<Params>) {
     this.headers = {...config.headers};
     this.parameters = {...config.parameters};
+    // shortCode is required in the type, but we still check that it is present for the JS users
     if (!this.parameters.shortCode) {
       throw new Error('Missing required parameter: shortCode');
     }
@@ -90,10 +85,7 @@ export default class ClientConfig<Params extends BaseUriParameters>
      * @param data - Data to transform
      * @returns A payload appropriate for the specified `Content-Type` header
      */
-    transformRequest<T>(
-      data: T,
-      headers: {[key: string]: string}
-    ): T | string | URLSearchParams {
+    transformRequest(data, headers) {
       switch (headers['Content-Type']) {
         case 'application/json': {
           return JSON.stringify(data);
@@ -103,10 +95,14 @@ export default class ClientConfig<Params extends BaseUriParameters>
           // Future APIs are unlikely to use this content type. Additionally, URLSearchParams
           // actually accepts Record<string, unknown> and converts the values to strings.
           // Therefore, this type assertion isn't *strictly* safe, but is unlikely to cause issues.
-          return new URLSearchParams(data as unknown as Record<string, string>);
+          return new URLSearchParams(data as Record<string, string>);
         }
         default: {
-          return data;
+          // This type assertion isn't safe. However, this default case will not occur with the
+          // currently known APIs, as they all use a Content-Type already specified. Rather than
+          // throwing in this case, we return the data unmodified, to be more flexible in case there
+          // are different content types in future APIs.
+          return data as Required<FetchOptions>['body'];
         }
       }
     },

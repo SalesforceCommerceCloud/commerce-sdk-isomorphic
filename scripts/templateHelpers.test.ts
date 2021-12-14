@@ -47,16 +47,16 @@ describe('When adding namespaces to individual content (types)', () => {
     expect(addNamespace('object', 'types')).toStrictEqual('object');
   });
 
-  it('Throws an error when called with undfined content', () => {
-    expect(() => addNamespace(null, 'types')).toThrow('Invalid content');
-  });
-
-  it('Throws an error when called with null content', () => {
-    expect(() => addNamespace(undefined, 'types')).toThrow('Invalid content');
+  it('Throws an error when content is not a string', () => {
+    // The type assertion is required to test the implementation when the types are violated
+    const content = null as unknown as string;
+    expect(() => addNamespace(content, 'types')).toThrow('Invalid content');
   });
 
   it('Throws an error when the type is not a valid string', () => {
-    expect(() => addNamespace('Foo', null)).toThrow('Invalid namespace');
+    // The type assertion is required to test the implementation when the types are violated
+    const namespace = null as unknown as string;
+    expect(() => addNamespace('Foo', namespace)).toThrow('Invalid namespace');
   });
 
   it('Throws an error when the type is empty string', () => {
@@ -78,11 +78,15 @@ describe('When adding namespaces to elements in a complex content (an array)', (
   });
 
   it('Throws an error when the array is empty', () => {
-    expect(() => addNamespace('Array<>', null)).toThrow();
+    expect(() => addNamespace('Array<>', 'types')).toThrow(
+      'Array type has no content'
+    );
   });
 
   it('Throws an error when adding a type to an empty array element', () => {
-    expect(() => addNamespace('Array<Foo | | Baa>', null)).toThrow();
+    expect(() => addNamespace('Array<Foo | | Baa>', 'types')).toThrow(
+      'Empty type found'
+    );
   });
 });
 

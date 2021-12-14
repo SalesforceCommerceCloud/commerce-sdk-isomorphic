@@ -6,13 +6,13 @@
  */
 
 export type CompositeParameters<
-  MethodParameters extends object,
-  ConfigParameters extends object
+  MethodParameters extends Record<string, unknown>,
+  ConfigParameters extends Record<string, unknown>
 > = Omit<MethodParameters, keyof ConfigParameters> & Partial<MethodParameters>;
 
 export type RequireParametersUnlessAllAreOptional<
-  T extends {parameters?: object}
-> = {} extends NonNullable<T['parameters']>
+  T extends {parameters?: Record<string, unknown>}
+> = Record<string, never> extends NonNullable<T['parameters']>
   ? T
   : T & Required<Pick<T, 'parameters'>>;
 

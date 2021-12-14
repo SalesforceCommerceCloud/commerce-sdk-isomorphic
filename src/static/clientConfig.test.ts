@@ -4,25 +4,27 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+import {BaseUriParameters} from 'lib/helpers';
 import ClientConfig, {ClientConfigInit} from './clientConfig';
 
 describe('ClientConfig constructor', () => {
   test('will throw if missing shortCode parameter', () => {
     // Type assertion is necessary because we're violating the type to test the implementation
-    expect(() => new ClientConfig({} as ClientConfigInit<any>)).toThrow(
-      'Missing required parameter: shortCode'
-    );
+    expect(
+      () => new ClientConfig({} as ClientConfigInit<BaseUriParameters>)
+    ).toThrow('Missing required parameter: shortCode');
   });
 
   test('creates an instance from an init object', () => {
+    const parameters = {param: 'param', shortCode: 'shortCode'};
     // `init` is Required<> to ensure that all init options are tested
-    const init: Required<ClientConfigInit<any>> = {
+    const init: Required<ClientConfigInit<typeof parameters>> = {
       baseUri: 'https://example.com',
       fetchOptions: {keepalive: false},
       headers: {authorization: 'token'},
-      parameters: {param: 'param', shortCode: 'shortCode'},
+      parameters,
       proxy: 'https://proxy.com',
-      transformRequest: v => v,
+      transformRequest: ClientConfig.defaults.transformRequest,
     };
     expect(new ClientConfig(init)).toEqual({...init});
   });
