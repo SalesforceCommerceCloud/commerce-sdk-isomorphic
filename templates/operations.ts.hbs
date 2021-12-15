@@ -188,8 +188,7 @@
           // It's ideal to get "{}" for an empty response body, but we won't throw if it's truly empty
           return text ? JSON.parse(text) : {};
         {{/if}}
-      }
-      else {
+      } else {
         throw new Error('Error ' + response.status + ': ' + response.statusText);
       }
     }
