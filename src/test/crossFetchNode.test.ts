@@ -399,5 +399,5 @@ test('handle void methods', async () => {
       newPassword: 'p@assword2',
     },
   });
-  expect(response);
+  expect(response).toBeUndefined();
 });
