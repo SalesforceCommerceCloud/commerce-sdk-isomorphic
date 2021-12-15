@@ -181,11 +181,13 @@
       if (rawResponse) {
         return response;
       } else if (response.ok || response.status === 304) {
-        {{#unless (eq (getReturnTypeFromOperation this) "void") }}
+        {{#if (eq (getReturnTypeFromOperation this) "void") }}
+          return;
+        {{else}}
           const text = await response.text();
           // It's ideal to get "{}" for an empty response body, but we won't throw if it's truly empty
           return text ? JSON.parse(text) : {};
-        {{/unless}}
+        {{/if}}
       }
       else {
         throw new Error('Error ' + response.status + ': ' + response.statusText);
