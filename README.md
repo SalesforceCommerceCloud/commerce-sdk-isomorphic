@@ -90,6 +90,10 @@ const config = {
 }
  ```
 
+### Optional settings that can be set in the config object
+*throwOnBadResponse:* Default value is false. When set to true, the sdk with throw on exception on responses with statuses that is not
+2xx and 304.
+
 ## Testing
 
 Two types of tests occur when running `yarn test`. First, unit tests are executed with jest including an enforced coverage level. This is all tests not contained within the sample app path of `src/environment`. If that passes, tests within the sample app path are executed using the `react-scripts` configuration. These allow for testing of the SDK within a sample React application.
