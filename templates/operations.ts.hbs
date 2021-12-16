@@ -182,7 +182,6 @@
       } else if (this.clientConfig.throwOnBadResponse && !response.ok && response.status !== 304) {
         throw new Error('Error ' + response.status + ': ' + response.statusText);
       } else {
-        //If rawResponse and throwOnBadResponse is false, go with default behavior.
         {{#unless (eq (getReturnTypeFromOperation this) "void") }}
           const text = await response.text();
           // It's ideal to get "{}" for an empty response body, but we won't throw if it's truly empty
