@@ -27,8 +27,8 @@ export interface ClientConfigInit<Params extends BaseUriParameters> {
   headers?: {[key: string]: string};
   parameters: Params;
   fetchOptions?: FetchOptions;
-  transformRequest?: <T>(
-    data: T,
+  transformRequest?: (
+    data: unknown,
     headers: {[key: string]: string}
   ) => Required<FetchOptions>['body'];
 }
@@ -78,27 +78,33 @@ export default class ClientConfig<Params extends BaseUriParameters>
     'transformRequest'
   > = {
     /**
-     * If data is a plain object or an array, it is converted to JSON and the Content-Type header is
-     * set to application/json. All other data is returned unmodified.
+     * If the `Content-Type` header is `application/json`, the data is converted to a JSON string.
+     * If the `Content-Type` header is `application/x-www-form-urlencoded`, the data is converted to
+     * a `URLSearchParams` object.
+     * In all other cases, the data is returned unmodified.
      * @param data - Data to transform
-     * @returns A JSON string or the unmodified data
+     * @returns A payload appropriate for the specified `Content-Type` header
      */
-    transformRequest<T>(
-      data: T,
-      headers: {[key: string]: string}
-    ): Required<FetchOptions>['body'] {
-      // NOTE: These type assertions are NOT safe, but I plan on immediately replacing this
-      // implementation in a follow-up PR.
-      if (data == null || typeof data !== 'object') {
-        return data as unknown as Required<FetchOptions>['body'];
+    transformRequest(data, headers) {
+      switch (headers['Content-Type']) {
+        case 'application/json': {
+          return JSON.stringify(data);
+        }
+        case 'application/x-www-form-urlencoded': {
+          // Only SLAS uses this content type, and all of their payloads are Record<string, string>.
+          // Future APIs are unlikely to use this content type. Additionally, URLSearchParams
+          // actually accepts Record<string, unknown> and converts the values to strings.
+          // Therefore, this type assertion isn't *strictly* safe, but is unlikely to cause issues.
+          return new URLSearchParams(data as Record<string, string>);
+        }
+        default: {
+          // This type assertion isn't safe. However, this default case will not occur with the
+          // currently known APIs, as they all use a Content-Type already specified. Rather than
+          // throwing in this case, we return the data unmodified, to be more flexible in case there
+          // are different content types in future APIs.
+          return data as Required<FetchOptions>['body'];
+        }
       }
-      const proto: unknown = Object.getPrototypeOf(data);
-      if (Array.isArray(data) || proto === Object.prototype || proto === null) {
-        // eslint-disable-next-line no-param-reassign
-        headers['Content-Type'] = 'application/json';
-        return JSON.stringify(data);
-      }
-      return data as unknown as Required<FetchOptions>['body'];
     },
   };
 }
