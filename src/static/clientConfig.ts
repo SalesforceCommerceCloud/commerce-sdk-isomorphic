@@ -54,7 +54,7 @@ export default class ClientConfig<Params extends BaseUriParameters>
     ClientConfigInit<Params>['transformRequest']
   >;
 
-  public throwOnBadResponse?: boolean = false;
+  public throwOnBadResponse: boolean;
 
   constructor(config: ClientConfigInit<Params>) {
     this.headers = {...config.headers};
