@@ -56,7 +56,7 @@
     * @param body - The data to send as the request body.
     {{/or}}
     * @param rawResponse - Set to true to return entire Response object instead of DTO.
-    *
+    * @param throwOnBadResponse - Set to true to throw an exception when a response status is not 2xx or 304.
     * @returns A promise of type Response if rawResponse is true, a promise of type {{getReturnTypeFromOperation this}} otherwise.
     * {{#if (eq (lowercase @root.metadata.categories.[CC Version Status].[0]) "beta")}}
     * @beta
