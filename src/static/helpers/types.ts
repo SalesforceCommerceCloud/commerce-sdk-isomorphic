@@ -43,3 +43,14 @@ export interface QueryParameters {
  * Generic interface for all parameter types.
  */
 export type UrlParameters = PathParameters | QueryParameters;
+
+/* eslint-disable no-shadow */
+// temporary fix for eslint bug: https://github.com/typescript-eslint/tslint-to-eslint-config/issues/856
+/**
+ * Enum type representing different return options
+ */
+export enum returnType {
+  RESPONSE,
+  JSON,
+  REQUEST,
+}
