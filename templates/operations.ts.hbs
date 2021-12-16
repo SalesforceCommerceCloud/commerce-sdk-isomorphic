@@ -75,7 +75,8 @@
         headers?: { [key: string]: string }{{#or (is method "patch") (is method "post") (is method "put")}},
         body: {{{getPayloadTypeFromRequest request}}}{{/or}}
       }>,
-      rawResponse?: T
+      rawResponse?: T,
+      throwOnBadResponse?: T
     ): Promise<T extends true ? Response : {{getReturnTypeFromOperation this}}>;
 
     /**
@@ -95,6 +96,7 @@
     * @param body - The data to send as the request body.
     {{/or}}
     * @param rawResponse - Set to true to return entire Response object instead of DTO.
+    * @param throwOnBadResponse - Set to true to throw an exception when a response status is not 2xx or 304.
     *
     * @returns A promise of type Response if rawResponse is true, a promise of type {{getReturnTypeFromOperation this}} otherwise.
     * {{#if (eq (lowercase @root.metadata.categories.[CC Version Status].[0]) "beta")}}
@@ -115,6 +117,7 @@
         body: {{{getPayloadTypeFromRequest request}}}{{/or}}
       }>,
       rawResponse?: boolean,
+      throwOnBadResponse?: boolean
     ): Promise<Response | {{getReturnTypeFromOperation this}}> {
       const optionParams = options?.parameters || ({} as Partial<NonNullable<NonNullable<typeof options>["parameters"]>>);
       const configParams = this.clientConfig.parameters;
@@ -180,18 +183,26 @@
       const response = await fetch(req);
       if (rawResponse) {
         return response;
-      } else if (response.ok || response.status === 304) {
+      } else if(throwOnBadResponse) {
+        if (response.ok || response.status === 304) {
+                {{#if (eq (getReturnTypeFromOperation this) "void") }}
+                  return;
+                {{else}}
+                  const text = await response.text();
+                  // It's ideal to get "{}" for an empty response body, but we won't throw if it's truly empty
+                  return text ? JSON.parse(text) : {};
+                {{/if}}
+              } else {
+                throw new Error('Error ' + response.status + ': ' + response.statusText);
+              }
+      } else {
+        //If rawResponse and throwOnBadResponse is false, go with default behavior.
         {{#if (eq (getReturnTypeFromOperation this) "void") }}
           return;
         {{else}}
-          const text = await response.text();
-          // It's ideal to get "{}" for an empty response body, but we won't throw if it's truly empty
-          return text ? JSON.parse(text) : {};
+          return response.json();
         {{/if}}
-      } else {
-        throw new Error('Error ' + response.status + ': ' + response.statusText);
       }
     }
-
   {{/each}}
 {{/each}}
