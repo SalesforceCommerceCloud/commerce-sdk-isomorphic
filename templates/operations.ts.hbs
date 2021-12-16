@@ -183,7 +183,7 @@
       const response = await fetch(req);
       if (rawResponse) {
         return response;
-      } else if(throwOnBadResponse) {
+      } else if (throwOnBadResponse) {
         if (response.ok || response.status === 304) {
                 {{#if (eq (getReturnTypeFromOperation this) "void") }}
                   return;

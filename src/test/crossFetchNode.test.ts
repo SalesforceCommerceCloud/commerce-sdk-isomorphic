@@ -450,3 +450,24 @@ test('throwOnBadResponse flag does not throw if false', async () => {
 
   expect(response).toEqual({content: 'not empty'});
 });
+
+test('throwOnBadResponse flag defaults to false', async () => {
+  nock('https://localhost:3000')
+    .get(
+      `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
+    )
+    .matchHeader('authorization', 'Bearer test-auth')
+    .reply(
+      400,
+      {content: 'not empty'},
+      {'content-type': 'application-json charset=UTF-8'}
+    );
+
+  const client = new ShopperSearch({...config});
+  const response = await client.productSearch({
+    parameters: {q: 'sony'},
+    headers: {authorization: 'Bearer test-auth'},
+  });
+
+  expect(response).toEqual({content: 'not empty'});
+});
