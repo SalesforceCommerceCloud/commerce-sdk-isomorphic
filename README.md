@@ -91,7 +91,7 @@ const config = {
  ```
 
 ### Optional settings that can be set in the config object
-*throwOnBadResponse:* Default value is false. When set to true, the sdk with throw on exception on responses with statuses that is not
+*throwOnBadResponse:* Default value is false. When set to true, the sdk will throw an Error on responses with statuses that are not
 2xx and 304.
 
 ## Testing
