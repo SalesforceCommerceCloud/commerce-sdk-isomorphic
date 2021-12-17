@@ -181,13 +181,14 @@
         return response;
       } else if (this.clientConfig.throwOnBadResponse && !response.ok && response.status !== 304) {
         throw new Error('Error ' + response.status + ': ' + response.statusText);
-      } else {
-        {{#unless (eq (getReturnTypeFromOperation this) "void") }}
+      }
+      {{#unless (eq (getReturnTypeFromOperation this) "void") }}
+        else {
           const text = await response.text();
           // It's ideal to get "{}" for an empty response body, but we won't throw if it's truly empty
           return text ? JSON.parse(text) : {};
-        {{/unless}}
-      }
+        }
+      {{/unless}}
     }
   {{/each}}
 {{/each}}
