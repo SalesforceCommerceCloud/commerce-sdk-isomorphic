@@ -74,7 +74,7 @@ export default class ClientConfig<Params extends BaseUriParameters>
     if (config.proxy) {
       this.proxy = config.proxy;
     }
-this.throwOnBadResponse = !!config.throwOnBadResponse;
+    this.throwOnBadResponse = !!config.throwOnBadResponse;
   }
 
   static readonly defaults: Pick<
