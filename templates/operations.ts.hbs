@@ -2,7 +2,7 @@
   {{#each operations}}
     /**
     * {{{formatForTsDoc description}}}
-    * Testing 1
+    *
     * If you would like to get a raw Response object use the other {{name}} function.
     *
     * @param options - An object containing the options for this method.
@@ -43,7 +43,7 @@
 
     /**
     * {{{formatForTsDoc description}}}
-    * Testing 2
+    *
     * @param options - An object containing the options for this method.
     * @param parameters - An object containing the parameters for this method.
     {{#each ../parameters }}
@@ -84,7 +84,7 @@
 
     /**
     * {{{formatForTsDoc description}}}
-    * Testing 3 Modifed
+    *
     * @param options - An object containing the options for this method.
     * @param parameters - An object containing the parameters for this method.
     {{#each ../parameters }}
@@ -121,7 +121,7 @@
         {{/if}}
       }>,
       rawResponse?: boolean,
-      returnTypeParam?: returnType
+      returnTypeParam?: any
     ): Promise<Response | Request | {{getReturnTypeFromOperation this}}> {
       const optionParams = options?.parameters || ({} as Partial<NonNullable<NonNullable<typeof options>["parameters"]>>);
       const configParams = this.clientConfig.parameters;

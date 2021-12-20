@@ -50,7 +50,7 @@ export type UrlParameters = PathParameters | QueryParameters;
  * Enum type representing different return options
  */
 export enum returnType {
-  JSON,
-  RESPONSE,
-  REQUEST,
+  JSON = 'JSON',
+  RESPONSE = 'RESPONSE',
+  REQUEST = 'REQUEST',
 }
