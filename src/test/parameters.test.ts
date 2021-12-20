@@ -140,24 +140,4 @@ describe('Parameters', () => {
       new Error('Missing required path parameter: organizationId')
     );
   });
-
-  it('supports returnType for JSON response', async () => {
-    const customersClient = new ShopperCustomers({
-      parameters: {
-        // shortCode is a base URI parameter, not path/query, so it *must* be in the config
-        shortCode: SHORT_CODE,
-        siteId: SITE_ID,
-      },
-    });
-
-    const response = await customersClient.authorizeCustomer({
-      parameters: {
-        organizationId: ORGANIZATION_ID,
-        clientId: CLIENT_ID,
-      },
-      body: {type: 'guest'},
-    }, undefined, 'JSON');
-
-    expect(response).toEqual(MOCK_RESPONSE);
-  });
 });

@@ -121,7 +121,7 @@
         {{/if}}
       }>,
       rawResponse?: boolean,
-      returnTypeParam?: any
+      returnType?: MethodReturnType
     ): Promise<Response | Request | {{getReturnTypeFromOperation this}}> {
       const optionParams = options?.parameters || ({} as Partial<NonNullable<NonNullable<typeof options>["parameters"]>>);
       const configParams = this.clientConfig.parameters;
@@ -187,11 +187,11 @@
           method: "{{loud method}}"
         }
       );
-      if(returnTypeParam && returnTypeParam === returnType.REQUEST) {
+      if(returnType === "request") {
         return req
       }
       const response = await fetch(req);
-      if (rawResponse || (returnTypeParam && returnTypeParam === returnType.RESPONSE)) {
+      if (returnType === "response" || (rawResponse && returnType !== "parsed")) {
         return response;
       } else {
         return response.json();
