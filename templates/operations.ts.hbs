@@ -58,7 +58,6 @@
     * @param body - The data to send as the request body.
     {{/if}}
     * @param rawResponse - Set to true to return entire Response object instead of DTO.
-    *
     * @returns A promise of type Response if rawResponse is true, a promise of type {{getReturnTypeFromOperation this}} otherwise.
     * {{#if (eq (lowercase @root.metadata.categories.[CC Version Status].[0]) "beta")}}
     * @beta
@@ -120,7 +119,7 @@
         body: {{{getPayloadTypeFromRequest request}}}
         {{/if}}
       }>,
-      rawResponse?: boolean,
+      rawResponse?: boolean
     ): Promise<Response | {{getReturnTypeFromOperation this}}> {
       const optionParams = options?.parameters || ({} as Partial<NonNullable<NonNullable<typeof options>["parameters"]>>);
       const configParams = this.clientConfig.parameters;
@@ -189,10 +188,16 @@
       const response = await fetch(req);
       if (rawResponse) {
         return response;
-      } else {
-        return response.json();
+      } else if (this.clientConfig.throwOnBadResponse && !response.ok && response.status !== 304) {
+        throw new Error('Error ' + response.status + ': ' + response.statusText);
       }
+      {{#unless (eq (getReturnTypeFromOperation this) "void") }}
+        else {
+          const text = await response.text();
+          // It's ideal to get "{}" for an empty response body, but we won't throw if it's truly empty
+          return text ? JSON.parse(text) : {};
+        }
+      {{/unless}}
     }
-
   {{/each}}
 {{/each}}

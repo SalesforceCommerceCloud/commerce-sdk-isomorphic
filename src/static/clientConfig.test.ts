@@ -25,6 +25,7 @@ describe('ClientConfig constructor', () => {
       parameters,
       proxy: 'https://proxy.com',
       transformRequest: ClientConfig.defaults.transformRequest,
+      throwOnBadResponse: false,
     };
     expect(new ClientConfig(init)).toEqual({...init});
   });

@@ -273,3 +273,201 @@ test('should not fail when arbitrary parameters are configured in fetchOptions',
   });
   expect(response).toEqual({});
 });
+
+test('throws on error responses', async () => {
+  nock('https://localhost:3000')
+    .get(
+      `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
+    )
+    .matchHeader('authorization', 'Bearer test-auth')
+    .reply(
+      400,
+      {content: 'not empty'},
+      {'content-type': 'application-json charset=UTF-8'}
+    );
+
+  const clientConfig: ClientConfigInit<TestConfigParameters> = {
+    ...config,
+    throwOnBadResponse: true,
+  };
+  const client = new ShopperSearch(clientConfig);
+  const responsePromise = client.productSearch({
+    parameters: {q: 'sony'},
+    headers: {authorization: 'Bearer test-auth'},
+  });
+
+  await expect(responsePromise).rejects.toEqual(
+    new Error('Error 400: Bad Request')
+  );
+});
+
+test('do not throw in 200 response', async () => {
+  nock('https://localhost:3000')
+    .get(
+      `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
+    )
+    .matchHeader('authorization', 'Bearer test-auth')
+    .reply(
+      200,
+      {content: 'not empty'},
+      {'content-type': 'application-json charset=UTF-8'}
+    );
+
+  const clientConfig: ClientConfigInit<TestConfigParameters> = {
+    ...config,
+    throwOnBadResponse: true,
+  };
+  const client = new ShopperSearch(clientConfig);
+  const response = await client.productSearch<boolean>({
+    parameters: {q: 'sony'},
+    headers: {authorization: 'Bearer test-auth'},
+  });
+
+  expect(response).toEqual({content: 'not empty'});
+});
+
+test('do not throw in 2xx response', async () => {
+  nock('https://localhost:3000')
+    .get(
+      `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
+    )
+    .matchHeader('authorization', 'Bearer test-auth')
+    .reply(
+      212,
+      {content: 'not empty'},
+      {'content-type': 'application-json charset=UTF-8'}
+    );
+
+  const clientConfig: ClientConfigInit<TestConfigParameters> = {
+    ...config,
+    throwOnBadResponse: true,
+  };
+  const client = new ShopperSearch(clientConfig);
+  const response = await client.productSearch({
+    parameters: {q: 'sony'},
+    headers: {authorization: 'Bearer test-auth'},
+  });
+
+  expect(response).toEqual({content: 'not empty'});
+});
+
+test('do not throw in 304 response', async () => {
+  nock('https://localhost:3000')
+    .get(
+      `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
+    )
+    .matchHeader('authorization', 'Bearer test-auth')
+    .reply(
+      304,
+      {content: 'not empty'},
+      {'content-type': 'application-json charset=UTF-8'}
+    );
+
+  const clientConfig: ClientConfigInit<TestConfigParameters> = {
+    ...config,
+    throwOnBadResponse: true,
+  };
+  const client = new ShopperSearch(clientConfig);
+  const response = await client.productSearch({
+    parameters: {q: 'sony'},
+    headers: {authorization: 'Bearer test-auth'},
+  });
+
+  expect(response).toEqual({content: 'not empty'});
+});
+
+test('do not throw in empty body', async () => {
+  nock('https://localhost:3000')
+    .get(
+      `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
+    )
+    .matchHeader('authorization', 'Bearer test-auth')
+    .reply(200);
+
+  const clientConfig: ClientConfigInit<TestConfigParameters> = {
+    ...config,
+    throwOnBadResponse: true,
+  };
+  const client = new ShopperSearch(clientConfig);
+  const response = await client.productSearch({
+    parameters: {q: 'sony'},
+    headers: {authorization: 'Bearer test-auth'},
+  });
+
+  expect(response).toEqual({});
+});
+
+test('handle void methods', async () => {
+  nock('https://localhost:3000')
+    .post(
+      `/customer/shopper-customers/v1/organizations/${config.parameters.organizationId}/customers/password/actions/reset`
+    )
+    .query({
+      siteId: config.parameters.siteId,
+    })
+    .matchHeader('authorization', 'Bearer test-auth')
+    .reply(204);
+
+  const clientConfig: ClientConfigInit<TestConfigParameters> = {
+    ...config,
+    throwOnBadResponse: true,
+  };
+  const client = new ShopperCustomers(clientConfig);
+  const response = await client.resetPassword({
+    headers: {
+      authorization: 'Bearer test-auth',
+    },
+    body: {
+      resetToken: 'R1e2s3e4t5T6o7k8e9n0',
+      login: 'janedoe@test.com',
+      newPassword: 'p@assword2',
+    },
+  });
+  expect(response).toBeUndefined();
+});
+
+test('throwOnBadResponse flag does not throw if false', async () => {
+  nock('https://localhost:3000')
+    .get(
+      `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
+    )
+    .matchHeader('authorization', 'Bearer test-auth')
+    .reply(
+      400,
+      {content: 'not empty'},
+      {'content-type': 'application-json charset=UTF-8'}
+    );
+
+  const clientConfig: ClientConfigInit<TestConfigParameters> = {
+    ...config,
+    throwOnBadResponse: false,
+  };
+  const client = new ShopperSearch(clientConfig);
+  const response = await client.productSearch<boolean>({
+    parameters: {q: 'sony'},
+    headers: {authorization: 'Bearer test-auth'},
+  });
+
+  expect(response).toEqual({content: 'not empty'});
+});
+
+test('throwOnBadResponse flag defaults to false', async () => {
+  nock('https://localhost:3000')
+    .get(
+      `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
+    )
+    .matchHeader('authorization', 'Bearer test-auth')
+    .reply(
+      400,
+      {content: 'not empty'},
+      {'content-type': 'application-json charset=UTF-8'}
+    );
+
+  const client = new ShopperSearch({...config});
+  const response = await client.productSearch({
+    parameters: {q: 'sony'},
+    headers: {authorization: 'Bearer test-auth'},
+  });
+
+  expect(response).toEqual({content: 'not empty'});
+});

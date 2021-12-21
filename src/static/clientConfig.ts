@@ -31,6 +31,7 @@ export interface ClientConfigInit<Params extends BaseUriParameters> {
     data: unknown,
     headers: {[key: string]: string}
   ) => Required<FetchOptions>['body'];
+  throwOnBadResponse?: boolean;
 }
 
 /**
@@ -53,6 +54,8 @@ export default class ClientConfig<Params extends BaseUriParameters>
     ClientConfigInit<Params>['transformRequest']
   >;
 
+  public throwOnBadResponse: boolean;
+
   constructor(config: ClientConfigInit<Params>) {
     this.headers = {...config.headers};
     this.parameters = {...config.parameters};
@@ -71,6 +74,7 @@ export default class ClientConfig<Params extends BaseUriParameters>
     if (config.proxy) {
       this.proxy = config.proxy;
     }
+    this.throwOnBadResponse = !!config.throwOnBadResponse;
   }
 
   static readonly defaults: Pick<
