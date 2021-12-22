@@ -15,6 +15,17 @@ const ORGANIZATION_ID = 'ORGANIZATION_ID';
 
 const MOCK_RESPONSE = {mockResponse: true};
 
+function createCustomersClient(): ShopperCustomers<any> {
+  return new ShopperCustomers({
+    parameters: {
+      shortCode: SHORT_CODE,
+      siteId: SITE_ID,
+      organizationId: ORGANIZATION_ID,
+      clientId: CLIENT_ID,
+    },
+  });
+}
+
 describe('Parameters', () => {
   beforeEach(() =>
     nock(`https://${SHORT_CODE}.api.commercecloud.salesforce.com`)
@@ -142,16 +153,7 @@ describe('Parameters', () => {
   });
 
   it('supports returnType for the "parsed" option', async () => {
-    const customersClient = new ShopperCustomers({
-      parameters: {
-        shortCode: SHORT_CODE,
-        siteId: SITE_ID,
-        organizationId: ORGANIZATION_ID,
-        clientId: CLIENT_ID,
-      },
-    });
-
-    const response = await customersClient.authorizeCustomer({
+    const response = await createCustomersClient().authorizeCustomer({
       body: {type: 'guest'},
       returnType: 'parsed',
     });
@@ -160,16 +162,7 @@ describe('Parameters', () => {
   });
 
   it('supports returnType for the "response" option', async () => {
-    const customersClient = new ShopperCustomers({
-      parameters: {
-        shortCode: SHORT_CODE,
-        siteId: SITE_ID,
-        organizationId: ORGANIZATION_ID,
-        clientId: CLIENT_ID,
-      },
-    });
-
-    const response = await customersClient.authorizeCustomer({
+    const response = await createCustomersClient().authorizeCustomer({
       body: {type: 'guest'},
       returnType: 'response',
     });
@@ -178,16 +171,7 @@ describe('Parameters', () => {
   });
 
   it('supports returnType for the "request" option', async () => {
-    const customersClient = new ShopperCustomers({
-      parameters: {
-        shortCode: SHORT_CODE,
-        siteId: SITE_ID,
-        organizationId: ORGANIZATION_ID,
-        clientId: CLIENT_ID,
-      },
-    });
-
-    const response = await customersClient.authorizeCustomer({
+    const response = await createCustomersClient().authorizeCustomer({
       body: {type: 'guest'},
       returnType: 'request',
     });
@@ -196,19 +180,13 @@ describe('Parameters', () => {
   });
 
   it('should priortize returnType over rawResponse', async () => {
-    const customersClient = new ShopperCustomers({
-      parameters: {
-        shortCode: SHORT_CODE,
-        siteId: SITE_ID,
-        organizationId: ORGANIZATION_ID,
-        clientId: CLIENT_ID,
+    const response = await createCustomersClient().authorizeCustomer(
+      {
+        body: {type: 'guest'},
+        returnType: 'parsed',
       },
-    });
- 
-    const response = await customersClient.authorizeCustomer({
-      body: {type: 'guest'},
-      returnType: 'parsed',
-    }, true);
+      true
+    );
 
     expect(response).toEqual(MOCK_RESPONSE);
   });
