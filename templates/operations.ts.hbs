@@ -82,6 +82,47 @@
       rawResponse?: T
     ): Promise<T extends true ? Response : {{getReturnTypeFromOperation this}}>;
 
+    // Overload no raw response
+    // TODO: Add documentation
+    {{name}}(
+      options{{#or (is method "get") (is method "delete")}}?{{/or}}: RequireParametersUnlessAllAreOptional<{
+        parameters?: CompositeParameters<{
+          {{#each ../parameters}}
+          {{{name}}}: {{{ getTypeFromParameter this}}}
+          {{/each}}
+          {{#each request.queryParameters}}
+          {{{name}}}{{#if (not (is required "true"))}}?{{/if}}: {{{ getTypeFromParameter this}}}
+          {{/each}}
+        }, ConfigParameters>,
+        headers?: { [key: string]: string },
+        {{#if (isRequestWithPayload request)}}
+        body: {{{getPayloadTypeFromRequest request}}}
+        {{/if}}
+        returnType?: MethodReturnType
+      }>,
+    ): Promise<Response | Request | {{getReturnTypeFromOperation this}}>;
+
+    // Overload with raw response
+    // TODO: Add documentation
+    {{name}}(
+      options{{#or (is method "get") (is method "delete")}}?{{/or}}: RequireParametersUnlessAllAreOptional<{
+        parameters?: CompositeParameters<{
+          {{#each ../parameters}}
+          {{{name}}}: {{{ getTypeFromParameter this}}}
+          {{/each}}
+          {{#each request.queryParameters}}
+          {{{name}}}{{#if (not (is required "true"))}}?{{/if}}: {{{ getTypeFromParameter this}}}
+          {{/each}}
+        }, ConfigParameters>,
+        headers?: { [key: string]: string },
+        {{#if (isRequestWithPayload request)}}
+        body: {{{getPayloadTypeFromRequest request}}}
+        {{/if}}
+        returnType?: MethodReturnType
+      }>,
+      rawResponse?: boolean,
+    ): Promise<Response | Request | {{getReturnTypeFromOperation this}}>;
+
     /**
     * {{{formatForTsDoc description}}}
     *
@@ -119,9 +160,9 @@
         {{#if (isRequestWithPayload request)}}
         body: {{{getPayloadTypeFromRequest request}}}
         {{/if}}
+        returnType?: MethodReturnType
       }>,
       rawResponse?: boolean,
-      returnType?: MethodReturnType
     ): Promise<Response | Request | {{getReturnTypeFromOperation this}}> {
       const optionParams = options?.parameters || ({} as Partial<NonNullable<NonNullable<typeof options>["parameters"]>>);
       const configParams = this.clientConfig.parameters;
@@ -187,11 +228,11 @@
           method: "{{loud method}}"
         }
       );
-      if(returnType === "request") {
+      if(options?.returnType === "request") {
         return req
       }
       const response = await fetch(req);
-      if (returnType === "response" || (rawResponse && returnType !== "parsed")) {
+      if (options?.returnType === "response" || (rawResponse && options?.returnType !== "parsed")) {
         return response;
       } else {
         return response.json();

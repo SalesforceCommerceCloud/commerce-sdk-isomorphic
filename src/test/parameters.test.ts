@@ -140,4 +140,76 @@ describe('Parameters', () => {
       new Error('Missing required path parameter: organizationId')
     );
   });
+
+  it('supports returnType for the "parsed" option', async () => {
+    const customersClient = new ShopperCustomers({
+      parameters: {
+        shortCode: SHORT_CODE,
+        siteId: SITE_ID,
+        organizationId: ORGANIZATION_ID,
+        clientId: CLIENT_ID,
+      },
+    });
+
+    const response = await customersClient.authorizeCustomer({
+      body: {type: 'guest'},
+      returnType: 'parsed',
+    });
+
+    expect(response).toEqual(MOCK_RESPONSE);
+  });
+
+  it('supports returnType for the "response" option', async () => {
+    const customersClient = new ShopperCustomers({
+      parameters: {
+        shortCode: SHORT_CODE,
+        siteId: SITE_ID,
+        organizationId: ORGANIZATION_ID,
+        clientId: CLIENT_ID,
+      },
+    });
+
+    const response = await customersClient.authorizeCustomer({
+      body: {type: 'guest'},
+      returnType: 'response',
+    });
+
+    // TODO: implement test
+  });
+
+  it('supports returnType for the "request" option', async () => {
+    const customersClient = new ShopperCustomers({
+      parameters: {
+        shortCode: SHORT_CODE,
+        siteId: SITE_ID,
+        organizationId: ORGANIZATION_ID,
+        clientId: CLIENT_ID,
+      },
+    });
+
+    const response = await customersClient.authorizeCustomer({
+      body: {type: 'guest'},
+      returnType: 'request',
+    });
+
+    // TODO: implement test
+  });
+
+  it('should priortize returnType over rawResponse', async () => {
+    const customersClient = new ShopperCustomers({
+      parameters: {
+        shortCode: SHORT_CODE,
+        siteId: SITE_ID,
+        organizationId: ORGANIZATION_ID,
+        clientId: CLIENT_ID,
+      },
+    });
+ 
+    const response = await customersClient.authorizeCustomer({
+      body: {type: 'guest'},
+      returnType: 'parsed',
+    }, true);
+
+    expect(response).toEqual(MOCK_RESPONSE);
+  });
 });
