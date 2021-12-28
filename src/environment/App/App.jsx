@@ -9,11 +9,13 @@
 // eslint-disable-next-line no-use-before-define
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {ShopperCustomers, ShopperSearch} from 'lib';
+import {ShopperLogin, ShopperSearch} from 'lib';
+import * as slasHelper from 'lib/helpers/slasHelper';
 import config from '../config';
 import './App.css';
 
-const customerClient = new ShopperCustomers(config);
+// const customerClient = new ShopperCustomers(config);
+const slasClient = new ShopperLogin(config);
 const searchClient = new ShopperSearch(config);
 
 const Product = ({id = '', name = '', price = 0, currency = ''}) => (
@@ -72,11 +74,18 @@ class App extends Component {
   }
 
   async getToken() {
-    const authResponse = await customerClient.authorizeCustomer(
-      {body: {type: 'guest'}},
-      true
+    // const authResponse = await customerClient.authorizeCustomer(
+    //  {body: {type: 'guest'}},
+    //  true
+    // );
+    console.log('GO!');
+    const authResponse = await slasHelper.loginGuestUser(
+      slasClient,
+      'https://localhost:3000/callback'
     );
-    this.state.token = authResponse.headers.get('authorization');
+    console.log('BACK!');
+    console.log(authResponse);
+    this.state.token = `Bearer ${authResponse.access_token}`;
   }
 
   async doSearch() {

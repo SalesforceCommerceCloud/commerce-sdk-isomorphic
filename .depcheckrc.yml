@@ -1,9 +1,15 @@
 ignores:
   # Include an explanation why the package is ignored
-  - "@babel/*" # Used in babel.config.js and babel.config.jest.js
-  - "@types/react-dom" # Used in src/index.jsx
+  - '@babel/*' # Used in babel.config.js and babel.config.jest.js
+  - '@types/fs-extra'
+  - '@types/handlebars-helpers'
+  - '@types/node-fetch'
+  - '@types/react-dom' # Used in src/index.jsx
+  - fs-extra
+  - handlebars-helpers
   - jest-environment-jsdom-sixteen # Used by test:react script in package.json
   - lib # Used in App.jsx, references local directory
+  - nanoid # not being picked up in slasHelper.ts
   - node-fetch # False positive - clientConfig.ts imports the type from @types/node-fetch
   - sort-package-json # Used in lint-staged config in package.json
   - stylelint-* # Used in .stylelintrc
