@@ -5,13 +5,9 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import {nanoid} from 'nanoid';
+import { nanoid } from 'nanoid';
 
-import {
-  ShopperLogin,
-  TokenRequest,
-  TokenResponse,
-} from '../../lib/shopperLogin';
+import { ShopperLogin, TokenRequest, TokenResponse } from '../../lib/shopperLogin';
 
 /**
  * Parse out the code and usid from a redirect url
@@ -83,7 +79,7 @@ export const generateCodeChallenge = async (
  *   usid? - optional saved SLAS user id to link the new session to a previous session
  * @returns login url, user id and authorization code if available
  */
-async function authorize(
+export async function authorize(
   slasClient: ShopperLogin<{
     shortCode: string;
     organizationId: string;
@@ -102,11 +98,11 @@ async function authorize(
     parameters: {
       client_id: slasClient.clientConfig.parameters.clientId,
       code_challenge: codeChallenge,
-      hint: parameters.hint,
+      ...(parameters.hint && {hint: parameters.hint}),
       organizationId: slasClient.clientConfig.parameters.organizationId,
       redirect_uri: parameters.redirectURI,
       response_type: 'code',
-      usid: parameters.usid,
+      ...(parameters.usid && {usid: parameters.usid}),
     },
   };
 
@@ -139,7 +135,7 @@ export async function loginGuestUser(
     codeVerifier,
     redirectURI: parameters.redirectURI,
     hint: 'guest',
-    usid: parameters.usid,
+    ...(parameters.usid && {usid: parameters.usid}),
   });
 
   const tokenBody: TokenRequest = {
@@ -196,7 +192,7 @@ export async function loginRegisteredUserB2C(
       client_id: slasClient.clientConfig.parameters.clientId,
       code_challenge: codeChallenge,
       channel_id: slasClient.clientConfig.parameters.siteId,
-      usid: parameters.usid,
+      ...(parameters.usid && {usid: parameters.usid}),
     },
   };
 
@@ -229,11 +225,11 @@ export function refreshToken(
     organizationId: string;
     clientId: string;
   }>,
-  slasRefreshToken: string
+  parameters: {refreshToken: string}
 ): Promise<TokenResponse> {
   const body = {
     grant_type: 'refresh_token',
-    refresh_token: slasRefreshToken,
+    refresh_token: parameters.refreshToken,
     client_id: slasClient.clientConfig.parameters.clientId,
   };
 
@@ -246,11 +242,11 @@ export function logout(
     clientId: string;
     siteId: string;
   }>,
-  slasRefreshToken: string
-): Promise<unknown> {
+  parameters: {refreshToken: string}
+): Promise<TokenResponse> {
   return slasClient.logoutCustomer({
     parameters: {
-      refresh_token: slasRefreshToken,
+      refresh_token: parameters.refreshToken,
       client_id: slasClient.clientConfig.parameters.clientId,
       channel_id: slasClient.clientConfig.parameters.siteId,
     },
