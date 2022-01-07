@@ -8,7 +8,7 @@ The Salesforce Commerce SDK Isomorphic allows easy interaction with the Salesfor
 
 ### Requirements
 
-- Node `^12.x` or `^14.x`
+- Node `^12.x`, `^14.x`, or `^16.x`
 
 ### Installation
 
