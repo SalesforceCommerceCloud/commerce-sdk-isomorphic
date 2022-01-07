@@ -12,7 +12,9 @@ The Salesforce Commerce SDK Isomorphic allows easy interaction with the Salesfor
 
 ### Installation
 
-`npm install commerce-sdk-isomorphic`
+```bash
+npm install commerce-sdk-isomorphic
+```
 
 ### Usage
 
