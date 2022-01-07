@@ -1,15 +1,17 @@
 ignores:
-  # Include an explanation why the package is ignored
+  # Include an explanation why the package is ignore
+  # @babel/parser is used by depcheck, but a bug is introduced in v7.16.5. We need to be pinned to
+  # an older version, so that depcheck still works. Normally, that would be done in the lockfile,
+  # but we explicitly have not committed that for integration tests. To pin the version, we have to
+  # specify it as a dependency in the package.json, and therefore must also ignore it here.
+  # There are three possible resolutions to this.
+  # 1. depcheck fixes the bug: https://github.com/depcheck/depcheck/issues/688
+  # 2. npm supports "overrides" in the package.json: https://github.com/npm/rfcs/blob/main/accepted/0036-overrides.md
+  # 3. the project migrates to yarn, which supports "resolutions": https://classic.yarnpkg.com/lang/en/docs/selective-version-resolutions/
   - '@babel/*' # Used in babel.config.js and babel.config.jest.js
-  - '@types/fs-extra'
-  - '@types/handlebars-helpers'
-  - '@types/node-fetch'
   - '@types/react-dom' # Used in src/index.jsx
-  - fs-extra
-  - handlebars-helpers
   - jest-environment-jsdom-sixteen # Used by test:react script in package.json
   - lib # Used in App.jsx, references local directory
-  - nanoid # not being picked up in slasHelper.ts
   - node-fetch # False positive - clientConfig.ts imports the type from @types/node-fetch
   - sort-package-json # Used in lint-staged config in package.json
   - stylelint-* # Used in .stylelintrc
