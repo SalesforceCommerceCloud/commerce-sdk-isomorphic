@@ -8,27 +8,34 @@
 import * as slasHelper from './slasHelper';
 import {ShopperLogin} from '../../lib/shopperLogin';
 
-const authenticateCustomerMock = jest.fn(options => ({
+const authenticateCustomerMock = jest.fn(() => ({
   url: 'https://localhost:3000/callback?usid=048adcfb-aa93-4978-be9e-09cb569fdcb9&code=J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
 }));
 
-const authorizeCustomerMock = jest.fn(options => ({
+const authorizeCustomerMock = jest.fn(() => ({
   url: 'https://localhost:3000/callback?usid=048adcfb-aa93-4978-be9e-09cb569fdcb9&code=J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
 }));
 
-const getAccessTokenMock = jest.fn(options => ({access_token: 'access_token'})); // TODO: replace with proper access token
+const getAccessTokenMock = jest.fn(() => ({
+  access_token: 'access_token',
+}));
+
+const logoutCustomerMock = jest.fn(() => ({
+  token_response: 'token_response',
+}));
 
 const mockSlasClient = {
   clientConfig: {
     parameters: {
-      organizationId: '',
-      clientId: '',
-      siteId: '',
+      organizationId: 'organization_id',
+      clientId: 'client_id',
+      siteId: 'site_id',
     },
   },
   authenticateCustomer: authenticateCustomerMock,
   authorizeCustomer: authorizeCustomerMock,
   getAccessToken: getAccessTokenMock,
+  logoutCustomer: logoutCustomerMock,
 } as unknown as ShopperLogin<{
   shortCode: string;
   organizationId: string;
@@ -36,11 +43,12 @@ const mockSlasClient = {
   siteId: string;
 }>;
 
-const mockParameters = {
-  codeVerifier: '',
-  shopperUserId: 'shopperUserID',
-  shopperPassword: 'shopperPassword',
-  redirectURI: '',
+const parameters = {
+  codeVerifier: 'code_verifier',
+  shopperUserId: 'shopper_user_id',
+  shopperPassword: 'shopper_password',
+  redirectURI: 'redirect_uri',
+  refreshToken: 'refresh_token',
 };
 
 describe('Create code verifier', () => {
@@ -82,57 +90,48 @@ describe('Get code and usid', () => {
 describe('Authorize user', () => {
   const expectedCode = 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o';
 
-  test('hits the authorize endpoint and recieves authorization code', async () => {
-    const authCode = (
-      await slasHelper.authorize(mockSlasClient, mockParameters)
-    ).code;
+  test('hits the authorize endpoint and receives authorization code', async () => {
+    const authCode = (await slasHelper.authorize(mockSlasClient, parameters))
+      .code;
     expect(authorizeCustomerMock).toHaveBeenCalled();
     expect(authCode).toBe(expectedCode);
   });
 });
 
 describe('Guest user flow', () => {
+  const expectedOptions = {
+    parameters: {
+      client_id: 'client_id',
+      code_challenge: expect.stringMatching(/./) as string,
+      hint: 'guest',
+      organizationId: 'organization_id',
+      redirect_uri: 'redirect_uri',
+      response_type: 'code',
+    },
+  };
+
+  const expectedTokenBody = {
+    body: {
+      client_id: 'client_id',
+      code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
+      code_verifier: expect.stringMatching(/./) as string,
+      grant_type: 'authorization_code_pkce',
+      redirect_uri: 'redirect_uri',
+      usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
+    },
+  };
+
   test('uses code challenge to generate auth code', async () => {
-    await slasHelper.loginGuestUser(mockSlasClient, mockParameters);
-
-    // Pulling out the arguments to test
-    const parametersArg = (
-      authorizeCustomerMock.mock.calls[0][0] as Parameters<
-        ShopperLogin<any>['authorizeCustomer'] // TODO: replace any with proper type
-      >[0]
-    )?.parameters;
-
-    // required query parameters
-    // expect(parametersArg?.hint).toBe('guest'); TODO: revise this line
-    expect(parametersArg?.response_type).toBe('code');
-    expect(parametersArg).toHaveProperty('client_id');
-    expect(parametersArg).toHaveProperty('code_challenge');
-    expect(parametersArg).toHaveProperty('redirect_uri');
-
-    expect(authorizeCustomerMock).toBeCalled();
+    await slasHelper.loginGuestUser(mockSlasClient, parameters);
+    expect(authorizeCustomerMock).toBeCalledWith(expectedOptions, true);
   });
 
   test('uses auth code and code verifier to generate JWT', async () => {
     const accessToken = await slasHelper.loginGuestUser(
       mockSlasClient,
-      mockParameters
+      parameters
     );
-
-    // Pulling out the arguments to test
-    const tokenBodyArg = (
-      getAccessTokenMock.mock.calls[0][0] as Parameters<
-        ShopperLogin<any>['getAccessToken']
-      >[0]
-    ).body;
-
-    // No authorization header is required
-    // required query parameters
-    expect(tokenBodyArg.grant_type).toBe('authorization_code_pkce');
-    expect(tokenBodyArg).toHaveProperty('code_verifier');
-    expect(tokenBodyArg).toHaveProperty('code');
-    expect(tokenBodyArg).toHaveProperty('client_id');
-    expect(tokenBodyArg).toHaveProperty('redirect_uri');
-
+    expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
     expect(accessToken).toStrictEqual({access_token: 'access_token'});
   });
 });
@@ -140,49 +139,84 @@ describe('Registered B2C user flow', () => {
   const base64regEx =
     /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
 
+  const expectedOptions = {
+    body: {
+      channel_id: 'site_id',
+      client_id: 'client_id',
+      code_challenge: expect.stringMatching(/./) as string,
+      redirect_uri: 'redirect_uri',
+    },
+    headers: {
+      Authorization: 'Basic c2hvcHBlcl91c2VyX2lkOnNob3BwZXJfcGFzc3dvcmQ=', // must be base64 encoded
+    },
+    parameters: {
+      organizationId: 'organization_id',
+    },
+  };
+
+  const expectedTokenBody = {
+    body: {
+      client_id: 'client_id',
+      code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
+      code_verifier: expect.stringMatching(/./) as string,
+      grant_type: 'authorization_code_pkce',
+      organizationId: 'organization_id',
+      redirect_uri: 'redirect_uri',
+      usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
+    },
+  };
+
   test('uses code challenge and authorization header to generate auth code', async () => {
-    await slasHelper.loginRegisteredUserB2C(mockSlasClient, mockParameters);
-
-    // Pulling out the arguments to test
-    const optionsArg = authenticateCustomerMock.mock.calls[0][0] as Parameters<
-      ShopperLogin<any>['authenticateCustomer']
-    >[0];
-
+    await slasHelper.loginRegisteredUserB2C(mockSlasClient, parameters);
     // Authorization header must be base64 encoded
-    expect(optionsArg.headers).toHaveProperty('Authorization');
-    expect(optionsArg.headers?.Authorization?.split(' ')[1]).toMatch(
+    expect(expectedOptions.headers.Authorization.split(' ')[1]).toMatch(
       base64regEx
     );
-
-    // required query parameters
-    expect(optionsArg.body).toHaveProperty('code_challenge');
-    expect(optionsArg.body).toHaveProperty('channel_id');
-    expect(optionsArg.body).toHaveProperty('client_id');
-    expect(optionsArg.body).toHaveProperty('redirect_uri');
-
-    expect(authenticateCustomerMock).toBeCalled();
+    expect(authenticateCustomerMock).toBeCalledWith(expectedOptions, true);
   });
 
   test('uses auth code and code verifier to generate JWT', async () => {
     const accessToken = await slasHelper.loginRegisteredUserB2C(
       mockSlasClient,
-      mockParameters
+      parameters
     );
-
-    // Pulling out the arguments to test
-    const tokenBodyArg = (
-      getAccessTokenMock.mock.calls[0][0] as Parameters<
-        ShopperLogin<any>['getAccessToken']
-      >[0]
-    ).body;
-
-    // required query parameters
-    expect(tokenBodyArg.grant_type).toBe('authorization_code_pkce');
-    expect(tokenBodyArg).toHaveProperty('code_verifier');
-    expect(tokenBodyArg).toHaveProperty('code');
-    expect(tokenBodyArg).toHaveProperty('client_id');
-    expect(tokenBodyArg).toHaveProperty('redirect_uri');
-
+    expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
     expect(accessToken).toStrictEqual({access_token: 'access_token'});
+  });
+});
+
+describe('Refresh Token', () => {
+  const expectedToken = {access_token: 'access_token'};
+
+  const expectedBody = {
+    body: {
+      client_id: 'client_id',
+      grant_type: 'refresh_token',
+      refresh_token: 'refresh_token',
+    },
+  };
+
+  test('refreshes the token', () => {
+    const token = slasHelper.refreshToken(mockSlasClient, parameters);
+    expect(getAccessTokenMock).toBeCalledWith(expectedBody);
+    expect(token).toStrictEqual(expectedToken);
+  });
+});
+
+describe('Logout', () => {
+  const expectedToken = {token_response: 'token_response'};
+
+  const expectedOptions = {
+    parameters: {
+      client_id: 'client_id',
+      channel_id: 'site_id',
+      refresh_token: 'refresh_token',
+    },
+  };
+
+  test('logs out the customer', () => {
+    const token = slasHelper.logout(mockSlasClient, parameters);
+    expect(logoutCustomerMock).toBeCalledWith(expectedOptions);
+    expect(token).toStrictEqual(expectedToken);
   });
 });

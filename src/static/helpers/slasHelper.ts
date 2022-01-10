@@ -239,6 +239,7 @@ export function refreshToken(
 
   return slasClient.getAccessToken({body});
 }
+
 export function logout(
   slasClient: ShopperLogin<{
     shortCode: string;
