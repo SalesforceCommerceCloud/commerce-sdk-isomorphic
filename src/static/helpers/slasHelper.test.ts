@@ -6,23 +6,29 @@
  */
 
 import * as slasHelper from './slasHelper';
-import {ShopperLogin} from '../../lib/shopperLogin';
+import {ShopperLogin, TokenResponse} from '../../lib/shopperLogin';
 
-const authenticateCustomerMock = jest.fn(() => ({
-  url: 'https://localhost:3000/callback?usid=048adcfb-aa93-4978-be9e-09cb569fdcb9&code=J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
-}));
+const url =
+  'https://localhost:3000/callback?usid=048adcfb-aa93-4978-be9e-09cb569fdcb9&code=J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o';
 
-const authorizeCustomerMock = jest.fn(() => ({
-  url: 'https://localhost:3000/callback?usid=048adcfb-aa93-4978-be9e-09cb569fdcb9&code=J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
-}));
-
-const getAccessTokenMock = jest.fn(() => ({
+const expectedTokenResponse: TokenResponse = {
   access_token: 'access_token',
-}));
+  id_token: 'id_token',
+  refresh_token: 'refresh_token',
+  expires_in: 0,
+  token_type: 'token_type',
+  usid: 'usid',
+  customer_id: 'customer_id',
+  enc_user_id: 'enc_user_id',
+};
 
-const logoutCustomerMock = jest.fn(() => ({
-  token_response: 'token_response',
-}));
+const authenticateCustomerMock = jest.fn(() => ({url}));
+
+const authorizeCustomerMock = jest.fn(() => ({url}));
+
+const getAccessTokenMock = jest.fn(() => expectedTokenResponse);
+
+const logoutCustomerMock = jest.fn(() => expectedTokenResponse);
 
 const mockSlasClient = {
   clientConfig: {
@@ -49,6 +55,7 @@ const parameters = {
   shopperPassword: 'shopper_password',
   redirectURI: 'redirect_uri',
   refreshToken: 'refresh_token',
+  usid: 'usid',
 };
 
 describe('Create code verifier', () => {
@@ -72,29 +79,41 @@ describe('Generate code challenge', () => {
 });
 
 describe('Get code and usid', () => {
-  const url =
-    'https://localhost:3000/callback?usid=048adcfb-aa93-4978-be9e-09cb569fdcb9&code=J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o';
-
   const expectedRecord = {
     code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
     url,
     usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
   };
 
+  const noQueryParamsUrl = 'https://localhost:3000/callback?';
+
+  const expectedNoQueryParamsRecord = {
+    code: '',
+    url: noQueryParamsUrl,
+    usid: '',
+  };
+
   test('extracts code and usid from url', () => {
     const record = slasHelper.getCodeAndUsidFromUrl(url);
     expect(record).toStrictEqual(expectedRecord);
   });
+
+  test('evaluates code and usid as empty strings when called with no query params', () => {
+    const record = slasHelper.getCodeAndUsidFromUrl(noQueryParamsUrl);
+    expect(record).toStrictEqual(expectedNoQueryParamsRecord);
+  });
 });
 
 describe('Authorize user', () => {
-  const expectedCode = 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o';
-
+  const expectedAuthResponse = {
+    code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
+    url,
+    usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
+  };
   test('hits the authorize endpoint and receives authorization code', async () => {
-    const authCode = (await slasHelper.authorize(mockSlasClient, parameters))
-      .code;
+    const authResponse = await slasHelper.authorize(mockSlasClient, parameters);
     expect(authorizeCustomerMock).toHaveBeenCalled();
-    expect(authCode).toBe(expectedCode);
+    expect(authResponse).toStrictEqual(expectedAuthResponse);
   });
 });
 
@@ -107,6 +126,7 @@ describe('Guest user flow', () => {
       organizationId: 'organization_id',
       redirect_uri: 'redirect_uri',
       response_type: 'code',
+      usid: 'usid',
     },
   };
 
@@ -132,7 +152,7 @@ describe('Guest user flow', () => {
       parameters
     );
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
-    expect(accessToken).toStrictEqual({access_token: 'access_token'});
+    expect(accessToken).toStrictEqual(expectedTokenResponse);
   });
 });
 describe('Registered B2C user flow', () => {
@@ -145,6 +165,7 @@ describe('Registered B2C user flow', () => {
       client_id: 'client_id',
       code_challenge: expect.stringMatching(/./) as string,
       redirect_uri: 'redirect_uri',
+      usid: 'usid',
     },
     headers: {
       Authorization: 'Basic c2hvcHBlcl91c2VyX2lkOnNob3BwZXJfcGFzc3dvcmQ=', // must be base64 encoded
@@ -181,13 +202,11 @@ describe('Registered B2C user flow', () => {
       parameters
     );
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
-    expect(accessToken).toStrictEqual({access_token: 'access_token'});
+    expect(accessToken).toStrictEqual(expectedTokenResponse);
   });
 });
 
 describe('Refresh Token', () => {
-  const expectedToken = {access_token: 'access_token'};
-
   const expectedBody = {
     body: {
       client_id: 'client_id',
@@ -199,13 +218,11 @@ describe('Refresh Token', () => {
   test('refreshes the token', () => {
     const token = slasHelper.refreshToken(mockSlasClient, parameters);
     expect(getAccessTokenMock).toBeCalledWith(expectedBody);
-    expect(token).toStrictEqual(expectedToken);
+    expect(token).toStrictEqual(expectedTokenResponse);
   });
 });
 
 describe('Logout', () => {
-  const expectedToken = {token_response: 'token_response'};
-
   const expectedOptions = {
     parameters: {
       client_id: 'client_id',
@@ -217,6 +234,6 @@ describe('Logout', () => {
   test('logs out the customer', () => {
     const token = slasHelper.logout(mockSlasClient, parameters);
     expect(logoutCustomerMock).toBeCalledWith(expectedOptions);
-    expect(token).toStrictEqual(expectedToken);
+    expect(token).toStrictEqual(expectedTokenResponse);
   });
 });

@@ -52,6 +52,8 @@ export const generateCodeChallenge = async (
 
   let challenge = '';
   try {
+    // Cannot test browser functions
+    /* istanbul ignore next */
     if (window.crypto.subtle.digest !== undefined) {
       const encoder = new TextEncoder();
       const data = encoder.encode(codeVerifier);
@@ -66,6 +68,7 @@ export const generateCodeChallenge = async (
     );
   }
 
+  /* istanbul ignore next */
   if (challenge.length === 0) {
     throw new Error('Problem generating code challenge');
   }
