@@ -5,8 +5,8 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
+import { ShopperLogin, TokenResponse } from '../../lib/shopperLogin';
 import * as slasHelper from './slasHelper';
-import {ShopperLogin, TokenResponse} from '../../lib/shopperLogin';
 
 const url =
   'https://localhost:3000/callback?usid=048adcfb-aa93-4978-be9e-09cb569fdcb9&code=J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o';
@@ -30,24 +30,25 @@ const getAccessTokenMock = jest.fn(() => expectedTokenResponse);
 
 const logoutCustomerMock = jest.fn(() => expectedTokenResponse);
 
-const mockSlasClient = {
-  clientConfig: {
-    parameters: {
-      organizationId: 'organization_id',
-      clientId: 'client_id',
-      siteId: 'site_id',
+const createMockSlasClient = () =>
+  ({
+    clientConfig: {
+      parameters: {
+        organizationId: 'organization_id',
+        clientId: 'client_id',
+        siteId: 'site_id',
+      },
     },
-  },
-  authenticateCustomer: authenticateCustomerMock,
-  authorizeCustomer: authorizeCustomerMock,
-  getAccessToken: getAccessTokenMock,
-  logoutCustomer: logoutCustomerMock,
-} as unknown as ShopperLogin<{
-  shortCode: string;
-  organizationId: string;
-  clientId: string;
-  siteId: string;
-}>;
+    authenticateCustomer: authenticateCustomerMock,
+    authorizeCustomer: authorizeCustomerMock,
+    getAccessToken: getAccessTokenMock,
+    logoutCustomer: logoutCustomerMock,
+  } as unknown as ShopperLogin<{
+    shortCode: string;
+    organizationId: string;
+    clientId: string;
+    siteId: string;
+  }>);
 
 const parameters = {
   codeVerifier: 'code_verifier',
@@ -111,9 +112,20 @@ describe('Authorize user', () => {
     usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
   };
   test('hits the authorize endpoint and receives authorization code', async () => {
-    const authResponse = await slasHelper.authorize(mockSlasClient, parameters);
+    const authResponse = await slasHelper.authorize(
+      createMockSlasClient(),
+      parameters
+    );
     expect(authorizeCustomerMock).toHaveBeenCalled();
     expect(authResponse).toStrictEqual(expectedAuthResponse);
+  });
+
+  test('hits the authorize endpoint and does not receive authorization code', async () => {
+    const mockSlasClient = createMockSlasClient();
+    mockSlasClient.authorizeCustomer = jest.fn();
+    await expect(
+      slasHelper.authorize(mockSlasClient, parameters)
+    ).rejects.toThrow('Authorization failed');
   });
 });
 
@@ -142,13 +154,13 @@ describe('Guest user flow', () => {
   };
 
   test('uses code challenge to generate auth code', async () => {
-    await slasHelper.loginGuestUser(mockSlasClient, parameters);
+    await slasHelper.loginGuestUser(createMockSlasClient(), parameters);
     expect(authorizeCustomerMock).toBeCalledWith(expectedOptions, true);
   });
 
   test('uses auth code and code verifier to generate JWT', async () => {
     const accessToken = await slasHelper.loginGuestUser(
-      mockSlasClient,
+      createMockSlasClient(),
       parameters
     );
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
@@ -188,7 +200,7 @@ describe('Registered B2C user flow', () => {
   };
 
   test('uses code challenge and authorization header to generate auth code', async () => {
-    await slasHelper.loginRegisteredUserB2C(mockSlasClient, parameters);
+    await slasHelper.loginRegisteredUserB2C(createMockSlasClient(), parameters);
     // Authorization header must be base64 encoded
     expect(expectedOptions.headers.Authorization.split(' ')[1]).toMatch(
       base64regEx
@@ -198,7 +210,7 @@ describe('Registered B2C user flow', () => {
 
   test('uses auth code and code verifier to generate JWT', async () => {
     const accessToken = await slasHelper.loginRegisteredUserB2C(
-      mockSlasClient,
+      createMockSlasClient(),
       parameters
     );
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
@@ -216,7 +228,7 @@ describe('Refresh Token', () => {
   };
 
   test('refreshes the token', () => {
-    const token = slasHelper.refreshToken(mockSlasClient, parameters);
+    const token = slasHelper.refreshToken(createMockSlasClient(), parameters);
     expect(getAccessTokenMock).toBeCalledWith(expectedBody);
     expect(token).toStrictEqual(expectedTokenResponse);
   });
@@ -232,7 +244,7 @@ describe('Logout', () => {
   };
 
   test('logs out the customer', () => {
-    const token = slasHelper.logout(mockSlasClient, parameters);
+    const token = slasHelper.logout(createMockSlasClient(), parameters);
     expect(logoutCustomerMock).toBeCalledWith(expectedOptions);
     expect(token).toStrictEqual(expectedTokenResponse);
   });

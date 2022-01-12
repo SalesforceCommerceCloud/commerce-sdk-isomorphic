@@ -5,13 +5,14 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import {nanoid} from 'nanoid';
+import { nanoid } from 'nanoid';
 
-import {
-  ShopperLogin,
-  TokenRequest,
-  TokenResponse,
-} from '../../lib/shopperLogin';
+import { ShopperLogin, TokenRequest, TokenResponse } from '../../lib/shopperLogin';
+
+/**
+ * Determine if execution is client or server side
+ */
+export const onClient = typeof window !== 'undefined';
 
 /**
  * Parse out the code and usid from a redirect url
@@ -111,11 +112,20 @@ export async function authorize(
       response_type: 'code',
       ...(parameters.usid && {usid: parameters.usid}),
     },
+    // set manual redirect on server since node allows access to the location
+    // header and it skips the extra call. In the browser, only the default
+    // follow setting allows us to get the url.
+    ...(!onClient && {fetchOptions: {redirect: 'manual'}}),
   };
 
   const response = await slasClient.authorizeCustomer(options, true);
 
-  return getCodeAndUsidFromUrl(response.url);
+  const redirectUrl = response?.url || response?.headers?.get('location');
+  if (!redirectUrl) {
+    throw new Error('Authorization failed');
+  }
+
+  return getCodeAndUsidFromUrl(redirectUrl);
 }
 
 /**
