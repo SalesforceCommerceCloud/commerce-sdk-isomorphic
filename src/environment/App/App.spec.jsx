@@ -19,22 +19,20 @@ beforeEach(async () => {
 describe('environment > App', () => {
   it('renders without crashing', async () => {
     nock('https://localhost:3000')
-      .post(
-        `/customer/shopper-customers/v1/organizations/${config.parameters.organizationId}/customers/actions/login`
-      )
-      .query({
-        siteId: config.parameters.siteId,
-        clientId: config.parameters.clientId,
-      })
-      .reply(
-        200,
-        {
-          authType: 'guest',
-          customerId: 'test-customer-id',
-          preferredLocale: 'en_US',
-        },
-        {Authorization: 'Bearer test-auth'}
-      );
+    .get(`/shopper/auth/v1/organizations/${config.parameters.organizationId}/oauth2/authorize`)
+    .query(true)
+    .reply(
+      200,
+      {
+        access_token: 'access_token'
+      }
+    );
+
+    nock('https://localhost:3000')
+    .post(`/shopper/auth/v1/organizations/${config.parameters.organizationId}/oauth2/token`)
+    .reply(
+      200,
+    );
 
     // Specific response to be returned by search
     const mockSearchResponse = {
@@ -77,7 +75,6 @@ describe('environment > App', () => {
       .get(
         `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
       )
-      .matchHeader('authorization', 'Bearer test-auth')
       .reply(200, mockSearchResponse, {
         'content-type': 'application-json charset=UTF-8',
       });
