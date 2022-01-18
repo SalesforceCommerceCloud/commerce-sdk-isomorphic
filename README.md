@@ -20,12 +20,12 @@ npm install commerce-sdk-isomorphic
 
 > **Note:** These are required parameters.
 
-| Parameter      | Description                                                |
-| -------------- | :--------------------------------------------------------- |
-| clientId       | ID of the client account created with Salesforce Commerce. |
-| organizationId | The unique identifier for your Salesforce identity.        |
-| shortCode      | Region specific merchant ID.                               |
-| siteId         | A unique site ID (for example, RefArch or SiteGenesis).    |
+| Parameter      | Description                                                                |
+| -------------- | :------------------------------------------------------------------------- |
+| clientId       | ID of the client account created with Salesforce Commerce.                 |
+| organizationId | The unique identifier for your Salesforce identity.                        |
+| shortCode      | Region specific merchant ID.                                               |
+| siteId         | Name of the site to access data from, for example, RefArch or SiteGenesis. |
 
 ```javascript
 /**
@@ -55,8 +55,10 @@ const {access_token, refresh_token} = await helpers.loginGuestUser(
   {redirectURI: `${config.proxy}/callback`} // Callback URL must be configured in SLAS Admin
 );
 
-const shopperSearch = new ShopperSearch(config);
-shopperSearch.clientConfig.headers.authorization = `Bearer ${access_token}`;
+const shopperSearch = new ShopperSearch({
+  ...config,
+  headers: {authorization: `Bearer ${access_token}`},
+});
 
 const searchResult = await shopperSearch.productSearch({
   parameters: {q: 'shirt'},
@@ -65,7 +67,7 @@ const searchResult = await shopperSearch.productSearch({
 
 ### Advanced options
 
-Commerce SDK Isomorphic supports advanced [Fetch API options](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) by a simple configuration.
+Commerce SDK Isomorphic supports Fetch API options for [node-fetch](https://github.com/node-fetch/node-fetch/1#api) on server and [whatwg-fetch](https://github.github.io/fetch/) on browser with a simple configuration.
 This sample code shows how to configure HTTP timeout and agent options.
 
 ```javascript
@@ -98,11 +100,13 @@ const config = {
 
 ### Additional Config Settings
 
+_headers:_ A collection of key/value string pairs representing additional headers to include with API requests.
+
 _throwOnBadResponse:_ Default value is false. When set to true, the sdk will throw an Error on responses with statuses that are not 2xx or 304.
 
 ### Public Client Shopper Login helpers
 
-A collection of helper functions are available in this SDK to simply [Public
+A collection of helper functions are available in this SDK to simplify [Public
 Client Shopper Login OAuth
 flows](https://developer.commercecloud.com/s/api-details/a003k00000VWfNDAA1/commerce-cloud-developer-centershopperloginandapiaccessservice#public-client-use-cases). See sample code above for guest login.
 

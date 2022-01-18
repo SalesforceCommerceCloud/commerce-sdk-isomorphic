@@ -60,11 +60,10 @@ const parameters = {
 };
 
 describe('Create code verifier', () => {
-  test('creates string greater between 43 and 128 char per standard', () => {
+  test('creates 128 URL safe string', () => {
     const verifier = slasHelper.createCodeVerifier();
 
-    expect(verifier.length).toBeGreaterThanOrEqual(43);
-    expect(verifier.length).toBeLessThanOrEqual(128);
+    expect(verifier).toMatch(/[A-Za-z0-9_-]{128}/);
   });
 });
 
