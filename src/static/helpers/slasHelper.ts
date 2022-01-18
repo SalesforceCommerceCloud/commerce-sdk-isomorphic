@@ -5,9 +5,13 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { nanoid } from 'nanoid';
+import {nanoid} from 'nanoid';
 
-import { ShopperLogin, TokenRequest, TokenResponse } from '../../lib/shopperLogin';
+import {
+  ShopperLogin,
+  TokenRequest,
+  TokenResponse,
+} from '../../lib/shopperLogin';
 
 /**
  * Determine if execution is client or server side

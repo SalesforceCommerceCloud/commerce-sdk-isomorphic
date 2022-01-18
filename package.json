@@ -89,7 +89,8 @@
   "resolutions": {
     "**/@oclif/command": "<=1.8.3",
     "**/@oclif/core": "<=0.5.9",
-    "**/yargs": "<17"
+    "**/yargs": "<17",
+    "depcheck/@babel/parser": "7.16.4"
   },
   "dependencies": {
     "cross-fetch": "^3.1.4",
@@ -98,7 +99,6 @@
   "devDependencies": {
     "@babel/cli": "7.16.0",
     "@babel/core": "7.16.0",
-    "@babel/parser": "7.16.4",
     "@babel/plugin-proposal-class-properties": "^7.16.0",
     "@babel/preset-env": "7.16.0",
     "@babel/preset-react": "7.16.0",
