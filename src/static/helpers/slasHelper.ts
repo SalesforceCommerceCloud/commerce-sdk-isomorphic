@@ -5,13 +5,9 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import {nanoid} from 'nanoid';
+import { nanoid } from 'nanoid';
 
-import {
-  ShopperLogin,
-  TokenRequest,
-  TokenResponse,
-} from '../../lib/shopperLogin';
+import { ShopperLogin, TokenRequest, TokenResponse } from '../../lib/shopperLogin';
 
 /**
  * Determine if execution is client or server side
@@ -105,6 +101,14 @@ export async function authorize(
 ): Promise<{code: string; url: string; usid: string}> {
   const codeChallenge = await generateCodeChallenge(codeVerifier);
 
+  // set manual redirect on server since node allows access to the location
+  // header and it skips the extra call. In the browser, only the default
+  // follow setting allows us to get the url.
+  const fetchOptions = {
+    ...slasClient.clientConfig.fetchOptions,
+    ...(!onClient && {redirect: 'manual'}),
+  };
+
   const options = {
     parameters: {
       client_id: slasClient.clientConfig.parameters.clientId,
@@ -115,15 +119,12 @@ export async function authorize(
       response_type: 'code',
       ...(parameters.usid && {usid: parameters.usid}),
     },
-    // set manual redirect on server since node allows access to the location
-    // header and it skips the extra call. In the browser, only the default
-    // follow setting allows us to get the url.
-    ...(!onClient && {fetchOptions: {redirect: 'manual'}}),
+    fetchOptions,
   };
 
   const response = await slasClient.authorizeCustomer(options, true);
 
-  const redirectUrl = response?.url || response?.headers?.get('location');
+  const redirectUrl = response.url || response.headers.get('location');
   if (!redirectUrl) {
     throw new Error('Authorization failed');
   }
