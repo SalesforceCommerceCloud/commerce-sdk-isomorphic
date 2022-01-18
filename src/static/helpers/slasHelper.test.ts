@@ -5,11 +5,15 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { ShopperLogin, TokenResponse } from '../../lib/shopperLogin';
+import {ShopperLogin, TokenResponse} from '../../lib/shopperLogin';
 import * as slasHelper from './slasHelper';
 
-const url =
-  'https://localhost:3000/callback?usid=048adcfb-aa93-4978-be9e-09cb569fdcb9&code=J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o';
+const codeVerifier = 'code_verifier';
+
+const credentials = {
+  username: 'shopper_user_id',
+  password: 'shopper_password',
+};
 
 const expectedTokenResponse: TokenResponse = {
   access_token: 'access_token',
@@ -21,6 +25,15 @@ const expectedTokenResponse: TokenResponse = {
   customer_id: 'customer_id',
   enc_user_id: 'enc_user_id',
 };
+
+const parameters = {
+  redirectURI: 'redirect_uri',
+  refreshToken: 'refresh_token',
+  usid: 'usid',
+};
+
+const url =
+  'https://localhost:3000/callback?usid=048adcfb-aa93-4978-be9e-09cb569fdcb9&code=J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o';
 
 const authenticateCustomerMock = jest.fn(() => ({url}));
 
@@ -50,15 +63,6 @@ const createMockSlasClient = () =>
     siteId: string;
   }>);
 
-const parameters = {
-  codeVerifier: 'code_verifier',
-  shopperUserId: 'shopper_user_id',
-  shopperPassword: 'shopper_password',
-  redirectURI: 'redirect_uri',
-  refreshToken: 'refresh_token',
-  usid: 'usid',
-};
-
 describe('Create code verifier', () => {
   test('creates 128 URL safe string', () => {
     const verifier = slasHelper.createCodeVerifier();
@@ -81,17 +85,15 @@ describe('Generate code challenge', () => {
 describe('Get code and usid', () => {
   const expectedRecord = {
     code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
-    url,
     usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
   };
 
-  const noQueryParamsUrl = 'https://localhost:3000/callback?';
-
   const expectedNoQueryParamsRecord = {
     code: '',
-    url: noQueryParamsUrl,
     usid: '',
   };
+
+  const noQueryParamsUrl = 'https://localhost:3000/callback?';
 
   test('extracts code and usid from url', () => {
     const record = slasHelper.getCodeAndUsidFromUrl(url);
@@ -113,6 +115,7 @@ describe('Authorize user', () => {
   test('hits the authorize endpoint and receives authorization code', async () => {
     const authResponse = await slasHelper.authorize(
       createMockSlasClient(),
+      codeVerifier,
       parameters
     );
     expect(authorizeCustomerMock).toHaveBeenCalled();
@@ -123,7 +126,7 @@ describe('Authorize user', () => {
     const mockSlasClient = createMockSlasClient();
     mockSlasClient.authorizeCustomer = jest.fn();
     await expect(
-      slasHelper.authorize(mockSlasClient, parameters)
+      slasHelper.authorize(mockSlasClient, codeVerifier, parameters)
     ).rejects.toThrow('Authorization failed');
   });
 });
@@ -199,7 +202,11 @@ describe('Registered B2C user flow', () => {
   };
 
   test('uses code challenge and authorization header to generate auth code', async () => {
-    await slasHelper.loginRegisteredUserB2C(createMockSlasClient(), parameters);
+    await slasHelper.loginRegisteredUserB2C(
+      createMockSlasClient(),
+      credentials,
+      parameters
+    );
     // Authorization header must be base64 encoded
     expect(expectedOptions.headers.Authorization.split(' ')[1]).toMatch(
       base64regEx
@@ -210,6 +217,7 @@ describe('Registered B2C user flow', () => {
   test('uses auth code and code verifier to generate JWT', async () => {
     const accessToken = await slasHelper.loginRegisteredUserB2C(
       createMockSlasClient(),
+      credentials,
       parameters
     );
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
