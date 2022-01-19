@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import {ShopperLogin, TokenResponse} from '../../lib/shopperLogin';
+import { ShopperLogin, TokenResponse } from '../../lib/shopperLogin';
 import * as slasHelper from './slasHelper';
 
 const codeVerifier = 'code_verifier';

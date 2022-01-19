@@ -14,6 +14,10 @@ import { ShopperLogin, TokenRequest, TokenResponse } from '../../lib/shopperLogi
  */
 export const onClient = typeof window !== 'undefined';
 
+export const stringToBase64 = onClient
+  ? btoa
+  : (unencoded: string): string => Buffer.from(unencoded).toString('base64');
+
 /**
  * Parse out the code and usid from a redirect url
  * @param urlString A url that contains `code` and `usid` query parameters, typically returned when calling a Shopper Login endpoint
@@ -51,17 +55,15 @@ export const generateCodeChallenge = async (
     input.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 
   let challenge = '';
-  try {
-    // Cannot test browser functions
-    /* istanbul ignore next */
-    if (window.crypto.subtle.digest !== undefined) {
-      const encoder = new TextEncoder();
-      const data = encoder.encode(codeVerifier);
-      const digest = await window.crypto.subtle.digest('SHA-256', data);
-      const base64Digest = btoa(String.fromCharCode(...new Uint8Array(digest)));
-      challenge = urlSafe(base64Digest);
-    }
-  } catch (e) {
+  // Cannot test browser functions
+  /* istanbul ignore next */
+  if (onClient) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(codeVerifier);
+    const digest = await window.crypto.subtle.digest('SHA-256', data);
+    const base64Digest = btoa(String.fromCharCode(...new Uint8Array(digest)));
+    challenge = urlSafe(base64Digest);
+  } else {
     const crypto = await import('crypto');
     challenge = urlSafe(
       crypto.default.createHash('sha256').update(codeVerifier).digest('base64')
@@ -201,7 +203,7 @@ export async function loginRegisteredUserB2C(
   const codeVerifier = createCodeVerifier();
   const codeChallenge = await generateCodeChallenge(codeVerifier);
 
-  const authorization = `Basic ${btoa(
+  const authorization = `Basic ${stringToBase64(
     `${credentials.username}:${credentials.password}`
   )}`;
 
