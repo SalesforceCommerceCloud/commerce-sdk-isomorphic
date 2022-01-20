@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+/* eslint header/header: "off" */
 /*
  * Copyright (c) 2022, salesforce.com, inc.
  * All rights reserved.
@@ -124,7 +128,7 @@ describe('Authorize user', () => {
 
   test('hits the authorize endpoint and does not receive authorization code', async () => {
     const mockSlasClient = createMockSlasClient();
-    mockSlasClient.authorizeCustomer = jest.fn();
+    mockSlasClient.authorizeCustomer = jest.fn().mockResolvedValue({url: ''});
     await expect(
       slasHelper.authorize(mockSlasClient, codeVerifier, parameters)
     ).rejects.toThrow('Authorization failed');
@@ -133,6 +137,7 @@ describe('Authorize user', () => {
 
 describe('Guest user flow', () => {
   const expectedOptions = {
+    fetchOptions: {redirect: 'manual'},
     parameters: {
       client_id: 'client_id',
       code_challenge: expect.stringMatching(/./) as string,

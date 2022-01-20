@@ -126,7 +126,7 @@ export async function authorize(
 
   const response = await slasClient.authorizeCustomer(options, true);
 
-  const redirectUrl = response.url || response.headers.get('location');
+  const redirectUrl = response.url || response.headers?.get('location');
   if (!redirectUrl) {
     throw new Error('Authorization failed');
   }
