@@ -82,7 +82,7 @@ export const generateCodeChallenge = async (
  * Wrapper for the authorization endpoint. For federated login (3rd party IDP non-guest), the caller should redirect the user to the url in the url field of the returned object. The url will be the login page for the 3rd party IDP and the user will be sent to the redirectURI on success. Guest sessions return the code and usid directly with no need to redirect.
  * @param slasClient a configured instance of the ShopperLogin SDK client
  * @param codeVerifier - random string created by client app to use as a secret in the request
- * @param parameters - Request parameters used by the `authorizeCustomer `endpoint.
+ * @param parameters - Request parameters used by the `authorizeCustomer` endpoint.
  * @param parameters.redirectURI - the location the client will be returned to after successful login with 3rd party IDP. Must be registered in SLAS.
  * @param parameters.hint? - optional string to hint at a particular IDP. Guest sessions are created by setting this to 'guest'
  * @param parameters.usid? - optional saved SLAS user id to link the new session to a previous session
@@ -247,7 +247,7 @@ export async function loginRegisteredUserB2C(
  * @param parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
  * @returns TokenResponse
  */
-export function refreshToken(
+export function refreshAccessToken(
   slasClient: ShopperLogin<{
     shortCode: string;
     organizationId: string;

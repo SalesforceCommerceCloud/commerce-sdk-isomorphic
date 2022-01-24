@@ -240,7 +240,10 @@ describe('Refresh Token', () => {
   };
 
   test('refreshes the token', () => {
-    const token = slasHelper.refreshToken(createMockSlasClient(), parameters);
+    const token = slasHelper.refreshAccessToken(
+      createMockSlasClient(),
+      parameters
+    );
     expect(getAccessTokenMock).toBeCalledWith(expectedBody);
     expect(token).toStrictEqual(expectedTokenResponse);
   });

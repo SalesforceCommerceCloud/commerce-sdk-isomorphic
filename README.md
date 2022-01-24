@@ -74,7 +74,7 @@ This sample code shows how to configure HTTP timeout and agent options.
 /**
  * Configure advanced timeout and agent parameters
  *
- * To learn more about the parameters please refer to https://developer.commercecloud.com/s/article/CommerceAPI-Get-Started
+ * To learn more about the parameters please refer to the [Salesforce Developer Center](https://developer.salesforce.com/docs/commerce/commerce-api).
  */
 // Create a configuration to use when creating API clients
 const https = require('https');
