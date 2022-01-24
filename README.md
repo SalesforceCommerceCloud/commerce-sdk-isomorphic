@@ -2,7 +2,7 @@
 
 [![CircleCI][circleci-image]][circleci-url]
 
-The Salesforce Commerce SDK Isomorphic allows easy interaction with the Salesforce B2C Commerce platform Shopper APIs through a lightweight SDK that works both on browsers and nodejs applications. For a more robust SDK, which includes our B2C Data APIS and Shopper APIs, see [our Node.js Commerce SDK](https://github.com/SalesforceCommerceCloud/commerce-sdk).
+The Salesforce Commerce SDK Isomorphic allows easy interaction with the Salesforce B2C Commerce platform Shopper APIs through a lightweight SDK that works both on browsers and NodeJS applications. For a more robust SDK, which includes our B2C Data APIS and Shopper APIs, see [our Node.js Commerce SDK](https://github.com/SalesforceCommerceCloud/commerce-sdk).
 
 ## Getting Started
 
@@ -24,7 +24,7 @@ npm install commerce-sdk-isomorphic
 | -------------- | :------------------------------------------------------------------------- |
 | clientId       | ID of the client account created with Salesforce Commerce.                 |
 | organizationId | The unique identifier for your Salesforce identity.                        |
-| shortCode      | Region specific merchant ID.                                               |
+| shortCode      | Region-specific merchant ID.                                               |
 | siteId         | Name of the site to access data from, for example, RefArch or SiteGenesis. |
 
 ```javascript
@@ -49,7 +49,7 @@ const config = {
 };
 
 const shopperLogin = new ShopperLogin(config);
-// Execute Public Client OAuth with PKCE to acquite guest tokens
+// Execute Public Client OAuth with PKCE to acquire guest tokens
 const {access_token, refresh_token} = await helpers.loginGuestUser(
   shopperLogin,
   {redirectURI: `${config.proxy}/callback`} // Callback URL must be configured in SLAS Admin
@@ -102,7 +102,7 @@ const config = {
 
 _headers:_ A collection of key/value string pairs representing additional headers to include with API requests.
 
-_throwOnBadResponse:_ Default value is false. When set to true, the sdk will throw an Error on responses with statuses that are not 2xx or 304.
+_throwOnBadResponse:_ Default value is false. When set to true, the SDK throws an Error on responses with statuses that are not 2xx or 304.
 
 ### Public Client Shopper Login helpers
 

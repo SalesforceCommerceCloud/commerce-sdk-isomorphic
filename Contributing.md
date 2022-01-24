@@ -33,12 +33,12 @@ An example React App is available at `./src/environment/App` directory. To use t
 
 > **Note:** These are required parameters.
 
-| Parameter      | Description                                                |
-| -------------- | :--------------------------------------------------------- |
-| clientId       | ID of the client account created with Salesforce Commerce. |
-| organizationId | The unique identifier for your Salesforce identity.        |
-| shortCode      | Region specific merchant ID.                               |
-| siteId         | A unique site ID (for example, RefArch or SiteGenesis).    |
+| Parameter      | Description                                                                |
+| -------------- | :------------------------------------------------------------------------- |
+| clientId       | ID of the client account created with Salesforce Commerce.                 |
+| organizationId | The unique identifier for your Salesforce identity.                        |
+| shortCode      | Region-specific merchant ID.                                               |
+| siteId         | Name of the site to access data from, for example, RefArch or SiteGenesis. |
 
 ```javascript
 /**
@@ -59,7 +59,7 @@ const config = {
 };
 ```
 
-Launch the sample application using `yarn start`. Access the sample application using a new browser window at this url `localhost:3000`.
+Launch the sample application using `yarn start`. Access the sample application using a new browser window at this URL `localhost:3000`.
 
 ## Testing
 
