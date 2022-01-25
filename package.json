@@ -34,6 +34,7 @@
     "fix:style": "yarn run lint:style -- --fix",
     "lint": "eslint --ext js,jsx,ts,tsx .",
     "lint:style": "stylelint ./src/",
+    "prepare": "snyk protect",
     "renderTemplates": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/generate.ts",
     "start": "HTTPS=true react-scripts start",
     "pretest": "yarn run lint && yarn run lint:style && depcheck && yarn run check:size",
