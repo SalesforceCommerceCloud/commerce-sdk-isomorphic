@@ -9,7 +9,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { ShopperLogin, TokenResponse } from '../../lib/shopperLogin';
+import {ShopperLogin, TokenResponse} from '../../lib/shopperLogin';
 import * as slasHelper from './slasHelper';
 
 const codeVerifier = 'code_verifier';
@@ -66,6 +66,10 @@ const createMockSlasClient = () =>
     clientId: string;
     siteId: string;
   }>);
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
 describe('Create code verifier', () => {
   test('creates 128 URL safe string', () => {
@@ -175,9 +179,6 @@ describe('Guest user flow', () => {
   });
 });
 describe('Registered B2C user flow', () => {
-  const base64regEx =
-    /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
-
   const expectedOptions = {
     body: {
       channel_id: 'site_id',
@@ -211,10 +212,6 @@ describe('Registered B2C user flow', () => {
       createMockSlasClient(),
       credentials,
       parameters
-    );
-    // Authorization header must be base64 encoded
-    expect(expectedOptions.headers.Authorization.split(' ')[1]).toMatch(
-      base64regEx
     );
     expect(authenticateCustomerMock).toBeCalledWith(expectedOptions, true);
   });

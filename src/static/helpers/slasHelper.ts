@@ -5,9 +5,13 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { nanoid } from 'nanoid';
+import {nanoid} from 'nanoid';
 
-import { ShopperLogin, TokenRequest, TokenResponse } from '../../lib/shopperLogin';
+import {
+  ShopperLogin,
+  TokenRequest,
+  TokenResponse,
+} from '../../lib/shopperLogin';
 
 /**
  * Determine if execution is client or server side
@@ -55,9 +59,10 @@ export const generateCodeChallenge = async (
     input.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 
   let challenge = '';
-  // Cannot test browser functions
+  // Cannot easily test browser functions. Integration test runs in the jsdom test environment which can only mimic certain browser functionality
+  // The window.crypto check is to see if code is being executed in the jsdom test environment or an actual browser to allow our test to successfully run
   /* istanbul ignore next */
-  if (onClient) {
+  if (onClient && window.crypto) {
     const encoder = new TextEncoder();
     const data = encoder.encode(codeVerifier);
     const digest = await window.crypto.subtle.digest('SHA-256', data);

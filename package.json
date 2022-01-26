@@ -84,8 +84,7 @@
         "lines": 90,
         "statements": 90
       }
-    },
-    "testEnvironment": "node"
+    }
   },
   "resolutions": {
     "**/@oclif/command": "<=1.8.3",
