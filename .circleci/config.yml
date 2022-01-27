@@ -20,10 +20,6 @@ commands:
 
 # EXECUTORS
 executors:
-  node-10:
-    <<: *defaults
-    docker:
-      - image: cimg/node:10.24.1
   node-12:
     <<: *defaults
     docker:
@@ -38,12 +34,6 @@ executors:
       - image: cimg/node:16.13.0
 # JOBS
 jobs:
-  build-node-10:
-    executor: node-10
-    steps:
-      - build
-      - test
-
   build-node-12:
     executor: node-12
     steps:
@@ -63,7 +53,7 @@ jobs:
       - test
 
   publish:
-    executor: node-10
+    executor: node-12
     working_directory: ~/publish
     steps:
       - build
@@ -77,10 +67,6 @@ workflows:
   version: 2
   build-and-test:
     jobs:
-      - build-node-10:
-          filters:
-            tags:
-              ignore: /^v.*/
       - build-node-12:
           filters:
             tags:
@@ -96,12 +82,6 @@ workflows:
 
   build-test-deploy:
     jobs:
-      - build-node-10:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
       - build-node-12:
           filters:
             tags:
@@ -128,7 +108,6 @@ workflows:
               ignore: /.*/
           type: approval
           requires:
-            - build-node-10
             - build-node-12
             - build-node-14
             - build-node-16
