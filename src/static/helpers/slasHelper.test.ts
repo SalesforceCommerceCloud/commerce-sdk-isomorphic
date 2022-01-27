@@ -72,7 +72,7 @@ beforeEach(() => {
 });
 
 describe('Create code verifier', () => {
-  test('creates 128 URL safe string', () => {
+  test('creates 128-character URL-safe string', () => {
     const verifier = slasHelper.createCodeVerifier();
 
     expect(verifier).toMatch(/[A-Za-z0-9_-]{128}/);
