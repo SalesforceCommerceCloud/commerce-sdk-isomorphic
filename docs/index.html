@@ -68,29 +68,23 @@
 					<h1>commerce-sdk-isomorphic</h1>
 				</a>
 				<p><a href="https://circleci.com/gh/SalesforceCommerceCloud/commerce-sdk-isomorphic"><img src="https://circleci.com/gh/SalesforceCommerceCloud/commerce-sdk-isomorphic.svg?style=svg&circle-token=379eaa6f00e0840e10dd80585b2b045d02a8f3b7" alt="CircleCI"></a></p>
-				<p>The Salesforce Commerce SDK Isomorphic allows easy interaction with the Salesforce B2C Commerce platform Shopper APIs through a lightweight SDK that works both on browsers and nodejs applications.  For a more robust SDK, which includes our B2C Data APIS and Shopper APIs, see <a href="https://github.com/SalesforceCommerceCloud/commerce-sdk">our Node.js Commerce SDK</a>.</p>
-				<a href="#building" id="building" style="color: inherit; text-decoration: none;">
-					<h2>Building</h2>
+				<p>The Salesforce Commerce SDK Isomorphic allows easy interaction with the Salesforce B2C Commerce platform Shopper APIs through a lightweight SDK that works both on browsers and NodeJS applications. For a more robust SDK, which includes our B2C Data APIS and Shopper APIs, see <a href="https://github.com/SalesforceCommerceCloud/commerce-sdk">our Node.js Commerce SDK</a>.</p>
+				<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
+					<h2>Getting Started</h2>
 				</a>
-				<p>To create the SDK package:</p>
-				<pre><code><span class="hljs-comment"># Install dependencies needed to run generation</span>
-$ yarn install
-
-<span class="hljs-comment"># Parse API files, render templates to src/lib folder and copy static files to src/lib</span>
-$ yarn run renderTemplates
-
-<span class="hljs-comment"># Launch sample application</span>
-$ yarn start
-
-<span class="hljs-comment"># Transpile and minify</span>
-$ yarn <span class="hljs-symbol">build:</span><span class="hljs-class"><span class="hljs-keyword">lib</span></span>
-
-<span class="hljs-comment"># Run tests</span>
-$ yarn test</code></pre>
+				<a href="#requirements" id="requirements" style="color: inherit; text-decoration: none;">
+					<h3>Requirements</h3>
+				</a>
+				<ul>
+					<li>Node <code>^12.x</code>, <code>^14.x</code>, or <code>^16.x</code></li>
+				</ul>
+				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+					<h3>Installation</h3>
+				</a>
+				<pre><code class="language-bash">npm install commerce-sdk-isomorphic</code></pre>
 				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
-					<h2>Usage</h2>
+					<h3>Usage</h3>
 				</a>
-				<p>An example React App is available at <code>./src/environment/App</code> directory. To use the sample application, configure these parameters in <code>./src/environment/config.js</code> file.</p>
 				<blockquote>
 					<p><strong>Note:</strong> These are required parameters.</p>
 				</blockquote>
@@ -111,63 +105,89 @@ $ yarn test</code></pre>
 						</tr>
 						<tr>
 							<td>shortCode</td>
-							<td align="left">Region specific merchant ID.</td>
+							<td align="left">Region-specific merchant ID.</td>
 						</tr>
 						<tr>
 							<td>siteId</td>
-							<td align="left">A unique site ID (for example, RefArch or SiteGenesis).</td>
+							<td align="left">Name of the site to access data from, for example, RefArch or SiteGenesis.</td>
 						</tr>
 				</tbody></table>
 				<pre><code class="language-javascript"><span class="hljs-comment">/**
  * Configure required parameters
- * 
+ *
  * To learn more about the parameters please refer to https://developer.commercecloud.com/s/article/CommerceAPI-Get-Started
  */</span>
+<span class="hljs-keyword">import</span> {helpers, ShopperLogin, ShopperSearch} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;commerce-sdk-isomorphic&#x27;</span>;
+
 <span class="hljs-comment">// Create a configuration to use when creating API clients</span>
 <span class="hljs-keyword">const</span> config = {
-    <span class="hljs-attr">proxy</span>: <span class="hljs-string">&#x27;https://localhost:3000&#x27;</span>,
-    <span class="hljs-attr">headers</span>: {},
-    <span class="hljs-attr">parameters</span>: {
-      <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;&lt;your-client-id&gt;&#x27;</span>,
-      <span class="hljs-attr">organizationId</span>: <span class="hljs-string">&#x27;&lt;your-org-id&gt;&#x27;</span>,
-      <span class="hljs-attr">shortCode</span>: <span class="hljs-string">&#x27;&lt;your-short-code&gt;&#x27;</span>,
-      <span class="hljs-attr">siteId</span>: <span class="hljs-string">&#x27;&lt;your-site-id&gt;&#x27;</span>
-    }
-}</code></pre>
-				<p>Launch the sample application using <code>yarn start</code>. Access the sample application using a new browser window at this url <code>localhost:3000</code>. </p>
+  <span class="hljs-attr">proxy</span>: <span class="hljs-string">&#x27;https://localhost:3000&#x27;</span>, <span class="hljs-comment">// Routes API calls through a proxy when set</span>
+  <span class="hljs-attr">headers</span>: {},
+  <span class="hljs-attr">parameters</span>: {
+    <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;&lt;your-client-id&gt;&#x27;</span>,
+    <span class="hljs-attr">organizationId</span>: <span class="hljs-string">&#x27;&lt;your-org-id&gt;&#x27;</span>,
+    <span class="hljs-attr">shortCode</span>: <span class="hljs-string">&#x27;&lt;your-short-code&gt;&#x27;</span>,
+    <span class="hljs-attr">siteId</span>: <span class="hljs-string">&#x27;&lt;your-site-id&gt;&#x27;</span>,
+  },
+  <span class="hljs-attr">throwOnBadResponse</span>: <span class="hljs-literal">true</span>,
+};
+
+<span class="hljs-keyword">const</span> shopperLogin = <span class="hljs-keyword">new</span> ShopperLogin(config);
+<span class="hljs-comment">// Execute Public Client OAuth with PKCE to acquire guest tokens</span>
+<span class="hljs-keyword">const</span> {access_token, refresh_token} = <span class="hljs-keyword">await</span> helpers.loginGuestUser(
+  shopperLogin,
+  {<span class="hljs-attr">redirectURI</span>: <span class="hljs-string">`<span class="hljs-subst">${config.proxy}</span>/callback`</span>} <span class="hljs-comment">// Callback URL must be configured in SLAS Admin</span>
+);
+
+<span class="hljs-keyword">const</span> shopperSearch = <span class="hljs-keyword">new</span> ShopperSearch({
+  ...config,
+  <span class="hljs-attr">headers</span>: {<span class="hljs-attr">authorization</span>: <span class="hljs-string">`Bearer <span class="hljs-subst">${access_token}</span>`</span>},
+});
+
+<span class="hljs-keyword">const</span> searchResult = <span class="hljs-keyword">await</span> shopperSearch.productSearch({
+  <span class="hljs-attr">parameters</span>: {<span class="hljs-attr">q</span>: <span class="hljs-string">&#x27;shirt&#x27;</span>},
+});</code></pre>
 				<a href="#advanced-options" id="advanced-options" style="color: inherit; text-decoration: none;">
 					<h3>Advanced options</h3>
 				</a>
-				<p>Commerce SDK Isomorphic supports advanced <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API">Fetch API options</a> by a simple configuration.
-				This sample code shows how to configure HTTP timeout and agent options in <code>./src/environment/config.js</code> file</p>
-				<pre><code class="language-javascript"> <span class="hljs-comment">/**
-  * Configure advanced timeout and agent parameters
-  * 
-  * To learn more about the parameters please refer to https://developer.commercecloud.com/s/article/CommerceAPI-Get-Started
-  */</span>
- <span class="hljs-comment">// Create a configuration to use when creating API clients</span>
-<span class="hljs-keyword">const</span> https = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;https&quot;</span>);
+				<p>Commerce SDK Isomorphic supports Fetch API options for <a href="https://github.com/node-fetch/node-fetch/1#api">node-fetch</a> on server and <a href="https://github.github.io/fetch/">whatwg-fetch</a> on browser with a simple configuration.
+				This sample code shows how to configure HTTP timeout and agent options.</p>
+				<pre><code class="language-javascript"><span class="hljs-comment">/**
+ * Configure advanced timeout and agent parameters
+ *
+ * To learn more about the parameters please refer to the [Salesforce Developer Center](https://developer.salesforce.com/docs/commerce/commerce-api).
+ */</span>
+<span class="hljs-comment">// Create a configuration to use when creating API clients</span>
+<span class="hljs-keyword">const</span> https = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;https&#x27;</span>);
 
 <span class="hljs-keyword">const</span> config = {
-    <span class="hljs-attr">proxy</span>: <span class="hljs-string">&#x27;https://localhost:3000&#x27;</span>,
-    <span class="hljs-attr">headers</span>: {},
-    <span class="hljs-attr">parameters</span>: {
-        <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;&lt;your-client-id&gt;&#x27;</span>,
-        <span class="hljs-attr">organizationId</span>: <span class="hljs-string">&#x27;&lt;your-org-id&gt;&#x27;</span>,
-        <span class="hljs-attr">shortCode</span>: <span class="hljs-string">&#x27;&lt;your-short-code&gt;&#x27;</span>,
-        <span class="hljs-attr">siteId</span>: <span class="hljs-string">&#x27;&lt;your-site-id&gt;&#x27;</span>
-    },
-    <span class="hljs-attr">fetchOptions</span>: {
-      <span class="hljs-attr">timeout</span>: <span class="hljs-number">2000</span>, <span class="hljs-comment">//request times out after 2 seconds</span>
-      <span class="hljs-attr">agent</span>: <span class="hljs-keyword">new</span> https.agent({ <span class="hljs-comment">// a custom http agent</span>
-        <span class="hljs-attr">keepAlive</span>: <span class="hljs-literal">true</span>
-      })
-    } 
-}</code></pre>
-				<a href="#testing" id="testing" style="color: inherit; text-decoration: none;">
-					<h2>Testing</h2>
+  <span class="hljs-attr">proxy</span>: <span class="hljs-string">&#x27;https://localhost:3000&#x27;</span>,
+  <span class="hljs-attr">headers</span>: {},
+  <span class="hljs-attr">parameters</span>: {
+    <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;&lt;your-client-id&gt;&#x27;</span>,
+    <span class="hljs-attr">organizationId</span>: <span class="hljs-string">&#x27;&lt;your-org-id&gt;&#x27;</span>,
+    <span class="hljs-attr">shortCode</span>: <span class="hljs-string">&#x27;&lt;your-short-code&gt;&#x27;</span>,
+    <span class="hljs-attr">siteId</span>: <span class="hljs-string">&#x27;&lt;your-site-id&gt;&#x27;</span>,
+  },
+  <span class="hljs-attr">fetchOptions</span>: {
+    <span class="hljs-attr">timeout</span>: <span class="hljs-number">2000</span>, <span class="hljs-comment">//request times out after 2 seconds</span>
+    <span class="hljs-attr">agent</span>: <span class="hljs-keyword">new</span> https.agent({
+      <span class="hljs-comment">// a custom http agent</span>
+      <span class="hljs-attr">keepAlive</span>: <span class="hljs-literal">true</span>,
+    }),
+  },
+};</code></pre>
+				<a href="#additional-config-settings" id="additional-config-settings" style="color: inherit; text-decoration: none;">
+					<h3>Additional Config Settings</h3>
 				</a>
-				<p>Two types of tests occur when running <code>yarn test</code>. First, unit tests are executed with jest including an enforced coverage level. This is all tests not contained within the sample app path of <code>src/environment</code>. If that passes, tests within the sample app path are executed using the <code>react-scripts</code> configuration. These allow for testing of the SDK within a sample React application.</p>
+				<p><em>headers:</em> A collection of key/value string pairs representing additional headers to include with API requests.</p>
+				<p><em>throwOnBadResponse:</em> Default value is false. When set to true, the SDK throws an Error on responses with statuses that are not 2xx or 304.</p>
+				<a href="#public-client-shopper-login-helpers" id="public-client-shopper-login-helpers" style="color: inherit; text-decoration: none;">
+					<h3>Public Client Shopper Login helpers</h3>
+				</a>
+				<p>A collection of helper functions are available in this SDK to simplify <a href="https://developer.commercecloud.com/s/api-details/a003k00000VWfNDAA1/commerce-cloud-developer-centershopperloginandapiaccessservice#public-client-use-cases">Public
+						Client Shopper Login OAuth
+				flows</a>. See sample code above for guest login.</p>
 				<a href="#license-information" id="license-information" style="color: inherit; text-decoration: none;">
 					<h2>License Information</h2>
 				</a>
@@ -235,6 +255,7 @@ $ yarn test</code></pre>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
 				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
 				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
