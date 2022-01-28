@@ -13,6 +13,7 @@ export const PRIMITIVE_DATA_TYPE_MAP = {
 };
 export const ASSET_OBJECT_MAP: {[key: string]: string} = {
   'shopper-baskets': 'a003k00000UHvpEAAT',
+  'shopper-context': 'a003k00000ZuXdRAAV',
   'shopper-customers': 'a003k00000UHvpJAAT',
   'shopper-discovery-search': 'a003k00000W0WlBAAV',
   'shopper-gift-certificates': 'a003k00000UHvogAAD',

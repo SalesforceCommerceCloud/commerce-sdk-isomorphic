@@ -1,5 +1,31 @@
 # CHANGELOG
 
+## v1.5.0
+
+#### New Features
+
+* SLAS helper functions have been added.
+* New client configuration setting `throwOnBadResponse`. When set to true, responses other than `2xx` and `304` will throw an error.
+
+#### New APIs
+
+* *Shopper Context* has been added to the SDK.
+
+#### API Changes
+
+*Shopper Login*
+
+* New Endpoints
+
+  | **Endpoint Name** | **Description** |
+  | ------------- |-------------|
+  | authorizePasswordlessCustomer | Logs a customer in using Core with their customer profiles loaded in ECOM. Allows the user to authenticate when their identity provider (Core) is down. |
+  | getPasswordLessAccessToken | Evaluate the `pwdless_token` and issue the shopper token (JWT). |
+
+#### Bug Fixes
+
+* Added support for `application/x-www-form-urlencoded` request bodies.
+  - SLAS endpoints now work out of the box
 ## v1.4.0
 
 #### New Features
