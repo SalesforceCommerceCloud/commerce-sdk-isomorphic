@@ -17,7 +17,7 @@ export const ASSET_OBJECT_MAP: {[key: string]: string} = {
   'shopper-customers': 'a003k00000UHvpJAAT',
   'shopper-discovery-search': 'a003k00000W0WlBAAV',
   'shopper-gift-certificates': 'a003k00000UHvogAAD',
-  'shopper-login': 'a003k00000VWfNDAA1',
+  'shopper-login-and-api-access': 'a003k00000VWfNDAA1',
   'shopper-orders': 'a003k00000UHvpFAAT',
   'shopper-products': 'a003k00000UHvp0AAD',
   'shopper-promotions': 'a003k00000UHvp5AAD',

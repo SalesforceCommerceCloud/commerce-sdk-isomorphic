@@ -44,7 +44,7 @@ An example React App is available at `./src/environment/App` directory. To use t
 /**
  * Configure required parameters
  *
- * To learn more about the parameters please refer to https://developer.commercecloud.com/s/article/CommerceAPI-Get-Started
+ * To learn more about the parameters please refer to https://developer.salesforce.com/docs/commerce/commerce-api/guide/get-started.html
  */
 // Create a configuration to use when creating API clients
 const config = {

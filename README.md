@@ -31,7 +31,7 @@ npm install commerce-sdk-isomorphic
 /**
  * Configure required parameters
  *
- * To learn more about the parameters please refer to https://developer.commercecloud.com/s/article/CommerceAPI-Get-Started
+ * To learn more about the parameters please refer to https://developer.salesforce.com/docs/commerce/commerce-api/guide/get-started.html
  */
 import {helpers, ShopperLogin, ShopperSearch} from 'commerce-sdk-isomorphic';
 
@@ -108,7 +108,7 @@ _throwOnBadResponse:_ Default value is false. When set to true, the SDK throws a
 
 A collection of helper functions are available in this SDK to simplify [Public
 Client Shopper Login OAuth
-flows](https://developer.commercecloud.com/s/api-details/a003k00000VWfNDAA1/commerce-cloud-developer-centershopperloginandapiaccessservice#public-client-use-cases). See sample code above for guest login.
+flows](https://developer.salesforce.com/docs/commerce/commerce-api/references#shopper-login-and-api-access:Summary). See sample code above for guest login.
 
 ## License Information
 
