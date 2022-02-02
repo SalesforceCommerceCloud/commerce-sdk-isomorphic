@@ -11,10 +11,12 @@ import {
   formatForTsDoc,
   getPathParameterTypeMapFromEndpoints,
   getQueryParameterTypeMapFromEndpoints,
+  getObjectIdByAssetId,
   getParameterTypes,
   isAllowedTrait,
   loud,
 } from './templateHelpers';
+import {ASSET_OBJECT_MAP} from './config';
 
 /** Technically, `type` could be much more, but for tests this will do. AMF is tricky. */
 const createParameter = (name: string, type: 'string' | 'boolean') => {
@@ -160,6 +162,20 @@ describe('Test formatForTsDoc template help function', () => {
   it('returns whitespace for 5 spaces in middle', () => {
     expect(formatForTsDoc('\nthis is a spaced     line')).toStrictEqual(
       '\nthis is a spaced     line'
+    );
+  });
+});
+
+describe('Test getObjectIdByAssetId template helper function', () => {
+  it('returns correct ID for known input', () => {
+    expect(getObjectIdByAssetId('shopper-baskets')).toBe(
+      ASSET_OBJECT_MAP['shopper-baskets']
+    );
+  });
+
+  it("throws for 'KEY_NOT_FOUND' input", () => {
+    expect(() => getObjectIdByAssetId('KEY_NOT_FOUND')).toThrowError(
+      'Missing CCDC object ID for "KEY_NOT_FOUND"'
     );
   });
 });

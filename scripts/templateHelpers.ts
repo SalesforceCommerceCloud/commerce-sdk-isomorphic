@@ -6,6 +6,7 @@
  */
 import {amf} from '@commerce-apps/raml-toolkit';
 import {getTypeFromParameter} from '@commerce-apps/raml-toolkit/lib/generate/handlebarsAmfHelpers';
+import {ASSET_OBJECT_MAP} from './config';
 
 /**
  * Given an individual type or an array of types in the format Array\<Foo | Baa\>
@@ -65,6 +66,24 @@ export function addNamespace(content: string, namespace: string): string {
   }
   return processedTypes;
 }
+
+/**
+ * Gets custom object id associated with the specified assetId.
+ *
+ * @param assetId - The assetId to look up
+ *
+ * @returns The custom object id as a string
+ */
+export const getObjectIdByAssetId = (assetId: string): string => {
+  if (Object.prototype.hasOwnProperty.call(ASSET_OBJECT_MAP, assetId)) {
+    return ASSET_OBJECT_MAP[assetId];
+  }
+  // When this error occurs, find the corresponding API in the CCDC and copy the
+  // object ID from the URL. Add the asset ID and object ID to ASSET_OBJECT_MAP
+  // in ./config.ts.
+  // CCDC API Reference: https://developer.commercecloud.com/s/api-reference
+  throw new Error(`Missing CCDC object ID for "${assetId}"`);
+};
 
 /**
  * Certain characters need to be handled for TSDoc.
