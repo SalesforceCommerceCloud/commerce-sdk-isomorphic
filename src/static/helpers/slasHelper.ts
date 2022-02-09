@@ -140,7 +140,7 @@ export async function authorize(
 }
 
 /**
- * A single function to execute the ShopperLogin Public Client Guest Login with proof key for code exchange flow as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/references#shopper-login-and-api-access:Summary).
+ * A single function to execute the ShopperLogin Public Client Guest Login with proof key for code exchange flow as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login-and-api-access:Summary).
  * @param slasClient a configured instance of the ShopperLogin SDK client.
  * @param parameters - parameters to pass in the API calls.
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
@@ -179,7 +179,7 @@ export async function loginGuestUser(
 }
 
 /**
- * A single function to execute the ShopperLogin Public Client Registered User B2C Login with proof key for code exchange flow as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/references#shopper-login-and-api-access:Summary).
+ * A single function to execute the ShopperLogin Public Client Registered User B2C Login with proof key for code exchange flow as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login-and-api-access:Summary).
  * @param slasClient a configured instance of the ShopperLogin SDK client.
  * @param credentials - the id and password to login with.
  * @param credentials.username - the id of the user to login with.
