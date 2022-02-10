@@ -15,7 +15,6 @@ import {
   isAllowedTrait,
   loud,
 } from './templateHelpers';
-import {API_LIST} from './config';
 
 /** Technically, `type` could be much more, but for tests this will do. AMF is tricky. */
 const createParameter = (name: string, type: 'string' | 'boolean') => {
