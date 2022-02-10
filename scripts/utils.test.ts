@@ -22,7 +22,6 @@ describe('registerHelper', () => {
     expect(Object.keys(Handlebars.helpers)).not.toEqual(
       expect.arrayContaining([
         'addNamespace',
-        'getObjectIdByAssetId',
         'formatForTsDoc',
       ])
     );
@@ -32,7 +31,6 @@ describe('registerHelper', () => {
     expect(Object.keys(Handlebars.helpers)).toEqual(
       expect.arrayContaining([
         'addNamespace',
-        'getObjectIdByAssetId',
         'formatForTsDoc',
       ])
     );
