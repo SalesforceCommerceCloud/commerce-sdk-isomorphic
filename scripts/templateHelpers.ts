@@ -6,7 +6,7 @@
  */
 import {amf} from '@commerce-apps/raml-toolkit';
 import {getTypeFromParameter} from '@commerce-apps/raml-toolkit/lib/generate/handlebarsAmfHelpers';
-import {ASSET_OBJECT_MAP} from './config';
+import {API_LIST} from './config';
 
 /**
  * Given an individual type or an array of types in the format Array\<Foo | Baa\>
