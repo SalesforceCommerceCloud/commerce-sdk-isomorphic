@@ -11,15 +11,15 @@ export const PRIMITIVE_DATA_TYPE_MAP = {
   'http://www.w3.org/2001/XMLSchema#float': 'number',
   'http://www.w3.org/2001/XMLSchema#boolean': 'boolean',
 };
-export const ASSET_OBJECT_MAP: {[key: string]: string} = {
-  'shopper-baskets': 'a003k00000UHvpEAAT',
-  'shopper-context': 'a003k00000ZuXdRAAV',
-  'shopper-customers': 'a003k00000UHvpJAAT',
-  'shopper-discovery-search': 'a003k00000W0WlBAAV',
-  'shopper-gift-certificates': 'a003k00000UHvogAAD',
-  'shopper-login': 'a003k00000VWfNDAA1',
-  'shopper-orders': 'a003k00000UHvpFAAT',
-  'shopper-products': 'a003k00000UHvp0AAD',
-  'shopper-promotions': 'a003k00000UHvp5AAD',
-  'shopper-search': 'a003k00000UHwuFAAT',
-};
+export const API_LIST: string[] = [
+  'shopper-baskets',
+  'shopper-context',
+  'shopper-customers',
+  'shopper-discovery-search',
+  'shopper-gift-certificates',
+  'shopper-login',
+  'shopper-orders',
+  'shopper-products',
+  'shopper-promotions',
+  'shopper-search'
+];

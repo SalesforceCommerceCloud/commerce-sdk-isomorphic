@@ -8,9 +8,7 @@
 import path from 'path';
 import fs from 'fs-extra';
 import {updateApis} from './utils';
-import {ASSET_OBJECT_MAP} from './config';
-
-const API_NAMES = Object.keys(ASSET_OBJECT_MAP);
+import {API_LIST} from './config';
 
 const OLD_APIS_PATH = path.join(__dirname, '../temp/oldApis');
 const PRODUCTION_API_PATH = path.join(__dirname, '../apis');
@@ -19,7 +17,7 @@ const PRODUCTION_API_PATH = path.join(__dirname, '../apis');
 fs.moveSync(PRODUCTION_API_PATH, OLD_APIS_PATH, {overwrite: true});
 fs.ensureDirSync(PRODUCTION_API_PATH);
 
-API_NAMES.forEach(name => {
+API_LIST.forEach(name => {
   // eslint-disable-next-line no-console
   updateApis(name, /production/i, PRODUCTION_API_PATH).catch(console.error);
 });
