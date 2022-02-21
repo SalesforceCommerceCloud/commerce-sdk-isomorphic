@@ -35,6 +35,7 @@
           {{/each}}
         }, ConfigParameters>,
         headers?: { [key: string]: string },
+        redirect?: RequestRedirect,
         {{#if (isRequestWithPayload request)}}
         body: {{{getPayloadTypeFromRequest request}}}
         {{/if}}
@@ -74,6 +75,7 @@
           {{/each}}
         }, ConfigParameters>,
         headers?: { [key: string]: string },
+        redirect?: RequestRedirect,
         {{#if (isRequestWithPayload request)}}
         body: {{{getPayloadTypeFromRequest request}}}
         {{/if}}
@@ -115,6 +117,7 @@
           {{/each}}
         }, ConfigParameters>,
         headers?: { [key: string]: string },
+        redirect?: RequestRedirect,
         {{#if (isRequestWithPayload request)}}
         body: {{{getPayloadTypeFromRequest request}}}
         {{/if}}
@@ -179,6 +182,7 @@
       const req = new Request(
         url.toString(),
         {
+          redirect: options?.redirect || 'follow',
           ...this.clientConfig.fetchOptions,
           {{#if (isRequestWithPayload request)}}body: this.clientConfig.transformRequest(options.body, headers),{{/if}}
           headers,
