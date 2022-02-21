@@ -120,6 +120,19 @@ describe('Authorize user', () => {
     url,
     usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
   };
+
+  const expectedOptions = {
+    parameters: {
+      client_id: 'client_id',
+      code_challenge: '73oehA2tBul5grZPhXUGQwNAjxh69zNES8bu2bVD0EM',
+      organizationId: 'organization_id',
+      redirect_uri: 'redirect_uri',
+      response_type: 'code',
+      usid: 'usid',
+    },
+    redirect: 'manual',
+  };
+
   test('hits the authorize endpoint and receives authorization code', async () => {
     const authResponse = await slasHelper.authorize(
       createMockSlasClient(),
@@ -137,11 +150,19 @@ describe('Authorize user', () => {
       slasHelper.authorize(mockSlasClient, codeVerifier, parameters)
     ).rejects.toThrow('Authorization failed');
   });
+
+  test('is called with redirect manual', async () => {
+    await slasHelper.authorize(
+      createMockSlasClient(),
+      codeVerifier,
+      parameters
+    );
+    expect(authorizeCustomerMock).toBeCalledWith(expectedOptions, true);
+  });
 });
 
 describe('Guest user flow', () => {
   const expectedOptions = {
-    fetchOptions: {redirect: 'manual'},
     parameters: {
       client_id: 'client_id',
       code_challenge: expect.stringMatching(/./) as string,
@@ -151,6 +172,7 @@ describe('Guest user flow', () => {
       response_type: 'code',
       usid: 'usid',
     },
+    redirect: 'manual',
   };
 
   const expectedTokenBody = {

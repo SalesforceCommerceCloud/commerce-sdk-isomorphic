@@ -20,19 +20,13 @@ const pkg: {version: string} = require('../package.json');
 describe('registerHelper', () => {
   it('registers our custom helpers', () => {
     expect(Object.keys(Handlebars.helpers)).not.toEqual(
-      expect.arrayContaining([
-        'addNamespace',
-        'formatForTsDoc',
-      ])
+      expect.arrayContaining(['addNamespace', 'formatForTsDoc'])
     );
 
     registerHelpers();
 
     expect(Object.keys(Handlebars.helpers)).toEqual(
-      expect.arrayContaining([
-        'addNamespace',
-        'formatForTsDoc',
-      ])
+      expect.arrayContaining(['addNamespace', 'formatForTsDoc'])
     );
   });
 });
