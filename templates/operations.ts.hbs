@@ -182,8 +182,8 @@
       const req = new Request(
         url.toString(),
         {
-          redirect: options?.redirect || 'follow',
           ...this.clientConfig.fetchOptions,
+          redirect: options?.redirect || this.clientConfig.fetchOptions.redirect || 'follow',
           {{#if (isRequestWithPayload request)}}body: this.clientConfig.transformRequest(options.body, headers),{{/if}}
           headers,
           method: "{{loud method}}"
