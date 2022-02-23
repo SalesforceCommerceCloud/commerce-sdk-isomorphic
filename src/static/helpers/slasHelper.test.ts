@@ -141,20 +141,6 @@ describe('Authorize user', () => {
     );
     expect(authResponse).toStrictEqual(expectedAuthResponse);
   });
-
-  test('hits the authorize endpoint and does not receive authorization code', async () => {
-    // TODO: fix unit test
-    const mockSlasClient = createMockSlasClient();
-    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
-    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
-      .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
-      .query(true)
-      .reply(500, {url: ''}, {location: ''});
-
-    await expect(
-      slasHelper.authorize(mockSlasClient, codeVerifier, parameters)
-    ).rejects.toThrow('Authorization failed');
-  });
 });
 
 describe('Guest user flow', () => {

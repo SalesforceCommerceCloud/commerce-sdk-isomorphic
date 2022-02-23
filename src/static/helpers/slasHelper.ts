@@ -116,7 +116,7 @@ export async function authorize(
   // follow setting allows us to get the url.
   slasClientCopy.clientConfig.fetchOptions = {
     ...slasClient.clientConfig.fetchOptions,
-    ...(!onClient && {redirect: 'manual'}),
+    redirect: onClient ? 'follow' : 'manual',
   };
 
   const options = {
