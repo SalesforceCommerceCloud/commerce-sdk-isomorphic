@@ -35,14 +35,13 @@ const parameters = {
   redirectURI: 'redirect_uri',
   refreshToken: 'refresh_token',
   usid: 'usid',
+  hint: 'hint',
 };
 
 const url =
   'https://localhost:3000/callback?usid=048adcfb-aa93-4978-be9e-09cb569fdcb9&code=J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o';
 
 const authenticateCustomerMock = jest.fn(() => ({url}));
-
-const authorizeCustomerMock = jest.fn(() => ({url}));
 
 const getAccessTokenMock = jest.fn(() => expectedTokenResponse);
 
@@ -59,7 +58,6 @@ const createMockSlasClient = () =>
       },
     },
     authenticateCustomer: authenticateCustomerMock,
-    authorizeCustomer: authorizeCustomerMock,
     getAccessToken: getAccessTokenMock,
     logoutCustomer: logoutCustomerMock,
   } as unknown as ShopperLogin<{
@@ -124,6 +122,11 @@ describe('Authorize user', () => {
     usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
   };
 
+  const expectedAuthResponseNoLocation = {
+    code: '',
+    url: 'https://short_code.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/organization_id/oauth2/authorize?redirect_uri=redirect_uri&response_type=code&client_id=client_id&usid=usid&hint=hint&code_challenge=73oehA2tBul5grZPhXUGQwNAjxh69zNES8bu2bVD0EM',
+    usid: 'usid',
+  };
   test('hits the authorize endpoint and receives authorization code', async () => {
     const mockSlasClient = createMockSlasClient();
     const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
@@ -140,6 +143,23 @@ describe('Authorize user', () => {
       parameters
     );
     expect(authResponse).toStrictEqual(expectedAuthResponse);
+  });
+
+  test('uses response.url if location header is unavailable', async () => {
+    const mockSlasClient = createMockSlasClient();
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+ 
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
+      .query(true)
+      .reply(200, {response_body: 'response_body'}, {location: ''});
+
+    const authResponse = await slasHelper.authorize(
+      mockSlasClient,
+      codeVerifier,
+      parameters
+    );
+    expect(authResponse).toStrictEqual(expectedAuthResponseNoLocation);
   });
 });
 

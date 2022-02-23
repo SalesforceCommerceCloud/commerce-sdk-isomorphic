@@ -132,8 +132,11 @@ export async function authorize(
   };
 
   const response = await slasClientCopy.authorizeCustomer(options, true);
-
   const redirectUrl = response.headers?.get('location') || response.url;
+  
+  // url is a read only property we unfortunately cannot mock out using nock
+  // meaning redirectUrl will not have a falsy value for unit tests
+  /* istanbul ignore next */
   if (!redirectUrl) {
     throw new Error('Authorization failed');
   }
