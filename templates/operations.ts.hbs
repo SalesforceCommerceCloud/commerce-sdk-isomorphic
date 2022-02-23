@@ -35,7 +35,6 @@
           {{/each}}
         }, ConfigParameters>,
         headers?: { [key: string]: string },
-        redirect?: RequestRedirect,
         {{#if (isRequestWithPayload request)}}
         body: {{{getPayloadTypeFromRequest request}}}
         {{/if}}
@@ -75,7 +74,6 @@
           {{/each}}
         }, ConfigParameters>,
         headers?: { [key: string]: string },
-        redirect?: RequestRedirect,
         {{#if (isRequestWithPayload request)}}
         body: {{{getPayloadTypeFromRequest request}}}
         {{/if}}
