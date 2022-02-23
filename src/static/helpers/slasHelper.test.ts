@@ -148,7 +148,7 @@ describe('Authorize user', () => {
   test('uses response.url if location header is unavailable', async () => {
     const mockSlasClient = createMockSlasClient();
     const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
- 
+
     nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
       .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
       .query(true)
