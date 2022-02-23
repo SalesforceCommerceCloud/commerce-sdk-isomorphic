@@ -117,7 +117,6 @@
           {{/each}}
         }, ConfigParameters>,
         headers?: { [key: string]: string },
-        redirect?: RequestRedirect,
         {{#if (isRequestWithPayload request)}}
         body: {{{getPayloadTypeFromRequest request}}}
         {{/if}}
@@ -183,7 +182,6 @@
         url.toString(),
         {
           ...this.clientConfig.fetchOptions,
-          redirect: options?.redirect || this.clientConfig.fetchOptions.redirect || 'follow',
           {{#if (isRequestWithPayload request)}}body: this.clientConfig.transformRequest(options.body, headers),{{/if}}
           headers,
           method: "{{loud method}}"

@@ -111,7 +111,11 @@ export async function authorize(
   // set manual redirect on server since node allows access to the location
   // header and it skips the extra call. In the browser, only the default
   // follow setting allows us to get the url.
-  const redirect: RequestRedirect = 'manual';
+  const slasClientCopy = new ShopperLogin(slasClient.clientConfig);
+  slasClientCopy.clientConfig.fetchOptions = {
+    ...slasClient.clientConfig.fetchOptions,
+    ...(!onClient && {redirect: 'manual'}),
+  };
 
   const options = {
     parameters: {
@@ -123,10 +127,9 @@ export async function authorize(
       response_type: 'code',
       ...(parameters.usid && {usid: parameters.usid}),
     },
-    redirect,
   };
 
-  const response = await slasClient.authorizeCustomer(options, true);
+  const response = await slasClientCopy.authorizeCustomer(options, true);
 
   const redirectUrl = response.headers?.get('location') || response.url;
   if (!redirectUrl) {
