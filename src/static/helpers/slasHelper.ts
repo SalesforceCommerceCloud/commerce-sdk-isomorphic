@@ -108,10 +108,12 @@ export async function authorize(
 ): Promise<{code: string; url: string; usid: string}> {
   const codeChallenge = await generateCodeChallenge(codeVerifier);
 
+  // Create a copy to override specific fetchOptions
+  const slasClientCopy = new ShopperLogin(slasClient.clientConfig);
+
   // set manual redirect on server since node allows access to the location
   // header and it skips the extra call. In the browser, only the default
   // follow setting allows us to get the url.
-  const slasClientCopy = new ShopperLogin(slasClient.clientConfig);
   slasClientCopy.clientConfig.fetchOptions = {
     ...slasClient.clientConfig.fetchOptions,
     ...(!onClient && {redirect: 'manual'}),
