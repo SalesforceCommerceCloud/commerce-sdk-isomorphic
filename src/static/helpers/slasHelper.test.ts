@@ -9,6 +9,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
+import nock from 'nock';
 import {ShopperLogin, TokenResponse} from '../../lib/shopperLogin';
 import * as slasHelper from './slasHelper';
 
@@ -34,14 +35,13 @@ const parameters = {
   redirectURI: 'redirect_uri',
   refreshToken: 'refresh_token',
   usid: 'usid',
+  hint: 'hint',
 };
 
 const url =
   'https://localhost:3000/callback?usid=048adcfb-aa93-4978-be9e-09cb569fdcb9&code=J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o';
 
 const authenticateCustomerMock = jest.fn(() => ({url}));
-
-const authorizeCustomerMock = jest.fn(() => ({url}));
 
 const getAccessTokenMock = jest.fn(() => expectedTokenResponse);
 
@@ -51,13 +51,13 @@ const createMockSlasClient = () =>
   ({
     clientConfig: {
       parameters: {
+        shortCode: 'short_code',
         organizationId: 'organization_id',
         clientId: 'client_id',
         siteId: 'site_id',
       },
     },
     authenticateCustomer: authenticateCustomerMock,
-    authorizeCustomer: authorizeCustomerMock,
     getAccessToken: getAccessTokenMock,
     logoutCustomer: logoutCustomerMock,
   } as unknown as ShopperLogin<{
@@ -69,6 +69,7 @@ const createMockSlasClient = () =>
 
 beforeEach(() => {
   jest.clearAllMocks();
+  nock.cleanAll();
 });
 
 describe('Create code verifier', () => {
@@ -120,39 +121,49 @@ describe('Authorize user', () => {
     url,
     usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
   };
+
+  const expectedAuthResponseNoLocation = {
+    code: '',
+    url: 'https://short_code.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/organization_id/oauth2/authorize?redirect_uri=redirect_uri&response_type=code&client_id=client_id&usid=usid&hint=hint&code_challenge=73oehA2tBul5grZPhXUGQwNAjxh69zNES8bu2bVD0EM',
+    usid: 'usid',
+  };
   test('hits the authorize endpoint and receives authorization code', async () => {
+    const mockSlasClient = createMockSlasClient();
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    // slasClient is copied and tries to make an actual API call
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
+      .query(true)
+      .reply(303, {response_body: 'response_body'}, {location: url});
+
     const authResponse = await slasHelper.authorize(
-      createMockSlasClient(),
+      mockSlasClient,
       codeVerifier,
       parameters
     );
-    expect(authorizeCustomerMock).toHaveBeenCalled();
     expect(authResponse).toStrictEqual(expectedAuthResponse);
   });
 
-  test('hits the authorize endpoint and does not receive authorization code', async () => {
+  test('uses response.url if location header is unavailable', async () => {
     const mockSlasClient = createMockSlasClient();
-    mockSlasClient.authorizeCustomer = jest.fn().mockResolvedValue({url: ''});
-    await expect(
-      slasHelper.authorize(mockSlasClient, codeVerifier, parameters)
-    ).rejects.toThrow('Authorization failed');
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
+      .query(true)
+      .reply(200, {response_body: 'response_body'}, {location: ''});
+
+    const authResponse = await slasHelper.authorize(
+      mockSlasClient,
+      codeVerifier,
+      parameters
+    );
+    expect(authResponse).toStrictEqual(expectedAuthResponseNoLocation);
   });
 });
 
 describe('Guest user flow', () => {
-  const expectedOptions = {
-    fetchOptions: {redirect: 'manual'},
-    parameters: {
-      client_id: 'client_id',
-      code_challenge: expect.stringMatching(/./) as string,
-      hint: 'guest',
-      organizationId: 'organization_id',
-      redirect_uri: 'redirect_uri',
-      response_type: 'code',
-      usid: 'usid',
-    },
-  };
-
   const expectedTokenBody = {
     body: {
       client_id: 'client_id',
@@ -163,19 +174,21 @@ describe('Guest user flow', () => {
       usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
     },
   };
+  test('retrieves usid and code from location header and generates an access token', async () => {
+    const mockSlasClient = createMockSlasClient();
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
 
-  test('uses code challenge to generate auth code', async () => {
-    await slasHelper.loginGuestUser(createMockSlasClient(), parameters);
-    expect(authorizeCustomerMock).toBeCalledWith(expectedOptions, true);
-  });
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
+      .query(true)
+      .reply(303, {response_body: 'response_body'}, {location: url});
 
-  test('uses auth code and code verifier to generate JWT', async () => {
     const accessToken = await slasHelper.loginGuestUser(
-      createMockSlasClient(),
+      mockSlasClient,
       parameters
     );
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
-    expect(accessToken).toStrictEqual(expectedTokenResponse);
+    expect(accessToken).toBe(expectedTokenResponse);
   });
 });
 describe('Registered B2C user flow', () => {

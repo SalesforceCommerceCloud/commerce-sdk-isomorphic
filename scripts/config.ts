@@ -21,5 +21,5 @@ export const API_LIST: string[] = [
   'shopper-orders',
   'shopper-products',
   'shopper-promotions',
-  'shopper-search'
+  'shopper-search',
 ];

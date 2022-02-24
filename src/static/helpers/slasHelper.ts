@@ -108,12 +108,15 @@ export async function authorize(
 ): Promise<{code: string; url: string; usid: string}> {
   const codeChallenge = await generateCodeChallenge(codeVerifier);
 
+  // Create a copy to override specific fetchOptions
+  const slasClientCopy = new ShopperLogin(slasClient.clientConfig);
+
   // set manual redirect on server since node allows access to the location
   // header and it skips the extra call. In the browser, only the default
   // follow setting allows us to get the url.
-  const fetchOptions = {
+  slasClientCopy.clientConfig.fetchOptions = {
     ...slasClient.clientConfig.fetchOptions,
-    ...(!onClient && {redirect: 'manual'}),
+    redirect: onClient ? 'follow' : 'manual',
   };
 
   const options = {
@@ -126,12 +129,14 @@ export async function authorize(
       response_type: 'code',
       ...(parameters.usid && {usid: parameters.usid}),
     },
-    fetchOptions,
   };
 
-  const response = await slasClient.authorizeCustomer(options, true);
+  const response = await slasClientCopy.authorizeCustomer(options, true);
+  const redirectUrl = response.headers?.get('location') || response.url;
 
-  const redirectUrl = response.url || response.headers?.get('location');
+  // url is a read only property we unfortunately cannot mock out using nock
+  // meaning redirectUrl will not have a falsy value for unit tests
+  /* istanbul ignore next */
   if (!redirectUrl) {
     throw new Error('Authorization failed');
   }
