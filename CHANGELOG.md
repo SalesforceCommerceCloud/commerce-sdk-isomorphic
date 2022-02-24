@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v1.6.0
+
+#### New Features
+
+* Documentation links have been updated from `CCDC` to `developer.salesforce.com`
+
+#### Bug Fixes
+
+* SLAS Login Helper no longer requests `redirect_uri` when running server-side
+
 ## v1.5.0
 
 #### New Features
