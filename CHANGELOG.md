@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v1.5.1
+
+#### Documentation
+
+* Replaced links to the [Commerce Cloud Developer Center](https://developer.commercecloud.com/s/salesforce-developer-center) with links to the new [Salesforce Developer Portal](https://developer.salesforce.com/docs/commerce/commerce-api).
+
+#### Bug Fixes
+
+* SLAS Login Helper no longer requests `redirect_uri` when running server-side
+
 ## v1.5.0
 
 #### New Features
