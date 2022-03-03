@@ -189,7 +189,7 @@
       if (rawResponse) {
         return response;
       } else if (this.clientConfig.throwOnBadResponse && !response.ok && response.status !== 304) {
-        throw new Error('Error ' + response.status + ': ' + response.statusText);
+        throw new ResponseError(response);
       }
       {{#unless (eq (getReturnTypeFromOperation this) "void") }}
         else {
