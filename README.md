@@ -108,7 +108,7 @@ _throwOnBadResponse:_ Default value is false. When set to true, the SDK throws a
 
 A collection of helper functions are available in this SDK to simplify [Public
 Client Shopper Login OAuth
-flows](https://developer.salesforce.com/docs/commerce/commerce-api/references#shopper-login-and-api-access:Summary). See sample code above for guest login.
+flows](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary). See sample code above for guest login.
 
 ## License Information
 
