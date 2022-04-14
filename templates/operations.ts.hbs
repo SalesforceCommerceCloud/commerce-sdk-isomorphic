@@ -174,7 +174,10 @@
         ...options?.headers
       };
 
-      headers[USER_AGENT_HEADER] = [headers[USER_AGENT_HEADER], USER_AGENT_VALUE].join(" ");
+      if (!isBrowser) {
+        // Browsers forbid setting a custom user-agent header
+        headers[USER_AGENT_HEADER] = [headers[USER_AGENT_HEADER], USER_AGENT_VALUE].join(" ");
+      }
 
       const req = new Request(
         url.toString(),
