@@ -56,7 +56,8 @@ const config = outputs.map(({file, format}) => ({
     includePaths({
       include: {},
       paths: ['src'],
-      external: Object.keys(pkg.dependencies),
+      // crypto is a node built-in, but rollup doesn't seem to know that?
+      external: ['crypto', ...Object.keys(pkg.dependencies)],
       extensions: ['.js', '.json', '.html'],
     }),
     stylelint({
