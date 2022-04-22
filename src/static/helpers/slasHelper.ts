@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, salesforce.com, inc.
+ * Copyright (c) 2022, Salesforce, Inc.
  * All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
@@ -7,18 +7,15 @@
 
 import {nanoid} from 'nanoid';
 
+import {isBrowser} from './environment';
+
 import {
   ShopperLogin,
   TokenRequest,
   TokenResponse,
 } from '../../lib/shopperLogin';
 
-/**
- * Determine if execution is client or server side
- */
-export const onClient = typeof window !== 'undefined';
-
-export const stringToBase64 = onClient
+export const stringToBase64 = isBrowser
   ? btoa
   : (unencoded: string): string => Buffer.from(unencoded).toString('base64');
 
@@ -62,7 +59,7 @@ export const generateCodeChallenge = async (
   // Cannot easily test browser functions. Integration test runs in the jsdom test environment which can only mimic certain browser functionality
   // The window.crypto check is to see if code is being executed in the jsdom test environment or an actual browser to allow our test to successfully run
   /* istanbul ignore next */
-  if (onClient && window.crypto) {
+  if (isBrowser && window.crypto) {
     const encoder = new TextEncoder();
     const data = encoder.encode(codeVerifier);
     const digest = await window.crypto.subtle.digest('SHA-256', data);
@@ -116,7 +113,7 @@ export async function authorize(
   // follow setting allows us to get the url.
   slasClientCopy.clientConfig.fetchOptions = {
     ...slasClient.clientConfig.fetchOptions,
-    redirect: onClient ? 'follow' : 'manual',
+    redirect: isBrowser ? 'follow' : 'manual',
   };
 
   const options = {

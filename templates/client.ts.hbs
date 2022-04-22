@@ -1,10 +1,11 @@
 import { fetch, Request }  from "cross-fetch";
 
 import ClientConfig, { ClientConfigInit } from "./clientConfig";
-import type {
+import {
   BaseUriParameters,
   CompositeParameters,
-  RequireParametersUnlessAllAreOptional
+  RequireParametersUnlessAllAreOptional,
+  isBrowser
 } from "./helpers";
 import ResponseError from "./responseError";
 import TemplateURL from "./templateUrl";
