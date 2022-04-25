@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v1.5.2
+
+### New Features
+
+* If the `throwOnBadResponse` flag is set, the error thrown now includes the full HTTP response object.
+
+### Bug Fixes
+
+* An error about invalid user-agent is no longer printed to console when making requests in a browser.
+
 ## v1.5.1
 
 #### Documentation
