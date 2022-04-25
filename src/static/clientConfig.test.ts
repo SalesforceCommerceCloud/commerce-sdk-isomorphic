@@ -63,6 +63,15 @@ describe('ClientConfig constructor', () => {
       originalConfig.fetchOptions.timeout
     );
   });
+
+  test('sets a base URI', () => {
+    expect(
+      new ClientConfig({
+        parameters: {shortCode: 'SHORT_CODE'},
+        baseUri: 'BASE_URI',
+      })
+    ).toHaveProperty('baseUri', 'BASE_URI');
+  });
 });
 
 describe('ClientConfig defaults', () => {
