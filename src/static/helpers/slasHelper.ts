@@ -210,6 +210,17 @@ export async function loginRegisteredUserB2C(
   const codeVerifier = createCodeVerifier();
   const codeChallenge = await generateCodeChallenge(codeVerifier);
 
+  // Create a copy to override specific fetchOptions
+  const slasClientCopy = new ShopperLogin(slasClient.clientConfig);
+
+  // set manual redirect on server since node allows access to the location
+  // header and it skips the extra call. In the browser, only the default
+  // follow setting allows us to get the url.
+  slasClientCopy.clientConfig.fetchOptions = {
+    ...slasClient.clientConfig.fetchOptions,
+    redirect: onClient ? 'follow' : 'manual',
+  };
+
   const authorization = `Basic ${stringToBase64(
     `${credentials.username}:${credentials.password}`
   )}`;
@@ -230,7 +241,7 @@ export async function loginRegisteredUserB2C(
     },
   };
 
-  const response = await slasClient.authenticateCustomer(options, true);
+  const response = await slasClientCopy.authenticateCustomer(options, true);
 
   const authResponse = getCodeAndUsidFromUrl(response.url);
 
