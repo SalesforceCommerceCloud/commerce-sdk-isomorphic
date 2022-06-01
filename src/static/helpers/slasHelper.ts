@@ -218,7 +218,7 @@ export async function loginRegisteredUserB2C(
   // follow setting allows us to get the url.
   slasClientCopy.clientConfig.fetchOptions = {
     ...slasClient.clientConfig.fetchOptions,
-    redirect: onClient ? 'follow' : 'manual',
+    redirect: isBrowser ? 'follow' : 'manual',
   };
 
   const authorization = `Basic ${stringToBase64(
