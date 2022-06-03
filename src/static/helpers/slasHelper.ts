@@ -241,9 +241,17 @@ export async function loginRegisteredUserB2C(
     },
   };
 
-  const response = await slasClientCopy.authenticateCustomer(options, true);
+  const response = await slasClientCopy
+    .authenticateCustomer(options, true)
+    .catch((error: Error) => {
+      throw new Error(
+        `authenticateCustomer function failed because of ${error.message}`
+      );
+    });
 
-  const authResponse = getCodeAndUsidFromUrl(response.url);
+  const redirectUrl = response.headers?.get('location') || response.url;
+
+  const authResponse = getCodeAndUsidFromUrl(redirectUrl);
 
   const tokenBody = {
     client_id: slasClient.clientConfig.parameters.clientId,
