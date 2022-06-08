@@ -7,6 +7,7 @@
 
 import {nanoid} from 'nanoid';
 
+import ResponseError from 'lib/responseError';
 import {isBrowser} from './environment';
 
 import {
@@ -244,9 +245,12 @@ export async function loginRegisteredUserB2C(
   const response = await slasClientCopy
     .authenticateCustomer(options, true)
     .catch((error: Error) => {
-      throw new Error(
-        `authenticateCustomer function failed because of ${error.message}`
-      );
+      if (error instanceof ResponseError) {
+        throw new Error(
+          `Error in authenticateCustomer: ${error.message} in response: ${JSON.stringify(error.response)}`
+        );
+      }
+      throw new Error(`Error in authenticateCustomer: ${error.message}`);
     });
 
   const redirectUrl = response.headers?.get('location') || response.url;

@@ -10,6 +10,7 @@
  */
 
 import nock from 'nock';
+import {getQueryParameterTypeMapFromEndpoints} from '../../../scripts/templateHelpers';
 import {ShopperLogin, TokenResponse} from '../../lib/shopperLogin';
 import * as slasHelper from './slasHelper';
 
@@ -47,6 +48,8 @@ const getAccessTokenMock = jest.fn(() => expectedTokenResponse);
 
 const logoutCustomerMock = jest.fn(() => expectedTokenResponse);
 
+const generateCodeChallengeMock = jest.fn(verifier => 'code_challenge');
+
 const createMockSlasClient = () =>
   ({
     clientConfig: {
@@ -60,6 +63,7 @@ const createMockSlasClient = () =>
     authenticateCustomer: authenticateCustomerMock,
     getAccessToken: getAccessTokenMock,
     logoutCustomer: logoutCustomerMock,
+    generateCodeChallenge: generateCodeChallengeMock,
   } as unknown as ShopperLogin<{
     shortCode: string;
     organizationId: string;
@@ -221,21 +225,56 @@ describe('Registered B2C user flow', () => {
   };
 
   test('uses code challenge and authorization header to generate auth code', async () => {
+    // slasClient is copied and tries to make an actual API call
+    const mockSlasClient = createMockSlasClient();
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    // Mocking slasCopy.authenticateCustomer
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .post(`/shopper/auth/v1/organizations/${organizationId}/oauth2/login`)
+      .reply(303, {response_body: 'response_body'}, {location: url});
+
     await slasHelper.loginRegisteredUserB2C(
-      createMockSlasClient(),
+      mockSlasClient,
       credentials,
       parameters
     );
-    expect(authenticateCustomerMock).toBeCalledWith(expectedOptions, true);
+
+    expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
+  });
+
+  test('Error is thrown if authenticateCustomer fails in loginRegisteredUserB2C', async () => {
+    // slasClient is copied and tries to make an actual API call
+    const mockSlasClient = createMockSlasClient();
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+    // Mocking slasCopy.authenticateCustomer
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .post(`/shopper/auth/v1/organizations/${organizationId}/oauth2/login`)
+      .replyWithError('Oh no!');
+
+    expect(
+      await slasHelper.loginRegisteredUserB2C(
+        mockSlasClient,
+        credentials,
+        parameters
+      )
+    ).toThrow(Error);
   });
 
   test('uses auth code and code verifier to generate JWT', async () => {
+    // slasClient is copied and tries to make an actual API call
+    const mockSlasClient = createMockSlasClient();
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+    // Mocking slasCopy.authenticateCustomer
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .post(`/shopper/auth/v1/organizations/${organizationId}/oauth2/login`)
+      .reply(303, {response_body: 'response_body'}, {location: url});
+
     const accessToken = await slasHelper.loginRegisteredUserB2C(
-      createMockSlasClient(),
+      mockSlasClient,
       credentials,
       parameters
     );
-    expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
     expect(accessToken).toStrictEqual(expectedTokenResponse);
   });
 });
