@@ -13,6 +13,7 @@ import nock from 'nock';
 import {getQueryParameterTypeMapFromEndpoints} from '../../../scripts/templateHelpers';
 import {ShopperLogin, TokenResponse} from '../../lib/shopperLogin';
 import * as slasHelper from './slasHelper';
+import {stringToBase64} from './slasHelper';
 
 const codeVerifier = 'code_verifier';
 
@@ -71,6 +72,14 @@ const createMockSlasClient = () =>
     siteId: string;
   }>);
 
+const mockIsBrowserTrue = {
+  isBrowser: true,
+};
+
+const mockIsBrowserFalse = {
+  isBrowser: false,
+};
+
 beforeEach(() => {
   jest.clearAllMocks();
   nock.cleanAll();
@@ -81,6 +90,21 @@ describe('Create code verifier', () => {
     const verifier = slasHelper.createCodeVerifier();
 
     expect(verifier).toMatch(/[A-Za-z0-9_-]{128}/);
+  });
+});
+
+describe('Validate the right stringToBase64 function', () => {
+  test('btoa runs when inBrowser is true', () => {
+    jest.mock('./environment', () => mockIsBrowserTrue);
+    console.log(stringToBase64('example'));
+    expect(slasHelper.stringToBase64('example')).toBe('ZXhhbXBsZQ==');
+  });
+
+  test('Custom logic runs when inBrowser is false', () => {
+    jest.mock('./environment', () => mockIsBrowserFalse);
+    expect(stringToBase64('example')).toBe(
+      Buffer.from('example').toString('base64')
+    );
   });
 });
 
@@ -252,13 +276,9 @@ describe('Registered B2C user flow', () => {
       .post(`/shopper/auth/v1/organizations/${organizationId}/oauth2/login`)
       .replyWithError('Oh no!');
 
-    expect(
-      await slasHelper.loginRegisteredUserB2C(
-        mockSlasClient,
-        credentials,
-        parameters
-      )
-    ).toThrow(Error);
+    await expect(
+      slasHelper.loginRegisteredUserB2C(mockSlasClient, credentials, parameters)
+    ).rejects.toThrow('Oh no!');
   });
 
   test('uses auth code and code verifier to generate JWT', async () => {

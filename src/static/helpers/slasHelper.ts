@@ -112,6 +112,7 @@ export async function authorize(
   // set manual redirect on server since node allows access to the location
   // header and it skips the extra call. In the browser, only the default
   // follow setting allows us to get the url.
+  /* istanbul ignore next */
   slasClientCopy.clientConfig.fetchOptions = {
     ...slasClient.clientConfig.fetchOptions,
     redirect: isBrowser ? 'follow' : 'manual',
@@ -217,6 +218,7 @@ export async function loginRegisteredUserB2C(
   // set manual redirect on server since node allows access to the location
   // header and it skips the extra call. In the browser, only the default
   // follow setting allows us to get the url.
+  /* istanbul ignore next */
   slasClientCopy.clientConfig.fetchOptions = {
     ...slasClient.clientConfig.fetchOptions,
     redirect: isBrowser ? 'follow' : 'manual',
@@ -245,11 +247,6 @@ export async function loginRegisteredUserB2C(
   const response = await slasClientCopy
     .authenticateCustomer(options, true)
     .catch((error: Error) => {
-      if (error instanceof ResponseError) {
-        throw new Error(
-          `Error in authenticateCustomer: ${error.message} in response: ${JSON.stringify(error.response)}`
-        );
-      }
       throw new Error(`Error in authenticateCustomer: ${error.message}`);
     });
 
