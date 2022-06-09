@@ -7,7 +7,6 @@
 
 import {nanoid} from 'nanoid';
 
-import ResponseError from 'lib/responseError';
 import {isBrowser} from './environment';
 
 import {
@@ -15,6 +14,7 @@ import {
   TokenRequest,
   TokenResponse,
 } from '../../lib/shopperLogin';
+import ResponseError from '../responseError';
 
 export const stringToBase64 = isBrowser
   ? btoa
@@ -244,11 +244,12 @@ export async function loginRegisteredUserB2C(
     },
   };
 
-  const response = await slasClientCopy
-    .authenticateCustomer(options, true)
-    .catch((error: Error) => {
-      throw new Error(`Error in authenticateCustomer: ${error.message}`);
-    });
+  const response = await slasClientCopy.authenticateCustomer(options, true);
+
+  // Possible statuses: 303 (success), 400, 401, 500
+  if (response.status !== 303) {
+    throw new ResponseError(response);
+  }
 
   const redirectUrl = response.headers?.get('location') || response.url;
 
