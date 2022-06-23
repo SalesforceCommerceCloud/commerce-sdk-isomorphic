@@ -10,7 +10,6 @@
  */
 
 import nock from 'nock';
-import {getQueryParameterTypeMapFromEndpoints} from '../../../scripts/templateHelpers';
 import {ShopperLogin, TokenResponse} from '../../lib/shopperLogin';
 import * as slasHelper from './slasHelper';
 import {stringToBase64} from './slasHelper';
@@ -50,7 +49,7 @@ const getAccessTokenMock = jest.fn(() => expectedTokenResponse);
 
 const logoutCustomerMock = jest.fn(() => expectedTokenResponse);
 
-const generateCodeChallengeMock = jest.fn(verifier => 'code_challenge');
+const generateCodeChallengeMock = jest.fn(() => 'code_challenge');
 
 const createMockSlasClient = () =>
   ({
@@ -97,7 +96,6 @@ describe('Create code verifier', () => {
 describe('Validate the right stringToBase64 function', () => {
   test('btoa runs when inBrowser is true', () => {
     jest.mock('./environment', () => mockIsBrowserTrue);
-    console.log(stringToBase64('example'));
     expect(slasHelper.stringToBase64('example')).toBe('ZXhhbXBsZQ==');
   });
 
@@ -221,22 +219,6 @@ describe('Guest user flow', () => {
   });
 });
 describe('Registered B2C user flow', () => {
-  const expectedOptions = {
-    body: {
-      channel_id: 'site_id',
-      client_id: 'client_id',
-      code_challenge: expect.stringMatching(/./) as string,
-      redirect_uri: 'redirect_uri',
-      usid: 'usid',
-    },
-    headers: {
-      Authorization: 'Basic c2hvcHBlcl91c2VyX2lkOnNob3BwZXJfcGFzc3dvcmQ=', // must be base64 encoded
-    },
-    parameters: {
-      organizationId: 'organization_id',
-    },
-  };
-
   const expectedTokenBody = {
     body: {
       client_id: 'client_id',

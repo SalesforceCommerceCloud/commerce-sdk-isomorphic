@@ -4,11 +4,21 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+import {BaseUriParameters} from 'lib/helpers';
+import {
+  ShopperLoginPathParameters,
+  ShopperLoginQueryParameters,
+} from 'lib/shopperLogin';
 import nock from 'nock';
-import {ShopperLogin} from '../lib';
+import {ClientConfigInit, ShopperLogin} from '../lib';
 import ClientConfig from '../static/clientConfig';
 
-const config: ClientConfig<any> = {
+const config: ClientConfigInit<
+  ShopperLoginPathParameters &
+    BaseUriParameters &
+    ShopperLoginQueryParameters &
+    Record<string, unknown>
+> = {
   baseUri:
     'https://SHORT_CODE.api.commercecloud.salesforce.com/shopper/auth/v1',
   fetchOptions: {keepalive: false},
@@ -16,8 +26,6 @@ const config: ClientConfig<any> = {
   parameters: {
     shortCode: 'SHORT_CODE',
     organizationId: 'ORGANIZATION_ID',
-    siteId: 'SITE_ID',
-    clientId: 'CLIENT_ID',
   },
   transformRequest: ClientConfig.defaults.transformRequest,
   throwOnBadResponse: false,
