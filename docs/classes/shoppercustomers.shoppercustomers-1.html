@@ -90,7 +90,7 @@
   };
   <span class="hljs-keyword">const</span> shopperCustomersClient = <span class="hljs-keyword">new</span> ShopperCustomers(clientConfig);</code></pre>
 					<span style="font-size:.7em; display:block; text-align: right">
-						API Version: 0.0.28<br />
+						API Version: 0.0.39<br />
 						Last Updated: <br />
 					</span>
 				</div>
@@ -180,7 +180,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1111</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1114</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -202,7 +202,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="clientconfig.clientconfig-1.html" class="tsd-signature-type">ClientConfig</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>baseUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperCustomers.ts:1109</li>
+							<li>Defined in src/lib/shopperCustomers.ts:1112</li>
 						</ul>
 					</aside>
 				</section>
@@ -212,7 +212,7 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Base<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"https://{shortCode}.api.commercecloud.salesforce.com/customer/shopper-customers/{version}"</span><span class="tsd-signature-symbol"> = &quot;https://{shortCode}.api.commercecloud.salesforce.com/customer/shopper-customers/{version}&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperCustomers.ts:1111</li>
+							<li>Defined in src/lib/shopperCustomers.ts:1114</li>
 						</ul>
 					</aside>
 				</section>
@@ -230,16 +230,19 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1457</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1490</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Obtains a new JSON Web Token (JWT)for a guest or registered
-										customer. Tokens are returned as an HTTP Authorization:Bearer response
-										header entry. These kinds of request are supported, as specified by the
-									type:</p>
+									<p><strong>DEPRECATION NOTICE</strong></p>
 								</div>
+								<p>To enhance the security and availability of Salesforce services, this endpoint is now <em><strong>deprecated</strong>_, and _<strong>we plan to remove it in mid-2022</strong></em>. This endpoint is not available to new customers, and we discourage existing customers from using it. Instead, we strongly recommend using the endpoints of the <a href="https://developer.commercecloud.com/s/api-details/a003k00000VWfNDAA1/commerce-cloud-developer-centershopperloginandapiaccessservice">Shopper Login and API Access Service</a> (SLAS) because they meet our rigorous standards for security and availability.</p>
+								<hr>
+								<p>Obtains a new JSON Web Token (JWT)for a guest or registered
+									customer. Tokens are returned as an HTTP Authorization:Bearer response
+									header entry. These kinds of request are supported, as specified by the
+								type:</p>
 								<p>Type guest - creates a guest (non-authenticated) customer
 									and returns a token for the customer.
 									Request Body for guest : {&quot;type&quot;: &quot;guest&quot;}
@@ -292,16 +295,19 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1528</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1567</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Obtains a new JSON Web Token (JWT)for a guest or registered
-										customer. Tokens are returned as an HTTP Authorization:Bearer response
-										header entry. These kinds of request are supported, as specified by the
-									type:</p>
+									<p><strong>DEPRECATION NOTICE</strong></p>
 								</div>
+								<p>To enhance the security and availability of Salesforce services, this endpoint is now <em><strong>deprecated</strong>_, and _<strong>we plan to remove it in mid-2022</strong></em>. This endpoint is not available to new customers, and we discourage existing customers from using it. Instead, we strongly recommend using the endpoints of the <a href="https://developer.commercecloud.com/s/api-details/a003k00000VWfNDAA1/commerce-cloud-developer-centershopperloginandapiaccessservice">Shopper Login and API Access Service</a> (SLAS) because they meet our rigorous standards for security and availability.</p>
+								<hr>
+								<p>Obtains a new JSON Web Token (JWT)for a guest or registered
+									customer. Tokens are returned as an HTTP Authorization:Bearer response
+									header entry. These kinds of request are supported, as specified by the
+								type:</p>
 								<p>Type guest - creates a guest (non-authenticated) customer
 									and returns a token for the customer.
 									Request Body for guest : {&quot;type&quot;: &quot;guest&quot;}
@@ -377,13 +383,17 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1702</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1757</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Obtain the JSON Web Token (JWT) for registered customers whose credentials are stored using a third party system. Accepts loginId and clientId, returns a customer object in the response body and the JWT generated against the clientId in the response header.</p>
+									<p><strong>DEPRECATION NOTICE</strong></p>
 								</div>
+								<p>To enhance the security and availability of Salesforce services, this endpoint is now <em><strong>deprecated</strong>_, and _<strong>we plan to remove it in mid-2022</strong></em>. This endpoint is not available to new customers, and we discourage existing customers from using it. Instead, we strongly recommend using the endpoints of the <a href="https://developer.commercecloud.com/s/api-details/a003k00000VWfNDAA1/commerce-cloud-developer-centershopperloginandapiaccessservice">Shopper Login and API Access Service</a> (SLAS) because they meet our rigorous standards for security and availability.</p>
+								<hr>
+								<p>Obtain the JSON Web Token (JWT) for registered customers whose credentials are stored using a third party system. Accepts loginId and
+								clientId, returns a customer object in the response body and the JWT generated against the clientId in the response header.</p>
 								<p>If you would like to get a raw Response object use the other authorizeTrustedSystem function.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -403,13 +413,17 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1727</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1789</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Obtain the JSON Web Token (JWT) for registered customers whose credentials are stored using a third party system. Accepts loginId and clientId, returns a customer object in the response body and the JWT generated against the clientId in the response header.</p>
+									<p><strong>DEPRECATION NOTICE</strong></p>
 								</div>
+								<p>To enhance the security and availability of Salesforce services, this endpoint is now <em><strong>deprecated</strong>_, and _<strong>we plan to remove it in mid-2022</strong></em>. This endpoint is not available to new customers, and we discourage existing customers from using it. Instead, we strongly recommend using the endpoints of the <a href="https://developer.commercecloud.com/s/api-details/a003k00000VWfNDAA1/commerce-cloud-developer-centershopperloginandapiaccessservice">Shopper Login and API Access Service</a> (SLAS) because they meet our rigorous standards for security and availability.</p>
+								<hr>
+								<p>Obtain the JSON Web Token (JWT) for registered customers whose credentials are stored using a third party system. Accepts loginId and
+								clientId, returns a customer object in the response body and the JWT generated against the clientId in the response header.</p>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
@@ -452,7 +466,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2748</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2838</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -478,7 +492,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2775</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2865</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -527,7 +541,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3924</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4035</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -553,7 +567,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3951</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4062</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -602,7 +616,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4558</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4681</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -628,7 +642,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4585</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4708</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -677,7 +691,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5229</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5364</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -717,7 +731,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5273</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5408</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -780,7 +794,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4082</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4196</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -806,7 +820,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4109</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4223</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -855,7 +869,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4716</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4842</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -881,7 +895,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4743</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4869</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -930,7 +944,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5431</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5569</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -956,7 +970,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5460</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5598</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1005,7 +1019,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2438</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2522</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1031,7 +1045,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2463</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2547</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1080,7 +1094,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2906</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2999</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1106,7 +1120,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2933</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3026</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1155,7 +1169,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3402</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3504</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1181,7 +1195,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3427</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3529</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1230,7 +1244,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3559</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3664</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1256,7 +1270,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3596</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3701</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1305,7 +1319,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4242</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4359</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1331,7 +1345,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4269</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4386</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1380,7 +1394,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4876</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5005</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1406,7 +1420,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4903</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5032</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1455,7 +1469,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5605</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5746</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1481,7 +1495,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5634</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5775</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1530,7 +1544,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4406</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4526</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1556,7 +1570,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4431</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4551</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1605,7 +1619,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2274</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2355</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1631,7 +1645,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2301</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2382</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1680,7 +1694,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:6317</li>
+									<li>Defined in src/lib/shopperCustomers.ts:6470</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1706,7 +1720,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:6344</li>
+									<li>Defined in src/lib/shopperCustomers.ts:6497</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1755,7 +1769,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:6165</li>
+									<li>Defined in src/lib/shopperCustomers.ts:6315</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1781,7 +1795,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:6190</li>
+									<li>Defined in src/lib/shopperCustomers.ts:6340</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1830,7 +1844,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5997</li>
+									<li>Defined in src/lib/shopperCustomers.ts:6144</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1856,7 +1870,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:6026</li>
+									<li>Defined in src/lib/shopperCustomers.ts:6173</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1905,12 +1919,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1985</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2060</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get reset password token.</p>
+									<p>Get reset password token. This is the first step in the reset customer password flow, where a password reset token is requested for future use to reset a customer password. This call should be followed by a call to the /reset endpoint.</p>
 								</div>
 								<p>If you would like to get a raw Response object use the other getResetPasswordToken function.</p>
 							</div>
@@ -1931,12 +1945,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2010</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2085</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get reset password token.</p>
+									<p>Get reset password token. This is the first step in the reset customer password flow, where a password reset token is requested for future use to reset a customer password. This call should be followed by a call to the /reset endpoint.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1980,13 +1994,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1279</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1291</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Invalidates the JSON Web Token (JWT) provided in the header.</p>
+									<p><strong>DEPRECATION NOTICE</strong></p>
 								</div>
+								<p>To enhance the security and availability of Salesforce services, this endpoint is now <em><strong>deprecated</strong>_, and _<strong>we plan to remove it in mid-2022</strong></em>. This endpoint is not available to new customers, and we discourage existing customers from using it. Instead, we strongly recommend using the endpoints of the <a href="https://developer.commercecloud.com/s/api-details/a003k00000VWfNDAA1/commerce-cloud-developer-centershopperloginandapiaccessservice">Shopper Login and API Access Service</a> (SLAS) because they meet our rigorous standards for security and availability.</p>
+								<hr>
+								<p>Log the user out.</p>
 								<p>If you would like to get a raw Response object use the other invalidateCustomerAuth function.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2006,13 +2023,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1302</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1320</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Invalidates the JSON Web Token (JWT) provided in the header.</p>
+									<p><strong>DEPRECATION NOTICE</strong></p>
 								</div>
+								<p>To enhance the security and availability of Salesforce services, this endpoint is now <em><strong>deprecated</strong>_, and _<strong>we plan to remove it in mid-2022</strong></em>. This endpoint is not available to new customers, and we discourage existing customers from using it. Instead, we strongly recommend using the endpoints of the <a href="https://developer.commercecloud.com/s/api-details/a003k00000VWfNDAA1/commerce-cloud-developer-centershopperloginandapiaccessservice">Shopper Login and API Access Service</a> (SLAS) because they meet our rigorous standards for security and availability.</p>
+								<hr>
+								<p>Log the user out.</p>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
@@ -2055,7 +2075,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1136</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1139</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2081,7 +2101,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1161</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1164</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2130,7 +2150,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2129</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2207</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2156,7 +2176,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2154</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2232</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2205,7 +2225,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3071</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3167</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2231,7 +2251,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3098</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3194</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2280,12 +2300,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1846</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1918</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Reset customer password.</p>
+									<p>Reset customer password, after obtaining a reset token. This is the second step in the reset customer password flow, where a customer password is reset by providing the new credentials along with a reset token. This call should be preceded by a call to the /create-reset-token endpoint.</p>
 								</div>
 								<p>If you would like to get a raw Response object use the other resetPassword function.</p>
 							</div>
@@ -2306,12 +2326,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1871</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1943</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Reset customer password.</p>
+									<p>Reset customer password, after obtaining a reset token. This is the second step in the reset customer password flow, where a customer password is reset by providing the new credentials along with a reset token. This call should be preceded by a call to the /create-reset-token endpoint.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -2355,7 +2375,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2590</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2677</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2381,7 +2401,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2617</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2704</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2430,7 +2450,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3232</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3331</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2456,7 +2476,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3261</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3360</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2505,7 +2525,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3771</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3879</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2531,7 +2551,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3798</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3906</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2580,7 +2600,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5042</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5174</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2606,7 +2626,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5071</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5203</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2655,7 +2675,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5794</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5938</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2689,7 +2709,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5834</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5978</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2750,6 +2770,9 @@
 						<a href="../modules/helpers.html">helpers</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="../modules/responseerror.html">response<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="../modules/shopperbaskets.html">shopper<wbr>Baskets</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -2766,6 +2789,9 @@
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/shopperlogin.html">shopper<wbr>Login</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/shopperloginslas.html">shopper<wbr>Login<wbr>Slas</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/shopperorders.html">shopper<wbr>Orders</a>

@@ -90,7 +90,7 @@
   };
   <span class="hljs-keyword">const</span> shopperContextsClient = <span class="hljs-keyword">new</span> ShopperContexts(clientConfig);</code></pre>
 					<span style="font-size:.7em; display:block; text-align: right">
-						API Version: 0.0.6<br />
+						API Version: 0.0.7<br />
 						Last Updated: <br />
 					</span>
 					<dl class="tsd-comment-tags">
@@ -156,7 +156,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperContexts.ts:323</li>
+									<li>Defined in src/lib/shopperContexts.ts:326</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -178,7 +178,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="clientconfig.clientconfig-1.html" class="tsd-signature-type">ClientConfig</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>baseUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperContexts.ts:321</li>
+							<li>Defined in src/lib/shopperContexts.ts:324</li>
 						</ul>
 					</aside>
 				</section>
@@ -188,7 +188,7 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Base<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"https://{shortCode}.api.commercecloud.salesforce.com/shopper/shopper-context/{version}"</span><span class="tsd-signature-symbol"> = &quot;https://{shortCode}.api.commercecloud.salesforce.com/shopper/shopper-context/{version}&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperContexts.ts:323</li>
+							<li>Defined in src/lib/shopperContexts.ts:326</li>
 						</ul>
 					</aside>
 				</section>
@@ -206,7 +206,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperContexts.ts:493</li>
+									<li>Defined in src/lib/shopperContexts.ts:499</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -236,7 +236,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperContexts.ts:520</li>
+									<li>Defined in src/lib/shopperContexts.ts:526</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -289,7 +289,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperContexts.ts:642</li>
+									<li>Defined in src/lib/shopperContexts.ts:651</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -319,7 +319,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperContexts.ts:667</li>
+									<li>Defined in src/lib/shopperContexts.ts:676</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -372,12 +372,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperContexts.ts:349</li>
+									<li>Defined in src/lib/shopperContexts.ts:352</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Gets the shopper&#39;s context based on the shopperJWT.</p>
+									<p>Gets the shopper&#39;s context based on the shopperJWT. <strong>****</strong> This API is currently a work in progress, and not available to use yet. <strong>****</strong></p>
 								</div>
 								<p>If you would like to get a raw Response object use the other getShopperContext function.</p>
 								<dl class="tsd-comment-tags">
@@ -402,12 +402,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperContexts.ts:374</li>
+									<li>Defined in src/lib/shopperContexts.ts:377</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Gets the shopper&#39;s context based on the shopperJWT.</p>
+									<p>Gets the shopper&#39;s context based on the shopperJWT. <strong>****</strong> This API is currently a work in progress, and not available to use yet. <strong>****</strong></p>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>beta</dt>
@@ -455,12 +455,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperContexts.ts:781</li>
+									<li>Defined in src/lib/shopperContexts.ts:793</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Updates the shopper&#39;s context based on the shopperJWT. If the shopper context exists, it is updated with the patch body. If a customer qualifiier and/or an effectiveDateTime is already present in the existing shopper context, its value is replaced by corresponding value from patch body. If an effectiveDateTime/customer qualifers&#39; value is set to null it is deleted from existing shopper context. If an effectiveDateTime/customer qualifiier is new, it is added to the existing Shopper context.</p>
+									<p>Updates the shopper&#39;s context based on the Shopper JWT. If the shopper context exists, it&#39;s updated with the patch body. If a customer qualifier or an <code>effectiveDateTime</code> is already present in the existing shopper context, its value is replaced by the corresponding value from the patch body. If a customer qualifers&#39; value is set to <code>null</code> it&#39;s deleted from existing shopper context. If <code>effectiveDateTime</code> value is set to set to an empty string (&quot;&quot;), it&#39;s deleted from existing shopper context. If <code>effectiveDateTime</code> value is set to <code>null</code> it&#39;s ignored. If an <code>effectiveDateTime</code> or customer qualifiiers&#39; value is new, it&#39;s added to the existing Shopper context.</p>
 								</div>
 								<p>If you would like to get a raw Response object use the other updateShopperContext function.</p>
 								<dl class="tsd-comment-tags">
@@ -485,12 +485,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperContexts.ts:808</li>
+									<li>Defined in src/lib/shopperContexts.ts:820</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Updates the shopper&#39;s context based on the shopperJWT. If the shopper context exists, it is updated with the patch body. If a customer qualifiier and/or an effectiveDateTime is already present in the existing shopper context, its value is replaced by corresponding value from patch body. If an effectiveDateTime/customer qualifers&#39; value is set to null it is deleted from existing shopper context. If an effectiveDateTime/customer qualifiier is new, it is added to the existing Shopper context.</p>
+									<p>Updates the shopper&#39;s context based on the Shopper JWT. If the shopper context exists, it&#39;s updated with the patch body. If a customer qualifier or an <code>effectiveDateTime</code> is already present in the existing shopper context, its value is replaced by the corresponding value from the patch body. If a customer qualifers&#39; value is set to <code>null</code> it&#39;s deleted from existing shopper context. If <code>effectiveDateTime</code> value is set to set to an empty string (&quot;&quot;), it&#39;s deleted from existing shopper context. If <code>effectiveDateTime</code> value is set to <code>null</code> it&#39;s ignored. If an <code>effectiveDateTime</code> or customer qualifiiers&#39; value is new, it&#39;s added to the existing Shopper context.</p>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>beta</dt>
@@ -542,6 +542,9 @@
 						<a href="../modules/helpers.html">helpers</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="../modules/responseerror.html">response<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="../modules/shopperbaskets.html">shopper<wbr>Baskets</a>
 					</li>
 					<li class="current tsd-kind-module">
@@ -558,6 +561,9 @@
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/shopperlogin.html">shopper<wbr>Login</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/shopperloginslas.html">shopper<wbr>Login<wbr>Slas</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/shopperorders.html">shopper<wbr>Orders</a>
