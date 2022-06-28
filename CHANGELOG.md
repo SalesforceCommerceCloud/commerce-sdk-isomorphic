@@ -1,5 +1,30 @@
 # CHANGELOG
 
+## v1.6.0
+
+#### API Changes
+
+*Shopper Login*
+
+* New Endpoints
+
+  | **Endpoint Name** | **Description** |
+  | ------------- |-------------|
+  | getPasswordResetToken | Request a reset password token |
+  | resetPassword | Creates a new password |
+
+#### Enchancements
+
+* More error handling has been added in the SLAS helpers
+
+#### Bug fixes
+
+* SLAS helper `loginRegisteredUserB2C` no longer calls `redirectURI` when running server side
+#### Documentation
+
+* `README` updated to explicitly note lack of CORS support for SCAPI
+
+
 ## v1.5.2
 
 ### New Features

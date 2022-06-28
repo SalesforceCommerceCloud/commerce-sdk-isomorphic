@@ -65,6 +65,10 @@ const searchResult = await shopperSearch.productSearch({
 });
 ```
 
+#### CORS
+
+The Salesforce Commerce API (SCAPI) does not support CORS, so a proxy must be used to be able to use the SDK. Code example on SDK usage with a proxy can be seen above.
+
 ### Advanced options
 
 Commerce SDK Isomorphic supports Fetch API options for [node-fetch](https://github.com/node-fetch/node-fetch/1#api) on server and [whatwg-fetch](https://github.github.io/fetch/) on browser with a simple configuration.

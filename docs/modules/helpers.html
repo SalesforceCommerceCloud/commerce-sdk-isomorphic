@@ -83,10 +83,11 @@
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="helpers.html#createcodeverifier" class="tsd-kind-icon">create<wbr>Code<wbr>Verifier</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="helpers.html#generatecodechallenge" class="tsd-kind-icon">generate<wbr>Code<wbr>Challenge</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="helpers.html#getcodeandusidfromurl" class="tsd-kind-icon">get<wbr>Code<wbr>And<wbr>Usid<wbr>From<wbr>Url</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="helpers.html#isbrowser" class="tsd-kind-icon">is<wbr>Browser</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="helpers.html#isnode" class="tsd-kind-icon">is<wbr>Node</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="helpers.html#loginguestuser" class="tsd-kind-icon">login<wbr>Guest<wbr>User</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="helpers.html#loginregistereduserb2c" class="tsd-kind-icon">login<wbr>Registered<wbr>User<wbr>B2C</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="helpers.html#logout" class="tsd-kind-icon">logout</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="helpers.html#onclient" class="tsd-kind-icon">on<wbr>Client</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="helpers.html#refreshaccesstoken" class="tsd-kind-icon">refresh<wbr>Access<wbr>Token</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="helpers.html#stringtobase64" class="tsd-kind-icon">string<wbr>ToBase64</a></li>
 							</ul>
@@ -110,7 +111,8 @@
 						<section class="tsd-index-section ">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="helpers.html#onclient-1" class="tsd-kind-icon">on<wbr>Client</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="helpers.html#isbrowser-1" class="tsd-kind-icon">is<wbr>Browser</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="helpers.html#isnode-1" class="tsd-kind-icon">is<wbr>Node</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="helpers.html#stringtobase64-1" class="tsd-kind-icon">string<wbr>ToBase64</a></li>
 							</ul>
 						</section>
@@ -183,6 +185,16 @@
 					Re-exports <a href="helpers.html#getcodeandusidfromurl-1">getCodeAndUsidFromUrl</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isbrowser" class="tsd-anchor"></a>
+					<h3>is<wbr>Browser</h3>
+					Re-exports <a href="helpers.html#isbrowser-1">isBrowser</a>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="isnode" class="tsd-anchor"></a>
+					<h3>is<wbr>Node</h3>
+					Re-exports <a href="helpers.html#isnode-1">isNode</a>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
 					<a name="loginguestuser" class="tsd-anchor"></a>
 					<h3>login<wbr>Guest<wbr>User</h3>
 					Re-exports <a href="helpers.html#loginguestuser-1">loginGuestUser</a>
@@ -196,11 +208,6 @@
 					<a name="logout" class="tsd-anchor"></a>
 					<h3>logout</h3>
 					Re-exports <a href="helpers.html#logout-1">logout</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="onclient" class="tsd-anchor"></a>
-					<h3>on<wbr>Client</h3>
-					Re-exports <a href="helpers.html#onclient-1">onClient</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
 					<a name="refreshaccesstoken" class="tsd-anchor"></a>
@@ -269,27 +276,32 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Variables</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
-					<a name="onclient-1" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> on<wbr>Client</h3>
-					<div class="tsd-signature tsd-kind-icon">on<wbr>Client<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = typeof window !&#x3D;&#x3D; &#x27;undefined&#x27;</span></div>
+					<a name="isbrowser-1" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Browser</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Browser<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = typeof window &#x3D;&#x3D;&#x3D; &#x27;object&#x27; &amp;&amp; typeof window.document &#x3D;&#x3D;&#x3D; &#x27;object&#x27;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/helpers/slasHelper.ts:19</li>
+							<li>Defined in src/lib/helpers/environment.ts:7</li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Determine if execution is client or server side</p>
-						</div>
-					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
+					<a name="isnode-1" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> is<wbr>Node</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Node<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = typeof process &#x3D;&#x3D;&#x3D; &#x27;object&#x27; &amp;&amp;typeof process.versions &#x3D;&#x3D;&#x3D; &#x27;object&#x27; &amp;&amp;typeof process.versions.node &#x3D;&#x3D;&#x3D; &#x27;string&#x27;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/lib/helpers/environment.ts:10</li>
+						</ul>
+					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
 					<a name="stringtobase64-1" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> string<wbr>ToBase64</h3>
-					<div class="tsd-signature tsd-kind-icon">string<wbr>ToBase64<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">btoa</span><span class="tsd-signature-symbol"> = onClient? btoa: (unencoded: string): string &#x3D;&gt; Buffer.from(unencoded).toString(&#x27;base64&#x27;)</span></div>
+					<div class="tsd-signature tsd-kind-icon">string<wbr>ToBase64<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">btoa</span><span class="tsd-signature-symbol"> = isBrowser? btoa: (unencoded: string): string &#x3D;&gt; Buffer.from(unencoded).toString(&#x27;base64&#x27;)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/helpers/slasHelper.ts:21</li>
+							<li>Defined in src/lib/helpers/slasHelper.ts:19</li>
 						</ul>
 					</aside>
 				</section>
@@ -306,7 +318,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:96</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:94</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -364,7 +376,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:48</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:46</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -387,7 +399,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:55</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:53</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -421,7 +433,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:30</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:28</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -463,7 +475,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:155</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:154</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -512,7 +524,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:197</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:196</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -581,7 +593,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:284</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:302</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -627,7 +639,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:260</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:278</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -678,6 +690,9 @@
 						<a href="helpers.html">helpers</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="responseerror.html">response<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="shopperbaskets.html">shopper<wbr>Baskets</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -694,6 +709,9 @@
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="shopperlogin.html">shopper<wbr>Login</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="shopperloginslas.html">shopper<wbr>Login<wbr>Slas</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="shopperorders.html">shopper<wbr>Orders</a>
@@ -748,6 +766,12 @@
 						<a href="helpers.html#getcodeandusidfromurl" class="tsd-kind-icon">get<wbr>Code<wbr>And<wbr>Usid<wbr>From<wbr>Url</a>
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
+						<a href="helpers.html#isbrowser" class="tsd-kind-icon">is<wbr>Browser</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module">
+						<a href="helpers.html#isnode" class="tsd-kind-icon">is<wbr>Node</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module">
 						<a href="helpers.html#loginguestuser" class="tsd-kind-icon">login<wbr>Guest<wbr>User</a>
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
@@ -755,9 +779,6 @@
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
 						<a href="helpers.html#logout" class="tsd-kind-icon">logout</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="helpers.html#onclient" class="tsd-kind-icon">on<wbr>Client</a>
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
 						<a href="helpers.html#refreshaccesstoken" class="tsd-kind-icon">refresh<wbr>Access<wbr>Token</a>
@@ -784,7 +805,10 @@
 						<a href="helpers.html#urlparameters-1" class="tsd-kind-icon">Url<wbr>Parameters</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="helpers.html#onclient-1" class="tsd-kind-icon">on<wbr>Client</a>
+						<a href="helpers.html#isbrowser-1" class="tsd-kind-icon">is<wbr>Browser</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="helpers.html#isnode-1" class="tsd-kind-icon">is<wbr>Node</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
 						<a href="helpers.html#stringtobase64-1" class="tsd-kind-icon">string<wbr>ToBase64</a>
