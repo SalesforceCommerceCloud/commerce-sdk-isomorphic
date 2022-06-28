@@ -10,7 +10,7 @@ import {
   ShopperLoginQueryParameters,
 } from 'lib/shopperLogin';
 import nock from 'nock';
-import {ClientConfigInit, ShopperLogin} from '../lib';
+import {ClientConfigInit, ShopperBaskets, ShopperLogin} from '../lib';
 import ClientConfig from '../static/clientConfig';
 
 const config: ClientConfigInit<
@@ -45,18 +45,37 @@ describe('Requests with body', () => {
         reqheaders: {'content-type': 'application/x-www-form-urlencoded'},
       }
     )
-      .filteringRequestBody(innerBody => {
+      .filteringRequestBody(requestBody => {
         // Putting the assertion here isn't ideal, but it's the only place I can find that nock
         // exposes the raw contents of the request body. (The body provided to `.post` has already
         // been parsed to an object, so we can't use that to detect the type.)
-        expect(innerBody).toEqual('token=TOKEN&token_type_hint=REFRESH_TOKEN');
-        return innerBody;
+        expect(requestBody).toEqual(
+          'token=TOKEN&token_type_hint=REFRESH_TOKEN'
+        );
+        return requestBody;
       })
       .post('/organizations/ORGANIZATION_ID/oauth2/revoke', body)
       .reply(200);
 
     const client = new ShopperLogin(config);
     await client.revokeToken({body});
+    expect(scope.isDone()).toBe(true);
+  });
+
+  it('sends correct media type for JSON endpoints', async () => {
+    const body = {query: 'pants'};
+    const scope = nock('https://short_code.api.commercecloud.salesforce.com')
+      .filteringRequestBody(requestBody => {
+        expect(requestBody).toEqual('{"query":"pants"}');
+        return requestBody;
+      })
+      .post('/shopper/auth/v1/organizations/ORGANIZATION_ID/baskets', body)
+      .query({siteId: 'SITE_ID'})
+      .matchHeader('Content-Type', 'application/json')
+      .reply(200);
+
+    const client = new ShopperBaskets(config);
+    await client.createBasket({parameters: {siteId: 'SITE_ID'}, body});
     expect(scope.isDone()).toBe(true);
   });
 });
