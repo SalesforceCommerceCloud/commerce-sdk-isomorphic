@@ -1,5 +1,5 @@
 {{#each children}}
-export * as {{name.upperCamelCase}} from "./{{name.lowerCamelCase}}";
+import * as {{name.upperCamelCase}} from "./{{name.lowerCamelCase}}";
 {{/each}}
 export type { ClientConfigInit } from "./clientConfig";
 // Can't currently use `export from` with default exports
@@ -9,3 +9,8 @@ export { ClientConfig, TemplateURL };
 
 import * as helpers from "./helpers";
 export { helpers };
+export default {
+{{#each children}}
+  ...{{name.upperCamelCase}},
+{{/each}}
+}
