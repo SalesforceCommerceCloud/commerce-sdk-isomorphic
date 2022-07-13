@@ -1,12 +1,7 @@
 {{#each children}}
-{{!-- We intentionally added the @ts-ignore comment --}}
-{{!-- This comment is used to ignore the error ts-2308 specifically. --}}
-{{!-- Reason: The API specs contain duplicated type declarations. --}}
-{{!-- rollup=plugin-ts does de-duplication, so it's okay to have dups --}}
-// @ts-ignore
 export { {{name.upperCamelCase}} } from "./{{name.lowerCamelCase}}";
 import type * as {{name.upperCamelCase}}Types from "./{{name.lowerCamelCase}}";
-export {{name.upperCamelCase}}Types from "./{{name.lowerCamelCase}}";
+export type { {{name.upperCamelCase}}Types };
 {{/each}}
 export type { ClientConfigInit } from "./clientConfig";
 // Can't currently use `export from` with default exports
