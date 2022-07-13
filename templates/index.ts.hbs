@@ -2,7 +2,7 @@
 {{!-- We intentionally added the @ts-ignore comment --}}
 {{!-- This comment is used to ignore the error ts-2308 specifically. --}}
 {{!-- Reason: The API specs contain duplicated type declarations. --}}
-{{!-- rollup=plugin-ts does actually de-dupe them, so it's okay to have dups --}}
+{{!-- rollup=plugin-ts does de-duplication, so it's okay to have dups --}}
 // @ts-ignore
 export * from "./{{name.lowerCamelCase}}";
 {{/each}}
