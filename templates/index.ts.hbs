@@ -1,5 +1,7 @@
 {{#each children}}
 export { {{name.upperCamelCase}} } from "./{{name.lowerCamelCase}}";
+import type * as {{name.upperCamelCase}}Types from "./{{name.lowerCamelCase}}";
+export type { {{name.upperCamelCase}}Types };
 {{/each}}
 export type { ClientConfigInit } from "./clientConfig";
 // Can't currently use `export from` with default exports

@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import type {RequestInit as NodeRequestInit} from 'node-fetch';
-import {BaseUriParameters} from './helpers';
+import type {BaseUriParameters} from './helpers/types';
 
 /**
  * Alias for `RequestInit` from TypeScript's DOM lib, to more clearly differentiate
