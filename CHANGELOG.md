@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## v1.7.0
+
+* Export API type definitions. They are available as top-level exports, following the pattern `<API Name>Types`.
+
+Example usage:
+
+```typescript
+import {ShopperBaskets, ShopperBasketsTypes} from "commerce-sdk-isomorphic"
+
+const basketsClient = new ShopperBaskets(config)
+const basket: ShopperBasketsTypes.Basket = await basketsClient.getBasket({ basketId: "some-basket" })
+```
+
 ## v1.6.0
 
 #### API Changes
@@ -20,10 +33,10 @@
 #### Bug fixes
 
 * SLAS helper `loginRegisteredUserB2C` no longer calls `redirectURI` when running server side
+
 #### Documentation
 
 * `README` updated to explicitly note lack of CORS support for SCAPI
-
 
 ## v1.5.2
 
@@ -70,7 +83,8 @@
 #### Bug Fixes
 
 * Added support for `application/x-www-form-urlencoded` request bodies.
-  - SLAS endpoints now work out of the box
+  * SLAS endpoints now work out of the box
+
 ## v1.4.0
 
 #### New Features
