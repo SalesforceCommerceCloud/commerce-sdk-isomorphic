@@ -136,8 +136,8 @@ export async function authorize(
   // url is a read only property we unfortunately cannot mock out using nock
   // meaning redirectUrl will not have a falsy value for unit tests
   /* istanbul ignore next */
-  if (!redirectUrl) {
-    throw new Error('Authorization failed');
+  if (response.status !== 303 || !redirectUrl) {
+    throw new ResponseError(response);
   }
 
   return {url: redirectUrl, ...getCodeAndUsidFromUrl(redirectUrl)};
@@ -296,6 +296,7 @@ export function refreshAccessToken(
  * Logout a shopper. The shoppers access token and refresh token will be revoked and if the shopper authenticated with ECOM the OCAPI JWT will also be revoked.
  * @param slasClient a configured instance of the ShopperLogin SDK client.
  * @param parameters - parameters to pass in the API calls.
+ * @param parameters.accessToken - a valid access token to exchange for a new access token (and refresh token).
  * @param parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
  * @returns TokenResponse
  */
@@ -306,9 +307,15 @@ export function logout(
     clientId: string;
     siteId: string;
   }>,
-  parameters: {refreshToken: string}
+  parameters: {
+    accessToken: string;
+    refreshToken: string;
+  }
 ): Promise<TokenResponse> {
   return slasClient.logoutCustomer({
+    headers: {
+      Authorization: `Bearer ${parameters.accessToken}`,
+    },
     parameters: {
       refresh_token: parameters.refreshToken,
       client_id: slasClient.clientConfig.parameters.clientId,
