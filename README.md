@@ -2,7 +2,7 @@
 
 [![CircleCI][circleci-image]][circleci-url]
 
-The Salesforce Commerce SDK Isomorphic allows easy interaction with the Salesforce B2C Commerce platform Shopper APIs through a lightweight SDK that works both on browsers and NodeJS applications. For a more robust SDK, which includes our B2C Data APIS and Shopper APIs, see [our Node.js Commerce SDK](https://github.com/SalesforceCommerceCloud/commerce-sdk).
+The Salesforce Commerce SDK (Isomorphic) allows easy interaction with the B2C Commerce platform’s Shopper APIs on the Node.js runtime and works both in browsers and Node applications. For a Node-based SDK that can access the Admin APIs in addition to the Shopper APIs, see the main [Commerce SDK](https://github.com/SalesforceCommerceCloud/commerce-sdk). 
 
 ## Getting Started
 
@@ -26,6 +26,9 @@ npm install commerce-sdk-isomorphic
 | organizationId | The unique identifier for your Salesforce identity.                        |
 | shortCode      | Region-specific merchant ID.                                               |
 | siteId         | Name of the site to access data from, for example, RefArch or SiteGenesis. |
+
+
+### Configure the Isomorphic SDK
 
 ```javascript
 /**
@@ -67,9 +70,9 @@ const searchResult = await shopperSearch.productSearch({
 
 #### CORS
 
-The Salesforce Commerce API (SCAPI) does not support CORS, so a proxy must be used to be able to use the SDK. Code example on SDK usage with a proxy can be seen above.
+The Salesforce Commerce API (SCAPI) does not support CORS, so a proxy must be used to be able to use the SDK.
 
-### Advanced options
+### Advanced Options
 
 Commerce SDK Isomorphic supports Fetch API options for [node-fetch](https://github.com/node-fetch/node-fetch/1#api) on server and [whatwg-fetch](https://github.github.io/fetch/) on browser with a simple configuration.
 This sample code shows how to configure HTTP timeout and agent options.
