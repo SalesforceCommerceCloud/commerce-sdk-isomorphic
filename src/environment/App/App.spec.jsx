@@ -22,7 +22,7 @@ describe('environment > App', () => {
     .get(`/shopper/auth/v1/organizations/${config.parameters.organizationId}/oauth2/authorize`)
     .query(true)
     .reply(
-      200,
+      303,
       {
         access_token: 'access_token'
       }

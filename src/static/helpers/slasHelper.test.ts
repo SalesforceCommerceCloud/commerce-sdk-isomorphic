@@ -34,6 +34,7 @@ const expectedTokenResponse: TokenResponse = {
 };
 
 const parameters = {
+  accessToken: 'access_token',
   redirectURI: 'redirect_uri',
   refreshToken: 'refresh_token',
   usid: 'usid',
@@ -149,11 +150,6 @@ describe('Authorize user', () => {
     usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
   };
 
-  const expectedAuthResponseNoLocation = {
-    code: '',
-    url: 'https://short_code.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/organization_id/oauth2/authorize?redirect_uri=redirect_uri&response_type=code&client_id=client_id&usid=usid&hint=hint&code_challenge=73oehA2tBul5grZPhXUGQwNAjxh69zNES8bu2bVD0EM',
-    usid: 'usid',
-  };
   test('hits the authorize endpoint and receives authorization code', async () => {
     const mockSlasClient = createMockSlasClient();
     const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
@@ -172,21 +168,18 @@ describe('Authorize user', () => {
     expect(authResponse).toStrictEqual(expectedAuthResponse);
   });
 
-  test('uses response.url if location header is unavailable', async () => {
+  test('throws error on non 303 response', async () => {
     const mockSlasClient = createMockSlasClient();
     const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
 
     nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
       .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
       .query(true)
-      .reply(200, {response_body: 'response_body'}, {location: ''});
+      .reply(400, {response_body: 'response_body'}, {location: ''});
 
-    const authResponse = await slasHelper.authorize(
-      mockSlasClient,
-      codeVerifier,
-      parameters
-    );
-    expect(authResponse).toStrictEqual(expectedAuthResponseNoLocation);
+    await expect(
+      slasHelper.authorize(mockSlasClient, codeVerifier, parameters)
+    ).rejects.toThrow(ResponseError);
   });
 });
 
@@ -345,6 +338,9 @@ describe('Refresh Token', () => {
 
 describe('Logout', () => {
   const expectedOptions = {
+    headers: {
+      Authorization: 'Bearer access_token',
+    },
     parameters: {
       client_id: 'client_id',
       channel_id: 'site_id',
