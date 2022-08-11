@@ -168,7 +168,7 @@ describe('Authorize user', () => {
     expect(authResponse).toStrictEqual(expectedAuthResponse);
   });
 
-  test('throws error on error response', async () => {
+  test('throws error on SLAS callback error response', async () => {
     const mockSlasClient = createMockSlasClient();
     const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
 
@@ -185,6 +185,20 @@ describe('Authorize user', () => {
       slasHelper.authorize(mockSlasClient, codeVerifier, parameters)
     ).rejects.toThrow(ResponseError);
   });
+});
+
+test('throws error on 400 response', async () => {
+  const mockSlasClient = createMockSlasClient();
+  const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+
+  nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+    .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
+    .query(true)
+    .reply(400, {response_body: 'response_body'}, {location: ''});
+
+  await expect(
+    slasHelper.authorize(mockSlasClient, codeVerifier, parameters)
+  ).rejects.toThrow(ResponseError);
 });
 
 describe('Guest user flow', () => {
