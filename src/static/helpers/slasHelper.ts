@@ -131,16 +131,18 @@ export async function authorize(
   };
 
   const response = await slasClientCopy.authorizeCustomer(options, true);
-  const redirectUrl = response.headers?.get('location') || response.url;
+  const redirectUrlString = response.headers?.get('location') || response.url;
+  const redirectUrl = new URL(redirectUrlString);
+  const searchParams = Object.fromEntries(redirectUrl.searchParams.entries());
 
   // url is a read only property we unfortunately cannot mock out using nock
   // meaning redirectUrl will not have a falsy value for unit tests
   /* istanbul ignore next */
-  if (response.status !== 303 || !redirectUrl) {
+  if (response.status >= 400 || searchParams.error) {
     throw new ResponseError(response);
   }
 
-  return {url: redirectUrl, ...getCodeAndUsidFromUrl(redirectUrl)};
+  return {url: redirectUrlString, ...getCodeAndUsidFromUrl(redirectUrlString)};
 }
 
 /**
@@ -245,15 +247,15 @@ export async function loginRegisteredUserB2C(
   };
 
   const response = await slasClientCopy.authenticateCustomer(options, true);
+  const redirectUrlString = response.headers?.get('location') || response.url;
+  const redirectUrl = new URL(redirectUrlString);
+  const searchParams = Object.fromEntries(redirectUrl.searchParams.entries());
 
-  // Possible statuses: 303 (success), 400, 401, 500
-  if (response.status !== 303) {
+  if (response.status >= 400 || searchParams.error) {
     throw new ResponseError(response);
   }
 
-  const redirectUrl = response.headers?.get('location') || response.url;
-
-  const authResponse = getCodeAndUsidFromUrl(redirectUrl);
+  const authResponse = getCodeAndUsidFromUrl(redirectUrlString);
 
   const tokenBody = {
     client_id: slasClient.clientConfig.parameters.clientId,
