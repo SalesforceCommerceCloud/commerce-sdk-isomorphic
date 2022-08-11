@@ -475,7 +475,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:154</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:156</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -524,7 +524,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:196</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:198</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -587,13 +587,13 @@
 					<a name="logout-1" class="tsd-anchor"></a>
 					<h3>logout</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">logout<span class="tsd-signature-symbol">(</span>slasClient<span class="tsd-signature-symbol">: </span><a href="../classes/shopperlogin.shopperlogin-1.html" class="tsd-signature-type">ShopperLogin</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>shortCode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, parameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>refreshToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="shopperlogin.html#tokenresponse" class="tsd-signature-type">TokenResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">logout<span class="tsd-signature-symbol">(</span>slasClient<span class="tsd-signature-symbol">: </span><a href="../classes/shopperlogin.shopperlogin-1.html" class="tsd-signature-type">ShopperLogin</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>shortCode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, parameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>accessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>refreshToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="shopperlogin.html#tokenresponse" class="tsd-signature-type">TokenResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:302</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:305</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -610,11 +610,17 @@
 									</div>
 								</li>
 								<li>
-									<h5>parameters: <span class="tsd-signature-symbol">{ </span>refreshToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
+									<h5>parameters: <span class="tsd-signature-symbol">{ </span>accessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>refreshToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>parameters to pass in the API calls.</p>
 									</div>
 									<ul class="tsd-parameters">
+										<li class="tsd-parameter">
+											<h5>access<wbr>Token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+											<div class="tsd-comment tsd-typography">
+												<p>a valid access token to exchange for a new access token (and refresh token).</p>
+											</div>
+										</li>
 										<li class="tsd-parameter">
 											<h5>refresh<wbr>Token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
 											<div class="tsd-comment tsd-typography">
@@ -639,7 +645,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:278</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:280</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

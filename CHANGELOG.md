@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v1.8.0
+
+#### Bug fixes
+
+* Fix SLAS callback error handling
+* Fix SLAS logout function
+
 ## v1.7.0
 
 * Export API type definitions. They are available as top-level exports, following the pattern `<API Name>Types`.
