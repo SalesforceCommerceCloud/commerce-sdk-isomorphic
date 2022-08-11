@@ -138,7 +138,7 @@ export async function authorize(
   // url is a read only property we unfortunately cannot mock out using nock
   // meaning redirectUrl will not have a falsy value for unit tests
   /* istanbul ignore next */
-  if (searchParams.error) {
+  if (response.status >= 400 || searchParams.error) {
     throw new ResponseError(response);
   }
 
@@ -251,7 +251,7 @@ export async function loginRegisteredUserB2C(
   const redirectUrl = new URL(redirectUrlString);
   const searchParams = Object.fromEntries(redirectUrl.searchParams.entries());
 
-  if (searchParams.error) {
+  if (response.status >= 400 || searchParams.error) {
     throw new ResponseError(response);
   }
 
