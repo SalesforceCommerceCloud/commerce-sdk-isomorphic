@@ -121,6 +121,7 @@ export async function authorize(
   const options = {
     parameters: {
       client_id: slasClient.clientConfig.parameters.clientId,
+      channel_id: slasClient.clientConfig.parameters.siteId,
       code_challenge: codeChallenge,
       ...(parameters.hint && {hint: parameters.hint}),
       organizationId: slasClient.clientConfig.parameters.organizationId,
