@@ -205,6 +205,7 @@ describe('Guest user flow', () => {
   const expectedTokenBody = {
     body: {
       client_id: 'client_id',
+      channel_id: 'site_id',
       code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
       code_verifier: expect.stringMatching(/./) as string,
       grant_type: 'authorization_code_pkce',
@@ -233,6 +234,7 @@ describe('Registered B2C user flow', () => {
   const expectedTokenBody = {
     body: {
       client_id: 'client_id',
+      channel_id: 'site_id',
       code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
       code_verifier: expect.stringMatching(/./) as string,
       grant_type: 'authorization_code_pkce',
@@ -339,6 +341,7 @@ describe('Refresh Token', () => {
   const expectedBody = {
     body: {
       client_id: 'client_id',
+      channel_id: 'site_id',
       grant_type: 'refresh_token',
       refresh_token: 'refresh_token',
     },

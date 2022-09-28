@@ -121,6 +121,7 @@ export async function authorize(
   const options = {
     parameters: {
       client_id: slasClient.clientConfig.parameters.clientId,
+      channel_id: slasClient.clientConfig.parameters.siteId,
       code_challenge: codeChallenge,
       ...(parameters.hint && {hint: parameters.hint}),
       organizationId: slasClient.clientConfig.parameters.organizationId,
@@ -174,6 +175,7 @@ export async function loginGuestUser(
 
   const tokenBody: TokenRequest = {
     client_id: slasClient.clientConfig.parameters.clientId,
+    channel_id: slasClient.clientConfig.parameters.siteId,
     code: authResponse.code,
     code_verifier: codeVerifier,
     grant_type: 'authorization_code_pkce',
@@ -259,6 +261,7 @@ export async function loginRegisteredUserB2C(
 
   const tokenBody = {
     client_id: slasClient.clientConfig.parameters.clientId,
+    channel_id: slasClient.clientConfig.parameters.siteId,
     code: authResponse.code,
     code_verifier: codeVerifier,
     grant_type: 'authorization_code_pkce',
@@ -289,6 +292,7 @@ export function refreshAccessToken(
     grant_type: 'refresh_token',
     refresh_token: parameters.refreshToken,
     client_id: slasClient.clientConfig.parameters.clientId,
+    channel_id: slasClient.clientConfig.parameters.siteId
   };
 
   return slasClient.getAccessToken({body});
