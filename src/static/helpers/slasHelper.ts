@@ -96,6 +96,7 @@ export async function authorize(
     shortCode: string;
     organizationId: string;
     clientId: string;
+    siteId: string;
   }>,
   codeVerifier: string,
   parameters: {
@@ -159,6 +160,7 @@ export async function loginGuestUser(
     shortCode: string;
     organizationId: string;
     clientId: string;
+    siteId: string;
   }>,
   parameters: {
     redirectURI: string;
@@ -285,6 +287,7 @@ export function refreshAccessToken(
     shortCode: string;
     organizationId: string;
     clientId: string;
+    siteId: string;
   }>,
   parameters: {refreshToken: string}
 ): Promise<TokenResponse> {
