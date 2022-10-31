@@ -295,7 +295,7 @@ export function refreshAccessToken(
     grant_type: 'refresh_token',
     refresh_token: parameters.refreshToken,
     client_id: slasClient.clientConfig.parameters.clientId,
-    channel_id: slasClient.clientConfig.parameters.siteId
+    channel_id: slasClient.clientConfig.parameters.siteId,
   };
 
   return slasClient.getAccessToken({body});
