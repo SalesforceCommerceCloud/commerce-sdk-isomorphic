@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## v1.8.0
+
+#### API Changes
+
+*Shopper Login*
+
+* New Endpoints
+
+  | **Endpoint Name** | **Description** |
+  | ------------- |-------------|
+  | getSessionBridgeAccessToken | Get a shopper JWT access token for a registered customer using session bridge |
+  | getTrustedAgentAuthorizationToken | Obtains a new agent on behalf authorization token for a registered customer |
+  | getTrustedAgentAccessToken | Get a shopper JWT access token for a registered customer using a trusted agent (Merchant) |
+
+#### Enhancements
+
+* SLAS helpers support the `channel_id` (`siteId`) parameter 
+
 ## v1.7.1
 
 #### Bug fixes
