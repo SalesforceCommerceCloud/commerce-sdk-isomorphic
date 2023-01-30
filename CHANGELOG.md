@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.9.0
+
+### API Added
+
+* The [Shopper Experience](https://developer.salesforce.com/docs/commerce/commerce-api/references/shopper-experience?meta=Summary) API has been added to the SDK.
+
 ## v1.8.0
 
 #### API Changes
@@ -16,7 +22,7 @@
 
 #### Enhancements
 
-* SLAS helpers support the `channel_id` (`siteId`) parameter 
+* SLAS helpers support the `channel_id` (`siteId`) parameter
 
 ## v1.7.1
 
