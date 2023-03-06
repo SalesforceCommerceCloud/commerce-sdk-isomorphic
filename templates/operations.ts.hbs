@@ -188,7 +188,7 @@
           method: "{{loud method}}"
         }
       );
-      const response = await fetch(req);
+      const response = isBrowser ? await fetch(req) : await fetchCross(req);
       if (rawResponse) {
         return response;
       } else if (this.clientConfig.throwOnBadResponse && !response.ok && response.status !== 304) {
