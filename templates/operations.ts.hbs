@@ -174,21 +174,41 @@
         ...options?.headers
       };
 
-      if (!isBrowser) {
-        // Browsers forbid setting a custom user-agent header
-        headers[USER_AGENT_HEADER] = [headers[USER_AGENT_HEADER], USER_AGENT_VALUE].join(" ");
+      let response;
+      if(isBrowser && hasFetchAvailable){
+        const req = new Request(
+          url.toString(),
+          {
+            ...this.clientConfig.fetchOptions,
+            {{#if (isRequestWithPayload request)}}body: this.clientConfig.transformRequest(options.body, headers),{{/if}}
+            headers,
+            credentials: 'omit',
+            method: "{{loud method}}"
+          }
+        );
+
+        response = await fetch(req);
+      }
+      else {
+          if (!isBrowser) {
+            // Browsers forbid setting a custom user-agent header
+            headers[USER_AGENT_HEADER] = [headers[USER_AGENT_HEADER], USER_AGENT_VALUE].join(" ");
+          }
+
+          const req = new CrossRequest(
+          url.toString(),
+          {
+            ...this.clientConfig.fetchOptions,
+            {{#if (isRequestWithPayload request)}}body: this.clientConfig.transformRequest(options.body, headers),{{/if}}
+            headers,
+            credentials: 'omit',
+            method: "{{loud method}}"
+          }
+        );
+
+        response = await crossFetch(req);
       }
 
-      const req = new Request(
-        url.toString(),
-        {
-          ...this.clientConfig.fetchOptions,
-          {{#if (isRequestWithPayload request)}}body: this.clientConfig.transformRequest(options.body, headers),{{/if}}
-          headers,
-          method: "{{loud method}}"
-        }
-      );
-      const response = isBrowser && typeof fetch === 'function' ? await fetch(req) : await fetchCross(req);
       if (rawResponse) {
         return response;
       } else if (this.clientConfig.throwOnBadResponse && !response.ok && response.status !== 304) {

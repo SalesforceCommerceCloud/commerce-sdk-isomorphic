@@ -1,8 +1,8 @@
-import { fetch as fetchCross, Request }  from "cross-fetch";
+import { fetch as crossFetch, Request as CrossRequest }  from "cross-fetch";
 
 import ClientConfig, { ClientConfigInit } from "./clientConfig";
 // Must not import from ./helpers/index to avoid circular dependency via ShopperLogin
-import { isBrowser } from "./helpers/environment";
+import { isBrowser, hasFetchAvailable } from "./helpers/environment";
 import type {
   BaseUriParameters,
   CompositeParameters,
