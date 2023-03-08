@@ -12,6 +12,8 @@ import ResponseError from "./responseError";
 import TemplateURL from "./templateUrl";
 import { USER_AGENT_HEADER, USER_AGENT_VALUE } from "./version";
 
+const [runFetchStrategy, ValidRequest] = isBrowser && hasFetchAvailable ? [fetch, Request] : [crossFetch, CrossRequest];
+
 {{#each dataTypes}}
   {{!-- TODO: Remove this special case handling once namespaced types are added --}}
   {{#if (eq (getValue name) "ResourceBadRequest")}}
