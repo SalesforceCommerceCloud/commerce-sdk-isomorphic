@@ -12,5 +12,5 @@ export const isNode =
   typeof process.versions === 'object' &&
   typeof process.versions.node === 'string';
 
-export const hasFetchAvailable = 
+export const hasFetchAvailable =
   typeof fetch === 'function' && typeof Request === 'function';
