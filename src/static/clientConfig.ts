@@ -65,7 +65,6 @@ export default class ClientConfig<Params extends BaseUriParameters>
     }
     this.fetchOptions = {...config.fetchOptions};
     this.fetchOptions.credentials ??= 'omit'; 
-
     this.transformRequest =
       config.transformRequest || ClientConfig.defaults.transformRequest;
 
@@ -111,6 +110,6 @@ export default class ClientConfig<Params extends BaseUriParameters>
           return data as Required<FetchOptions>['body'];
         }
       }
-    }
+    },
   };
 }
