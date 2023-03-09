@@ -185,7 +185,6 @@
           ...this.clientConfig.fetchOptions,
           {{#if (isRequestWithPayload request)}}body: this.clientConfig.transformRequest(options.body, headers),{{/if}}
           headers,
-          credentials: 'omit',
           method: "{{loud method}}"
         }
       );
