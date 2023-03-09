@@ -64,7 +64,7 @@ export default class ClientConfig<Params extends BaseUriParameters>
       throw new Error('Missing required parameter: shortCode');
     }
     this.fetchOptions = {...config.fetchOptions};
-    this.fetchOptions.credentials ??= 'omit'; 
+    this.fetchOptions.credentials = config.fetchOptions?.credentials || 'omit'; 
     this.transformRequest =
       config.transformRequest || ClientConfig.defaults.transformRequest;
 
