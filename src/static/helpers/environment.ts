@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+import nodeFetch, {Request as NodeRequest, Response as NodeResponse, Headers as NodeHeaders} from 'node-fetch';
+
 export const isBrowser =
   typeof window === 'object' && typeof window.document === 'object';
 
@@ -14,3 +16,21 @@ export const isNode =
 
 export const hasFetchAvailable =
   typeof fetch === 'function' && typeof Request === 'function';
+
+const BrowserFetchContext = {
+  fetchImpl: fetch,
+  RequestImpl: Request,
+  ResponseImpl: Response,
+  HeadersImpl: Headers
+};
+
+const NodeFetchContext = {
+  fetchImpl: nodeFetch,
+  RequestImpl: NodeRequest,
+  ResponseImpl: NodeResponse,
+  HeadersImpl: NodeHeaders
+};
+
+const FetchContext = isBrowser && hasFetchAvailable && !isNode ? BrowserFetchContext : NodeFetchContext;
+
+export const {fetchImpl, RequestImpl, ResponseImpl, HeadersImpl} = FetchContext;

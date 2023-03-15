@@ -179,7 +179,7 @@
         headers[USER_AGENT_HEADER] = [headers[USER_AGENT_HEADER], USER_AGENT_VALUE].join(" ");
       }
 
-      const req = new ValidRequest(
+      const req = new Request(
         url.toString(),
         {
           ...this.clientConfig.fetchOptions,
@@ -189,7 +189,14 @@
         }
       );
 
-      const response = await runFetchStrategy(req);
+      const reqOptions = {
+          ...this.clientConfig.fetchOptions,
+          {{#if (isRequestWithPayload request)}}body: this.clientConfig.transformRequest(options.body, headers),{{/if}}
+          headers,
+          method: "{{loud method}}"
+      }
+
+      const response = await fetch(req);
 
       if (rawResponse) {
         return response;

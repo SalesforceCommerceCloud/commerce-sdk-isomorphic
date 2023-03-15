@@ -1,5 +1,4 @@
-import { fetch as crossFetch, Request as CrossRequest }  from "cross-fetch";
-
+import { fetchImpl as fetch, RequestImpl as Request, ResponseImpl as Response, HeadersImpl as Headers} from './helpers/environment';
 import ClientConfig, { ClientConfigInit } from "./clientConfig";
 // Must not import from ./helpers/index to avoid circular dependency via ShopperLogin
 import { isBrowser, hasFetchAvailable, isNode } from "./helpers/environment";
@@ -12,8 +11,6 @@ import ResponseError from "./responseError";
 import TemplateURL from "./templateUrl";
 import { USER_AGENT_HEADER, USER_AGENT_VALUE } from "./version";
 
-// The goal is to run native fetch in the 'real' browser. The reason isNode is also checked so to not use the fetch in jest-dom (nock tests) or other browser mocking libraries.
-const [runFetchStrategy, ValidRequest] = isBrowser && hasFetchAvailable && !isNode ? [fetch, Request] : [crossFetch, CrossRequest];
 
 {{#each dataTypes}}
   {{!-- TODO: Remove this special case handling once namespaced types are added --}}
