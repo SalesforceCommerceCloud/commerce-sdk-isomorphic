@@ -188,9 +188,7 @@
           method: "{{loud method}}"
         }
       );
-
       const response = await fetch(req);
-
       if (rawResponse) {
         return response;
       } else if (this.clientConfig.throwOnBadResponse && !response.ok && response.status !== 304) {
