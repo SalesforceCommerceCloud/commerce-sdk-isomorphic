@@ -10,7 +10,7 @@ import ResponseError from "./responseError";
 import TemplateURL from "./templateUrl";
 import { USER_AGENT_HEADER, USER_AGENT_VALUE } from "./version";
 
-if(isNode || !isBrowser || !hasFetchAvailable){
+if(isNode || !isBrowser || !hasFetchAvailable) {
     const nodeFetch = require('node-fetch');
     global.fetch = nodeFetch;
     global.Request = nodeFetch.Request;
