@@ -4,7 +4,10 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import type {RequestInit as NodeRequestInit} from 'node-fetch';
+import type {
+  RequestInit as NodeRequestInit,
+  Request as NodeRequest,
+} from 'node-fetch';
 import type {BaseUriParameters} from './helpers/types';
 
 /**
@@ -34,6 +37,14 @@ export interface ClientConfigInit<Params extends BaseUriParameters> {
   throwOnBadResponse?: boolean;
 }
 
+type FetchRequest = {
+  new (input: RequestInfo, init?: RequestInit | undefined): Request;
+};
+
+export interface FetchContext {
+  Request: FetchRequest;
+  fetch: (req: Record<string, unknown>) => Promise<Response>;
+}
 /**
  * Configuration parameters common to Commerce SDK clients
  */
