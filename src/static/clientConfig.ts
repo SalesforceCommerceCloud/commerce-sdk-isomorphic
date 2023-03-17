@@ -38,12 +38,12 @@ export interface ClientConfigInit<Params extends BaseUriParameters> {
 }
 
 type FetchRequest = {
-  new (input: RequestInfo, init?: RequestInit | undefined): Request | NodeRequest;
-};
+  new (input: RequestInfo, init?: FetchOptions | undefined) : Request | NodeRequest;
+}
 
 export interface FetchContext {
   Request: FetchRequest;
-  fetch: (req: FetchRequest) => Promise<Response>;
+  fetch: (input: any, init?: FetchOptions | undefined) => Promise<Response>;
 }
 /**
  * Configuration parameters common to Commerce SDK clients

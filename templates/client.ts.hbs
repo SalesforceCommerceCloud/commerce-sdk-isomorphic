@@ -1,6 +1,6 @@
-import ClientConfig, { ClientConfigInit, FetchContext} from "./clientConfig";
+import ClientConfig, { ClientConfigInit, FetchContext } from "./clientConfig";
 // Must not import from ./helpers/index to avoid circular dependency via ShopperLogin
-import { isBrowser, isNode, hasFetchAvailable, GetFetchContext } from "./helpers/environment";
+import { isBrowser, isNode, hasFetchAvailable } from "./helpers/environment";
 import type {
   BaseUriParameters,
   CompositeParameters,
