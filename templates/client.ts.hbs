@@ -13,14 +13,13 @@ import { USER_AGENT_HEADER, USER_AGENT_VALUE } from "./version";
 let fetchContext : FetchContext;
 if(isNode) {
   const nodeFetch = require('node-fetch');
-  let nodeRequest = nodeFetch.Request;
-  fetchContext = { fetch: nodeFetch, Request: nodeRequest };
+  fetchContext = { fetch: nodeFetch };
 }
 else if(!hasFetchAvailable){
   throw new Error('Bad environment: it is not a node environment but fetch is not defined');
 }
 else {
-  fetchContext = { fetch: global.fetch, Request: global.Request }
+  fetchContext = { fetch: global.fetch }
 }
 
 {{#each dataTypes}}
