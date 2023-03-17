@@ -13,4 +13,4 @@ export const isNode =
   typeof process.versions.node === 'string';
 
 export const hasFetchAvailable =
-  typeof fetch === 'function' && typeof Request === 'function';
+  typeof global.fetch === 'function' && typeof global.Request === 'function';
