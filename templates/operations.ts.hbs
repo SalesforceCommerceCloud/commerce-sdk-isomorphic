@@ -186,6 +186,8 @@
           method: "{{loud method}}"
       };
 
+      // Using fetch.call instead of directly calling so fetch can run in the right 'this' context, in this case globalThis.
+      // Otherwise invalid invocation error is thrown by the browser.
       const response = await fetchContext.fetch.call(globalThis, url.toString(), requestOptions);
       if (rawResponse) {
         return response;
