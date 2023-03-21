@@ -34,12 +34,11 @@ export interface ClientConfigInit<Params extends BaseUriParameters> {
   throwOnBadResponse?: boolean;
 }
 
-export interface FetchContext {
-  fetch: (
-    input: RequestInfo,
-    init?: FetchOptions | undefined
-  ) => Promise<Response>;
-}
+export type FetchFunction = (
+  input: RequestInfo,
+  init?: FetchOptions | undefined
+) => Promise<Response>;
+
 /**
  * Configuration parameters common to Commerce SDK clients
  */
@@ -69,8 +68,10 @@ export default class ClientConfig<Params extends BaseUriParameters>
     if (!this.parameters.shortCode) {
       throw new Error('Missing required parameter: shortCode');
     }
-    this.fetchOptions = {...config.fetchOptions};
-    this.fetchOptions.credentials = config.fetchOptions?.credentials || 'omit';
+    this.fetchOptions = {
+      credentials: 'omit',
+      ...config.fetchOptions,
+    };
     this.transformRequest =
       config.transformRequest || ClientConfig.defaults.transformRequest;
 

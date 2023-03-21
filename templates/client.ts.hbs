@@ -1,6 +1,6 @@
-import ClientConfig, { ClientConfigInit, FetchContext } from "./clientConfig";
+import ClientConfig, { ClientConfigInit } from "./clientConfig";
 // Must not import from ./helpers/index to avoid circular dependency via ShopperLogin
-import { isBrowser, isNode, hasFetchAvailable } from "./helpers/environment";
+import { isBrowser, fetch } from "./helpers/environment";
 import type {
   BaseUriParameters,
   CompositeParameters,
@@ -9,18 +9,6 @@ import type {
 import ResponseError from "./responseError";
 import TemplateURL from "./templateUrl";
 import { USER_AGENT_HEADER, USER_AGENT_VALUE } from "./version";
-
-let fetchContext : FetchContext;
-if(isNode) {
-  const nodeFetch = require('node-fetch');
-  fetchContext = { fetch: nodeFetch };
-}
-else if(!hasFetchAvailable){
-  throw new Error('Bad environment: it is not a node environment but fetch is not defined');
-}
-else {
-  fetchContext = { fetch: global.fetch }
-}
 
 {{#each dataTypes}}
   {{!-- TODO: Remove this special case handling once namespaced types are added --}}

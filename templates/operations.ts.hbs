@@ -180,15 +180,13 @@
       }
 
       const requestOptions = {
-          ...this.clientConfig.fetchOptions,
-          {{#if (isRequestWithPayload request)}}body: this.clientConfig.transformRequest(options.body, headers),{{/if}}
-          headers,
-          method: "{{loud method}}"
+        ...this.clientConfig.fetchOptions,
+        {{#if (isRequestWithPayload request)}}body: this.clientConfig.transformRequest(options.body, headers),{{/if}}
+        headers,
+        method: "{{loud method}}"
       };
 
-      // Using fetch.call instead of directly calling so fetch can run in the right 'this' context, in this case globalThis.
-      // Otherwise invalid invocation error is thrown by the browser.
-      const response = await fetchContext.fetch.call(globalThis, url.toString(), requestOptions);
+      const response = await fetch(url.toString(), requestOptions);
       if (rawResponse) {
         return response;
       } else if (this.clientConfig.throwOnBadResponse && !response.ok && response.status !== 304) {
