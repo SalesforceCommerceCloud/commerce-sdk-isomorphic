@@ -6,7 +6,7 @@
  */
 
 import nodeFetch from 'node-fetch';
-import {isNode, hasFetchAvailable, fetch} from './environment';
+import {isNode, fetch} from './environment';
 
 /* Just testing the node environment, testing the browser environment is too complex within the test cases. */
 
