@@ -20,7 +20,7 @@ describe('ClientConfig constructor', () => {
     // `init` is Required<> to ensure that all init options are tested
     const init: Required<ClientConfigInit<typeof parameters>> = {
       baseUri: 'https://example.com',
-      fetchOptions: {keepalive: false},
+      fetchOptions: {keepalive: false, credentials: 'omit'},
       headers: {authorization: 'token'},
       parameters,
       proxy: 'https://proxy.com',
@@ -71,6 +71,28 @@ describe('ClientConfig constructor', () => {
         baseUri: 'BASE_URI',
       })
     ).toHaveProperty('baseUri', 'BASE_URI');
+  });
+
+  test('overwrite credentials property if provided', () => {
+    const testConfig = new ClientConfig({
+      baseUri: 'http://www.example.com',
+      proxy: 'http://www.proxy.com',
+      headers: {authorization: 'token', 'Accept-Language': 'en-US,en;q=0.5'},
+      parameters: {shortCode: 'shortCode', p1: 'v1', p2: 2},
+      fetchOptions: {timeout: 20, credentials: 'same-origin'},
+    });
+    expect(testConfig.fetchOptions.credentials).toEqual('same-origin');
+  });
+
+  test('default credentials property value is omit', () => {
+    const testConfig = new ClientConfig({
+      baseUri: 'http://www.example.com',
+      proxy: 'http://www.proxy.com',
+      headers: {authorization: 'token', 'Accept-Language': 'en-US,en;q=0.5'},
+      parameters: {shortCode: 'shortCode', p1: 'v1', p2: 2},
+      fetchOptions: {timeout: 20},
+    });
+    expect(testConfig.fetchOptions.credentials).toEqual('omit');
   });
 });
 

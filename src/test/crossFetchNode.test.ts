@@ -13,8 +13,8 @@ import config from '../environment/config';
 type TestConfigParameters = typeof config.parameters;
 
 /**
- * Validation of integration and use of cross-fetch when run in a node environment.
- * As these tests want to ensure the correct integration of cross-fetch, responses are mocked
+ * Validation of integration and use of node-fetch when run in a node environment.
+ * As these tests want to ensure the correct integration of node-fetch, responses are mocked
  * out at the http layer via nock.
  * Both POST and GET are exercised to ensure compatibility.
  */
