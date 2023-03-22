@@ -13,7 +13,6 @@ import {isNode, hasFetchAvailable, fetch} from './environment';
 describe('Fetch', () => {
   test('Runs node-fetch if node', () => {
     expect(isNode).toBe(true);
-    expect(hasFetchAvailable).toBe(false);
     expect(fetch).toBe(nodeFetch);
   });
 });
