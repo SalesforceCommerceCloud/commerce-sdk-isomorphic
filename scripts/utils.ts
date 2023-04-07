@@ -93,13 +93,13 @@ export async function setupApis(
     api => api.name.original === 'shopper-context'
   );
 
-  if(shopperContextApi) {
+  if (shopperContextApi) {
     shopperContextApi.name = new Name('shopper-contexts');
   }
 
-
+  // We are calling the init for children (which will call loadModel) since we can pass the updateName parameter as false (default was true).
+  // With this way the ApiModel doesn't change its name again from the loaded api model, which will use the raml title field.
   await Promise.all(apis.children.map(api => (api as ApiModel).init(false)));
-  // await apis.init();
 
   apis = addTemplates(apis, outputDir);
   return apis;
