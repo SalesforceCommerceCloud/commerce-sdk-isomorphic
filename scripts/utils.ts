@@ -86,10 +86,17 @@ export async function setupApis(
   // is necessary for generating the SDK (as part of the user agent header).
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   apis.metadata.sdkVersion = await readJsonSync(PACKAGE_JSON).version;
-  const shopperContextApi = apis.children.filter(
+
+  // Editing the name of the Shopper Context API Model so our name is used for generating class name.
+  // This is hard-coded for now but in the future if we handle the case where type name and title clash better, this can be removed.
+  const shopperContextApi = apis.children.find(
     api => api.name.original === 'shopper-context'
-  )[0];
-  shopperContextApi.name = new Name('shopper-contexts');
+  );
+
+  if(shopperContextApi) {
+    shopperContextApi.name = new Name('shopper-contexts');
+  }
+
 
   await Promise.all(apis.children.map(api => (api as ApiModel).init(false)));
   // await apis.init();
