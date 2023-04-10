@@ -153,6 +153,7 @@ export async function authorize(
  * @param parameters - parameters to pass in the API calls.
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
+ * @param parameters.clientSecret? - a clientSecret for the SDK client
  * @returns TokenResponse
  */
 export async function loginGuestUser(
@@ -160,12 +161,12 @@ export async function loginGuestUser(
     shortCode: string;
     organizationId: string;
     clientId: string;
-    clientSecret?: string;
     siteId: string;
   }>,
   parameters: {
     redirectURI: string;
     usid?: string;
+    clientSecret?: string;
   }
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
@@ -178,12 +179,12 @@ export async function loginGuestUser(
     redirect_uri: parameters.redirectURI
   };
 
-  if (slasClient.clientConfig.clientSecret) {
+  if (parameters.clientSecret) {
     // Client secret - private client
     tokenBody.hint = 'guest'
     tokenHeader = {
-      Authorization:  `Basic ${stringToBase64(
-        `${slasClient.clientConfig.clientId}:${slasClient.clientConfig.clientSecret}`
+      Authorization: `Basic ${stringToBase64(
+        `${slasClient.clientConfig.parameters.clientId}:${parameters.clientSecret}`
       )}`,
     }
   } else {
@@ -199,8 +200,8 @@ export async function loginGuestUser(
     tokenBody.code_verifier = codeVerifier
   }
 
-  return slasClient.clientConfig.clientSecret ?
-         slasClient.getAccessToken({header: tokenHeader, body: tokenBody}) :
+  return parameters.clientSecret ?
+         slasClient.getAccessToken({headers: tokenHeader, body: tokenBody}) :
          slasClient.getAccessToken({body: tokenBody})
 }
 
@@ -213,6 +214,7 @@ export async function loginGuestUser(
  * @param parameters - parameters to pass in the API calls.
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
+ * @param parameters.clientSecret? - a clientSecret for the SDK client
  * @returns TokenResponse
  */
 export async function loginRegisteredUserB2C(
@@ -229,6 +231,7 @@ export async function loginRegisteredUserB2C(
   parameters: {
     redirectURI: string;
     usid?: string;
+    clientSecret?: string;
   }
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
@@ -278,8 +281,8 @@ export async function loginRegisteredUserB2C(
   const authResponse = getCodeAndUsidFromUrl(redirectUrlString);
 
   var header = {
-    Authorization:  `Basic ${stringToBase64(
-      `${slasClient.clientConfig.clientId}:${slasClient.clientConfig.clientSecret}`
+    Authorization: `Basic ${stringToBase64(
+      `${slasClient.clientConfig.parameters.clientId}:${parameters.clientSecret}`
     )}`
   }
 
@@ -294,8 +297,8 @@ export async function loginRegisteredUserB2C(
     usid: authResponse.usid,
   };
 
-  return slasClient.clientConfig.clientSecret ?
-    slasClient.getAccessToken({header: header, body: tokenBody}) :
+  return parameters.clientSecret ?
+    slasClient.getAccessToken({headers: header, body: tokenBody}) :
     slasClient.getAccessToken({body: tokenBody})
 }
 
@@ -304,6 +307,7 @@ export async function loginRegisteredUserB2C(
  * @param slasClient a configured instance of the ShopperLogin SDK client.
  * @param parameters - parameters to pass in the API calls.
  * @param parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
+ * @param parameters.clientSecret? - a clientSecret for the SDK client
  * @returns TokenResponse
  */
 export function refreshAccessToken(
@@ -311,15 +315,17 @@ export function refreshAccessToken(
     shortCode: string;
     organizationId: string;
     clientId: string;
-    clientSecret?: string;
     siteId: string;
   }>,
-  parameters: {refreshToken: string}
+  parameters: {
+    refreshToken: string
+    clientSecret?: string;
+  }
 ): Promise<TokenResponse> {
 
   var header = {
-    Authorization:  `Basic ${stringToBase64(
-      `${slasClient.clientConfig.clientId}:${slasClient.clientConfig.clientSecret}`
+    Authorization: `Basic ${stringToBase64(
+      `${slasClient.clientConfig.parameters.clientId}:${parameters.clientSecret}`
     )}`
   }
 
@@ -330,8 +336,8 @@ export function refreshAccessToken(
     channel_id: slasClient.clientConfig.parameters.siteId
   };
 
-  return slasClient.clientConfig.clientSecret ?
-    slasClient.getAccessToken({header: header, body: body}) :
+  return parameters.clientSecret ?
+    slasClient.getAccessToken({headers: header, body: body}) :
     slasClient.getAccessToken({body: body})
 }
 
