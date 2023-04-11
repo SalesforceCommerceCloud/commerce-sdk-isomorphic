@@ -69,9 +69,9 @@ function addTemplates(apis: ApiMetadata, outputBasePath: string): ApiMetadata {
   return apis;
 }
 
+// Editing the name of the Shopper Context API Model so our name is used for generating class name.
+// This is hard-coded for now but in the future if we handle the case where type name and title clash better, this can be removed.
 function overwriteShopperContextName(apis: ApiMetadata): void {
-  // Editing the name of the Shopper Context API Model so our name is used for generating class name.
-  // This is hard-coded for now but in the future if we handle the case where type name and title clash better, this can be removed.
   const shopperContextApi = apis.children.find(
     api => api.name.original === 'shopper-context'
   );
