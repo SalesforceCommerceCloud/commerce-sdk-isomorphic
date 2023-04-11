@@ -89,6 +89,7 @@ export async function setupApis(
 
   // Editing the name of the Shopper Context API Model so our name is used for generating class name.
   // This is hard-coded for now but in the future if we handle the case where type name and title clash better, this can be removed.
+  // TODO: @W-13013140 
   const shopperContextApi = apis.children.find(
     api => api.name.original === 'shopper-context'
   );
