@@ -103,8 +103,14 @@ export async function setupApis(
   overwriteShopperContextName(apis);
 
   // We are calling the init for children (which will call loadModel) since we can pass the updateName parameter as false (default was true).
-  // With this way the ApiModel doesn't change its name again from the loaded api model, which will use the raml title field.
-  await Promise.all(apis.children.map(api => (api as ApiModel).init(false)));
+  // We only call init(false) on shopper-context api so that our title overwrite can be reflected on the parsed api model.
+  await Promise.all(
+    apis.children.map(api =>
+      api.name.original === 'shopper-contexts'
+        ? (api as ApiModel).init(false)
+        : api.init()
+    )
+  );
 
   apis = addTemplates(apis, outputDir);
   return apis;
