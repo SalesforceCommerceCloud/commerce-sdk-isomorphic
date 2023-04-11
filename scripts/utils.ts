@@ -69,6 +69,18 @@ function addTemplates(apis: ApiMetadata, outputBasePath: string): ApiMetadata {
   return apis;
 }
 
+function overwriteShopperContextName(apis: ApiMetadata): void {
+  // Editing the name of the Shopper Context API Model so our name is used for generating class name.
+  // This is hard-coded for now but in the future if we handle the case where type name and title clash better, this can be removed.
+  const shopperContextApi = apis.children.find(
+    api => api.name.original === 'shopper-context'
+  );
+
+  if (shopperContextApi) {
+    shopperContextApi.name = new Name('shopper-contexts');
+  }
+}
+
 /**
  * Primary driver, loads the apis and templates associated with those apis.
  *
@@ -87,16 +99,8 @@ export async function setupApis(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   apis.metadata.sdkVersion = await readJsonSync(PACKAGE_JSON).version;
 
-  // Editing the name of the Shopper Context API Model so our name is used for generating class name.
-  // This is hard-coded for now but in the future if we handle the case where type name and title clash better, this can be removed.
-  // TODO: @W-13013140 
-  const shopperContextApi = apis.children.find(
-    api => api.name.original === 'shopper-context'
-  );
-
-  if (shopperContextApi) {
-    shopperContextApi.name = new Name('shopper-contexts');
-  }
+  // TODO: @W-13013140. After this work is done, this function can be safely removed.
+  overwriteShopperContextName(apis);
 
   // We are calling the init for children (which will call loadModel) since we can pass the updateName parameter as false (default was true).
   // With this way the ApiModel doesn't change its name again from the loaded api model, which will use the raml title field.
