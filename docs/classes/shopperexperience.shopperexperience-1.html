@@ -90,7 +90,7 @@
   };
   <span class="hljs-keyword">const</span> shopperExperienceClient = <span class="hljs-keyword">new</span> ShopperExperience(clientConfig);</code></pre>
 					<span style="font-size:.7em; display:block; text-align: right">
-						API Version: 1.0.3<br />
+						API Version: 1.0.4<br />
 						Last Updated: <br />
 					</span>
 				</div>
@@ -150,7 +150,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperExperience.ts:369</li>
+									<li>Defined in src/lib/shopperExperience.ts:367</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -172,7 +172,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="clientconfig.clientconfig-1.html" class="tsd-signature-type">ClientConfig</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>baseUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperExperience.ts:367</li>
+							<li>Defined in src/lib/shopperExperience.ts:365</li>
 						</ul>
 					</aside>
 				</section>
@@ -182,7 +182,7 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Base<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"https://{shortCode}.api.commercecloud.salesforce.com/experience/shopper-experience/{version}"</span><span class="tsd-signature-symbol"> = &quot;https://{shortCode}.api.commercecloud.salesforce.com/experience/shopper-experience/{version}&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperExperience.ts:369</li>
+							<li>Defined in src/lib/shopperExperience.ts:367</li>
 						</ul>
 					</aside>
 				</section>
@@ -200,13 +200,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperExperience.ts:640</li>
+									<li>Defined in src/lib/shopperExperience.ts:644</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Get a Page Designer page based on a single page ID. The results will apply the visibility rules for the page&#39;s components, such as personalization or scheduled visibility.</p>
 								</div>
+								<p><em>Important*</em>: Currently, the Shopper Experience API can’t be used when the <a href="https://documentation.b2c.commercecloud.salesforce.com/DOC1/index.jsp?topic=%2Fcom.demandware.dochelp%2Fcontent%2Fb2c_commerce%2Ftopics%2Fpermissions%2Fb2c_storefront_password_protection.html&amp;resultof=%22%73%74%6f%72%65%66%72%6f%6e%74%22%20%22%70%72%6f%74%65%63%74%69%6f%6e%22%20%22%70%72%6f%74%65%63%74%22%20">storefront password protection</a> feature is enabled.</p>
 								<p><em>Important*</em>: Because this resource uses the GET method, you must not pass sensitive data (payment card information, for example) and must not perform any transactional processes within the server-side scripts that are run for the page and components.</p>
 								<p>If you would like to get a raw Response object use the other getPage function.</p>
 							</div>
@@ -227,13 +228,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperExperience.ts:678</li>
+									<li>Defined in src/lib/shopperExperience.ts:684</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Get a Page Designer page based on a single page ID. The results will apply the visibility rules for the page&#39;s components, such as personalization or scheduled visibility.</p>
 								</div>
+								<p><em>Important*</em>: Currently, the Shopper Experience API can’t be used when the <a href="https://documentation.b2c.commercecloud.salesforce.com/DOC1/index.jsp?topic=%2Fcom.demandware.dochelp%2Fcontent%2Fb2c_commerce%2Ftopics%2Fpermissions%2Fb2c_storefront_password_protection.html&amp;resultof=%22%73%74%6f%72%65%66%72%6f%6e%74%22%20%22%70%72%6f%74%65%63%74%69%6f%6e%22%20%22%70%72%6f%74%65%63%74%22%20">storefront password protection</a> feature is enabled.</p>
 								<p><em>Important*</em>: Because this resource uses the GET method, you must not pass sensitive data (payment card information, for example) and must not perform any transactional processes within the server-side scripts that are run for the page and components.</p>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -284,7 +286,8 @@
 								<div class="lead">
 									<p>Get Page Designer pages. The results will apply the visibility rules for each page&#39;s components, such as personalization or scheduled visibility.</p>
 								</div>
-								<p>Either <code>categoryId</code> or <code>productId</code> must be given in addition to <code>aspectTypeId</code>. Because only a single page-to-product and page-to-category assignment per aspect type can be authored today, the returned results contains one element at most.</p>
+								<p>Either <code>categoryId</code> or <code>productId</code> must be given in addition to <code>aspectTypeId</code>. Because only a single page-to-product and page-to-category assignment per aspect type can be authored today, the returned result contains one element at most.</p>
+								<p><em>Important*</em>: Currently, the Shopper Experience API can’t be used when the <a href="https://documentation.b2c.commercecloud.salesforce.com/DOC1/index.jsp?topic=%2Fcom.demandware.dochelp%2Fcontent%2Fb2c_commerce%2Ftopics%2Fpermissions%2Fb2c_storefront_password_protection.html&amp;resultof=%22%73%74%6f%72%65%66%72%6f%6e%74%22%20%22%70%72%6f%74%65%63%74%69%6f%6e%22%20%22%70%72%6f%74%65%63%74%22%20">storefront password protection</a> feature is enabled.</p>
 								<p><em>Important*</em>: Because this resource uses the GET method, you must not pass sensitive data (payment card information, for example) and must not perform any transactional processes within the server-side scripts that are run for the page and components.</p>
 								<p>If you would like to get a raw Response object use the other getPages function.</p>
 							</div>
@@ -305,14 +308,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperExperience.ts:452</li>
+									<li>Defined in src/lib/shopperExperience.ts:454</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Get Page Designer pages. The results will apply the visibility rules for each page&#39;s components, such as personalization or scheduled visibility.</p>
 								</div>
-								<p>Either <code>categoryId</code> or <code>productId</code> must be given in addition to <code>aspectTypeId</code>. Because only a single page-to-product and page-to-category assignment per aspect type can be authored today, the returned results contains one element at most.</p>
+								<p>Either <code>categoryId</code> or <code>productId</code> must be given in addition to <code>aspectTypeId</code>. Because only a single page-to-product and page-to-category assignment per aspect type can be authored today, the returned result contains one element at most.</p>
+								<p><em>Important*</em>: Currently, the Shopper Experience API can’t be used when the <a href="https://documentation.b2c.commercecloud.salesforce.com/DOC1/index.jsp?topic=%2Fcom.demandware.dochelp%2Fcontent%2Fb2c_commerce%2Ftopics%2Fpermissions%2Fb2c_storefront_password_protection.html&amp;resultof=%22%73%74%6f%72%65%66%72%6f%6e%74%22%20%22%70%72%6f%74%65%63%74%69%6f%6e%22%20%22%70%72%6f%74%65%63%74%22%20">storefront password protection</a> feature is enabled.</p>
 								<p><em>Important*</em>: Because this resource uses the GET method, you must not pass sensitive data (payment card information, for example) and must not perform any transactional processes within the server-side scripts that are run for the page and components.</p>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -382,9 +386,6 @@
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/shopperlogin.html">shopper<wbr>Login</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="../modules/shopperloginslas.html">shopper<wbr>Login<wbr>Slas</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/shopperorders.html">shopper<wbr>Orders</a>
