@@ -1,5 +1,26 @@
 # CHANGELOG
 
+## v1.10.0
+
+#### Enhancements
+
+- Cookies are disabled by default.
+- The cross-fetch dependency has been removed. Now commerce-sdk-isomorphic uses native fetch in browser and node-fetch library in node.
+
+#### API Added
+
+*Shopper Baskets*
+
+* New Endpoints
+
+  | **Endpoint Name** | **Description** |
+  | ------------- |-------------|
+  | updateAsAgentBasket | Marks a basket as an agent basket. |
+  | addPriceAdjustmentToBasket | Adds a custom manual price adjustment to the basket. |
+  | removePriceAdjustmentFromBasket | Removes a custom manual price adjustment from the basket. |
+  | updatePriceAdjustmentInBasket | Updates a custom manual price adjustment on the basket. |
+  | updateAsStorefrontBasket | Marks a basket as a storefront basket. |
+
 ## v1.9.0
 
 ### API Added
