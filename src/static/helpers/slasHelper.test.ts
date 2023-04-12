@@ -31,6 +31,7 @@ const expectedTokenResponse: TokenResponse = {
   usid: 'usid',
   customer_id: 'customer_id',
   enc_user_id: 'enc_user_id',
+  idp_access_token: 'idp',
 };
 
 const parameters = {

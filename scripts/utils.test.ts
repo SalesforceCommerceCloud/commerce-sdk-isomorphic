@@ -49,6 +49,7 @@ describe('setupApis', () => {
   it('loads our API modes', async () => {
     // Don't need to perform the init, and doing so will cause timeout.
     jest.spyOn(generate.ApiMetadata.prototype, 'init').mockResolvedValue();
+    jest.spyOn(generate.ApiModel.prototype, 'init').mockResolvedValue();
 
     const apis = await setupApis(
       API_DIRECTORY,

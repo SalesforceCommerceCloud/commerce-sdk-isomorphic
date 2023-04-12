@@ -9,6 +9,8 @@ import addHelpers from 'handlebars-helpers';
 import path from 'path';
 import {readJsonSync} from 'fs-extra';
 
+import {Name} from '@commerce-apps/raml-toolkit/lib/common/structures/name';
+import {ApiModel} from '@commerce-apps/raml-toolkit/lib/generate';
 import * as templateHelpers from './templateHelpers';
 
 const PROJECT_ROOT = path.join(__dirname, '..');
@@ -67,6 +69,18 @@ function addTemplates(apis: ApiMetadata, outputBasePath: string): ApiMetadata {
   return apis;
 }
 
+// Editing the name of the Shopper Context API Model so our name is used for generating class name.
+// This is hard-coded for now but in the future if we handle the case where type name and title clash better, this can be removed.
+function overwriteShopperContextName(apis: ApiMetadata): void {
+  const shopperContextApi = apis.children.find(
+    api => api.name.original === 'shopper-context'
+  );
+
+  if (shopperContextApi) {
+    shopperContextApi.name = new Name('shopper-contexts');
+  }
+}
+
 /**
  * Primary driver, loads the apis and templates associated with those apis.
  *
@@ -84,7 +98,19 @@ export async function setupApis(
   // is necessary for generating the SDK (as part of the user agent header).
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   apis.metadata.sdkVersion = await readJsonSync(PACKAGE_JSON).version;
-  await apis.init();
+
+  // TODO: @W-13013140. After this work is done, this function can be safely removed.
+  overwriteShopperContextName(apis);
+
+  // We are calling the init for children (which will call loadModel) since we can pass the updateName parameter as false (default was true).
+  // We only call init(false) on shopper-context api so that our title overwrite can be reflected on the parsed api model.
+  await Promise.all(
+    apis.children.map(api =>
+      api.name.original === 'shopper-contexts'
+        ? (api as ApiModel).init(false)
+        : api.init()
+    )
+  );
 
   apis = addTemplates(apis, outputDir);
   return apis;
