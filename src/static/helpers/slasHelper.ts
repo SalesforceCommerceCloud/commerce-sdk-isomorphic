@@ -149,11 +149,13 @@ export async function authorize(
 
 /**
  * A single function to execute the ShopperLogin Guest Login with proof key for code exchange flow as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary).
+ * If options.isPrivateClient is set to true, this adds a basic auth header that should be replaced serverside with a base 64 encoded 'clientId:clientSecret' string
+ *
  * @param slasClient a configured instance of the ShopperLogin SDK client.
  * @param parameters - parameters to pass in the API calls.
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
- * @param parameters.clientSecret? - a clientSecret for the SDK client
+ * @param options.isPrivateClient - True if the clientId is for a private client
  * @returns TokenResponse
  */
 export async function loginGuestUser(
@@ -166,7 +168,9 @@ export async function loginGuestUser(
   parameters: {
     redirectURI: string;
     usid?: string;
-    clientSecret?: string;
+  },
+  options: {
+    isPrivateClient?: boolean
   }
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
@@ -175,16 +179,16 @@ export async function loginGuestUser(
   let tokenBody: TokenRequest = {
     client_id: slasClient.clientConfig.parameters.clientId,
     channel_id: slasClient.clientConfig.parameters.siteId,
-    grant_type: 'authorization_code_pkce',
+    grant_type: options.isPrivateClient ? 'client_credentials' : 'authorization_code_pkce',
     redirect_uri: parameters.redirectURI
   };
 
-  if (parameters.clientSecret) {
+  if (options.isPrivateClient) {
     // Client secret - private client
     tokenBody.hint = 'guest'
     tokenHeader = {
       Authorization: `Basic ${stringToBase64(
-        `${slasClient.clientConfig.parameters.clientId}:${parameters.clientSecret}`
+        `REPLACE-ME`
       )}`,
     }
   } else {
@@ -200,7 +204,7 @@ export async function loginGuestUser(
     tokenBody.code_verifier = codeVerifier
   }
 
-  return parameters.clientSecret ?
+  return options.isPrivateClient ?
          slasClient.getAccessToken({headers: tokenHeader, body: tokenBody}) :
          slasClient.getAccessToken({body: tokenBody})
 }
@@ -231,7 +235,9 @@ export async function loginRegisteredUserB2C(
   parameters: {
     redirectURI: string;
     usid?: string;
-    clientSecret?: string;
+  },
+  options: {
+    isPrivateClient?: boolean
   }
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
@@ -253,7 +259,7 @@ export async function loginRegisteredUserB2C(
     `${credentials.username}:${credentials.password}`
   )}`;
 
-  const options = {
+  const authOptions = {
     headers: {
       Authorization: authorization,
     },
@@ -269,7 +275,7 @@ export async function loginRegisteredUserB2C(
     },
   };
 
-  const response = await slasClientCopy.authenticateCustomer(options, true);
+  const response = await slasClientCopy.authenticateCustomer(authOptions, true);
   const redirectUrlString = response.headers?.get('location') || response.url;
   const redirectUrl = new URL(redirectUrlString);
   const searchParams = Object.fromEntries(redirectUrl.searchParams.entries());
@@ -282,7 +288,7 @@ export async function loginRegisteredUserB2C(
 
   var header = {
     Authorization: `Basic ${stringToBase64(
-      `${slasClient.clientConfig.parameters.clientId}:${parameters.clientSecret}`
+      `REPLACE-ME`
     )}`
   }
 
@@ -291,13 +297,13 @@ export async function loginRegisteredUserB2C(
     channel_id: slasClient.clientConfig.parameters.siteId,
     code: authResponse.code,
     code_verifier: codeVerifier,
-    grant_type: 'authorization_code_pkce',
+    grant_type: options.isPrivateClient ? 'client_credentials' : 'authorization_code_pkce',
     organizationId: slasClient.clientConfig.parameters.organizationId,
     redirect_uri: parameters.redirectURI,
     usid: authResponse.usid,
   };
 
-  return parameters.clientSecret ?
+  return options.isPrivateClient ?
     slasClient.getAccessToken({headers: header, body: tokenBody}) :
     slasClient.getAccessToken({body: tokenBody})
 }
@@ -320,12 +326,15 @@ export function refreshAccessToken(
   parameters: {
     refreshToken: string
     clientSecret?: string;
+  },
+  options: {
+    isPrivateClient?: boolean
   }
 ): Promise<TokenResponse> {
 
   var header = {
     Authorization: `Basic ${stringToBase64(
-      `${slasClient.clientConfig.parameters.clientId}:${parameters.clientSecret}`
+      `REPLACE-ME`
     )}`
   }
 
@@ -336,7 +345,7 @@ export function refreshAccessToken(
     channel_id: slasClient.clientConfig.parameters.siteId
   };
 
-  return parameters.clientSecret ?
+  return options.isPrivateClient ?
     slasClient.getAccessToken({headers: header, body: body}) :
     slasClient.getAccessToken({body: body})
 }
