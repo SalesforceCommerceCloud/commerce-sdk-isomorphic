@@ -20,12 +20,17 @@ describe('Fetch', () => {
   test('Make sure the fetch that is imported is actually a function and not an object', () => {
     expect(typeof fetch).toBe('function');
   });
-  test('fetch actually works', () => {
-    fetch('https://example.com')
-    .then((res) => {
-      expect(res.status).toBe(200);
-    }).catch((err) => {
-      fail(err);
-    });
-  }, TIMEOUT);
+  test(
+    'fetch actually works',
+    () => {
+      fetch('https://example.com')
+        .then(res => {
+          expect(res.status).toBe(200);
+        })
+        .catch(err => {
+          fail(err);
+        });
+    },
+    TIMEOUT
+  );
 });
