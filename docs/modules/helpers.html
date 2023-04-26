@@ -332,7 +332,7 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
 					<a name="fetch-1" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> fetch</h3>
-					<div class="tsd-signature tsd-kind-icon">fetch<span class="tsd-signature-symbol">:</span> <a href="clientconfig.html#fetchfunction" class="tsd-signature-type">FetchFunction</a><span class="tsd-signature-symbol"> = (() &#x3D;&gt; {if (isNode) {// eslint-disable-next-line global-require, @typescript-eslint/no-unsafe-returnreturn require(&#x27;node-fetch&#x27;);}if (!hasFetchAvailable)throw new Error(&#x27;Bad environment: it is not a node environment but fetch is not defined&#x27;);return globalObject.fetch;})()</span></div>
+					<div class="tsd-signature tsd-kind-icon">fetch<span class="tsd-signature-symbol">:</span> <a href="clientconfig.html#fetchfunction" class="tsd-signature-type">FetchFunction</a><span class="tsd-signature-symbol"> = (() &#x3D;&gt; {if (isNode) {// eslint-disable-next-line global-require, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-member-accessreturn require(&#x27;node-fetch&#x27;).default;}if (!hasFetchAvailable)throw new Error(&#x27;Bad environment: it is not a node environment but fetch is not defined&#x27;);return globalObject.fetch;})()</span></div>
 					<aside class="tsd-sources">
 						<ul>
 							<li>Defined in src/lib/helpers/environment.ts:28</li>
