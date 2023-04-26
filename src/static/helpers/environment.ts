@@ -27,8 +27,8 @@ export const hasFetchAvailable = typeof globalObject.fetch === 'function';
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 export const fetch: FetchFunction = (() => {
   if (isNode) {
-    // eslint-disable-next-line global-require, @typescript-eslint/no-unsafe-return
-    return require('node-fetch');
+    // eslint-disable-next-line global-require, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-member-access
+    return require('node-fetch').default;
   }
 
   if (!hasFetchAvailable)
