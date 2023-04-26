@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.10.1
+
+#### Bug fixes
+
+- The 'To is not a function' [issue](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/issues/122) is fixed.
+
 ## v1.10.0
 
 #### Enhancements
