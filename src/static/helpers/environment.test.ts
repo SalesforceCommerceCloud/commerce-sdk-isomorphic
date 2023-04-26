@@ -8,6 +8,8 @@
 import nodeFetch from 'node-fetch';
 import {isNode, fetch} from './environment';
 
+const TIMEOUT = 7000; // 7 seconds
+
 /* Just testing the node environment, testing the browser environment is too complex within the test cases. */
 
 describe('Fetch', () => {
@@ -15,4 +17,20 @@ describe('Fetch', () => {
     expect(isNode).toBe(true);
     expect(fetch).toBe(nodeFetch);
   });
+  test('Make sure the fetch that is imported is actually a function and not an object', () => {
+    expect(typeof fetch).toBe('function');
+  });
+  test(
+    'fetch actually works',
+    () => {
+      fetch('https://example.com')
+        .then(res => {
+          expect(res.status).toBe(200);
+        })
+        .catch(err => {
+          fail(err);
+        });
+    },
+    TIMEOUT
+  );
 });
