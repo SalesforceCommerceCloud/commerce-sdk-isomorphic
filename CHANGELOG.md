@@ -7,12 +7,6 @@
 - The 'To is not a function' [issue](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/issues/122) is fixed.
 - Migrated from `cross-fetch` to `node-fetch` via [this PR](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/commit/27609f35def0494db7ec45fb948a18c0eac2d25e) which has potential impact for client implementations. Passing `fetchOptions: {redirect: 'manual'}` as called on the server-side to prevent following of redirects prior to this upgrade had no effect on the client because `cross-fetch` used `XMLHttpRequest` and was silently ignored. The new approach respects this `redirect: 'manual'` directive, potentially causing redirects on the client (given these optional parameters) to not be followed, which breaks flows including the SLAS `authorizeCustomer` method, which could fail with an `opaqueredirect` error.
 
-
-
-Commonly, this would cause SLAS authorizeCustomer requests to fail with opaqueredirect errors.
-
-
-
 ## v1.10.0
 
 #### Enhancements
