@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import type {FetchFunction} from '../clientConfig';
-
+import {RequestInfo} from 'node-fetch';
+import type {FetchArgs, FetchFunction, FetchOptions} from '../clientConfig';
 /*
  * Copyright (c) 2022, Salesforce, Inc.
  * All rights reserved.
@@ -27,9 +27,12 @@ export const hasFetchAvailable = typeof globalObject.fetch === 'function';
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 export const fetch: FetchFunction = (() => {
   if (isNode) {
-    // .default is added because the newer versions of babel doesn't get the default export automatically for require().
-    // eslint-disable-next-line global-require, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-member-access
-    return require('node-fetch').default;
+    return (...args: FetchArgs) =>
+      import('node-fetch').then(({default: nodeFetch}) =>
+        nodeFetch(
+          ...(args as [input: RequestInfo, init?: FetchOptions | undefined])
+        )
+      ) as Promise<Response>;
   }
 
   if (!hasFetchAvailable)
@@ -37,5 +40,5 @@ export const fetch: FetchFunction = (() => {
       'Bad environment: it is not a node environment but fetch is not defined'
     );
 
-  return globalObject.fetch;
+  return globalObject.fetch as FetchFunction;
 })();

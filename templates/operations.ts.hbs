@@ -186,7 +186,8 @@
         method: "{{loud method}}"
       };
 
-      const response = await fetch(url.toString(), requestOptions);
+      const fetchFunction = this.clientConfig?.fetchFunction ?? fetch;
+      const response = await fetchFunction(url.toString(), requestOptions);
       if (rawResponse) {
         return response;
       } else if (this.clientConfig.throwOnBadResponse && !response.ok && response.status !== 304) {

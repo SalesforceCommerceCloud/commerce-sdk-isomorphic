@@ -26,7 +26,7 @@ const outputs = [
     format: 'umd',
   },
   {
-    file: process.env.REACT_APP_PKG_MODULE || pkg.module,
+    file: process.env.REACT_APP_PKG_MODULE || pkg.exports['.'].import,
     format: 'es',
   },
 ];
@@ -39,7 +39,7 @@ const postcssPlugins = [
   autoprefixer(),
 ];
 
-const config = outputs.map(({file, format}) => ({
+const config = outputs.map(({file, format, entryFileNames}) => ({
   input: 'src/lib/index.ts',
   output: {
     file,
@@ -49,6 +49,7 @@ const config = outputs.map(({file, format}) => ({
       react: 'React',
       'react-dom': 'ReactDOM',
     },
+    entryFileNames,
     exports: 'named',
   },
   plugins: [
