@@ -39,7 +39,7 @@ const postcssPlugins = [
   autoprefixer(),
 ];
 
-const config = outputs.map(({file, format, entryFileNames}) => ({
+const config = outputs.map(({file, format}) => ({
   input: 'src/lib/index.ts',
   output: {
     file,
@@ -49,7 +49,6 @@ const config = outputs.map(({file, format, entryFileNames}) => ({
       react: 'React',
       'react-dom': 'ReactDOM',
     },
-    entryFileNames,
     exports: 'named',
   },
   plugins: [
