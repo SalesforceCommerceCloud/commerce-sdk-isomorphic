@@ -217,7 +217,7 @@ types:
         - CommerceCloudStandards.ShopperToken: { scopes: [sfcc.shopper-context.rw] }
     uriParameters:
       usid:
-        description: The Shopper's unique identifier, if known. This is an optional field, a new shopper ID will be generated if this field is empty.
+        description: The Shopper's unique identifier. It is a required parameter and is part of the response from the Guest or Registered User Shopper Login (SLAS) API call.
         type: string
         required: true
         example: "54ad2c5a-91f0-44ab-817c-73d6b86872d9"  
