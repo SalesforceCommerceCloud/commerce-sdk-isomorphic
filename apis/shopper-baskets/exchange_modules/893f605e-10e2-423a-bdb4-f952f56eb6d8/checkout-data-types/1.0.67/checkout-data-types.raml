@@ -1425,6 +1425,11 @@ types:
         type: array
         items:
           type: string
+      securityCodeLength?:
+        description: |-
+          The length of the security code for this card.
+        type: integer
+        format: int32
   PaymentMethod:
     description: |-
       Document representing a payment method.

@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v1.10.2
+
+#### Documentation
+- Descriptions for certain `shopper-login` and `shopper-context` operations have been updated on [generated documentation site](https://salesforcecommercecloud.github.io/commerce-sdk-isomorphic/)
+
 ## v1.10.1
 
 #### Bug fixes
@@ -11,7 +16,7 @@
 #### Enhancements
 
 - Cookies are disabled by default.
-- The cross-fetch dependency has been removed. Now commerce-sdk-isomorphic uses native fetch in browser and node-fetch library in node.
+- The cross-fetch dependency has been removed. Now commerce-sdk-isomorphic uses native fetch in browser and node-fetch library in node. This has potential impact for client implementations. Passing `fetchOptions: {redirect: 'manual'}` as called on the server-side to prevent following of redirects prior to this upgrade had no effect on the client because `cross-fetch` used `XMLHttpRequest` and was silently ignored. The new approach respects this `redirect: 'manual'` directive, potentially causing redirects on the client (given these optional parameters) to not be followed, which breaks flows including the SLAS `authorizeCustomer` method, which could fail with an `opaqueredirect` error.
 
 #### API Added
 

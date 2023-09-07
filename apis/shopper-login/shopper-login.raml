@@ -92,7 +92,14 @@ types:
         type: GrantType
         example: "authorization_code"
       redirect_uri:
-        description: The redirect that was used when getting the authorization code.
+        description: |
+          The redirect URI that was used when getting the authorization code. A variety of URI formats and wildcards for host are supported, but app links like `airbnb://` or `fb://` are not. 
+
+          Examples of supported URIs:
+            - `http://localhost:3000/callback`
+            - `https://example.com/callback`
+            - `com.example.app:redirect_uri_path`
+            - ` *.subdomain.topleveldomain.com`
         type: string
         required: false
         maxLength: 256
@@ -102,6 +109,8 @@ types:
           PKCE code verifier. Created by the client calling the `login` endpoint.
 
           The `code_verifier` should be a high entropy cryptographically random string with a minimum of 43 characters and a maximum of 128 characters.
+
+          The `code_verifier` is optional when using a private client id for the token request.
         type: string
         maxLength: 128
         required: false
@@ -133,7 +142,7 @@ types:
         type: string
         example: "eyJraWQiOiI3NGU2YjMxZS1lYTczLTQ3OTYtOWRkYi1jMDJmZGI4ZDgwYmUiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1c2lkOmQ1MDBhMzY5LTc1MWQtNDkzYy1iNDAzLThmOThmYjg3MTdiNiIsImF1ZCI6IjU1M2FjOGFjLTRkYjktNGVkMy04MjVjLTNhZTNiZjVkMzI3YiIsImlzcyI6ImRldi51cy5zaG9wcGVyLmNjLnNhbGVzZm9yY2UuY29tIiwibmFtZSI6ImJsYWlyLnNsYXMudGVzdEBnbWFpbC5jb20iLCJleHAiOjE1OTExMTE0MzgsImlhdCI6MTU5MTEwOTYzOCwiZW1haWwiOiJibGFpci5zbGFzLnRlc3RAZ21haWwuY29tIn0.KgpAcq-G9Lz7IGnjkJlaFLFXYncVCwcVrRIuy3bEfgzRozqaDRvAori4oOz4RtgYjmoc5x2euoisHL0mVnHgPKOdYBty1wTJqneJEQt6hP4Kp0KFciID_ILCi-DE8VWS5t0NknnMP_iKhIkqcRL48iwPFUWkWA6AEWxE_yvJLNRLithsSxsx7EfBfpD8Hr2b5tMEwImQNmJNYGRTI4LSmcYspBORvJoAnfGpMC0kglxl40bhf5j4ItX4_DiWQC4zaGYD-HJV4BDr6C7iGCs5ZVPypF0yQD3iBio26fwj9Ys5WF9XMtPtqET2kqsz6fDC5GkE6HTUHH_r87jxbDq-8w"
       refresh_token:
-        description: Long term refresh token that can be used to refresh an access token. Valid for 90 days.
+        description: Long term refresh token that can be used to refresh an access token. Valid for 30 days.
         type: string
         example: "EgMYpjfFKdlSy-a3PYeyihmP95IpIp3FaDpPmVH1yu8.lahomBi7zJbRa6yKAuAAiKu3lprTPsEueKwqcBvhRLU"
       expires_in:
@@ -157,6 +166,7 @@ types:
         example: "45D39A8499A95288F82855427EBA99B5"
       idp_access_token:
         type: string
+        maxLength: 8192
         description: This is the access token that is returned from the IDP. The IDP access token is returned to be able to make calls into the IDP outside of SLAS.
         example: "eyJraWQiOiJYS21HbHVuSm0zSlBTMHNjQXZXV19XQlYtRi1wMkxLSDR0V05UMHVVSjVJIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULjFMY0xxTWhqM2t0N1FKeFhxQ0VtdGZOOVV2eUcweW1meDFxZG9BdzF1NWMub2FyeXhveHF0QUtxaVFMbkM1ZDYiLCJpc3MiOiJodHRwczovL2Rldi05NTY1MjM2Lm9rdGEuY29tIiwiYXVkIjoiaHR0cHM6Ly9kZXYtOTU2NTIzNi5va3RhLmNvbSIsInN1YiI6Im9rdGEuc2xhcy50ZXN0IiwiaWF0IjoxNjc5Njk4MzA4LCJleHAiOjE2Nzk3MDE5MDgsImNpZCI6IjBvYTJrNXNma0JXZ0poTEVHNWQ2IiwidWlkIjoiMDB1MzhxZGpuU2NMT0IxbXE1ZDYiLCJzY3AiOlsib2ZmbGluZV9hY2Nlc3MiLCJvcGVuaWQiLCJlbWFpbCIsInByb2ZpbGUiXSwiYXV0aF90aW1lIjoxNjc5Njk4MzA2fQ.FDbGsnZGwTYVKGSlAo6jqcjG2HQ_BqQKRk72M5h69DRHyOM4wngsEELN_Wtgj3E77sP7IOmIKjiK5SFP17ADMbKZptVr2pqaMVF3PuU3Cbl_MgXZValfT-z12jHRq9sHMfsdTjY2RnvG44ZDFKc2no8mdL6IJ1MfCaZT5Tql5Ktq_UgudaWFsYqad3ETcmp5Y8ivz1bFnqud0sO9D9JzYOtfd9h71JKcsSC2rXc_Si-INPKKaGl8CDgaLXxu_Am9twJpUenHLpy0BerhcVvdFz7_611E53xOT_Esrc1pe-XAZtlYsJFnhxTBDT342ukiSWk2m6juVappv1GsRfUf2g"
 
@@ -220,9 +230,9 @@ types:
   TrustedAgentTokenRequest:
     properties:
       agent_id:
-        description: The ID of the MERCHANT.
+        description: The ID of the merchant. This is an optional parameter. If passed in, the `agent_id` will be validated using the SUB claim in the response from Account Manager.
         type: string
-        required: true
+        required: false
         maxLength: 40
         example: "merchant@example.com"
       client_id:
@@ -273,13 +283,12 @@ types:
     properties:
       code:
         description: |-
-          Authorization code returned from session bridge authorization received in the front channel that is used to get session bridge access tokens and refresh tokens. Required with a grant type of and `session_bridge`.
+          Authorization code returned from session bridge authorization received in the front channel that is used to get session bridge access tokens and refresh tokens. Required with a grant type of `session_bridge`.
         type: string
-        required: true
         maxLength: 256
         example: "M0t1K0pyoFKhBpUZnuUYO07xf8iYyMJrAc7h31h_ra8.gglPClJHsofqdTm_yPe5n6m2yCXzFmD8qICwIEjQGVA"
       client_id:
-        description: The SLAS public client ID for use with PKCE requests.
+        description: The SLAS public client ID for use with PKCE requests. This is a required parameter when using a public client.
         type: string
         required: true
         maxLength: 40
@@ -292,18 +301,16 @@ types:
         example: "RefArch"
       code_verifier:
         description: |-
-          PKCE code verifier. Created by the caller.
+          PKCE code verifier. Created by the caller. This is a required parameter when using a public client.
 
           The `code_challenge` is created by SHA256 hashing the `code_verifier` and Base64 encoding the resulting hash.
 
           The `code_verifier` should be a high entropy cryptographically random string with a minimum of 43 characters and a maximum of 128 characters.
         type: string
-        required: true
         example: "Ar0lAwU_jsuA~ZXX8-JnMbZFxrnDot2OtgLEi1kOT_FxD6Bo0EQDbbrvoym9xHvatNGnNzrObLJeK6e4U9m4pveRMbdwNGa4jwiAlKGvijVn0PW0hqb03_w1gQE00wTo"
       dwsid:
-        description: Cookie passed back from the '/authorize' endpoint call for session bridge
+        description: Cookie passed back from the '/authorize' endpoint call for session bridge. This parameter is optional and not needed if using the `dwsgst` parameter.
         type: string
-        required: true
         example: pATvWUO3KSdt-Kmcy-8-RsxKnoO4BMDwoec7ACVlW6tZNnhaOL7gt7mHqL-h7QYn5TyE61z0DeSMCqxngsWeHw==
       grant_type:
         description: |-
@@ -311,7 +318,7 @@ types:
 
           For public client id requests the grant_type must be set to `session_bridge`.
 
-          For  private client_id and secret the grant_type must be set to `client_credentials` along with a basic authorization header.
+          For private client_id and secret the grant_type must be set to `client_credentials` along with a basic authorization header.
 
         type: GrantType
         required: true
@@ -323,6 +330,12 @@ types:
         required: true
         maxLength: 128
         example: "jack.shopper@example.com"
+      dwsgst:
+        type: string
+        required: false
+        description: |-
+          Signed guest Json Web Token (JWT) that was obtained from ECOM. This parameter is optional and not needed if using the `dwsid` parameter.
+        example: eyJraWQiOiIxNjgxNTU5OTkxNzkwIiwiYWxnIjoiRVMyNTYifQ.eyJ0ZW5hbnRJZCI6IkJHVk5fUzA1IiwiZHdzaWQiOiJuWHRhckdNU2ZxbnBaSUNJUGFKTHJSWGZ6b2lWYXBBU3BBTFNfeFdUMV9QZjRBWDA0N1lMQ1dSUFByM1BiSEl4d2RaODFiVGZoM3M1Wlgza2NhOG0zZz09IiwiY3VzdG9tZXJJZCI6ImJjQXI5N2NuMm1ZdmhjMGhqTGsxYmFXSzRqIiwiaWF0IjoxNjg1MTI4NjM2LCJleHAiOjE2ODUxMjkyMzksImlzcyI6ImNvbW1lcmNlY2xvdWQvcHJvZHVjdGlvbi9iZ3ZuczA1IiwidmVycyI6IjEiLCJ0eXBlIjoiRyJ9.BGY4kyOXbQSzZxubE3BrSzhf8ByehGUfJa7_J2XRQ93xY4dAOhF_xbXcHmBaEUBUzSny-Cf0pATzEaSsKpTxkg
       usid:
         type: string
         required: false
@@ -357,7 +370,10 @@ types:
         maxLength: 100
         example: "RefArch"
       callback_uri:
-        description: The callback URI. Required when the mode is `callback`. The `callback_uri` property will be validated against the callback URIs that have been registered with the SLAS client. The callback URI _must_ be a `POST` endpoint because the token will be included in the body.
+        description: |
+          The callback URI. Required when the mode is `callback`. The `callback_uri` property will be validated against the callback URIs that have been registered with the SLAS client. The callback URI _must_ be a `POST` endpoint because the token will be included in the body.
+
+          Wildcards are not allowed in the callback_uri because this is a security risk that can expose the token. This is not considered an OAuth2 callback_url.
         required: false
         type: string
         example: "http://localhost:9050/passwordless/login/callback"
@@ -404,7 +420,10 @@ types:
         maxLength: 128
         example: "Nx_Vf0-0W6SpyRVBVTbl8VSu2OE4yD2fZNExW6N3V_Q"
       callback_uri:
-        description: The callback uri. Required when the mode is `callback`. The `callback_uri` property will be validated against the callback URIs that have been registered with the SLAS client. The callback URI _must_ be a `POST` endpoint because the token will be included in the body.
+        description: |
+          The callback uri. Required when the mode is `callback`. The `callback_uri` property will be validated against the callback URIs that have been registered with the SLAS client. The callback URI _must_ be a `POST` endpoint because the token will be included in the body.
+
+          Wildcards are not allowed in the callback_uri because this is a security risk that can expose the token. This is not considered an OAuth2 callback_url.
         required: false
         type: string
         example: "http://localhost:9050/password/reset/callback"
@@ -528,7 +547,14 @@ types:
         required: false
         type: ResponseType
       redirect_uri:
-        description: The URI to which the server redirects the browser after the user grants the authorization. The URI must be registered with the SLAS client.
+        description: |
+          The URI to which the server redirects the browser after the user grants the authorization. The URI must be registered with the SLAS client. A variety of URI formats and wildcards for host are supported, but app links like airbnb:// or fb:// are not. Examples of supported URIs: 
+
+          Examples of supported URIs:
+            - `http://localhost:3000/callback`
+            - `https://example.com/callback`
+            - `com.example.app:redirect_uri_path`
+            - ` *.subdomain.topleveldomain.com`
         required: true
         maxLength: 256
         type: string
@@ -563,8 +589,10 @@ types:
           The `code_challenge` is created by SHA256 hashing the `code_verifier` and Base64 encoding the resulting hash.
 
           The `code_verifier` should be a high entropy cryptographically random string with a minimum of 43 characters and a maximum of 128 characters.
-        required: true
+
+          The `code_challenge` is optional when using a private client id for the token request.
         type: string
+        required: false
         minLength: 43
         maxLength: 128
         example: "krc5G3_5lRUcXDUzFZQ88oJA_-ZmlHWkyGsgOrSLEWg"
@@ -684,7 +712,7 @@ types:
 
             Required parameters: `code_challenge`, `channel_id`, `client_id`, and `redirect_uri`.
 
-            Optional parameters: `usid``.
+            Optional parameters: `usid`.
 
             The SLAS `/login` endpoint redirects back to the redirect URI and returns an authorization code.
 
@@ -925,7 +953,12 @@ types:
               responseStatus4: 500
         queryParameters:
           redirect_uri:
-            description: The URL to which the server redirects the browser after the user grants the authorization. The URI must be pre-registered.
+            description: |
+              The URL to which the server redirects the browser after the user grants the authorization. The URI must be pre-registered. A variety of URI formats and wildcard for host are supported, but app links like `airbnb://` or `fb://` are not. Examples of supported URIs:
+                - `http://localhost:3000/callback`
+                - `https://example.com/callback`
+                - `com.example.app:redirect_uri_path`
+                - ` *.subdomain.topleveldomain.com`
             required: true
             maxLength: 256
             type: string
@@ -1038,7 +1071,7 @@ types:
 
           For a guest user, get the shopper JWT access token and a refresh token. This is where a client appplication is able to get an access token for the guest user through the back channel (a trusted server) by passing in the client credentials.
 
-          For a public client using PKCE, an application will pass a PKCE `code_verifier`` that matches the `code_challenge`` that was used to `authorize` the customer along with the authorization code.
+          For a public client using PKCE, an application will pass a PKCE `code_verifier` that matches the `code_challenge` that was used to `authorize` the customer along with the authorization code.
 
           When refreshing the access token with a private client ID and client secret, the refresh token is _not_ regenerated. However, when refreshing the access token with a public client ID, the refresh token is _always_ regenerated. The old refresh token is voided with every refresh call, so the refresh token on the client needs to be replaced to always store the new refresh token.
 
@@ -1078,7 +1111,7 @@ types:
                     "usid": "18cda486-fe32-4e27-888b-6e4f89938e67",
                     "customer_id": "1000005",
                     "enc_user_id": "45D39A8499A95288F82855427EBA99B5",
-                    "idp_access_token": "eyJraWQiOiJYS21HbHVuSm0zSlBTMHNjQXZXV19XQlYtRi1wMkxLSDR0V05UMHVVSjVJIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULjFMY0xxTWhqM2t0N1FKeFhxQ0VtdGZOOVV2eUcweW1meDFxZG9BdzF1NWMub2FyeXhveHF0QUtxaVFMbkM1ZDYiLCJpc3MiOiJodHRwczovL2Rldi05NTY1MjM2Lm9rdGEuY29tIiwiYXVkIjoiaHR0cHM6Ly9kZXYtOTU2NTIzNi5va3RhLmNvbSIsInN1YiI6Im9rdGEuc2xhcy50ZXN0IiwiaWF0IjoxNjc5Njk4MzA4LCJleHAiOjE2Nzk3MDE5MDgsImNpZCI6IjBvYTJrNXNma0JXZ0poTEVHNWQ2IiwidWlkIjoiMDB1MzhxZGpuU2NMT0IxbXE1ZDYiLCJzY3AiOlsib2ZmbGluZV9hY2Nlc3MiLCJvcGVuaWQiLCJlbWFpbCIsInByb2ZpbGUiXSwiYXV0aF90aW1lIjoxNjc5Njk4MzA2fQ.FDbGsnZGwTYVKGSlAo6jqcjG2HQ_BqQKRk72M5h69DRHyOM4wngsEELN_Wtgj3E77sP7IOmIKjiK5SFP17ADMbKZptVr2pqaMVF3PuU3Cbl_MgXZValfT-z12jHRq9sHMfsdTjY2RnvG44ZDFKc2no8mdL6IJ1MfCaZT5Tql5Ktq_UgudaWFsYqad3ETcmp5Y8ivz1bFnqud0sO9D9JzYOtfd9h71JKcsSC2rXc_Si-INPKKaGl8CDgaLXxu_Am9twJpUenHLpy0BerhcVvdFz7_611E53xOT_Esrc1pe-XAZtlYsJFnhxTBDT342ukiSWk2m6juVappv1GsRfUf2g"            
+                    "idp_access_token": "eyJraWQiOiJYS21HbHVuSm0zSlBTMHNjQXZXV19XQlYtRi1wMkxLSDR0V05UMHVVSjVJIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULjFMY0xxTWhqM2t0N1FKeFhxQ0VtdGZOOVV2eUcweW1meDFxZG9BdzF1NWMub2FyeXhveHF0QUtxaVFMbkM1ZDYiLCJpc3MiOiJodHRwczovL2Rldi05NTY1MjM2Lm9rdGEuY29tIiwiYXVkIjoiaHR0cHM6Ly9kZXYtOTU2NTIzNi5va3RhLmNvbSIsInN1YiI6Im9rdGEuc2xhcy50ZXN0IiwiaWF0IjoxNjc5Njk4MzA4LCJleHAiOjE2Nzk3MDE5MDgsImNpZCI6IjBvYTJrNXNma0JXZ0poTEVHNWQ2IiwidWlkIjoiMDB1MzhxZGpuU2NMT0IxbXE1ZDYiLCJzY3AiOlsib2ZmbGluZV9hY2Nlc3MiLCJvcGVuaWQiLCJlbWFpbCIsInByb2ZpbGUiXSwiYXV0aF90aW1lIjoxNjc5Njk4MzA2fQ.FDbGsnZGwTYVKGSlAo6jqcjG2HQ_BqQKRk72M5h69DRHyOM4wngsEELN_Wtgj3E77sP7IOmIKjiK5SFP17ADMbKZptVr2pqaMVF3PuU3Cbl_MgXZValfT-z12jHRq9sHMfsdTjY2RnvG44ZDFKc2no8mdL6IJ1MfCaZT5Tql5Ktq_UgudaWFsYqad3ETcmp5Y8ivz1bFnqud0sO9D9JzYOtfd9h71JKcsSC2rXc_Si-INPKKaGl8CDgaLXxu_Am9twJpUenHLpy0BerhcVvdFz7_611E53xOT_Esrc1pe-XAZtlYsJFnhxTBDT342ukiSWk2m6juVappv1GsRfUf2g"
                   }
           400:
             description: Bad Request
@@ -1146,7 +1179,7 @@ types:
                     "usid": "18cda486-fe32-4e27-888b-6e4f89938e67",
                     "customer_id": "1000005",
                     "enc_user_id": "45D39A8499A95288F82855427EBA99B5",
-                    "idp_access_token": ""             
+                    "idp_access_token": ""            
                   }
           400:
             description: Bad Request
@@ -1220,7 +1253,7 @@ types:
                     "usid": "18cda486-fe32-4e27-888b-6e4f89938e67",
                     "customer_id": "1000005",
                     "enc_user_id": "45D39A8499A95288F82855427EBA99B5",
-                    "idp_access_token": ""               
+                    "idp_access_token": ""       
                   }
           400:
             description: Bad Request
@@ -1302,7 +1335,12 @@ types:
             maxLength: 16
             example: "ecom"
           redirect_uri:
-            description: The redirect for Account Manager to redirect to.
+            description: |
+              The redirect for Account Manager to redirect to. A variety of URI formats and wildcard for host are supported, but app links like `airbnb://` or `fb://` are not. Examples of supported URIs:
+                - `http://localhost:3000/callback`
+                - `https://example.com/callback`
+                - `com.example.app:redirect_uri_path`
+                - ` *.subdomain.topleveldomain.com`
             type: string
             required: true
             maxLength: 256
@@ -1402,7 +1440,7 @@ types:
                     "usid": "18cda486-fe32-4e27-888b-6e4f89938e67",
                     "customer_id": "1000005",
                     "enc_user_id": "45D39A8499A95288F82855427EBA99B5",
-                    "idp_access_token": ""              
+                    "idp_access_token": ""           
                   }
           400:
             description: Bad Request
@@ -1804,12 +1842,15 @@ types:
                   }
 
     /.well-known/openid-configuration:
-      description: | 
-          OpenID Connect (OIDC) is an identity layer built on top of the OAuth 2.1 standard and supported by some OAuth 2.1 providers, such as Google. It defines a sign-in flow that enables a client application to authenticate a user, and to obtain information (or "claims") about that user, such as the username, email, and so on. User identity information is encoded in a secure JSON Web Token (JWT). 
-          
-          For performance purposes the `/.well-known/openid-configuration` endpoint will be rate limited to 25 call per minute. 
+      description: |
+        OpenID Connect (OIDC) is an identity layer built on top of the OAuth 2.1 standard and supported by some OAuth 2.1 providers, such as Google. It defines a sign-in flow that enables a client application to authenticate a user and obtain information about the user. Each piece of user information is called a claim. Claims can be used to access username, email, and so on. User identity information is encoded in a secure JSON Web Token (JWT). 
+
+        For performance purposes, the `/.well-known/openid-configuration` endpoint is rate limited to 25 call per minute.
       get:
-        description: Returns a JSON listing of the OpenID/OAuth endpoints, supported scopes and claims, public keys used to sign the tokens, and other details.
+        description: |
+          Returns a JSON listing of the OpenID/OAuth endpoints, supported scopes and claims, public keys used to sign the tokens, and other details.
+
+          For performance purposes, the `/jwks` endpoint is rate limited to 25 call per minute.
         displayName: getWellknownOpenidConfiguration
         responses:
           200:
@@ -1880,11 +1921,14 @@ types:
                   }
     /jwks:
       description: |
-          The JSON Web Key Set (JWKS) is a set of keys that contains the public keys used to verify any JSON Web Token (JWT) issued by the authorization server and signed using the EC256 signing algorithm. 
-          
-          For performance purposes the `/jwks` endpoint will be rate limited to 25 call per minute. 
+        The JSON Web Key Set (JWKS) is a set of keys that contains the public keys used to verify any JSON Web Token (JWT) issued by the authorization server and signed using the EC256 signing algorithm. 
+
+        For performance purposes, the `/jwks` endpoint is rate limited to 25 call per minute.
       get:
-        description: Returns a JSON Web Key Set (JWKS) containing the current, past, and future public keys. The key set enables clients to validate the Shopper JSON Web Token (JWT) issued by SLAS.
+        description: |
+          Returns a JSON Web Key Set (JWKS) containing the current, past, and future public keys. The key set enables clients to validate the Shopper JSON Web Token (JWT) issued by SLAS.
+
+          For performance purposes, the `/jwks` endpoint is rate limited to 25 call per minute.
         displayName: getJwksUri
         responses:
           200:
