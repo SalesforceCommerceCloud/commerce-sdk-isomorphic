@@ -63,7 +63,19 @@ it.each([
     'simple',
     'http://example.com',
     {queryParams: {sub: ['one', 'two']}},
-    'http://example.com/simple?sub=one&sub=two',
+    'http://example.com/simple?sub=one%2Ctwo',
+  ],
+  [
+    'simple',
+    'http://example.com',
+    {
+      queryParams: {
+        refine: ['price=(0..150)', 'c_refinementColor=Red'], // refine is a special case and will be a repeated query param
+        expand: ['availability', 'images'], // default will be comma separated
+      },
+    },
+    'http://example.com/simple?refine=price%3D%280..150%29&refine=c_refinementColor%3DRed&expand=availability%2Cimages',
+    // URI decoded: http://example.com/simple?refine=price=(0..150)&refine=c_refinementColor=Red&expand=availability,images
   ],
 ])('combines %s, %s and %s into %s', (url, base, parameters, expected) => {
   expect(new TemplateURL(url, base, parameters).toString()).toBe(expected);
