@@ -50,17 +50,22 @@ export default class TemplateURL extends URL {
   }
 
   /**
-   * Add append an object literal of query parameters to the URL object. Arrays
-   * are allowed and are appended using the "repeat" convention where the \{ a:
-   * ["1", "2"] \} becomes "?a=1&a=2"
+   * Add append an object literal of query parameters to the URL object. SCAPI expects
+   * Arrays to be comma separated where \{ a: ["1", "2"] \} becomes ?a=1,2.
+   * The 'refine' query parameter is an exception, where SCAPI expects the the "repeat"
+   * convention where \{ refine: ["1", "2"] \} becomes "?refine=1&refine=2"
    */
   addQueryParams(queryParams?: QueryParameters): void {
     if (queryParams) {
       Object.keys(queryParams).forEach(key => {
         const param = queryParams[key];
         if (Array.isArray(param)) {
-          for (let i = 0; i < param.length; i += 1) {
-            this.searchParams.append(key, String(param[i]));
+          if (key === 'refine') {
+            for (let i = 0; i < param.length; i += 1) {
+              this.searchParams.append(key, String(param[i]));
+            }
+          } else {
+            this.searchParams.append(key, param.join());
           }
         } else {
           this.searchParams.append(key, String(param));
