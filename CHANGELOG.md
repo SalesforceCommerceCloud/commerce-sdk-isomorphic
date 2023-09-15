@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v1.10.3
+
+#### Bug fixes
+
+- Fix `expand` query parameter for `shopper-products`
+- Remove `retrieveCredQualityUserInfo` endpoint from `shopper-login` as this functionality was removed from SLAS
+
 ## v1.10.2
 
 #### Documentation

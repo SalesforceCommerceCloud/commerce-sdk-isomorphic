@@ -351,14 +351,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/templateUrl.ts:57</li>
+									<li>Defined in src/lib/templateUrl.ts:58</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Add append an object literal of query parameters to the URL object. Arrays
-										are allowed and are appended using the &quot;repeat&quot; convention where the { a:
-									[&quot;1&quot;, &quot;2&quot;] } becomes &quot;?a=1&amp;a=2&quot;</p>
+									<p>Add append an object literal of query parameters to the URL object. SCAPI expects
+										Arrays to be comma separated where { a: [&quot;1&quot;, &quot;2&quot;] } becomes ?a=1,2.
+										The &#39;refine&#39; query parameter is an exception, where SCAPI expects the the &quot;repeat&quot;
+									convention where { refine: [&quot;1&quot;, &quot;2&quot;] } becomes &quot;?refine=1&amp;refine=2&quot;</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -504,7 +505,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/templateUrl.ts:80</li>
+									<li>Defined in src/lib/templateUrl.ts:85</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
