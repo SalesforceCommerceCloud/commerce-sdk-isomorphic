@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.10.4
+
+#### Bug fixes
+
+- Mark `expand` query parameter for `getProduct` endpoint as optional instead of required
+
 ## v1.10.3
 
 #### Bug fixes
