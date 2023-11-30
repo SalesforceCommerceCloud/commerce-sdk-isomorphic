@@ -252,6 +252,29 @@ export async function loginGuestUser(
   return slasClient.getAccessToken({body: tokenBody});
 }
 
+export async function loginGuestUserPrivateClient(
+  slasClient: ShopperLogin<{
+    shortCode: string;
+    organizationId: string;
+    clientId: string;
+    siteId: string;
+  }>,
+  parameters: {
+    redirectURI: string;
+    refreshToken?: string;
+    codeVerifier?: string;
+    code?: string;
+    usid?: string;
+  },
+  credentials?: {
+    client_id: string;
+    client_secret: string;
+  }
+  ): Promise<TokenResponse> {
+
+  return await getAccessToken(slasClient, parameters, credentials);
+}
+
 /**
  * A single function to execute the ShopperLogin Public Client Registered User B2C Login with proof key for code exchange flow as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary).
  * @param slasClient a configured instance of the ShopperLogin SDK client.
