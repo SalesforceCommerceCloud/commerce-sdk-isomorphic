@@ -33,7 +33,7 @@
           {{#each request.queryParameters}}
           {{{name}}}{{#if (not (is required "true"))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
-        }, ConfigParameters>,
+        } & { [key in `c_${string}`]: any }, ConfigParameters>,
         headers?: { [key: string]: string },
         {{#if (isRequestWithPayload request)}}
         body: {{{getPayloadTypeFromRequest request}}}
@@ -72,7 +72,7 @@
           {{#each request.queryParameters}}
           {{{name}}}{{#if (not (is required "true"))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
-        }, ConfigParameters>,
+        } & { [key in `c_${string}`]: any }, ConfigParameters>,
         headers?: { [key: string]: string },
         {{#if (isRequestWithPayload request)}}
         body: {{{getPayloadTypeFromRequest request}}}
@@ -113,7 +113,7 @@
           {{#each request.queryParameters}}
           {{{name}}}{{#if (not (is required "true"))}}?{{/if}}: {{{ getTypeFromParameter this}}}
           {{/each}}
-        }, ConfigParameters>,
+        } & { [key in `c_${string}`]: any }, ConfigParameters>,
         headers?: { [key: string]: string },
         {{#if (isRequestWithPayload request)}}
         body: {{{getPayloadTypeFromRequest request}}}
@@ -142,7 +142,7 @@
       {{/if}}
       {{/each}}
 
-      const queryParams: {{{@root.name.upperCamelCase}}}QueryParameters = {};
+      const queryParams: {{{@root.name.upperCamelCase}}}QueryParameters & { [key in `c_${string}`]: any } = {};
       {{#each request.queryParameters}}
       if (optionParams["{{{name}}}"] !== undefined) {
         queryParams["{{{name}}}"] = optionParams["{{{name}}}"];
@@ -155,6 +155,12 @@
       }
       {{/if}}
       {{/each}}
+
+      Object.keys(optionParams).forEach((key) => {
+        if(key.startsWith('c_') && optionParams[key as keyof typeof optionParams] !== undefined) {
+          queryParams[key as keyof typeof queryParams] = optionParams[key as keyof typeof optionParams]
+        }
+      })
 
       const url = new TemplateURL(
         "{{{../path}}}",
@@ -186,6 +192,8 @@
         method: "{{loud method}}"
       };
 
+      console.log('REQUEST URL:', url.toString())
+      console.log('QUERY PARAMS:', queryParams)
       const response = await fetch(url.toString(), requestOptions);
       if (rawResponse) {
         return response;
