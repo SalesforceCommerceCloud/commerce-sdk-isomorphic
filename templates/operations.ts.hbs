@@ -192,8 +192,6 @@
         method: "{{loud method}}"
       };
 
-      console.log('REQUEST URL:', url.toString())
-      console.log('QUERY PARAMS:', queryParams)
       const response = await fetch(url.toString(), requestOptions);
       if (rawResponse) {
         return response;
