@@ -140,4 +140,40 @@ describe('Parameters', () => {
       new Error('Missing required path parameter: organizationId')
     );
   });
+
+  it('allow custom query params', async () => {
+    const customersClient = new ShopperCustomers({
+      parameters: {
+        // shortCode is a base URI parameter, not path/query, so it *must* be in the config
+        shortCode: SHORT_CODE,
+      },
+    });
+
+    const options = {
+      parameters: {
+        siteId: SITE_ID,
+        organizationId: ORGANIZATION_ID,
+        clientId: CLIENT_ID,
+        c_validCustomParam: 'custom_param',
+        invalidParam: 'invalid_param',
+      },
+      body: {type: 'guest'},
+    };
+
+    nock(`https://${SHORT_CODE}.api.commercecloud.salesforce.com`)
+      .post(
+        `/customer/shopper-customers/v1/organizations/${ORGANIZATION_ID}/customers/actions/login`
+      )
+      .query({
+        siteId: SITE_ID,
+        clientId: CLIENT_ID,
+        // expect `c_validCustomParam` but not `invalidParam`
+        c_validCustomParam: 'custom_param',
+      })
+      .reply(200, MOCK_RESPONSE);
+
+    const response = await customersClient.authorizeCustomer(options);
+
+    expect(response).toEqual(MOCK_RESPONSE);
+  });
 });
