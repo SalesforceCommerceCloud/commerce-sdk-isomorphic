@@ -16,6 +16,10 @@ import {
 } from '../../lib/shopperLogin';
 import ResponseError from '../responseError';
 
+const warningSlasSecretMsg =
+  'This function can run on client-side. You are potentially exposing SLAS secret on browser. Make sure to keep it safe and secure!';
+
+const onClient = typeof window !== 'undefined';
 export const stringToBase64 = isBrowser
   ? btoa
   : (unencoded: string): string => Buffer.from(unencoded).toString('base64');
@@ -148,6 +152,51 @@ export async function authorize(
 }
 
 /**
+ * A single function to execute the ShopperLogin Private Client Guest Login as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-private-client.html).
+ *
+ * @param slasClient - a configured instance of the ShopperLogin SDK client
+ * @param credentials - client secret used for authentication
+ * @param credentials.clientSecret - secret associated with client ID
+ * @param usid? - optional Unique Shopper Identifier to enable personalization
+ * @returns TokenResponse
+ */
+export async function loginGuestUserPrivate(
+  slasClient: ShopperLogin<{
+    shortCode: string;
+    organizationId: string;
+    clientId: string;
+    siteId: string;
+  }>,
+  parameters: {
+    redirectURI: string;
+    usid?: string;
+  },
+  credentials: {
+    clientSecret: string;
+  }
+): Promise<TokenResponse> {
+  if (onClient) {
+    // eslint-ignore-next-line we intentionally have warning here
+    console.warn(warningSlasSecretMsg);
+  }
+  const authorization = `Basic ${stringToBase64(
+    `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
+  )}`;
+
+  const options = {
+    headers: {
+      Authorization: authorization,
+    },
+    body: {
+      grant_type: 'client_credentials',
+      ...(parameters.usid && {usid: parameters.usid}),
+    },
+  };
+
+  return slasClient.getAccessToken(options);
+}
+
+/**
  * A single function to execute the ShopperLogin Public Client Guest Login with proof key for code exchange flow as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary).
  * @param slasClient a configured instance of the ShopperLogin SDK client.
  * @param parameters - parameters to pass in the API calls.
@@ -194,6 +243,7 @@ export async function loginGuestUser(
  * @param credentials - the id and password to login with.
  * @param credentials.username - the id of the user to login with.
  * @param credentials.password - the password of the user to login with.
+ * @param credentials.clientSecret - secret associated with client ID
  * @param parameters - parameters to pass in the API calls.
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
@@ -209,6 +259,7 @@ export async function loginRegisteredUserB2C(
   credentials: {
     username: string;
     password: string;
+    clientSecret: string;
   },
   parameters: {
     redirectURI: string;
@@ -260,7 +311,34 @@ export async function loginRegisteredUserB2C(
   }
 
   const authResponse = getCodeAndUsidFromUrl(redirectUrlString);
+  // using slas private client
+  if (credentials.clientSecret) {
+    if (onClient) {
+      // eslint-ignore-next-line we intentionally have warning here
+      console.warn(warningSlasSecretMsg);
+    }
 
+    const authHeaderIdSecret = `Basic ${stringToBase64(
+      `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
+    )}`;
+
+    const optionsToken = {
+      headers: {
+        Authorization: authHeaderIdSecret,
+      },
+      body: {
+        grant_type: 'authorization_code_pkce',
+        code_verifier: codeVerifier,
+        code: authResponse.code,
+        client_id: slasClient.clientConfig.parameters.clientId,
+        redirect_uri: parameters.redirectURI,
+        ...(parameters.usid && {usid: parameters.usid}),
+      },
+    };
+    return slasClient.getAccessToken(optionsToken);
+  }
+
+  // default is to use slas public client
   const tokenBody = {
     client_id: slasClient.clientConfig.parameters.clientId,
     channel_id: slasClient.clientConfig.parameters.siteId,
@@ -280,6 +358,8 @@ export async function loginRegisteredUserB2C(
  * @param slasClient a configured instance of the ShopperLogin SDK client.
  * @param parameters - parameters to pass in the API calls.
  * @param parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
+ * @param parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
+ * @param credentials.clientSecret - secret associated with client ID
  * @returns TokenResponse
  */
 export function refreshAccessToken(
@@ -289,8 +369,29 @@ export function refreshAccessToken(
     clientId: string;
     siteId: string;
   }>,
-  parameters: {refreshToken: string}
+  parameters: {refreshToken: string},
+  credentials: {clientSecret: string}
 ): Promise<TokenResponse> {
+  if (credentials.clientSecret) {
+    if (onClient) {
+      // eslint-ignore-next-line we intentionally have warning here
+      console.warn(warningSlasSecretMsg);
+    }
+    const authorization = `Basic ${stringToBase64(
+      `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
+    )}`;
+    const options = {
+      headers: {
+        Authorization: authorization,
+      },
+      body: {
+        grant_type: 'refresh_token',
+        refresh_token: parameters.refreshToken,
+      },
+    };
+    return slasClient.getAccessToken(options);
+  }
+
   const body = {
     grant_type: 'refresh_token',
     refresh_token: parameters.refreshToken,
