@@ -22,6 +22,12 @@ const credentials = {
   password: 'shopper_password',
 };
 
+const credentialsPrivate = {
+  username: 'shopper_user_id',
+  password: 'shopper_password',
+  clientSecret: 'slas_private_secret',
+};
+
 const expectedTokenResponse: TokenResponse = {
   access_token: 'access_token',
   id_token: 'id_token',
@@ -204,18 +210,18 @@ test('throws error on 400 response', async () => {
 });
 
 describe('Guest user flow', () => {
-  const expectedTokenBody = {
-    body: {
-      client_id: 'client_id',
-      channel_id: 'site_id',
-      code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
-      code_verifier: expect.stringMatching(/./) as string,
-      grant_type: 'authorization_code_pkce',
-      redirect_uri: 'redirect_uri',
-      usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
-    },
-  };
   test('retrieves usid and code from location header and generates an access token', async () => {
+    const expectedTokenBody = {
+      body: {
+        client_id: 'client_id',
+        channel_id: 'site_id',
+        code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
+        code_verifier: expect.stringMatching(/./) as string,
+        grant_type: 'authorization_code_pkce',
+        redirect_uri: 'redirect_uri',
+        usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
+      },
+    };
     const mockSlasClient = createMockSlasClient();
     const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
 
@@ -229,6 +235,30 @@ describe('Guest user flow', () => {
       parameters
     );
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
+    expect(accessToken).toBe(expectedTokenResponse);
+  });
+
+  test('generates an access token using slas private client', async () => {
+    const mockSlasClient = createMockSlasClient();
+
+    const accessToken = await slasHelper.loginGuestUserPrivate(
+      mockSlasClient,
+      parameters,
+      credentialsPrivate
+    );
+
+    const expectedReqOptions = {
+      headers: {
+        Authorization: `Basic ${stringToBase64(
+          `client_id:${credentialsPrivate.clientSecret}`
+        )}`,
+      },
+      body: {
+        grant_type: 'client_credentials',
+        usid: 'usid',
+      },
+    };
+    expect(getAccessTokenMock).toBeCalledWith(expectedReqOptions);
     expect(accessToken).toBe(expectedTokenResponse);
   });
 });

@@ -176,7 +176,8 @@ export async function loginGuestUserPrivate(
   }
 ): Promise<TokenResponse> {
   if (onClient) {
-    // eslint-ignore-next-line we intentionally have warning here
+    // we intentionally have warning here
+    // eslint-disable-next-line
     console.warn(warningSlasSecretMsg);
   }
   const authorization = `Basic ${stringToBase64(
@@ -240,7 +241,7 @@ export async function loginGuestUser(
 /**
  * A single function to execute the ShopperLogin Public Client Registered User B2C Login with proof key for code exchange flow as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary).
  * @param slasClient a configured instance of the ShopperLogin SDK client.
- * @param credentials - the id and password to login with.
+ * @param credentials - the id and password and clientSecret (if applicable) to login with.
  * @param credentials.username - the id of the user to login with.
  * @param credentials.password - the password of the user to login with.
  * @param credentials.clientSecret - secret associated with client ID
@@ -259,7 +260,7 @@ export async function loginRegisteredUserB2C(
   credentials: {
     username: string;
     password: string;
-    clientSecret: string;
+    clientSecret?: string;
   },
   parameters: {
     redirectURI: string;
@@ -314,7 +315,8 @@ export async function loginRegisteredUserB2C(
   // using slas private client
   if (credentials.clientSecret) {
     if (onClient) {
-      // eslint-ignore-next-line we intentionally have warning here
+      // we intentionally have warning here
+      // eslint-disable-next-line
       console.warn(warningSlasSecretMsg);
     }
 
@@ -359,6 +361,7 @@ export async function loginRegisteredUserB2C(
  * @param parameters - parameters to pass in the API calls.
  * @param parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
  * @param parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
+ * @param credentials - the clientSecret (if applicable) to login with.
  * @param credentials.clientSecret - secret associated with client ID
  * @returns TokenResponse
  */
@@ -370,11 +373,12 @@ export function refreshAccessToken(
     siteId: string;
   }>,
   parameters: {refreshToken: string},
-  credentials: {clientSecret: string}
+  credentials?: {clientSecret?: string}
 ): Promise<TokenResponse> {
-  if (credentials.clientSecret) {
+  if (credentials && credentials.clientSecret) {
     if (onClient) {
-      // eslint-ignore-next-line we intentionally have warning here
+      // we intentionally have warning here
+      // eslint-disable-next-line
       console.warn(warningSlasSecretMsg);
     }
     const authorization = `Basic ${stringToBase64(
