@@ -19,7 +19,6 @@ import ResponseError from '../responseError';
 const warningSlasSecretMsg =
   'This function can run on client-side. You are potentially exposing SLAS secret on browser. Make sure to keep it safe and secure!';
 
-const onClient = typeof window !== 'undefined';
 export const stringToBase64 = isBrowser
   ? btoa
   : (unencoded: string): string => Buffer.from(unencoded).toString('base64');
@@ -157,7 +156,9 @@ export async function authorize(
  * @param slasClient - a configured instance of the ShopperLogin SDK client
  * @param credentials - client secret used for authentication
  * @param credentials.clientSecret - secret associated with client ID
- * @param usid? - optional Unique Shopper Identifier to enable personalization
+ * @param parameters - parameters to pass in the API calls.
+ * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
+ * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @returns TokenResponse
  */
 export async function loginGuestUserPrivate(
@@ -175,7 +176,8 @@ export async function loginGuestUserPrivate(
     clientSecret: string;
   }
 ): Promise<TokenResponse> {
-  if (onClient) {
+  /* istanbul ignore next */
+  if (isBrowser) {
     // we intentionally have warning here
     // eslint-disable-next-line
     console.warn(warningSlasSecretMsg);
@@ -314,7 +316,8 @@ export async function loginRegisteredUserB2C(
   const authResponse = getCodeAndUsidFromUrl(redirectUrlString);
   // using slas private client
   if (credentials.clientSecret) {
-    if (onClient) {
+    /* istanbul ignore next */
+    if (isBrowser) {
       // we intentionally have warning here
       // eslint-disable-next-line
       console.warn(warningSlasSecretMsg);
@@ -334,7 +337,7 @@ export async function loginRegisteredUserB2C(
         code: authResponse.code,
         client_id: slasClient.clientConfig.parameters.clientId,
         redirect_uri: parameters.redirectURI,
-        ...(parameters.usid && {usid: parameters.usid}),
+        usid: authResponse.usid,
       },
     };
     return slasClient.getAccessToken(optionsToken);
@@ -376,7 +379,8 @@ export function refreshAccessToken(
   credentials?: {clientSecret?: string}
 ): Promise<TokenResponse> {
   if (credentials && credentials.clientSecret) {
-    if (onClient) {
+    /* istanbul ignore next */
+    if (isBrowser) {
       // we intentionally have warning here
       // eslint-disable-next-line
       console.warn(warningSlasSecretMsg);

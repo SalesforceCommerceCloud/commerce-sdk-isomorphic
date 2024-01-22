@@ -276,7 +276,7 @@ describe('Registered B2C user flow', () => {
     },
   };
 
-  test('uses code challenge and authorization header to generate auth code', async () => {
+  test('uses code challenge and authorization header to generate auth code with slas public client', async () => {
     // slasClient is copied and tries to make an actual API call
     const mockSlasClient = createMockSlasClient();
     const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
@@ -293,6 +293,40 @@ describe('Registered B2C user flow', () => {
     );
 
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
+  });
+
+  test('uses code challenge and authorization header to generate auth code with slas private client', async () => {
+    const expectedReqOptions = {
+      headers: {
+        Authorization: `Basic ${stringToBase64(
+          `client_id:${credentialsPrivate.clientSecret}`
+        )}`,
+      },
+      body: {
+        client_id: 'client_id',
+        code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
+        code_verifier: expect.stringMatching(/./) as string,
+        grant_type: 'authorization_code_pkce',
+        redirect_uri: 'redirect_uri',
+        usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
+      },
+    };
+    // slasClient is copied and tries to make an actual API call
+    const mockSlasClient = createMockSlasClient();
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    // Mocking slasCopy.authenticateCustomer
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .post(`/shopper/auth/v1/organizations/${organizationId}/oauth2/login`)
+      .reply(303, {response_body: 'response_body'}, {location: url});
+
+    await slasHelper.loginRegisteredUserB2C(
+      mockSlasClient,
+      credentialsPrivate,
+      parameters
+    );
+
+    expect(getAccessTokenMock).toBeCalledWith(expectedReqOptions);
   });
 
   test('loginRegisteredUserB2C stops when authenticateCustomer returns 400', async () => {
@@ -351,7 +385,7 @@ describe('Registered B2C user flow', () => {
     ).resolves.not.toThrow(ResponseError);
   });
 
-  test('uses auth code and code verifier to generate JWT', async () => {
+  test('uses auth code and code verifier to generate JWT with public client', async () => {
     // slasClient is copied and tries to make an actual API call
     const mockSlasClient = createMockSlasClient();
     const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
@@ -370,21 +404,66 @@ describe('Registered B2C user flow', () => {
 });
 
 describe('Refresh Token', () => {
-  const expectedBody = {
-    body: {
-      client_id: 'client_id',
-      channel_id: 'site_id',
-      grant_type: 'refresh_token',
-      refresh_token: 'refresh_token',
-    },
-  };
-
-  test('refreshes the token', () => {
+  test('refreshes the token with slas public client', () => {
+    const expectedBody = {
+      body: {
+        client_id: 'client_id',
+        channel_id: 'site_id',
+        grant_type: 'refresh_token',
+        refresh_token: 'refresh_token',
+      },
+    };
     const token = slasHelper.refreshAccessToken(
       createMockSlasClient(),
       parameters
     );
     expect(getAccessTokenMock).toBeCalledWith(expectedBody);
+    expect(token).toStrictEqual(expectedTokenResponse);
+  });
+
+  test('refreshes the token with slas private client', () => {
+    const expectedReqOpts = {
+      headers: {
+        Authorization: `Basic ${stringToBase64(
+          `client_id:${credentialsPrivate.clientSecret}`
+        )}`,
+      },
+      body: {
+        grant_type: 'refresh_token',
+        refresh_token: parameters.refreshToken,
+      },
+    };
+    const token = slasHelper.refreshAccessToken(
+      createMockSlasClient(),
+      parameters,
+      {
+        clientSecret: credentialsPrivate.clientSecret,
+      }
+    );
+    expect(getAccessTokenMock).toBeCalledWith(expectedReqOpts);
+    expect(token).toStrictEqual(expectedTokenResponse);
+  });
+
+  test('refreshes the token warn users about using slas private client on', () => {
+    const expectedReqOpts = {
+      headers: {
+        Authorization: `Basic ${stringToBase64(
+          `client_id:${credentialsPrivate.clientSecret}`
+        )}`,
+      },
+      body: {
+        grant_type: 'refresh_token',
+        refresh_token: parameters.refreshToken,
+      },
+    };
+    const token = slasHelper.refreshAccessToken(
+      createMockSlasClient(),
+      parameters,
+      {
+        clientSecret: credentialsPrivate.clientSecret,
+      }
+    );
+    expect(getAccessTokenMock).toBeCalledWith(expectedReqOpts);
     expect(token).toStrictEqual(expectedTokenResponse);
   });
 });
