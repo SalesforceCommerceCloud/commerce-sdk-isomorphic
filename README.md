@@ -30,6 +30,11 @@ npm install commerce-sdk-isomorphic
 
 
 ### Configure the Isomorphic SDK
+**Note**
+You will see warning about using private helpers like this
+'This function can run on client-side. You are potentially exposing SLAS secret on browser. Make sure to keep it safe and secure!';. 
+The reason is because commerce-sdk-isomophic runs on both server and client. This warning is to remind developers to always keep their secret safe 
+and avoid expose it to client side
 
 ```javascript
 /**
@@ -57,6 +62,12 @@ const shopperLogin = new ShopperLogin(config);
 const {access_token, refresh_token} = await helpers.loginGuestUser(
   shopperLogin,
   {redirectURI: `${config.proxy}/callback`} // Callback URL must be configured in SLAS Admin
+);
+
+// Execute Private Client OAuth with PKCE to acquire guest tokens
+const {access_token, refresh_token} = await helpers.loginGuestUserPrivate(
+  shopperLogin,
+  {}, {clientSecret: 'slas-client-secret'}
 );
 
 const shopperSearch = new ShopperSearch({

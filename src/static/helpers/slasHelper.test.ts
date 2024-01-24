@@ -308,6 +308,8 @@ describe('Registered B2C user flow', () => {
         code_verifier: expect.stringMatching(/./) as string,
         grant_type: 'authorization_code_pkce',
         redirect_uri: 'redirect_uri',
+        channel_id: 'site_id',
+        organizationId: 'organization_id',
         usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
       },
     };
@@ -430,29 +432,8 @@ describe('Refresh Token', () => {
       },
       body: {
         grant_type: 'refresh_token',
-        refresh_token: parameters.refreshToken,
-      },
-    };
-    const token = slasHelper.refreshAccessToken(
-      createMockSlasClient(),
-      parameters,
-      {
-        clientSecret: credentialsPrivate.clientSecret,
-      }
-    );
-    expect(getAccessTokenMock).toBeCalledWith(expectedReqOpts);
-    expect(token).toStrictEqual(expectedTokenResponse);
-  });
-
-  test('refreshes the token warn users about using slas private client on', () => {
-    const expectedReqOpts = {
-      headers: {
-        Authorization: `Basic ${stringToBase64(
-          `client_id:${credentialsPrivate.clientSecret}`
-        )}`,
-      },
-      body: {
-        grant_type: 'refresh_token',
+        client_id: 'client_id',
+        channel_id: 'site_id',
         refresh_token: parameters.refreshToken,
       },
     };

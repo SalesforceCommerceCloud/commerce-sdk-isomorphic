@@ -157,7 +157,6 @@ export async function authorize(
  * @param credentials - client secret used for authentication
  * @param credentials.clientSecret - secret associated with client ID
  * @param parameters - parameters to pass in the API calls.
- * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @returns TokenResponse
  */
@@ -169,7 +168,6 @@ export async function loginGuestUserPrivate(
     siteId: string;
   }>,
   parameters: {
-    redirectURI: string;
     usid?: string;
   },
   credentials: {
@@ -246,7 +244,7 @@ export async function loginGuestUser(
  * @param credentials - the id and password and clientSecret (if applicable) to login with.
  * @param credentials.username - the id of the user to login with.
  * @param credentials.password - the password of the user to login with.
- * @param credentials.clientSecret - secret associated with client ID
+ * @param credentials.clientSecret? - secret associated with client ID
  * @param parameters - parameters to pass in the API calls.
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
@@ -314,6 +312,16 @@ export async function loginRegisteredUserB2C(
   }
 
   const authResponse = getCodeAndUsidFromUrl(redirectUrlString);
+  const tokenBody = {
+    client_id: slasClient.clientConfig.parameters.clientId,
+    channel_id: slasClient.clientConfig.parameters.siteId,
+    code: authResponse.code,
+    code_verifier: codeVerifier,
+    grant_type: 'authorization_code_pkce',
+    organizationId: slasClient.clientConfig.parameters.organizationId,
+    redirect_uri: parameters.redirectURI,
+    usid: authResponse.usid,
+  };
   // using slas private client
   if (credentials.clientSecret) {
     /* istanbul ignore next */
@@ -331,30 +339,11 @@ export async function loginRegisteredUserB2C(
       headers: {
         Authorization: authHeaderIdSecret,
       },
-      body: {
-        grant_type: 'authorization_code_pkce',
-        code_verifier: codeVerifier,
-        code: authResponse.code,
-        client_id: slasClient.clientConfig.parameters.clientId,
-        redirect_uri: parameters.redirectURI,
-        usid: authResponse.usid,
-      },
+      body: tokenBody,
     };
     return slasClient.getAccessToken(optionsToken);
   }
-
   // default is to use slas public client
-  const tokenBody = {
-    client_id: slasClient.clientConfig.parameters.clientId,
-    channel_id: slasClient.clientConfig.parameters.siteId,
-    code: authResponse.code,
-    code_verifier: codeVerifier,
-    grant_type: 'authorization_code_pkce',
-    organizationId: slasClient.clientConfig.parameters.organizationId,
-    redirect_uri: parameters.redirectURI,
-    usid: authResponse.usid,
-  };
-
   return slasClient.getAccessToken({body: tokenBody});
 }
 
@@ -362,7 +351,6 @@ export async function loginRegisteredUserB2C(
  * Exchange a refresh token for a new access token.
  * @param slasClient a configured instance of the ShopperLogin SDK client.
  * @param parameters - parameters to pass in the API calls.
- * @param parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
  * @param parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
  * @param credentials - the clientSecret (if applicable) to login with.
  * @param credentials.clientSecret - secret associated with client ID
@@ -378,6 +366,13 @@ export function refreshAccessToken(
   parameters: {refreshToken: string},
   credentials?: {clientSecret?: string}
 ): Promise<TokenResponse> {
+  const body = {
+    grant_type: 'refresh_token',
+    refresh_token: parameters.refreshToken,
+    client_id: slasClient.clientConfig.parameters.clientId,
+    channel_id: slasClient.clientConfig.parameters.siteId,
+  };
+
   if (credentials && credentials.clientSecret) {
     /* istanbul ignore next */
     if (isBrowser) {
@@ -392,20 +387,10 @@ export function refreshAccessToken(
       headers: {
         Authorization: authorization,
       },
-      body: {
-        grant_type: 'refresh_token',
-        refresh_token: parameters.refreshToken,
-      },
+      body,
     };
     return slasClient.getAccessToken(options);
   }
-
-  const body = {
-    grant_type: 'refresh_token',
-    refresh_token: parameters.refreshToken,
-    client_id: slasClient.clientConfig.parameters.clientId,
-    channel_id: slasClient.clientConfig.parameters.siteId,
-  };
 
   return slasClient.getAccessToken({body});
 }
