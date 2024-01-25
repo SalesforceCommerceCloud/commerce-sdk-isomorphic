@@ -30,11 +30,7 @@ npm install commerce-sdk-isomorphic
 
 
 ### Configure the Isomorphic SDK
-**Note**
-You will see warning about using private helpers like this
-'This function can run on client-side. You are potentially exposing SLAS secret on browser. Make sure to keep it safe and secure!';. 
-The reason is because commerce-sdk-isomophic runs on both server and client. This warning is to remind developers to always keep their secret safe 
-and avoid expose it to client side
+
 
 ```javascript
 /**
@@ -65,10 +61,11 @@ const {access_token, refresh_token} = await helpers.loginGuestUser(
 );
 
 // Execute Private Client OAuth with PKCE to acquire guest tokens
-const {access_token, refresh_token} = await helpers.loginGuestUserPrivate(
-  shopperLogin,
-  {}, {clientSecret: 'slas-client-secret'}
-);
+// ***WARNING*** Be cautious about using this function in the browser as you may end up exposing your client secret
+// const {access_token, refresh_token} = await helpers.loginGuestUserPrivate(
+//   shopperLogin,
+//   {}, {clientSecret: 'slas-client-secret'}
+// );
 
 const shopperSearch = new ShopperSearch({
   ...config,
@@ -123,11 +120,16 @@ _headers:_ A collection of key/value string pairs representing additional header
 
 _throwOnBadResponse:_ Default value is false. When set to true, the SDK throws an Error on responses with statuses that are not 2xx or 304.
 
-### Public Client Shopper Login helpers
+### Client Shopper Login helpers
 
 A collection of helper functions are available in this SDK to simplify [Public
 Client Shopper Login OAuth
 flows](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary). See sample code above for guest login.
+
+**Note**
+If you use the SLAS private client helper functions in the browser, a warning will be displayed:
+`This function can run on client-side. You are potentially exposing SLAS secret on browser. Make sure to keep it safe and secure!`
+The reason is because commerce-sdk-isomophic runs on both server and client. This warning is to remind developers to always keep their secret safe and avoid expose it to client side
 
 ## License Information
 
