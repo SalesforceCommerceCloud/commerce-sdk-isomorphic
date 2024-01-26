@@ -16,9 +16,6 @@ import {
 } from '../../lib/shopperLogin';
 import ResponseError from '../responseError';
 
-const warningSlasSecretMsg =
-  'This function can run on client-side. You are potentially exposing SLAS secret on browser. Make sure to keep it safe and secure!';
-
 export const stringToBase64 = isBrowser
   ? btoa
   : (unencoded: string): string => Buffer.from(unencoded).toString('base64');
@@ -152,7 +149,7 @@ export async function authorize(
 
 /**
  * A single function to execute the ShopperLogin Private Client Guest Login as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-private-client.html).
- *
+ * **Note**: this func can run on client side. Only use this one when the slas client secret is secured.
  * @param slasClient - a configured instance of the ShopperLogin SDK client
  * @param credentials - client secret used for authentication
  * @param credentials.clientSecret - secret associated with client ID
@@ -174,12 +171,6 @@ export async function loginGuestUserPrivate(
     clientSecret: string;
   }
 ): Promise<TokenResponse> {
-  /* istanbul ignore next */
-  if (isBrowser) {
-    // we intentionally have warning here
-    // eslint-disable-next-line
-    console.warn(warningSlasSecretMsg);
-  }
   const authorization = `Basic ${stringToBase64(
     `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
   )}`;
@@ -240,6 +231,7 @@ export async function loginGuestUser(
 
 /**
  * A single function to execute the ShopperLogin Public Client Registered User B2C Login with proof key for code exchange flow as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary).
+ * **Note**: this func can run on client side. Only use private slas when the slas client secret is secured.
  * @param slasClient a configured instance of the ShopperLogin SDK client.
  * @param credentials - the id and password and clientSecret (if applicable) to login with.
  * @param credentials.username - the id of the user to login with.
@@ -324,13 +316,6 @@ export async function loginRegisteredUserB2C(
   };
   // using slas private client
   if (credentials.clientSecret) {
-    /* istanbul ignore next */
-    if (isBrowser) {
-      // we intentionally have warning here
-      // eslint-disable-next-line
-      console.warn(warningSlasSecretMsg);
-    }
-
     const authHeaderIdSecret = `Basic ${stringToBase64(
       `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
     )}`;
@@ -349,6 +334,7 @@ export async function loginRegisteredUserB2C(
 
 /**
  * Exchange a refresh token for a new access token.
+ * **Note**: this func can run on client side. Only use private slas when the slas client secret is secured.
  * @param slasClient a configured instance of the ShopperLogin SDK client.
  * @param parameters - parameters to pass in the API calls.
  * @param parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
@@ -374,12 +360,6 @@ export function refreshAccessToken(
   };
 
   if (credentials && credentials.clientSecret) {
-    /* istanbul ignore next */
-    if (isBrowser) {
-      // we intentionally have warning here
-      // eslint-disable-next-line
-      console.warn(warningSlasSecretMsg);
-    }
     const authorization = `Basic ${stringToBase64(
       `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
     )}`;
