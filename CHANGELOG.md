@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v1.10.5
+
+- Support SLAS private client
+
 ## v1.10.4
 
 #### Bug fixes
