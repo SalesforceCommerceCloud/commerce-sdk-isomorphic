@@ -31,6 +31,7 @@ npm install commerce-sdk-isomorphic
 
 ### Configure the Isomorphic SDK
 
+
 ```javascript
 /**
  * Configure required parameters
@@ -58,6 +59,13 @@ const {access_token, refresh_token} = await helpers.loginGuestUser(
   shopperLogin,
   {redirectURI: `${config.proxy}/callback`} // Callback URL must be configured in SLAS Admin
 );
+
+// Execute Private Client OAuth with PKCE to acquire guest tokens
+// ***WARNING*** Be cautious about using this function in the browser as you may end up exposing your client secret, only use it when you know your slas client secret is secured
+// const {access_token, refresh_token} = await helpers.loginGuestUserPrivate(
+//   shopperLogin,
+//   {}, {clientSecret: 'slas-client-secret'}
+// );
 
 const shopperSearch = new ShopperSearch({
   ...config,
@@ -112,11 +120,14 @@ _headers:_ A collection of key/value string pairs representing additional header
 
 _throwOnBadResponse:_ Default value is false. When set to true, the SDK throws an Error on responses with statuses that are not 2xx or 304.
 
-### Public Client Shopper Login helpers
+### Client Shopper Login helpers
 
 A collection of helper functions are available in this SDK to simplify [Public
 Client Shopper Login OAuth
 flows](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary). See sample code above for guest login.
+
+**Note**
+If you use the SLAS private client helper functions in the browser, making sure that your slas client secret are secured since funcs can run in client-side.
 
 ## License Information
 
