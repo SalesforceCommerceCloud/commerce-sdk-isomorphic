@@ -61,7 +61,7 @@ const {access_token, refresh_token} = await helpers.loginGuestUser(
 );
 
 // Execute Private Client OAuth with PKCE to acquire guest tokens
-// ***WARNING*** Be cautious about using this function in the browser as you may end up exposing your client secret
+// ***WARNING*** Be cautious about using this function in the browser as you may end up exposing your client secret, only use it when you know your slas client secret is secured
 // const {access_token, refresh_token} = await helpers.loginGuestUserPrivate(
 //   shopperLogin,
 //   {}, {clientSecret: 'slas-client-secret'}
@@ -127,9 +127,7 @@ Client Shopper Login OAuth
 flows](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary). See sample code above for guest login.
 
 **Note**
-If you use the SLAS private client helper functions in the browser, a warning will be displayed:
-`This function can run on client-side. You are potentially exposing SLAS secret on browser. Make sure to keep it safe and secure!`
-The reason is because commerce-sdk-isomophic runs on both server and client. This warning is to remind developers to always keep their secret safe and avoid expose it to client side
+If you use the SLAS private client helper functions in the browser, making sure that your slas client secret are secured since funcs can run in client-side.
 
 ## License Information
 
