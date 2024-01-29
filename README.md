@@ -1,7 +1,5 @@
 # commerce-sdk-isomorphic
 
-[![CircleCI][circleci-image]][circleci-url]
-
 The Salesforce Commerce SDK (Isomorphic) allows easy interaction with the B2C Commerce platform’s Shopper APIs on the Node.js runtime and works both in browsers and Node applications. For a Node-based SDK that can access the Admin APIs in addition to the Shopper APIs, see the main [Commerce SDK](https://github.com/SalesforceCommerceCloud/commerce-sdk). 
 
 ## Getting Started
@@ -61,10 +59,11 @@ const {access_token, refresh_token} = await helpers.loginGuestUser(
 );
 
 // Execute Private Client OAuth with PKCE to acquire guest tokens
-// ***WARNING*** Be cautious about using this function in the browser as you may end up exposing your client secret, only use it when you know your slas client secret is secured
+// ***WARNING*** Be cautious about using this function in the browser as you may end up exposing your client secret
+// only use it when you know your slas client secret is secured
 // const {access_token, refresh_token} = await helpers.loginGuestUserPrivate(
 //   shopperLogin,
-//   {}, {clientSecret: 'slas-client-secret'}
+//   {}, {clientSecret: '<your-slas-client-secret>'}
 // );
 
 const shopperSearch = new ShopperSearch({
@@ -120,20 +119,15 @@ _headers:_ A collection of key/value string pairs representing additional header
 
 _throwOnBadResponse:_ Default value is false. When set to true, the SDK throws an Error on responses with statuses that are not 2xx or 304.
 
-### Client Shopper Login helpers
+### Public/Private Client Shopper Login (SLAS) helpers
 
-A collection of helper functions are available in this SDK to simplify [Public
+A collection of helper functions are available in this SDK to simplify [Public/Private
 Client Shopper Login OAuth
 flows](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary). See sample code above for guest login.
 
-**Note**
-If you use the SLAS private client helper functions in the browser, making sure that your slas client secret are secured since funcs can run in client-side.
+**⚠️ WARNING ⚠️**
+Users should be extremely cautious about using the SLAS private client helper functions in the browser as it can expose your client secret. Ensure that your client secret is secured before running the function client side.
 
 ## License Information
 
 The Commerce SDK Isomorphic is licensed under BSD-3-Clause license. See the [license](./LICENSE.txt) for details.
-
-<!-- Markdown link & img dfn's -->
-
-[circleci-image]: https://circleci.com/gh/SalesforceCommerceCloud/commerce-sdk-isomorphic.svg?style=svg&circle-token=379eaa6f00e0840e10dd80585b2b045d02a8f3b7
-[circleci-url]: https://circleci.com/gh/SalesforceCommerceCloud/commerce-sdk-isomorphic

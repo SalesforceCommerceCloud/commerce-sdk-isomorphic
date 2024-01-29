@@ -6,6 +6,9 @@
   "assetId": "shopper-experience",
   "version": "1.0.4",
   "categories": {
+    "CC API Family": [
+      "Experience"
+    ],
     "CC API Visibility": [
       "External"
     ]

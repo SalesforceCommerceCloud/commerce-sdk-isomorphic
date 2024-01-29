@@ -3,7 +3,7 @@
 usage: This library provides all shopper baskets orders data types
 
 uses:
-  CommerceCloudStandards: /exchange_modules/893f605e-10e2-423a-bdb4-f952f56eb6d8/commerce-cloud-standards/1.0.26/commerce-cloud-standards.raml
+  CommerceCloudStandards: /exchange_modules/893f605e-10e2-423a-bdb4-f952f56eb6d8/commerce-cloud-standards/1.0.27/commerce-cloud-standards.raml
 
 types:
   Basket:
@@ -15,29 +15,29 @@ types:
       adjustedMerchandizeTotalTax?:
         description: |-
           The total tax on products in the shipment, including item-level price adjustments but not
-          including service charges such as shipping. If the Discount Taxation preference is set to Tax 
-          Products and Shipping Only Based on Adjusted Price, this amount also includes prorated 
-          order-level price adjustments.
+          including service charges such as shipping. If the Discount Taxation preference is set to Tax
+          Products and Shipping Only Based on Adjusted Price, this amount also includes prorated
+          order-level price adjustments. It is read only.
         type: number
         format: double
         example:
            4.95
       adjustedShippingTotalTax?:
         description: |-
-          The total tax on shipping charges in the shipment, including shipping price adjustments.
+          The total tax on shipping charges in the shipment, including shipping price adjustments. It is read only.
         type: number
         format: double
         example:
           0.30
       agentBasket?:
         description: |-
-          Is the basket created by an agent?
+          Is the basket created by an agent? It is read only.
         type: boolean
         example:
           true
       basketId?:
         description: |-
-          The unique identifier for the basket.
+          The unique identifier for the basket. It is read only.
         type: string
         example:
           "e78aa5646a8efebdd9cdd38be7"
@@ -53,7 +53,7 @@ types:
           type: BonusDiscountLineItem
       channelType?:
         description: |-
-          The sales channel.
+          The sales channel. It is read only.
         type: string
         enum:
           - storefront
@@ -83,7 +83,7 @@ types:
           type: CouponItem
       creationDate?:
         description: |-
-          The timestamp when the basket was created.
+          The timestamp when the basket was created. It is read only.
         type: datetime
         example:
           2015-05-19T15:23:18.000Z
@@ -103,15 +103,23 @@ types:
         type: array
         items:
           type: GiftCertificateItem
+      groupedTaxItems?:
+        description: |-
+          Tax values that are summed and grouped based on the tax rate. The tax totals of the line items with the same
+          tax rate will be grouped together and summed up. This will not affect calculation in any way. It is read only.
+        type:
+          array
+        items:
+          type: GroupedTaxItem
       inventoryReservationExpiry?:
         description: |-
-          The expiration datetime of the inventory reservation.
+          The expiration datetime of the inventory reservation. It is read only.
         type: datetime
         example:
           2015-05-19T15:30:18.000Z
       lastModified?:
         description: |-
-          The timestamp when the basket was last modified.
+          The timestamp when the basket was last modified. It is read only.
         type: datetime
         example:
           2015-05-19T15:25:18.000Z
@@ -120,7 +128,7 @@ types:
           The total products tax in the purchase currency.
           Merchandise total price represents the sum of the product prices before
           services (such as shipping) or adjustments from promotions have
-          been added.
+          been added. It is read only.
         type: number
         format: double
         example:
@@ -137,7 +145,7 @@ types:
           type: PriceAdjustment
       orderTotal?:
         description: |-
-          The total price, including products, shipping and tax.
+          The total price, including products, shipping and tax. It is read only.
         type: number
         format: double
         example:
@@ -156,8 +164,8 @@ types:
           type: ProductItem
       productSubTotal?:
         description: |-
-          The total price of all products including item-level adjustments, but not including order-level adjustments or shipping 
-          charges. If the taxation policy is net, it doesn't include tax. If the taxation policy is gross, it includes tax.
+          The total price of all products including item-level adjustments, but not including order-level adjustments or shipping
+          charges. If the taxation policy is net, it doesn't include tax. If the taxation policy is gross, it includes tax. It is read only.
         type: number
         format: double
         example:
@@ -165,7 +173,7 @@ types:
       productTotal?:
         description: |-
           The total price of all products including adjustments, but not including shipping charges. If the taxation policy is net,
-          it doesn't include tax. If the taxation policy is gross, it includes tax.
+          it doesn't include tax. If the taxation policy is gross, it includes tax. It is read only.
         type: number
         format: double
         example:
@@ -185,40 +193,52 @@ types:
       shippingTotal?:
         description: |-
           The total price of all shipping charges, including shipping adjustments. If the taxation policy is net, it doesn't
-          include tax. If the taxation policy is gross, it includes tax.
+          include tax. If the taxation policy is gross, it includes tax. It is read only.
         type: number
         format: double
         example:
           5.99
       shippingTotalTax?:
         description: |-
-          The total tax on all shipping charges, not including shipping adjustments.
+          The total tax on all shipping charges, not including shipping adjustments. It is read only.
         type: number
         format: double
         example:
           0.30
       sourceCode?:
         description: |-
-          The source code assigned to the basket.
+          The source code assigned to the basket. It is read only.
         type: string
         example:
           "OUTDOOR1"
       taxTotal?:
         description: |-
-          The total tax amount.
+          The total tax amount. It is read only.
         type: number
         format: double
         example:
           5.25
       taxation?:
         description: |-
-          The taxation policy (gross or net).
+          The taxation policy (gross or net). It is read only.
         type: string
         enum:
           - gross
           - net
         example:
           "net"
+      taxRoundedAtGroup?:
+        description: |-
+          If the tax is rounded at group level then this is set to true, false if the tax is rounded at item or unit level. It is read only.
+        type: boolean
+        example:
+          true
+      temporaryBasket?:
+        description: |-
+          Is the basket created a temporary basket? It is read only.
+        type: boolean
+        example:
+          true
   BasketPaymentInstrumentRequest:
     description: |-
       Document representing a basket payment instrument request.
@@ -263,13 +283,13 @@ types:
     properties:
       baskets:
         description: |-
-          The list of baskets for a customer.
+          The list of baskets for a customer. It is read only.
         type: array
         items:
           type: Basket
       total:
         description: |-
-          The total number of baskets.
+          The total number of baskets. It is read only.
         type: integer
         format: int32
   BonusDiscountLineItem:
@@ -292,7 +312,7 @@ types:
           "5ties"
       id?:
         description: |-
-          The ID of the line item.
+          The ID of the line item. It is read only.
         type: string
         example:
           "91f4dd8bfa0653d58b7783b04f"
@@ -322,13 +342,13 @@ types:
           "5ties"
       couponItemId?:
         description: |-
-          The coupon item ID.
+          The coupon item ID. It is read only.
         type: string
         example:
           "d4c9c0141e9c74c150225580f3"
       statusCode?:
         description: |-
-          The status of the coupon item.
+          The status of the coupon item. It is read only.
         type: string
         enum:
           - coupon_code_already_in_basket
@@ -348,7 +368,7 @@ types:
       valid?:
         description: |-
           A flag indicating whether the coupon item is valid. A coupon line item is valid if
-          the status code is "applied" or "no_applicable_promotion".
+          the status code is "applied" or "no_applicable_promotion". It is read only.
         type: boolean
         example:
           true
@@ -360,7 +380,7 @@ types:
     properties:
       customerId?:
         description: |-
-          The customer ID.
+          The customer ID. It is read only.
         maxLength: 100
         type: string
         example:
@@ -392,27 +412,27 @@ types:
     properties:
       amount?:
         description: |-
-          The discount amount for discount types that define specific discount amounts.
+          The discount amount for discount types that define specific discount amounts. It is read only.
         type: number
         format: double
         example:
           130.88
       percentage?:
         description: |-
-          The discount percent for discount types that define percentage discounts.
+          The discount percent for discount types that define percentage discounts. It is read only.
         type: number
         format: double
         example:
           0.19
       priceBookId?:
         description: |-
-          The price book ID that is used with some types.
+          The price book ID that is used with some types. It is read only.
         type: string
         example:
           "usd-sale-prices"
       type:
         description: |-
-          The type of discount.
+          The type of discount. It is read only.
         type: string
         enum:
           - percentage
@@ -428,7 +448,7 @@ types:
           "fixed_price"
   DiscountRequest:
     description: |-
-      Request that represents a discount to be applied to a custom price adjustment. 
+      Request that represents a discount to be applied to a custom price adjustment.
     type:
       CommerceCloudStandards.ClosedObject
     properties:
@@ -467,7 +487,7 @@ types:
           20.00
       giftCertificateItemId?:
         description: |-
-          The item ID.
+          The item ID. It is read only.
         type: string
         example:
           "629dea6e7b61e58da629b57b21"
@@ -503,6 +523,26 @@ types:
         type: string
         example:
           "me"
+  GroupedTaxItem:
+    description: |-
+      Document representing the grouped tax item.
+    type: 
+      CommerceCloudStandards.ClosedObject
+    properties:
+      taxRate?:
+        description: |-
+          The tax rate. It is read only.
+        type: number
+        format: double
+        example: 
+          0.10
+      taxValue?:
+        description: |-
+          The summed up tax total for the tax rate. It is read only.
+        type: number
+        format: double
+        example: 
+          10.03
   Note:
     description: |-
       Document representing a note.
@@ -548,7 +588,7 @@ types:
     properties:
       notes?:
         description: |-
-          The notes.
+          The notes. It is read only.
         type: array
         items:
           type: Note
@@ -561,28 +601,28 @@ types:
     properties:
       adjustedTax?:
         description: |-
-          The tax on the line item, including any adjustments.
+          The tax on the line item, including any adjustments. It is read only.
         type: number
         format: double
         example:
           19.00
       basePrice?:
         description: |-
-          The base price of the line item, which is the unit price not including adjustments. 
-          If the taxation policy is net, it doesn't include tax. If the taxation policy is gross, it includes tax.
+          The base price of the line item, which is the unit price not including adjustments.
+          If the taxation policy is net, it doesn't include tax. If the taxation policy is gross, it includes tax. It is read only.
         type: number
         format: double
         example:
           50.00
       bonusDiscountLineItemId?:
         description: |-
-          The ID of the bonus discount line item this bonus product relates to.
+          The ID of the bonus discount line item this bonus product relates to. It is read only.
         type: string
         example:
           "ba248414e3eee797f062162f8b"
       bonusProductLineItem?:
         description: |-
-          A flag indicating whether the product item is a bonus.
+          A flag indicating whether the product item is a bonus. It is read only.
         type: boolean
         example:
           false
@@ -594,9 +634,9 @@ types:
           type: ProductItem
       gift?:
         description: |-
-          Returns true if the item is a gift.
+          Returns true if the item is a gift. It is read only.
         type: boolean
-        example: 
+        example:
           false
       giftMessage?:
         description: |-
@@ -606,14 +646,14 @@ types:
           "Happy Birthday"
       inventoryId?:
         description: |-
-          The inventory list ID associated with this item.
+          The inventory list ID associated with this item. It is read only.
         maxLength: 256
         type: string
         example:
           "inventory"
       itemId?:
         description: |-
-          The product item ID. Use it to identify this item when updating its quantity or creating a custom price adjustment for it.
+          The product item ID. Use it to identify this item when updating its quantity or creating a custom price adjustment for it. It is read only.
         type: string
         example:
           "430ef5aad3a24de59378458434"
@@ -625,7 +665,7 @@ types:
           "The item text."
       optionId:
         description: |-
-          The ID of the option.
+          The ID of the option. It is read only.
         maxLength: 256
         type: string
         example:
@@ -638,15 +678,15 @@ types:
           type: OptionItem
       optionValueId:
         description: |-
-          The ID of the option value.
+          The ID of the option value. It is read only.
         maxLength: 256
         type: string
         example:
           "000"
       price?:
         description: |-
-          The price of the line item before applying any adjustments. If the taxation policy is net, it doesn't include tax. 
-          If the taxation policy is gross, it includes tax.
+          The price of the line item before applying any adjustments. If the taxation policy is net, it doesn't include tax.
+          If the taxation policy is gross, it includes tax. It is read only.
         type: number
         format: double
         example:
@@ -660,16 +700,16 @@ types:
       priceAfterItemDiscount?:
         description: |-
           The price of the product line item including item-level adjustments, but not including order-level adjustments or
-          shipping charges. If the taxation policy is net, it doesn't include tax. If the taxation policy is gross, it includes tax.
+          shipping charges. If the taxation policy is net, it doesn't include tax. If the taxation policy is gross, it includes tax. It is read only.
         type: number
         format: double
         example:
           50.99
       priceAfterOrderDiscount?:
         description: |-
-          The price of the product line item including item-level adjustments and prorated order-level adjustments, but not 
+          The price of the product line item including item-level adjustments and prorated order-level adjustments, but not
           including shipping charges. If the taxation policy is net, it doesn't include tax. If the taxation policy is gross, it
-          includes tax.
+          includes tax. It is read only.
         type: number
         format: double
         example:
@@ -708,21 +748,21 @@ types:
           "me"
       shippingItemId?:
         description: |-
-          If the product line item has a related shipping item, this value is its ID. A related shipping item represents a 
-          surcharge applied to individual products using a particular shipping method.
+          If the product line item has a related shipping item, this value is its ID. A related shipping item represents a
+          surcharge applied to individual products using a particular shipping method. It is read only.
         type: string
         example:
           "006490dcc338feeafc71c964bf"
       tax?:
         description: |-
-          The tax on the line item before applying any adjustments.
+          The tax on the line item before applying any adjustments. It is read only.
         type: number
         format: double
         example:
           0.00
       taxBasis?:
         description: |-
-          The amount used to calculate the tax for this item.
+          The amount used to calculate the tax for this item. It is read only.
         type: number
         format: double
         example:
@@ -730,12 +770,12 @@ types:
       taxClassId?:
         description: |-
           The tax class ID for the product item, or null
-          if no tax class ID is associated with the product item.
+          if no tax class ID is associated with the product item. It is read only.
         type: string
       taxRate?:
         description: |-
           The tax rate, which is the decimal tax rate to be applied
-          to the product represented by this item.
+          to the product represented by this item. It is read only.
         type: number
         format: double
         example:
@@ -746,15 +786,15 @@ types:
     properties:
       adjustedMerchandizeTotalTax?:
         description: |-
-          The total tax on products in the order, including price adjustments, but not including service charges such as 
-          shipping.
+          The total tax on products in the order, including price adjustments, but not including service charges such as
+          shipping. It is read only.
         type: number
         format: double
         example:
           1.50
       adjustedShippingTotalTax?:
         description: |-
-          The total tax on shipping charges in the order, including shipping price adjustments.
+          The total tax on shipping charges in the order, including shipping price adjustments. It is read only.
         type: number
         format: double
         example:
@@ -765,13 +805,13 @@ types:
         type: OrderAddress
       bonusDiscountLineItems?:
         description: |-
-          The bonus discount line items.
+          The bonus discount line items. It is read only.
         type: array
         items:
           type: BonusDiscountLineItem
       channelType?:
         description: |-
-          The sales channel.
+          The sales channel. It is read only.
         type: string
         enum:
           - storefront
@@ -804,36 +844,36 @@ types:
           "confirmed"
       couponItems?:
         description: |-
-          The coupon items.
+          The coupon items. It is read only.
         type: array
         items:
           type: CouponItem
       createdBy?:
         description: |-
-          This value depends on how the order was created. If a shopper created the order, this value is Customer. 
-          If a job created the order, this value is System. Otherwise, this value is the name of the user who created the order.
+          This value depends on how the order was created. If a shopper created the order, this value is Customer.
+          If a job created the order, this value is System. Otherwise, this value is the name of the user who created the order. It is read only.
         type: string
         example:
           "Customer"
       creationDate?:
         description: |-
-          The timestamp when the order was created.
+          The timestamp when the order was created. It is read only.
         type: datetime
         example:
           2015-05-19T15:23:18.000Z
       currency?:
         description: |-
-          The ISO 4217 mnemonic code of the currency.
+          The ISO 4217 mnemonic code of the currency. It is read only.
         type: string
         example:
           "USD"
       customerInfo?:
         description: |-
-          The customer information for guest or logged-in customers.
+          The customer information for guest or logged-in customers. It is read only.
         type: CustomerInfo
       customerName?:
         description: |-
-          The customer name.
+          The customer name. It is read only.
         type: string
         example:
           "Max Mustermann"
@@ -856,26 +896,26 @@ types:
           "Submitted"
       giftCertificateItems?:
         description: |-
-          The gift certificate line items.
+          The gift certificate line items. It is read only.
         type: array
         items:
           type: GiftCertificateItem
       globalPartyId?:
         description: |-
-          The Customer 360 Global Party ID associated with the shopper.
+          The Customer 360 Global Party ID associated with the shopper. It is read only.
         type: string
         example:
           "GP_1234"
       lastModified?:
         description: |-
-          The timestamp when the order was last modified.
+          The timestamp when the order was last modified. It is read only.
         type: datetime
         example:
           2021-02-25T09:58:08.715Z
       merchandizeTotalTax?:
         description: |-
-          The total products tax in the purchase currency. Merchandise total prices represent the sum of product prices 
-          not including shipping or adjustments.
+          The total products tax in the purchase currency. Merchandise total prices represent the sum of product prices
+          not including shipping or adjustments. It is read only.
         type: number
         format: double
         example:
@@ -892,22 +932,29 @@ types:
           "00000410"
       orderPriceAdjustments?:
         description: |-
-          The order-level price adjustments.
+          The order-level price adjustments. It is read only.
         type: array
         items:
           type: PriceAdjustment
       orderToken?:
         description: |-
           The order token used to secure the lookup of an order on base of the
-          plain order number. The order token contains only URL safe characters.
+          plain order number. The order token contains only URL safe characters. It is read only.
         type: string
       orderTotal?:
         description: |-
-          The total price, including products, shipping, and tax.
+          The total price, including products, shipping, and tax. It is read only.
         type: number
         format: double
         example:
           110.24
+      orderViewCode?:
+        description: |-
+          The order view code used to secure the order lookup of an order using Order Lookup API.
+          The order view code contains only URL safe characters.
+          Warning : Order view code must not be exposed in the URL and must only be displayed to the shopper or sent as an email.
+          Order view code must not be logged in the code. It is read only.
+        type: string
       paymentInstruments?:
         description: |-
           The payment instruments list.
@@ -926,37 +973,37 @@ types:
           "paid"
       productItems?:
         description: |-
-          The product items.
+          The product items. It is read only.
         type: array
         items:
           type: ProductItem
       productSubTotal?:
         description: |-
-          The total price of all products including item-level adjustments, but not including 
-          order-level adjustments or shipping charges. If the taxation policy is net, it doesn't include tax. 
-          If the taxation policy is gross, it includes tax.
+          The total price of all products including item-level adjustments, but not including
+          order-level adjustments or shipping charges. If the taxation policy is net, it doesn't include tax.
+          If the taxation policy is gross, it includes tax. It is read only.
         type: number
         format: double
         example:
           99.00
       productTotal?:
         description: |-
-          The total price of all products in the shipment including item-level adjustments and prorated 
-          order-level adjustments, but not including shipping charges. If the taxation policy is net, 
-          it doesn't include tax. If the taxation policy is gross, it includes tax.
+          The total price of all products in the shipment including item-level adjustments and prorated
+          order-level adjustments, but not including shipping charges. If the taxation policy is net,
+          it doesn't include tax. If the taxation policy is gross, it includes tax. It is read only.
         type: number
         format: double
         example:
           99.00
       shipments?:
         description: |-
-          The shipments.
+          The shipments. It is read only.
         type: array
         items:
           type: Shipment
       shippingItems?:
         description: |-
-          The shipping items.
+          The shipping items. It is read only.
         type: array
         items:
           type: ShippingItem
@@ -972,28 +1019,28 @@ types:
           "shipped"
       shippingTotal?:
         description: |-
-          The total price of all shipping charges, including shipping adjustments. If the taxation policy is net, 
-          it doesn't include tax. If the taxation policy is gross, it includes tax.
+          The total price of all shipping charges, including shipping adjustments. If the taxation policy is net,
+          it doesn't include tax. If the taxation policy is gross, it includes tax. It is read only.
         type: number
         format: double
         example:
           5.99
       shippingTotalTax?:
         description: |-
-          The total tax on all shipping charges, not including shipping adjustments.
+          The total tax on all shipping charges, not including shipping adjustments. It is read only.
         type: number
         format: double
         example:
           0.30
       siteId?:
         description: |-
-          The order's site.
+          The order's site. It is read only.
         type: string
         example:
           "ShoppingSite"
       sourceCode?:
         description: |-
-          The source code assigned to the basket from which this order was created.
+          The source code assigned to the basket from which this order was created. It is read only.
         type: string
         example:
           "OUTDOOR1"
@@ -1012,14 +1059,14 @@ types:
           "created"
       taxTotal?:
         description: |-
-          The total tax amount.
+          The total tax amount. It is read only.
         type: number
         format: double
         example:
           5.25
       taxation?:
         description: |-
-           The taxation policy (gross or net).
+           The taxation policy (gross or net). It is read only.
         type: string
         enum:
           - gross
@@ -1144,6 +1191,22 @@ types:
         type: string
         example:
           "Dr."
+  OrderLookupRequest:
+    description: |-
+      Document representing an order lookup request.
+    type:
+      CommerceCloudStandards.ClosedObject
+    properties:
+      email:
+        description: |-
+          The customer's email address associated with order to be looked up.
+        type: string
+        example:
+          no-reply@salesforce.com
+      orderViewCode:
+        description: |-
+          The order view code associated with the order to be looked up.
+        type: string
   OrderPaymentCardRequest:
     description: |-
       Document representing an order payment card request.
@@ -1169,7 +1232,7 @@ types:
           The month when the payment card expires.
         type: integer
         format: int32
-        example: 
+        example:
           3
       expirationYear?:
         description: |-
@@ -1229,7 +1292,7 @@ types:
           130.88
       authorizationStatus?:
         description: |-
-          The authorization status of the payment transaction.
+          The authorization status of the payment transaction. It is read only.
         type: Status
       bankRoutingNumber?:
         description: |-
@@ -1250,13 +1313,13 @@ types:
         type: PaymentCard
       paymentInstrumentId?:
         description: |-
-          The payment instrument ID.
+          The payment instrument ID. It is read only.
         type: string
         example:
           "ba248424e3eee797f062162f8b"
       paymentMethodId?:
         description: |-
-          The payment method ID.
+          The payment method ID. It is read only.
         maxLength: 256
         type: string
         example:
@@ -1312,14 +1375,14 @@ types:
           "Visa"
       creditCardExpired?:
         description: |-
-          A flag indicating if the credit card is expired.
+          A flag indicating if the credit card is expired. It is read only.
         type: boolean
         example:
           true
       creditCardToken?:
         description: |-
           A credit card token. If a credit card is tokenized, the token can be used to look up the credit card data
-          in the token store.
+          in the token store. It is read only.
         type: string
         example:
           "E67TY8GQ27X"
@@ -1360,7 +1423,7 @@ types:
           "*********4422"
       numberLastDigits?:
         description: |-
-          The last digits of the payment card number.
+          The last digits of the payment card number. It is read only.
         maxLength: 4000
         type: string
         example:
@@ -1389,45 +1452,45 @@ types:
     properties:
       cardType?:
         description: |-
-          The payment card type.
+          The payment card type. It is read only.
         type: string
         example:
           "Visa"
       checksumVerificationEnabled?:
         description: |-
-          A flag indicating whether the card number is verified using the Luhn checksum algorithm.
+          A flag indicating whether the card number is verified using the Luhn checksum algorithm. It is read only.
         type: boolean
         example:
           true
       description?:
         description: |-
-          The localized description of the payment card.
+          The localized description of the payment card. It is read only.
         type: string
       image?:
         description: |-
-          The URL to the image that represents the payment card.
+          The URL to the image that represents the payment card. It is read only.
         type: string
       name?:
         description: |-
-          The localized name of the payment card.
+          The localized name of the payment card. It is read only.
         type: string
       numberLengths?:
         description: |-
           The sorted list of number lengths (individual lengths as well as
-          length ranges).
+          length ranges). It is read only.
         type: array
         items:
           type: string
       numberPrefixes?:
         description: |-
           The sorted list of number prefixes (individual prefixes as well
-          as prefix ranges).
+          as prefix ranges). It is read only.
         type: array
         items:
           type: string
       securityCodeLength?:
         description: |-
-          The length of the security code for this card.
+          The length of the security code for this card. It is read only.
         type: integer
         format: int32
   PaymentMethod:
@@ -1438,30 +1501,30 @@ types:
     properties:
       cards?:
         description: |-
-          The sorted array of payment cards (included only when the system payment method is CREDIT_CARD).
+          The sorted array of payment cards (included only when the system payment method is CREDIT_CARD). It is read only.
         type: array
         items:
           type: PaymentCardSpec
       description?:
         description: |-
-          The localized description of the payment method or card.
+          The localized description of the payment method or card. It is read only.
         type: string
       id:
         description: |-
-          The ID of the payment method or card.
+          The ID of the payment method or card. It is read only.
         maxLength: 256
         type: string
       image?:
         description: |-
-          The URL to the image that represents the payment method or card.
+          The URL to the image that represents the payment method or card. It is read only.
         type: string
       name?:
         description: |-
-          The localized name of the payment method or card.
+          The localized name of the payment method or card. It is read only.
         type: string
       paymentProcessorId?:
         description: |-
-          The payment processor ID.
+          The payment processor ID. It is read only. It is read only.
         type: string
   PaymentMethodResult:
     description: |-
@@ -1469,7 +1532,7 @@ types:
     properties:
       applicablePaymentMethods?:
         description: |-
-          The applicable payment methods.
+          The applicable payment methods. It is read only.
         type: array
         items:
           type: PaymentMethod
@@ -1487,27 +1550,27 @@ types:
         type: Discount
       couponCode?:
         description: |-
-          The coupon code of the coupon this price adjustment is based on. For adjustments 
-          not based on a coupon, this value is null.
+          The coupon code of the coupon this price adjustment is based on. For adjustments
+          not based on a coupon, this value is null. It is read only.
         type: string
         example:
           "5ties"
       createdBy?:
         description: |-
-          The user who created the price adjustment.
+          The user who created the price adjustment. It is read only.
         type: string
         example:
           "Support"
       creationDate?:
         description: |-
-          The timestamp when the price adjustment was created.
+          The timestamp when the price adjustment was created. It is read only.
         type: datetime
         example:
           2015-05-19T15:23:18.000Z
       custom?:
         description: |-
-          A flag indicating whether this price adjustment was created by custom logic. This 
-          flag is set to true unless the price adjustment was created by the promotion 
+          A flag indicating whether this price adjustment was created by custom logic. This
+          flag is set to true unless the price adjustment was created by the promotion
           engine.
         type: boolean
         example:
@@ -1518,7 +1581,7 @@ types:
         type: string
       lastModified?:
         description: |-
-          The timestamp when the price adjustment was last modified.
+          The timestamp when the price adjustment was last modified. It is read only.
         type: datetime
         example:
           2021-02-25T09:58:08.715Z
@@ -1532,14 +1595,14 @@ types:
           true
       price?:
         description: |-
-          The adjustment price.
+          The adjustment price. It is read only.
         type: number
         format: double
         example:
           120.88
       priceAdjustmentId?:
         description: |-
-          The price adjustment ID.
+          The price adjustment ID. It is read only.
         type: string
         example:
           "ba248424e3eee797f062161f8b"
@@ -1553,7 +1616,7 @@ types:
         type: string
       promotionLink?:
         description: |-
-          The URL addressing the related promotion.
+          The URL addressing the related promotion. It is read only.
         type: string
       reasonCode?:
         description: |-
@@ -1584,7 +1647,7 @@ types:
       level:
         description: |-
           The level at which the adjustment is applied.
-          - `order` indicates that the price adjustment should be added directly to basket. 
+          - `order` indicates that the price adjustment should be added directly to basket.
           - `product` indicates that the price adjustment should be added to the product item.
           - `shipping` indicates that the price adjustment is added to the shipping item.
         type: string
@@ -1652,23 +1715,23 @@ types:
     properties:
       adjustedTax?:
         description: |-
-          The tax on the line item, including any adjustments.
+          The tax on the line item, including any adjustments. It is read only.
         type: number
         format: double
         example:
           19.00
       basePrice?:
         description: |-
-          The base price of the line item, which is the unit price not including 
+          The base price of the line item, which is the unit price not including
           adjustments. If the taxation policy is net, it doesn't include tax. If the
-          taxation policy is gross, it includes tax.
+          taxation policy is gross, it includes tax. It is read only.
         type: number
         format: double
         example:
           130.00
       bonusDiscountLineItemId?:
         description: |-
-          The ID of the bonus discount line item this bonus product relates to.
+          The ID of the bonus discount line item this bonus product relates to. It is read only.
         type: string
       bonusProductLineItem?:
         description: |-
@@ -1684,7 +1747,7 @@ types:
           type: ProductItem
       gift?:
         description: |-
-          Returns true if the item is a gift.
+          Returns true if the item is a gift. It is read only.
         type: boolean
         example:
           true
@@ -1703,8 +1766,8 @@ types:
           "inventory"
       itemId?:
         description: |-
-          The product item ID. Use it to identify this item when updating its quantity or 
-          creating a custom price adjustment for it.
+          The product item ID. Use it to identify this item when updating its quantity or
+          creating a custom price adjustment for it. It is read only.
         type: string
         example:
           "430ef5aad3a24de59378458434"
@@ -1722,7 +1785,7 @@ types:
         description: |-
           The price of the line item before applying any adjustments. If the line item is based on net pricing
           then the net price is returned. If the line item is based on gross
-          pricing then the gross price is returned.
+          pricing then the gross price is returned. It is read only.
         type: number
         format: double
       priceAdjustments?:
@@ -1733,9 +1796,9 @@ types:
           type: PriceAdjustment
       priceAfterItemDiscount?:
         description: |-
-          The price of the product line item including item-level adjustments, but not 
-          including order-level adjustments or shipping charges. If the taxation policy is 
-          net, it doesn't include tax. If the taxation policy is gross, it includes tax.
+          The price of the product line item including item-level adjustments, but not
+          including order-level adjustments or shipping charges. If the taxation policy is
+          net, it doesn't include tax. If the taxation policy is gross, it includes tax. It is read only.
         type: number
         format: double
         example:
@@ -1743,9 +1806,9 @@ types:
       priceAfterOrderDiscount?:
         description: |-
           The price of the product line item including item-level adjustments and prorated
-          order-level adjustments, but not including shipping charges. If the taxation 
-          policy is net, it doesn't include tax. If the taxation policy is gross, it 
-          includes tax.
+          order-level adjustments, but not including shipping charges. If the taxation
+          policy is net, it doesn't include tax. If the taxation policy is gross, it
+          includes tax. It is read only.
         type: number
         format: double
         example:
@@ -1785,22 +1848,22 @@ types:
           "me"
       shippingItemId?:
         description: |-
-          If the product line item has a related shipping item, this value is its ID. A 
+          If the product line item has a related shipping item, this value is its ID. A
           related shipping item represents a surcharge applied to individual products using
-          a particular shipping method.
+          a particular shipping method. It is read only.
         type: string
         example:
           "006490dcc338feeafc71c964bf"
       tax?:
         description: |-
-          The tax for the product item, not including price adjustments.
+          The tax for the product item, not including price adjustments. It is read only.
         type: number
         format: double
         example:
           0.30
       taxBasis?:
         description: |-
-          The price used to calculate the tax for this product item.
+          The price used to calculate the tax for this product item. It is read only.
         type: number
         format: double
         example:
@@ -1808,12 +1871,12 @@ types:
       taxClassId?:
         description: |-
           The tax class ID for the product item, or null
-          if no tax class ID is associated with the product item.
+          if no tax class ID is associated with the product item. It is read only.
         type: string
       taxRate?:
         description: |-
           The tax rate, which is the decimal tax rate to be applied
-          to the product represented by this item.
+          to the product represented by this item. It is read only.
         type: number
         format: double
         example:
@@ -1826,7 +1889,7 @@ types:
     properties:
       id:
         description: |-
-          The ID of the product list item.
+          The ID of the product list item. It is read only.
         type: string
         example:
           "ba248424e3fee797f062162f8b"
@@ -1841,7 +1904,7 @@ types:
         type: ProductDetailsLink
       productList?:
         description: |-
-          A reference to the associated product list.
+          A reference to the associated product list. It is read only.
         type: ProductListLink
       public?:
         type: boolean
@@ -1886,7 +1949,7 @@ types:
       public?:
         description: |-
           A flag indicating whether the owner made this product list available for access
-          by other customers.
+          by other customers. It is read only.
         type: boolean
         example:
           true
@@ -1944,22 +2007,22 @@ types:
       adjustedMerchandizeTotalTax?:
         description: |-
           The total tax on products in the shipment, including item-level price adjustments but not including
-          service charges such as shipping. If the Discount Taxation preference is set to Tax Products and 
-          Shipping Only Based on Adjusted Price, this amount also includes prorated order-level price adjustments.
+          service charges such as shipping. If the Discount Taxation preference is set to Tax Products and
+          Shipping Only Based on Adjusted Price, this amount also includes prorated order-level price adjustments. It is read only.
         type: number
         format: double
         example:
           4.95
       adjustedShippingTotalTax?:
         description: |-
-          The total tax on shipping charges in the shipment, including shipping price adjustments.
+          The total tax on shipping charges in the shipment, including shipping price adjustments. It is read only.
         type: number
         format: double
         example:
           0.30
       gift?:
         description: |-
-          A flag indicating whether the shipment is a gift.
+          A flag indicating whether the shipment is a gift. It is read only.
         type: boolean
         example:
           true
@@ -1971,8 +2034,8 @@ types:
           "Happy Birthday"
       merchandizeTotalTax?:
         description: |-
-          The total tax on products in the shipment, not including price adjustments or service charges such as 
-          shipping.
+          The total tax on products in the shipment, not including price adjustments or service charges such as
+          shipping. It is read only.
         type: number
         format: double
         example:
@@ -1981,16 +2044,16 @@ types:
         description: |-
           The total price of all products in the shipment, including item-level adjustments, but not including
           order-level adjustments or shipping charges. If the taxation policy is net, it doesn't include tax. If
-          the taxation policy is gross, it includes tax.
+          the taxation policy is gross, it includes tax. It is read only.
         type: number
         format: double
         example:
           99.00
       productTotal?:
         description: |-
-          The total price of all products in the shipment including item-level adjustments and prorated 
+          The total price of all products in the shipment including item-level adjustments and prorated
           order-level adjustments, but not including shipping charges. If the taxation policy is net, it doesn't
-          include tax. If the taxation policy is gross, it includes tax.
+          include tax. If the taxation policy is gross, it includes tax. It is read only.
         type: number
         format: double
         example:
@@ -2003,12 +2066,12 @@ types:
           "me"
       shipmentNo?:
         description: |-
-          The shipment number of this shipment. This number is automatically generated.
+          The shipment number of this shipment. This number is automatically generated. It is read only.
         type: string
       shipmentTotal?:
         description: |-
-          The total price of all products in the shipment including item-level adjustments, shipping charges, 
-          and tax.
+          The total price of all products in the shipment including item-level adjustments, shipping charges,
+          and tax. It is read only.
         type: number
         format: double
         example:
@@ -2032,15 +2095,15 @@ types:
           "shipped"
       shippingTotal?:
         description: |-
-          The total price of all shipping charges in the shipment, including shipping adjustments. If the 
-          taxation policy is net, it doesn't include tax. If the taxation policy is gross, it includes tax.
+          The total price of all shipping charges in the shipment, including shipping adjustments. If the
+          taxation policy is net, it doesn't include tax. If the taxation policy is gross, it includes tax. It is read only.
         type: number
         format: double
         example:
           5.99
       shippingTotalTax?:
         description: |-
-          The total tax on shipping charges in the shipment, not including shipping price adjustments.
+          The total tax on shipping charges in the shipment, not including shipping price adjustments. It is read only.
         type: number
         format: double
         example:
@@ -2048,8 +2111,8 @@ types:
       taxTotal?:
         description: |-
           The total tax on the shipment, including item-level price adjustments and service charges such as
-          shipping. If the Discount Taxation preference is set to Tax Products and Shipping Only Based on 
-          Adjusted Price, this amount also includes prorated order-level price adjustments.
+          shipping. If the Discount Taxation preference is set to Tax Products and Shipping Only Based on
+          Adjusted Price, this amount also includes prorated order-level price adjustments. It is read only.
         type: number
         format: double
         example:
@@ -2068,15 +2131,15 @@ types:
     properties:
       adjustedTax?:
         description: |-
-          The tax for the shipping item, including price adjustments.
+          The tax for the shipping item, including price adjustments. It is read only.
         type: number
         format: double
         example:
           19.00
       basePrice?:
         description: |-
-          The base price of the shipping item, which is the unit price not including adjustments. 
-          If the taxation policy is net, it doesn't include tax. If the taxation policy is gross, it includes tax.
+          The base price of the shipping item, which is the unit price not including adjustments.
+          If the taxation policy is net, it doesn't include tax. If the taxation policy is gross, it includes tax. It is read only.
         type: number
         format: double
         example:
@@ -2084,7 +2147,7 @@ types:
       itemId?:
         description: |-
           The shipping item ID. Use it to identify this shipping item when updating its quantity or creating a
-          custom price adjustment for it.
+          custom price adjustment for it. It is read only.
         type: string
         example:
           "430ef5aad3a24de59378458434"
@@ -2098,7 +2161,7 @@ types:
         description: |-
           The price of the line item before applying any adjustments. If the line item is based on net pricing
           then the net price is returned. If the line item is based on gross
-          pricing then the gross price is returned.
+          pricing then the gross price is returned. It is read only.
         type: number
         format: double
       priceAdjustments?:
@@ -2110,8 +2173,8 @@ types:
       priceAfterItemDiscount?:
         description: |-
           The price of the shipping item including item-level adjustments, but not including order-level
-          adjustments or shipping charges. If the taxation policy is net, it doesn't include tax. 
-          If the taxation policy is gross, it includes tax.
+          adjustments or shipping charges. If the taxation policy is net, it doesn't include tax.
+          If the taxation policy is gross, it includes tax. It is read only.
         type: number
         format: double
       shipmentId?:
@@ -2122,24 +2185,24 @@ types:
           "me"
       tax?:
         description: |-
-          The tax on the product item, not including adjustments.
+          The tax on the product item, not including adjustments. It is read only.
         type: number
         format: double
         example:
           0.19
       taxBasis?:
         description: |-
-          The price used to calculate the tax for this shipping item.
+          The price used to calculate the tax for this shipping item. It is read only.
         type: number
         format: double
       taxClassId?:
         description: |-
           The tax class ID for the product item, or null
-          if no tax class ID is associated with the product item.
+          if no tax class ID is associated with the product item. It is read only.
         type: string
       taxRate?:
         description: |-
-          The tax rate applicable to this product line item. For a 10% tax rate, the value is 0.1.
+          The tax rate applicable to this product line item. For a 10% tax rate, the value is 0.1. It is read only.
         type: number
         format: double
   ShippingMethod:
@@ -2174,7 +2237,7 @@ types:
       price?:
         description: |-
           The shipping cost total, including shipment level costs,
-          product level fix, and surcharge costs.
+          product level fix, and surcharge costs. It is read only.
         type: number
         format: double
         example:
@@ -2192,13 +2255,13 @@ types:
     properties:
       applicableShippingMethods?:
         description: |-
-          The applicable shipping method documents.
+          The applicable shipping method documents. It is read only.
         type: array
         items:
           type: ShippingMethod
       defaultShippingMethodId?:
         description: |-
-          The default shipping method.
+          The default shipping method. It is read only.
         type: string
         example:
           "me"
@@ -2270,7 +2333,7 @@ types:
     properties:
       taxItems?:
         description: |-
-          The list of tax items.
+          The list of tax items. It is read only.
         type: array
         items:
           type: TaxItem
@@ -2295,4 +2358,4 @@ types:
         description: |-
           The tax amount. Will be computed if not set.
         type: number
-        format: double 
+        format: double
