@@ -159,6 +159,8 @@
       Object.keys(optionParams).forEach((key) => {
         if(key.startsWith('c_') && optionParams[key as keyof typeof optionParams] !== undefined) {
           queryParams[key as keyof typeof queryParams] = optionParams[key as keyof typeof optionParams]
+        } else if(!queryParams.hasOwnProperty(key) && !pathParams.hasOwnProperty(key)) {
+          throw new Error(`Invalid Parameter: ${key}`)
         }
       })
 
