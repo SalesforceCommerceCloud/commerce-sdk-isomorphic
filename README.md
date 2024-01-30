@@ -121,12 +121,25 @@ _throwOnBadResponse:_ Default value is false. When set to true, the SDK throws a
 
 ### Public/Private Client Shopper Login (SLAS) helpers
 
-A collection of helper functions are available in this SDK to simplify [Public/Private
-Client Shopper Login OAuth
-flows](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary). See sample code above for guest login.
+A collection of helper functions are available in this SDK to simplify [Public/Private Client Shopper Login OAuth flows](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary). See sample code above for guest login.
 
 **⚠️ WARNING ⚠️**
 Users should be extremely cautious about using the SLAS private client helper functions in the browser as it can expose your client secret. Ensure that your client secret is secured before running the function client side.
+
+### Custom Query Parameters
+
+With the introduction of [hooks for Commerce APIs](https://developer.salesforce.com/docs/commerce/commerce-api/guide/extensibility_via_hooks.html), customers can pass custom query parameters through the SDK to be used in their custom hook. Custom query parameters must begin with `c_`:
+
+```javascript
+const searchResult = await shopperSearch.productSearch({
+  parameters: {
+    q: 'shirt',
+    c_customQueryParam: '<your-custom-query-param>'
+  },
+});
+```
+
+Invalid query parameters that are not a part of the API and do not follow the `c_` custom query parameter convention will be filtered from the request have an error thrown.
 
 ## License Information
 
