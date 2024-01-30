@@ -139,7 +139,7 @@ const searchResult = await shopperSearch.productSearch({
 });
 ```
 
-Invalid query parameters that are not a part of the API and do not follow the `c_` custom query parameter convention will be filtered from the request have an error thrown.
+Invalid query parameters that are not a part of the API and do not follow the `c_` custom query parameter convention will be filtered from the request and a warning will be displayed.
 
 ## License Information
 

@@ -175,7 +175,7 @@ describe('Parameters', () => {
     expect(response).toEqual(MOCK_RESPONSE);
   });
 
-  it('throws error when invalid parameter is passed', async () => {
+  it('warns user when an invalid parameter is passed', async () => {
     const customersClient = new ShopperCustomers({
       parameters: {
         // shortCode is a base URI parameter, not path/query, so it *must* be in the config
@@ -188,13 +188,15 @@ describe('Parameters', () => {
 
     const options = {
       parameters: {
-        invalidParameter: 'this should throw error',
+        invalidParameter: 'this should prompt a warning',
       },
       body: {type: 'guest'},
     };
 
-    await expect(async () => {
-      await customersClient.authorizeCustomer(options);
-    }).rejects.toThrowError('Invalid Parameter: invalidParameter');
+    const warnSpy = jest.spyOn(console, 'warn');
+    const response = await customersClient.authorizeCustomer(options);
+
+    expect(response).toEqual(MOCK_RESPONSE);
+    expect(warnSpy).toHaveBeenCalledWith('Invalid Parameter: invalidParameter');
   });
 });
