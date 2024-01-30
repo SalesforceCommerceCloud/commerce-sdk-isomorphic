@@ -134,7 +134,7 @@ With the introduction of [hooks for Commerce APIs](https://developer.salesforce.
 const searchResult = await shopperSearch.productSearch({
   parameters: {
     q: 'shirt',
-    c_customQueryParam: '<your-custom-query-param>'
+    c_paramkey: '<param-value>'
   },
 });
 ```
