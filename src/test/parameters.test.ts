@@ -146,16 +146,15 @@ describe('Parameters', () => {
       parameters: {
         // shortCode is a base URI parameter, not path/query, so it *must* be in the config
         shortCode: SHORT_CODE,
+        organizationId: ORGANIZATION_ID,
+        clientId: CLIENT_ID,
+        siteId: SITE_ID,
       },
     });
 
     const options = {
       parameters: {
-        siteId: SITE_ID,
-        organizationId: ORGANIZATION_ID,
-        clientId: CLIENT_ID,
         c_validCustomParam: 'custom_param',
-        invalidParam: 'invalid_param',
       },
       body: {type: 'guest'},
     };
@@ -167,7 +166,6 @@ describe('Parameters', () => {
       .query({
         siteId: SITE_ID,
         clientId: CLIENT_ID,
-        // expect `c_validCustomParam` but not `invalidParam`
         c_validCustomParam: 'custom_param',
       })
       .reply(200, MOCK_RESPONSE);
@@ -175,5 +173,30 @@ describe('Parameters', () => {
     const response = await customersClient.authorizeCustomer(options);
 
     expect(response).toEqual(MOCK_RESPONSE);
+  });
+
+  it('warns user when an invalid parameter is passed', async () => {
+    const customersClient = new ShopperCustomers({
+      parameters: {
+        // shortCode is a base URI parameter, not path/query, so it *must* be in the config
+        shortCode: SHORT_CODE,
+        organizationId: ORGANIZATION_ID,
+        clientId: CLIENT_ID,
+        siteId: SITE_ID,
+      },
+    });
+
+    const options = {
+      parameters: {
+        invalidParameter: 'this should prompt a warning',
+      },
+      body: {type: 'guest'},
+    };
+
+    const warnSpy = jest.spyOn(console, 'warn');
+    const response = await customersClient.authorizeCustomer(options);
+
+    expect(response).toEqual(MOCK_RESPONSE);
+    expect(warnSpy).toHaveBeenCalledWith('Invalid Parameter: invalidParameter');
   });
 });

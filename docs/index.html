@@ -67,7 +67,6 @@
 				<a href="#commerce-sdk-isomorphic" id="commerce-sdk-isomorphic" style="color: inherit; text-decoration: none;">
 					<h1>commerce-sdk-isomorphic</h1>
 				</a>
-				<p><a href="https://circleci.com/gh/SalesforceCommerceCloud/commerce-sdk-isomorphic"><img src="https://circleci.com/gh/SalesforceCommerceCloud/commerce-sdk-isomorphic.svg?style=svg&circle-token=379eaa6f00e0840e10dd80585b2b045d02a8f3b7" alt="CircleCI"></a></p>
 				<p>The Salesforce Commerce SDK (Isomorphic) allows easy interaction with the B2C Commerce platform’s Shopper APIs on the Node.js runtime and works both in browsers and Node applications. For a Node-based SDK that can access the Admin APIs in addition to the Shopper APIs, see the main <a href="https://github.com/SalesforceCommerceCloud/commerce-sdk">Commerce SDK</a>. </p>
 				<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
 					<h2>Getting Started</h2>
@@ -76,7 +75,7 @@
 					<h3>Requirements</h3>
 				</a>
 				<ul>
-					<li>Node <code>^12.x</code>, <code>^14.x</code>, or <code>^16.x</code></li>
+					<li>Node <code>^12.x</code>, <code>^14.x</code>, <code>^16.x</code>, <code>^18.x</code> or <code>^20.x</code></li>
 				</ul>
 				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
 					<h3>Installation</h3>
@@ -142,6 +141,14 @@
   {<span class="hljs-attr">redirectURI</span>: <span class="hljs-string">`<span class="hljs-subst">${config.proxy}</span>/callback`</span>} <span class="hljs-comment">// Callback URL must be configured in SLAS Admin</span>
 );
 
+<span class="hljs-comment">// Execute Private Client OAuth with PKCE to acquire guest tokens</span>
+<span class="hljs-comment">// ***WARNING*** Be cautious about using this function in the browser as you may end up exposing your client secret</span>
+<span class="hljs-comment">// only use it when you know your slas client secret is secured</span>
+<span class="hljs-comment">// const {access_token, refresh_token} = await helpers.loginGuestUserPrivate(</span>
+<span class="hljs-comment">//   shopperLogin,</span>
+<span class="hljs-comment">//   {}, {clientSecret: &#x27;&lt;your-slas-client-secret&gt;&#x27;}</span>
+<span class="hljs-comment">// );</span>
+
 <span class="hljs-keyword">const</span> shopperSearch = <span class="hljs-keyword">new</span> ShopperSearch({
   ...config,
   <span class="hljs-attr">headers</span>: {<span class="hljs-attr">authorization</span>: <span class="hljs-string">`Bearer <span class="hljs-subst">${access_token}</span>`</span>},
@@ -189,17 +196,18 @@
 				</a>
 				<p><em>headers:</em> A collection of key/value string pairs representing additional headers to include with API requests.</p>
 				<p><em>throwOnBadResponse:</em> Default value is false. When set to true, the SDK throws an Error on responses with statuses that are not 2xx or 304.</p>
-				<a href="#public-client-shopper-login-helpers" id="public-client-shopper-login-helpers" style="color: inherit; text-decoration: none;">
-					<h3>Public Client Shopper Login helpers</h3>
+				<a href="#publicprivate-client-shopper-login-slas-helpers" id="publicprivate-client-shopper-login-slas-helpers" style="color: inherit; text-decoration: none;">
+					<h3>Public/Private Client Shopper Login (SLAS) helpers</h3>
 				</a>
-				<p>A collection of helper functions are available in this SDK to simplify <a href="https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary">Public
+				<p>A collection of helper functions are available in this SDK to simplify <a href="https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary">Public/Private
 						Client Shopper Login OAuth
 				flows</a>. See sample code above for guest login.</p>
+				<p><strong>⚠️ WARNING ⚠️</strong>
+				Users should be extremely cautious about using the SLAS private client helper functions in the browser as it can expose your client secret. Ensure that your client secret is secured before running the function client side.</p>
 				<a href="#license-information" id="license-information" style="color: inherit; text-decoration: none;">
 					<h2>License Information</h2>
 				</a>
 				<p>The Commerce SDK Isomorphic is licensed under BSD-3-Clause license. See the <a href="./LICENSE.txt">license</a> for details.</p>
-				<!-- Markdown link & img dfn's -->
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">

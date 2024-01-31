@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v1.11.0
+
+#### Enhancements
+
+* Add support for Shopper Login (SLAS) prviate client with helper functions [#148](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/140)
+  * ⚠️ WARNING ⚠️: Users should be extremely cautious about using the SLAS private client helper functions in the browser as it can expose your client secret 
+* Add support for custom query parameters [#139](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/139)
+
 ## v1.10.4
 
 #### Bug fixes

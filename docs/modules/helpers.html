@@ -89,6 +89,7 @@
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="helpers.html#isbrowser" class="tsd-kind-icon">is<wbr>Browser</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="helpers.html#isnode" class="tsd-kind-icon">is<wbr>Node</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="helpers.html#loginguestuser" class="tsd-kind-icon">login<wbr>Guest<wbr>User</a></li>
+								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="helpers.html#loginguestuserprivate" class="tsd-kind-icon">login<wbr>Guest<wbr>User<wbr>Private</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="helpers.html#loginregistereduserb2c" class="tsd-kind-icon">login<wbr>Registered<wbr>User<wbr>B2C</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="helpers.html#logout" class="tsd-kind-icon">logout</a></li>
 								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="helpers.html#refreshaccesstoken" class="tsd-kind-icon">refresh<wbr>Access<wbr>Token</a></li>
@@ -131,6 +132,7 @@
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="helpers.html#generatecodechallenge-1" class="tsd-kind-icon">generate<wbr>Code<wbr>Challenge</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="helpers.html#getcodeandusidfromurl-1" class="tsd-kind-icon">get<wbr>Code<wbr>And<wbr>Usid<wbr>From<wbr>Url</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="helpers.html#loginguestuser-1" class="tsd-kind-icon">login<wbr>Guest<wbr>User</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="helpers.html#loginguestuserprivate-1" class="tsd-kind-icon">login<wbr>Guest<wbr>User<wbr>Private</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="helpers.html#loginregistereduserb2c-1" class="tsd-kind-icon">login<wbr>Registered<wbr>User<wbr>B2C</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="helpers.html#logout-1" class="tsd-kind-icon">logout</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="helpers.html#refreshaccesstoken-1" class="tsd-kind-icon">refresh<wbr>Access<wbr>Token</a></li>
@@ -220,6 +222,11 @@
 					<a name="loginguestuser" class="tsd-anchor"></a>
 					<h3>login<wbr>Guest<wbr>User</h3>
 					Re-exports <a href="helpers.html#loginguestuser-1">loginGuestUser</a>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
+					<a name="loginguestuserprivate" class="tsd-anchor"></a>
+					<h3>login<wbr>Guest<wbr>User<wbr>Private</h3>
+					Re-exports <a href="helpers.html#loginguestuserprivate-1">loginGuestUserPrivate</a>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
 					<a name="loginregistereduserb2c" class="tsd-anchor"></a>
@@ -559,7 +566,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:158</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:199</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -599,21 +606,80 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="loginregistereduserb2c-1" class="tsd-anchor"></a>
-					<h3>login<wbr>Registered<wbr>User<wbr>B2C</h3>
+					<a name="loginguestuserprivate-1" class="tsd-anchor"></a>
+					<h3>login<wbr>Guest<wbr>User<wbr>Private</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">login<wbr>Registered<wbr>User<wbr>B2C<span class="tsd-signature-symbol">(</span>slasClient<span class="tsd-signature-symbol">: </span><a href="../classes/shopperlogin.shopperlogin-1.html" class="tsd-signature-type">ShopperLogin</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>shortCode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, credentials<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>password<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>username<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span>, parameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>redirectURI<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>usid<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="shopperlogin.html#tokenresponse" class="tsd-signature-type">TokenResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">login<wbr>Guest<wbr>User<wbr>Private<span class="tsd-signature-symbol">(</span>slasClient<span class="tsd-signature-symbol">: </span><a href="../classes/shopperlogin.shopperlogin-1.html" class="tsd-signature-type">ShopperLogin</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>shortCode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, parameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>usid<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span>, credentials<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>clientSecret<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="shopperlogin.html#tokenresponse" class="tsd-signature-type">TokenResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:202</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:160</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>A single function to execute the ShopperLogin Public Client Registered User B2C Login with proof key for code exchange flow as described in the <a href="https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary">API documentation</a>.</p>
+									<p>A single function to execute the ShopperLogin Private Client Guest Login as described in the <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-private-client.html">API documentation</a>.
+									<strong>Note</strong>: this func can run on client side. Only use this one when the slas client secret is secured.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>slasClient: <a href="../classes/shopperlogin.shopperlogin-1.html" class="tsd-signature-type">ShopperLogin</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>shortCode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>a configured instance of the ShopperLogin SDK client</p>
+									</div>
+								</li>
+								<li>
+									<h5>parameters: <span class="tsd-signature-symbol">{ </span>usid<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>parameters to pass in the API calls.</p>
+									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> usid<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<h5>credentials: <span class="tsd-signature-symbol">{ </span>clientSecret<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>client secret used for authentication</p>
+									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter">
+											<h5>client<wbr>Secret<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+											<div class="tsd-comment tsd-typography">
+												<p>secret associated with client ID</p>
+											</div>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="shopperlogin.html#tokenresponse" class="tsd-signature-type">TokenResponse</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>TokenResponse</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="loginregistereduserb2c-1" class="tsd-anchor"></a>
+					<h3>login<wbr>Registered<wbr>User<wbr>B2C</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">login<wbr>Registered<wbr>User<wbr>B2C<span class="tsd-signature-symbol">(</span>slasClient<span class="tsd-signature-symbol">: </span><a href="../classes/shopperlogin.shopperlogin-1.html" class="tsd-signature-type">ShopperLogin</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>shortCode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, credentials<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>clientSecret<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>password<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>username<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span>, parameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>redirectURI<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>usid<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="shopperlogin.html#tokenresponse" class="tsd-signature-type">TokenResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in src/lib/helpers/slasHelper.ts:245</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A single function to execute the ShopperLogin Public Client Registered User B2C Login with proof key for code exchange flow as described in the <a href="https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary">API documentation</a>.
+									<strong>Note</strong>: this func can run on client side. Only use private slas when the slas client secret is secured.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -625,11 +691,14 @@
 									</div>
 								</li>
 								<li>
-									<h5>credentials: <span class="tsd-signature-symbol">{ </span>password<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>username<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
+									<h5>credentials: <span class="tsd-signature-symbol">{ </span>clientSecret<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>password<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>username<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>the id and password to login with.</p>
+										<p>the id and password and clientSecret (if applicable) to login with.</p>
 									</div>
 									<ul class="tsd-parameters">
+										<li class="tsd-parameter">
+											<h5><span class="tsd-flag ts-flagOptional">Optional</span> client<wbr>Secret<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
+										</li>
 										<li class="tsd-parameter">
 											<h5>password<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
 											<div class="tsd-comment tsd-typography">
@@ -677,7 +746,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:312</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:386</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -723,18 +792,19 @@
 					<a name="refreshaccesstoken-1" class="tsd-anchor"></a>
 					<h3>refresh<wbr>Access<wbr>Token</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">refresh<wbr>Access<wbr>Token<span class="tsd-signature-symbol">(</span>slasClient<span class="tsd-signature-symbol">: </span><a href="../classes/shopperlogin.shopperlogin-1.html" class="tsd-signature-type">ShopperLogin</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>shortCode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, parameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>refreshToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="shopperlogin.html#tokenresponse" class="tsd-signature-type">TokenResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">refresh<wbr>Access<wbr>Token<span class="tsd-signature-symbol">(</span>slasClient<span class="tsd-signature-symbol">: </span><a href="../classes/shopperlogin.shopperlogin-1.html" class="tsd-signature-type">ShopperLogin</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>shortCode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, parameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>refreshToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span>, credentials<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>clientSecret<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="shopperlogin.html#tokenresponse" class="tsd-signature-type">TokenResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:285</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:345</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Exchange a refresh token for a new access token.</p>
+									<p>Exchange a refresh token for a new access token.
+									<strong>Note</strong>: this func can run on client side. Only use private slas when the slas client secret is secured.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -758,6 +828,12 @@
 											</div>
 										</li>
 									</ul>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> credentials: <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>clientSecret<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the clientSecret (if applicable) to login with.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="shopperlogin.html#tokenresponse" class="tsd-signature-type">TokenResponse</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -874,6 +950,9 @@
 						<a href="helpers.html#loginguestuser" class="tsd-kind-icon">login<wbr>Guest<wbr>User</a>
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
+						<a href="helpers.html#loginguestuserprivate" class="tsd-kind-icon">login<wbr>Guest<wbr>User<wbr>Private</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module">
 						<a href="helpers.html#loginregistereduserb2c" class="tsd-kind-icon">login<wbr>Registered<wbr>User<wbr>B2C</a>
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
@@ -938,6 +1017,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="helpers.html#loginguestuser-1" class="tsd-kind-icon">login<wbr>Guest<wbr>User</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="helpers.html#loginguestuserprivate-1" class="tsd-kind-icon">login<wbr>Guest<wbr>User<wbr>Private</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="helpers.html#loginregistereduserb2c-1" class="tsd-kind-icon">login<wbr>Registered<wbr>User<wbr>B2C</a>
