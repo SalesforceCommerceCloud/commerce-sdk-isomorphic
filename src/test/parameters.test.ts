@@ -197,6 +197,8 @@ describe('Parameters', () => {
     const response = await customersClient.authorizeCustomer(options);
 
     expect(response).toEqual(MOCK_RESPONSE);
-    expect(warnSpy).toHaveBeenCalledWith('Invalid Parameter for authorizeCustomer: invalidParameter');
+    expect(warnSpy).toHaveBeenCalledWith(
+      'Invalid Parameter for authorizeCustomer: invalidParameter'
+    );
   });
 });
