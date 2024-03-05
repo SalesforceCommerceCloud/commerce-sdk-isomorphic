@@ -1,4 +1,11 @@
 # CHANGELOG
+## v1.12.0
+
+#### API Added
+
+  | **Endpoint Name** | **Description** |
+  | ------------- |-------------|
+  |getUrlMapping | Gets URL mapping information for a URL that a shopper clicked or typed in. The mapping information is based on URL rules and redirects set up in Business Manager. For more information about prerequisites and sample usage, see [URL Resolution](/docs/commerce/commerce-api/guide/url-resolution.html). You can customize the behavior of this endpoint by using hooks. See the hooks for getUrlMapping in the [Hook List](https://developer.salesforce.com/docs/commerce/commerce-api/guide/hook_list.html). |
 
 ## v1.11.0
 
