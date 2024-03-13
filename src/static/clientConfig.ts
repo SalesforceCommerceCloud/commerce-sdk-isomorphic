@@ -18,6 +18,12 @@ type BrowserRequestInit = RequestInit;
  */
 export type FetchOptions = NodeRequestInit & BrowserRequestInit;
 
+export type FetchFunction = (
+  input: RequestInfo,
+  init?: FetchOptions | undefined
+) => Promise<Response>;
+
+export type FetchArgs = [input: RequestInfo, init?: FetchOptions | undefined];
 /**
  * Base options that can be passed to the `ClientConfig` class.
  */
@@ -27,17 +33,13 @@ export interface ClientConfigInit<Params extends BaseUriParameters> {
   headers?: {[key: string]: string};
   parameters: Params;
   fetchOptions?: FetchOptions;
+  fetchFunction?: FetchFunction;
   transformRequest?: (
     data: unknown,
     headers: {[key: string]: string}
   ) => Required<FetchOptions>['body'];
   throwOnBadResponse?: boolean;
 }
-
-export type FetchFunction = (
-  input: RequestInfo,
-  init?: FetchOptions | undefined
-) => Promise<Response>;
 
 /**
  * Configuration parameters common to Commerce SDK clients
@@ -54,6 +56,8 @@ export default class ClientConfig<Params extends BaseUriParameters>
   public parameters: Params;
 
   public fetchOptions: FetchOptions;
+
+  public fetchFunction?: FetchFunction;
 
   public transformRequest: NonNullable<
     ClientConfigInit<Params>['transformRequest']
@@ -81,6 +85,9 @@ export default class ClientConfig<Params extends BaseUriParameters>
     }
     if (config.proxy) {
       this.proxy = config.proxy;
+    }
+    if (config.fetchFunction) {
+      this.fetchFunction = config.fetchFunction;
     }
     this.throwOnBadResponse = !!config.throwOnBadResponse;
   }
