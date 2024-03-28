@@ -1,4 +1,8 @@
 # CHANGELOG
+
+## v1.13.0
+- Update APIs
+
 ## v1.12.0
 
 #### API Added
