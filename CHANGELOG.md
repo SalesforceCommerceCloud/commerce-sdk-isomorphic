@@ -1,4 +1,8 @@
 # CHANGELOG
+
+## v1.13.0
+- Update APIs for [Shopper Search](https://developer.salesforce.com/docs/commerce/commerce-api/references/about-commerce-api/about.html#282024)
+
 ## v1.12.0
 
 #### API Added
