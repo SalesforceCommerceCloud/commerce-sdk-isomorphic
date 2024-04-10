@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.13.1
+
+#### Bug fixes
+
+- Fix the missing `offset` and `limit` paramters in Shopper Search
+
 ## v1.13.0
 - Update APIs for [Shopper Search](https://developer.salesforce.com/docs/commerce/commerce-api/references/about-commerce-api/about.html#282024)
 
