@@ -76,6 +76,13 @@ types:
               type: ErrorResponse
               examples:
                 dataTypes.ErrorResponse: !include exchange_modules/893f605e-10e2-423a-bdb4-f952f56eb6d8/checkout-data-types/2.0.1/examples/error/shipment-not-found.raml
+        '409':
+            description: |-
+              Thrown if Salesforce Commerce API Hook Execution is enabled with taxMode external.
+            body:
+              type: ErrorResponse
+              examples:
+                dataTypes.ErrorResponse: !include exchange_modules/893f605e-10e2-423a-bdb4-f952f56eb6d8/checkout-data-types/2.0.1/examples/error/unsupported-request.raml
       queryParameters:
         taxMode?:
           type: string
@@ -155,7 +162,7 @@ types:
       post:
         displayName: mergeBasket
         description: |-
-          Merge data from the previous shopper's basket into the current shopper's active basket and delete the previous shopper's basket. This endpoint doesn't merge Personally Identifiable Information (PII). You must obtain the shopper authorization token via SLAS and you must provide the ‘guest usid‘ in both the ‘/oauth2/login‘ and ‘/oauth2/token‘ calls while fetching the registered user JWT token. After the merge, all basket amounts are recalculated and totaled, including lookups for prices, taxes, shipping, and promotions, unless hooks are enabled.
+          Merge data from the previous shopper's basket into the current shopper's active basket and delete the previous shopper's basket. This endpoint doesn't merge Personally Identifiable Information (PII). You must obtain the shopper authorization token via SLAS and you must provide the ‘guest usid‘ in both the ‘/oauth2/login‘ and ‘/oauth2/token‘ calls while fetching the registered user JWT token. After the merge, all basket amounts are recalculated and totaled, including lookups for prices, taxes, shipping, and promotions.
 
           The following information is merged:
           - custom attributes on the basket and on all copied records
@@ -906,6 +913,7 @@ types:
                   description: |-
                    Possible Reasons:
                    - The tax mode of the referenced basket is not set to EXTERNAL. 
+                   - Salesforce Commerce API Hook Execution is enabled.
                   body:
                     application/problem+json:
                         type: ErrorResponse
@@ -1599,7 +1607,8 @@ types:
             '409':
               description: |-
                Possible Reasons:
-               - The tax mode of the referenced basket is not set to EXTERNAL.
+               - The tax mode of the referenced basket is not set to EXTERNAL. 
+               - Salesforce Commerce API Hook Execution is enabled.
               body:
                 type: ErrorResponse
                 examples:
@@ -1627,6 +1636,7 @@ types:
               description: |-
                Possible Reasons:
                - The tax mode of the referenced basket is not set to EXTERNAL.
+               - Salesforce Commerce API Hook Execution is enabled. 
               body:
                 application/problem+json:
                   type: ErrorResponse
