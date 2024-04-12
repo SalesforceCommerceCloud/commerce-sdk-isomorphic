@@ -26,7 +26,7 @@ const outputs = [
     format: 'umd',
   },
   {
-    file: process.env.REACT_APP_PKG_MODULE || pkg.module,
+    file: process.env.REACT_APP_PKG_MODULE || pkg.exports['.'].import,
     format: 'es',
   },
 ];
