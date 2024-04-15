@@ -9,3 +9,4 @@
 export * from './environment';
 export * from './slasHelper';
 export * from './types';
+export * from './customApi';
