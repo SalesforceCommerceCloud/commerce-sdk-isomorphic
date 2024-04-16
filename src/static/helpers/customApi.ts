@@ -16,70 +16,28 @@ import ClientConfig, {ClientConfigInit} from '../clientConfig';
 const USER_AGENT_HEADER = 'user-agent';
 const USER_AGENT_VALUE = 'commerce-sdk-isomorphic@1.13.1';
 
-// export const runFetchHelper = async (
-//   url: string,
-//   options?: {
-//     [key: string]: any;
-//   }
-// ): Promise<Response> => {
-
-// };
-
-export interface CustomParams {
-  apiName: string;
-  apiVersion?: string;
-  endpointPath: string;
-  organizationId: string;
-  shortCode: string;
-  [key: string]: any;
-}
-
-// what clientConfig should look like
-// clientConfig: {
-//     proxy?: string,
-//     fetchOptions?: FetchOptions,
-//     throwOnBadResponse?: boolean,
-//     // path parameters
-//     parameters: {
-//         apiName: string;
-//         apiVersion?: string; // default to v1 if not provided
-//         endpointPath: string;
-//         organizationId: string;
-//         shortCode: string;
-//     },
-//     headers?: {[key: string]: string},
-//     transformRequest?: NonNullable<
-//         ClientConfigInit<CustomPathParams>['transformRequest']
-//     >;
-// };
-
-// eslint-disable-next-line
-export const callCustomEndpoint = async (
+export const runFetchHelper = async (
   options: {
     method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
     parameters?: {[key: string]: any}; // query parameters
+    path: string;
     headers?: {
       authorization: string;
     } & {[key: string]: string};
     body?: {[key: string]: any};
   },
-  clientConfig: ClientConfigInit<CustomParams>,
+  clientConfig: ClientConfigInit<CustomParams>, // TODO: update Params
   rawResponse?: boolean
-): Promise<Response | string> => {
-  const CUSTOM_BASE_URI =
-    'https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}';
-  const CUSTOM_PATH = '/organizations/{organizationId}/{endpointPath}';
-  const pathParams = {...clientConfig.parameters};
-
-  if (!pathParams.apiVersion) {
-    pathParams.apiVersion = 'v1';
-  }
-
-  const url = new TemplateURL(CUSTOM_PATH, CUSTOM_BASE_URI, {
-    pathParams,
-    queryParams: options.parameters,
-    origin: clientConfig.proxy,
-  });
+): Promise<Response> => {
+  const url = new TemplateURL(
+    options.path,
+    clientConfig?.baseUri as string, // TODO: potentially make an arg
+    {
+      pathParams: clientConfig.parameters,
+      queryParams: options?.parameters,
+      origin: clientConfig.proxy,
+    }
+  );
 
   const headers: Record<string, string> = {
     ...clientConfig?.headers,
@@ -116,6 +74,49 @@ export const callCustomEndpoint = async (
     throw new ResponseError(response);
   } else {
     const text = await response.text();
+    // It's ideal to get "{}" for an empty response body, but we won't throw if it's truly empty
     return text ? JSON.parse(text) : {};
   }
+};
+
+export interface CustomParams {
+  apiName: string;
+  apiVersion?: string;
+  endpointPath: string;
+  organizationId: string;
+  shortCode: string;
+  [key: string]: any;
+}
+
+// eslint-disable-next-line
+export const callCustomEndpoint = async (
+  options: {
+    method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
+    parameters?: {[key: string]: any}; // query parameters
+    headers?: {
+      authorization: string;
+    } & {[key: string]: string};
+    body?: {[key: string]: any};
+  },
+  clientConfig: ClientConfigInit<CustomParams>,
+  rawResponse?: boolean
+): Promise<Response | string> => {
+  const CUSTOM_BASE_URI =
+    'https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}';
+  const CUSTOM_PATH = '/organizations/{organizationId}/{endpointPath}';
+
+  const clientConfigCopy = {...clientConfig};
+  clientConfigCopy.baseUri = CUSTOM_BASE_URI;
+  if (!clientConfigCopy.parameters.apiVersion) {
+    clientConfigCopy.parameters.apiVersion = 'v1';
+  }
+
+  return runFetchHelper(
+    {
+      ...options,
+      path: CUSTOM_PATH,
+    },
+    clientConfigCopy,
+    rawResponse
+  );
 };
