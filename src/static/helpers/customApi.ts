@@ -4,10 +4,18 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+import {BaseUriParameters} from 'lib/helpers';
 import TemplateURL from '../templateUrl';
 import type {FetchOptions} from '../clientConfig';
+import ResponseError from '../responseError';
+import {isBrowser, fetch} from './environment';
+import ClientConfig, {ClientConfigInit} from '../clientConfig';
 
-// TODO: implement
+// TODO: check if you can pull out version in javascript, that way this doesn't have to be an .hbs file
+// import { USER_AGENT_HEADER, USER_AGENT_VALUE } from "../version";
+const USER_AGENT_HEADER = 'user-agent';
+const USER_AGENT_VALUE = 'commerce-sdk-isomorphic@1.13.1';
+
 // export const runFetchHelper = async (
 //   url: string,
 //   options?: {
@@ -17,36 +25,52 @@ import type {FetchOptions} from '../clientConfig';
 
 // };
 
+export interface CustomParams {
+  apiName: string;
+  apiVersion?: string;
+  endpointPath: string;
+  organizationId: string;
+  shortCode: string;
+  [key: string]: any;
+}
+
+// what clientConfig should look like
+// clientConfig: {
+//     proxy?: string,
+//     fetchOptions?: FetchOptions,
+//     throwOnBadResponse?: boolean,
+//     // path parameters
+//     parameters: {
+//         apiName: string;
+//         apiVersion?: string; // default to v1 if not provided
+//         endpointPath: string;
+//         organizationId: string;
+//         shortCode: string;
+//     },
+//     headers?: {[key: string]: string},
+//     transformRequest?: NonNullable<
+//         ClientConfigInit<CustomPathParams>['transformRequest']
+//     >;
+// };
+
 // eslint-disable-next-line
 export const callCustomEndpoint = async (
   options: {
     method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
-    clientConfig: {
-      parameters: {
-        // path parameters
-        apiName: string;
-        apiVersion?: string; // default to v1 if not provided
-        endpointPath: string;
-        organizationId: string;
-        shortCode: string;
-      };
-      proxy?: string;
-      fetchOptions?: FetchOptions;
-    };
     parameters?: {[key: string]: any}; // query parameters
     headers?: {
-      Authorization: string;
+      authorization: string;
     } & {[key: string]: string};
     body?: {[key: string]: any};
-  }
-  //   rawResponse?: boolean
-): Promise<Response> => {
-  // https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}/organizations/{organizationId}/{endpointPath}
-  //  static readonly defaultBaseUri = "https://{shortCode}.api.commercecloud.salesforce.com/search/shopper-search/{version}/";
+  },
+  clientConfig: ClientConfigInit<CustomParams>,
+  rawResponse?: boolean
+): Promise<Response | string> => {
   const CUSTOM_BASE_URI =
     'https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}';
   const CUSTOM_PATH = '/organizations/{organizationId}/{endpointPath}';
-  const pathParams = {...options.clientConfig.parameters};
+  const pathParams = {...clientConfig.parameters};
+
   if (!pathParams.apiVersion) {
     pathParams.apiVersion = 'v1';
   }
@@ -54,22 +78,44 @@ export const callCustomEndpoint = async (
   const url = new TemplateURL(CUSTOM_PATH, CUSTOM_BASE_URI, {
     pathParams,
     queryParams: options.parameters,
-    origin: options.clientConfig.proxy,
+    origin: clientConfig.proxy,
   });
 
-  const requestOptions = {
-    ...options.clientConfig.fetchOptions,
-    // TODO: this.clientConfig.transformRequest(options.body, headers)
-    body: options.body as BodyInit,
-    headers: options.headers,
+  const headers: Record<string, string> = {
+    ...clientConfig?.headers,
+    ...options?.headers,
+  };
+
+  if (!isBrowser) {
+    // Browsers forbid setting a custom user-agent header
+    headers[USER_AGENT_HEADER] = [
+      headers[USER_AGENT_HEADER],
+      USER_AGENT_VALUE,
+    ].join(' ');
+  }
+
+  const requestOptions: FetchOptions = {
+    ...clientConfig.fetchOptions,
+    headers,
+    // TODO: eventually remove this
+    // @ts-ignore
+    body: options.body,
+    // body: clientConfig.transformRequest(options.body, headers),
     method: options.method,
   };
 
   const response = await fetch(url.toString(), requestOptions);
-  //   if (rawResponse) {
-  //     return response;
-  //   }
-  //   const text = await response.text();
-  //   return text ? JSON.parse(text) : {};
-  return response;
+  if (rawResponse) {
+    return response;
+  }
+  if (
+    clientConfig.throwOnBadResponse &&
+    !response.ok &&
+    response.status !== 304
+  ) {
+    throw new ResponseError(response);
+  } else {
+    const text = await response.text();
+    return text ? JSON.parse(text) : {};
+  }
 };
