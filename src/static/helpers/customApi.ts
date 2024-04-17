@@ -22,11 +22,13 @@ export const runFetchHelper = async (
     parameters?: {[key: string]: any}; // query parameters
     path: string;
     headers?: {
-      authorization: string;
+      authorization?: string;
     } & {[key: string]: string};
-    body?: {[key: string]: any};
+    body?: any,
+    // body?: {[key: string]: any}; // TODO: fix this
   },
-  clientConfig: ClientConfigInit<CustomParams>, // TODO: update Params
+  clientConfig: any,
+  // clientConfig: ClientConfigInit<CustomParams>, // TODO: update Params
   rawResponse?: boolean
 ): Promise<Response> => {
   const url = new TemplateURL(
@@ -44,6 +46,8 @@ export const runFetchHelper = async (
     ...options?.headers,
   };
 
+  // TODO: potentially pull this out of helper method
+  // and leave it in the template
   if (!isBrowser) {
     // Browsers forbid setting a custom user-agent header
     headers[USER_AGENT_HEADER] = [
@@ -72,7 +76,7 @@ export const runFetchHelper = async (
     response.status !== 304
   ) {
     throw new ResponseError(response);
-  } else {
+  } else { // TODO: figure out how to not respond with anything for void operations
     const text = await response.text();
     // It's ideal to get "{}" for an empty response body, but we won't throw if it's truly empty
     return text ? JSON.parse(text) : {};
