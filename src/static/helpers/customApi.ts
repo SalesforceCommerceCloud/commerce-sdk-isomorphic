@@ -4,12 +4,12 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import {BaseUriParameters} from 'lib/helpers';
+import {BaseUriParameters, PathParameters} from 'lib/helpers';
 import TemplateURL from '../templateUrl';
 import type {FetchOptions} from '../clientConfig';
 import ResponseError from '../responseError';
 import {isBrowser, fetch} from './environment';
-import ClientConfig, {ClientConfigInit} from '../clientConfig';
+import {ClientConfigInit} from '../clientConfig';
 
 // TODO: check if you can pull out version in javascript, that way this doesn't have to be an .hbs file
 // import { USER_AGENT_HEADER, USER_AGENT_VALUE } from "../version";
@@ -17,30 +17,30 @@ const USER_AGENT_HEADER = 'user-agent';
 const USER_AGENT_VALUE = 'commerce-sdk-isomorphic@1.13.1';
 
 // TODO: add js/tsdoc comment
-export const runFetchHelper = async (
+export const runFetchHelper = async <Params extends BaseUriParameters>( // TODO: also potentially extend { baseUri: string }
   options: {
     method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
-    parameters?: {[key: string]: any}; // query parameters
+    parameters?: {
+      [key: string]: string | number | boolean | string[] | number[];
+    };
     path: string;
     headers?: {
       authorization?: string;
     } & {[key: string]: string};
-    body?: any,
-    // body?: {[key: string]: any}; // TODO: fix this
+    // TODO: probably need to fix this type
+    body?:
+      | {[key: string]: unknown}
+      | URLSearchParams
+      | (BodyInit & (BodyInit | null));
   },
-  clientConfig: any,
-  // clientConfig: ClientConfigInit<CustomParams>, // TODO: update Params
+  clientConfig: ClientConfigInit<Params>,
   rawResponse?: boolean
-): Promise<Response> => {
-  const url = new TemplateURL(
-    options.path,
-    clientConfig?.baseUri as string, // TODO: potentially make an arg
-    {
-      pathParams: clientConfig.parameters,
-      queryParams: options?.parameters,
-      origin: clientConfig.proxy,
-    }
-  );
+): Promise<Response | string> => {
+  const url = new TemplateURL(options.path, clientConfig.baseUri as string, {
+    pathParams: clientConfig.parameters as unknown as PathParameters,
+    queryParams: options?.parameters,
+    origin: clientConfig.proxy,
+  });
 
   const headers: Record<string, string> = {
     ...clientConfig?.headers,
@@ -60,10 +60,8 @@ export const runFetchHelper = async (
   const requestOptions: FetchOptions = {
     ...clientConfig.fetchOptions,
     headers,
-    // TODO: eventually remove this
-    // @ts-ignore
-    body: options.body,
-    // body: clientConfig.transformRequest(options.body, headers),
+    // TODO: probably need to fix this type
+    body: options.body as unknown as FormData & URLSearchParams,
     method: options.method,
   };
 
@@ -77,10 +75,10 @@ export const runFetchHelper = async (
     response.status !== 304
   ) {
     throw new ResponseError(response);
-  } else { // TODO: figure out how to not respond with anything for void operations
+  } else {
     const text = await response.text();
     // It's ideal to get "{}" for an empty response body, but we won't throw if it's truly empty
-    return text ? JSON.parse(text) : {};
+    return (text ? JSON.parse(text) : {}) as string | Response;
   }
 };
 
@@ -90,37 +88,56 @@ export interface CustomParams {
   endpointPath: string;
   organizationId: string;
   shortCode: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // TODO: add js/tsdoc comment
-// eslint-disable-next-line
 export const callCustomEndpoint = async (
   options: {
     method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
-    parameters?: {[key: string]: any}; // query parameters
+    parameters?: {
+      [key: string]: string | number | boolean | string[] | number[];
+    };
     headers?: {
       authorization?: string;
     } & {[key: string]: string};
-    body?: {[key: string]: any};
+    // TODO: probably need to fix this type
+    body?:
+      | {[key: string]: unknown}
+      | URLSearchParams
+      | (BodyInit & (BodyInit | null));
   },
   clientConfig: ClientConfigInit<CustomParams>,
   rawResponse?: boolean
 ): Promise<Response | string> => {
-  const CUSTOM_BASE_URI =
-    'https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}';
-  const CUSTOM_PATH = '/organizations/{organizationId}/{endpointPath}';
+  const requiredArgs = [
+    'apiName',
+    'endpointPath',
+    'organizationId',
+    'shortCode',
+  ];
+  requiredArgs.forEach(arg => {
+    if (!clientConfig.parameters[arg]) {
+      throw new Error(
+        `Missing required property in clientConfig.parameters: ${arg}`
+      );
+    }
+  });
 
-  const clientConfigCopy = {...clientConfig};
-  clientConfigCopy.baseUri = CUSTOM_BASE_URI;
-  if (!clientConfigCopy.parameters.apiVersion) {
+  const clientConfigCopy: ClientConfigInit<CustomParams> = {
+    ...clientConfig,
+    baseUri:
+      'https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}',
+  };
+
+  if (!clientConfigCopy.parameters?.apiVersion) {
     clientConfigCopy.parameters.apiVersion = 'v1';
   }
 
   return runFetchHelper(
     {
       ...options,
-      path: CUSTOM_PATH,
+      path: '/organizations/{organizationId}/{endpointPath}',
     },
     clientConfigCopy,
     rawResponse
