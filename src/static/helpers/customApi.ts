@@ -16,6 +16,7 @@ import ClientConfig, {ClientConfigInit} from '../clientConfig';
 const USER_AGENT_HEADER = 'user-agent';
 const USER_AGENT_VALUE = 'commerce-sdk-isomorphic@1.13.1';
 
+// TODO: add js/tsdoc comment
 export const runFetchHelper = async (
   options: {
     method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
@@ -92,13 +93,14 @@ export interface CustomParams {
   [key: string]: any;
 }
 
+// TODO: add js/tsdoc comment
 // eslint-disable-next-line
 export const callCustomEndpoint = async (
   options: {
     method: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
     parameters?: {[key: string]: any}; // query parameters
     headers?: {
-      authorization: string;
+      authorization?: string;
     } & {[key: string]: string};
     body?: {[key: string]: any};
   },

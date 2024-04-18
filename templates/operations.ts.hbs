@@ -164,17 +164,7 @@
         }
       })
 
-      {{!-- const url = new TemplateURL(
-        "{{{../path}}}",
-        this.clientConfig.baseUri,
-        {
-          pathParams,
-          queryParams,
-          origin: this.clientConfig.proxy
-        }
-      ); --}}
-
-      {{!-- const headers: Record<string, string> = {
+      const headers: Record<string, string> = {
         {{#if (isRequestWithPayload request)}}
         "Content-Type": "{{{getMediaTypeFromRequest request}}}",
         {{/if}}
@@ -182,45 +172,36 @@
         ...options?.headers
       };
 
-      if (!isBrowser) {
+      const clientConfigCopy: ClientConfig<ConfigParameters> = {
+          ...this.clientConfig,
+          parameters: {
+            ...this.clientConfig.parameters,
+            ...pathParams
+          }
+      }
+      {{!-- if (!isBrowser) {
         // Browsers forbid setting a custom user-agent header
         headers[USER_AGENT_HEADER] = [headers[USER_AGENT_HEADER], USER_AGENT_VALUE].join(" ");
       } --}}
+      const response = await runFetchHelper(
+        {
+          method: "{{loud method}}",
+          parameters: queryParams,
+          path: "{{{../path}}}",
+          headers,
+          {{#if (isRequestWithPayload request)}}body: this.clientConfig.transformRequest(options.body, headers){{/if}}
+        }, 
+        clientConfigCopy,
+        rawResponse
+      )
 
-      {{!-- const requestOptions = {
-        ...this.clientConfig.fetchOptions,
-        {{#if (isRequestWithPayload request)}}body: this.clientConfig.transformRequest(options.body, headers),{{/if}}
-        headers,
-        method: "{{loud method}}"
-      }; --}}
-
-      return runFetchHelper({
-        method: "{{loud method}}",
-        parameters: queryParams,
-        path: "{{{../path}}}",
-        headers: {
-          {{#if (isRequestWithPayload request)}}
-          "Content-Type": "{{{getMediaTypeFromRequest request}}}",
-          {{/if}}
-          ...options?.headers,
-        },
-        {{#if (isRequestWithPayload request)}}body: this.clientConfig.transformRequest(options.body, {...options?.headers, ...this.clientConfig?.headers}){{/if}}
-      }, this.clientConfig, rawResponse)
-      {{!-- const response = await fetch(url.toString(), requestOptions);
+      {{#if (eq (getReturnTypeFromOperation this) "void") }}
       if (rawResponse) {
         return response;
-      } else if (this.clientConfig.throwOnBadResponse && !response.ok && response.status !== 304) {
-        throw new ResponseError(response);
-      } --}}
-
-      // TODO: figure out a way to not return anything on void operations
-      {{#unless (eq (getReturnTypeFromOperation this) "void") }}
-        {{!-- else {
-          const text = await response.text();
-          // It's ideal to get "{}" for an empty response body, but we won't throw if it's truly empty
-          return text ? JSON.parse(text) : {};
-        } --}}
-      {{/unless}}
+      }
+      {{else}}
+      return response;
+      {{/if}}
     }
   {{/each}}
 {{/each}}
