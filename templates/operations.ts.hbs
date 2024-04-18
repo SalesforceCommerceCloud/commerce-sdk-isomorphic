@@ -164,6 +164,16 @@
         }
       })
 
+      const url = new TemplateURL(
+        "{{{../path}}}",
+        this.clientConfig.baseUri,
+        {
+          pathParams,
+          queryParams,
+          origin: this.clientConfig.proxy
+        }
+      );
+
       const headers: Record<string, string> = {
         {{#if (isRequestWithPayload request)}}
         "Content-Type": "{{{getMediaTypeFromRequest request}}}",
@@ -172,26 +182,19 @@
         ...options?.headers
       };
 
-      const clientConfigCopy: ClientConfig<ConfigParameters> = {
-          ...this.clientConfig,
-          parameters: {
-            ...this.clientConfig.parameters,
-            ...pathParams
-          }
-      }
-      {{!-- if (!isBrowser) {
+      if (!isBrowser) {
         // Browsers forbid setting a custom user-agent header
         headers[USER_AGENT_HEADER] = [headers[USER_AGENT_HEADER], USER_AGENT_VALUE].join(" ");
-      } --}}
+      }
+
       const response = await runFetchHelper(
+        url.toString(),
         {
           method: "{{loud method}}",
-          parameters: queryParams,
-          path: "{{{../path}}}",
           headers,
           {{#if (isRequestWithPayload request)}}body: this.clientConfig.transformRequest(options.body, headers){{/if}}
         }, 
-        clientConfigCopy,
+        this.clientConfig,
         rawResponse
       )
 
