@@ -50,13 +50,11 @@ describe('callCustomEndpoint', () => {
       parameters: copyClientConfigParams,
     });
 
-    const asyncFuncCall = async (): Promise<void> => {
+    expect(async () => {
       // eslint-disable-next-line
-      // @ts-ignore
+      // @ts-ignore <-- we know it'll complain since we removed apiName
       await callCustomEndpoint(options, clientConfig);
-    };
-
-    expect(asyncFuncCall)
+    })
       .rejects.toThrow(
         'Missing required property in clientConfig.parameters: apiName'
       )

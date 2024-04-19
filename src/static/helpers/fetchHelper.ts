@@ -50,8 +50,7 @@ export const runFetchHelper = async <Params extends BaseUriParameters>(
     ...clientConfig?.fetchOptions,
     headers,
     // TODO: probably need to fix this type
-    ...(options?.body &&
-      ({body: options.body} as unknown as FormData & URLSearchParams)),
+    body: options?.body as unknown as FormData & URLSearchParams,
     method: options?.method ?? 'GET',
   };
 

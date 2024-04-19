@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.14.0-dev
+
+#### Enchancements
+
+- Add support for custom APIs [#149](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/149)
+
 ## v1.13.1
 
 #### Bug fixes
