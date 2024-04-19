@@ -1,13 +1,12 @@
 import ClientConfig, { ClientConfigInit } from "./clientConfig";
 // Must not import from ./helpers/index to avoid circular dependency via ShopperLogin
-import { isBrowser, fetch } from "./helpers/environment";
+import { isBrowser } from "./helpers/environment";
 import { runFetchHelper } from "./helpers";
 import type {
   BaseUriParameters,
   CompositeParameters,
   RequireParametersUnlessAllAreOptional
 } from "./helpers/types";
-import ResponseError from "./responseError";
 import TemplateURL from "./templateUrl";
 import { USER_AGENT_HEADER, USER_AGENT_VALUE } from "./version";
 
