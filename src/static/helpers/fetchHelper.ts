@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+import {BodyInit} from 'node-fetch';
 import {BaseUriParameters} from '.';
 import type {FetchOptions} from '../clientConfig';
 import ResponseError from '../responseError';
@@ -32,11 +33,7 @@ export const runFetchHelper = async <Params extends BaseUriParameters>(
     headers?: {
       authorization?: string;
     } & {[key: string]: string};
-    // TODO: probably need to fix this type
-    body?:
-      | {[key: string]: unknown}
-      | URLSearchParams
-      | (BodyInit & (BodyInit | null));
+    body?: BodyInit | unknown;
   },
   clientConfig?: ClientConfigInit<Params>,
   rawResponse?: boolean
@@ -49,8 +46,7 @@ export const runFetchHelper = async <Params extends BaseUriParameters>(
   const requestOptions: FetchOptions = {
     ...clientConfig?.fetchOptions,
     headers,
-    // TODO: probably need to fix this type
-    body: options?.body as unknown as FormData & URLSearchParams,
+    body: options?.body as BodyInit & string,
     method: options?.method ?? 'GET',
   };
 

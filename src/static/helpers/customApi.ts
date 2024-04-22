@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+import {BodyInit} from 'node-fetch';
 import {PathParameters} from './types';
 import {runFetchHelper} from './fetchHelper';
 import TemplateURL from '../templateUrl';
@@ -44,10 +45,7 @@ export const callCustomEndpoint = async (
       authorization?: string;
     } & {[key: string]: string};
     // TODO: probably need to fix this type
-    body?:
-      | {[key: string]: unknown}
-      | URLSearchParams
-      | (BodyInit & (BodyInit | null));
+    body?: BodyInit | unknown;
   },
   clientConfig: ClientConfigInit<CustomParams>,
   rawResponse?: boolean
