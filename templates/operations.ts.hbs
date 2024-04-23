@@ -187,7 +187,7 @@
         headers[USER_AGENT_HEADER] = [headers[USER_AGENT_HEADER], USER_AGENT_VALUE].join(" ");
       }
 
-      const response = await runFetchHelper(
+      const response = await doFetch(
         url.toString(),
         {
           method: "{{loud method}}",

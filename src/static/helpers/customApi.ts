@@ -6,7 +6,7 @@
  */
 import {BodyInit} from 'node-fetch';
 import {PathParameters} from './types';
-import {runFetchHelper} from './fetchHelper';
+import {doFetch} from './fetchHelper';
 import TemplateURL from '../templateUrl';
 import {ClientConfigInit} from '../clientConfig';
 
@@ -84,5 +84,5 @@ export const callCustomEndpoint = async (
     }
   );
 
-  return runFetchHelper(url.toString(), options, clientConfigCopy, rawResponse);
+  return doFetch(url.toString(), options, clientConfigCopy, rawResponse);
 };

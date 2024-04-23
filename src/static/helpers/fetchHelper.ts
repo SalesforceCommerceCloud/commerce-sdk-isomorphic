@@ -26,7 +26,7 @@ import {ClientConfigInit} from '../clientConfig';
  * @returns Raw response or data from response based on rawResponse argument from fetch call
  */
 // eslint-disable-next-line import/prefer-default-export
-export const runFetchHelper = async <Params extends BaseUriParameters>(
+export const doFetch = async <Params extends BaseUriParameters>(
   url: string,
   options?: {
     method?: string;

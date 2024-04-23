@@ -8,9 +8,9 @@ import nock from 'nock';
 import {Response} from 'node-fetch';
 import * as environment from './environment';
 import ClientConfig from '../clientConfig';
-import {runFetchHelper} from './fetchHelper';
+import {doFetch} from './fetchHelper';
 
-describe('runFetchHelper', () => {
+describe('doFetch', () => {
   const basePath = 'https://short_code.api.commercecloud.salesforce.com';
   const endpointPath =
     '/checkout/shopper-baskets/v1/organizations/organization_id/baskets';
@@ -23,10 +23,6 @@ describe('runFetchHelper', () => {
       clientId: 'client_id',
       siteId: 'site_id',
     },
-    headers: {
-      clientConfigHeader: 'clientConfigHeader',
-      repeatHeader: 'clientConfig.headers',
-    },
     fetchOptions: {
       cache: 'no-cache',
     },
@@ -36,7 +32,6 @@ describe('runFetchHelper', () => {
     method: 'POST',
     headers: {
       authorization: 'Bearer token',
-      repeatHeader: 'options.headers',
     },
     body: {
       data: 'data',
@@ -51,19 +46,49 @@ describe('runFetchHelper', () => {
   });
 
   test('uses headers from both clientConfig and headers object', async () => {
-    nock(basePath, {
-      reqheaders: {
-        authorization: 'Bearer token',
-        repeatHeader: 'options.headers', // options header takes priority
-        clientConfigHeader: 'clientConfigHeader',
+    const copyOptions = {
+      ...options,
+      headers: {
+        ...options.headers,
+        optionsOnlyHeader: 'optionsOnlyHeader',
+        repeatHeader: 'options.headers',
       },
+    };
+
+    const copyClientConfig = {
+      ...clientConfig,
+      headers: {
+        ...clientConfig.headers,
+        clientConfigOnlyHeader: 'clientConfigOnlyHeader',
+        repeatHeader: 'clientConfig.headers', // this should get overwritten
+      },
+    };
+
+    const expectedHeaders = {
+      authorization: 'Bearer token',
+      optionsOnlyHeader: 'optionsOnlyHeader',
+      clientConfigOnlyHeader: 'clientConfigOnlyHeader',
+      repeatHeader: 'options.headers',
+      // we should not see this header as repeatHeader in options should override this one
+      // repeatHeader: 'clientConfig.headers',
+    };
+
+    nock(basePath, {
+      reqheaders: expectedHeaders,
     })
       .post(endpointPath)
       .query({siteId: 'site_id'})
       .reply(200, responseBody);
 
-    const response = await runFetchHelper(url, options, clientConfig);
+    const spy = jest.spyOn(environment, 'fetch');
+
+    const response = await doFetch(url, copyOptions, copyClientConfig);
     expect(response).toEqual(responseBody);
+    expect(spy).toBeCalledTimes(1);
+    expect(spy).toBeCalledWith(
+      expect.any(String),
+      expect.objectContaining({headers: expectedHeaders})
+    );
   });
 
   test('returns raw response when rawResponse flag is passed as true', async () => {
@@ -72,7 +97,7 @@ describe('runFetchHelper', () => {
       .query({siteId: 'site_id'})
       .reply(200, responseBody);
 
-    const response = (await runFetchHelper(
+    const response = (await doFetch(
       url,
       options,
       clientConfig,
@@ -89,7 +114,7 @@ describe('runFetchHelper', () => {
 
     const copyClientConfig = {...clientConfig, throwOnBadResponse: true};
     expect(async () => {
-      await runFetchHelper(url, options, copyClientConfig);
+      await doFetch(url, options, copyClientConfig);
     })
       .rejects.toThrow('400 Bad Request')
       .finally(() => 'resolve promise');
@@ -98,7 +123,7 @@ describe('runFetchHelper', () => {
   test('returns data from response when rawResponse flag is passed as false or not passed', async () => {
     nock(basePath).post(endpointPath).query(true).reply(200, responseBody);
 
-    const data = await runFetchHelper(url, options, clientConfig, false);
+    const data = await doFetch(url, options, clientConfig, false);
     expect(data).toEqual(responseBody);
   });
 
@@ -106,7 +131,7 @@ describe('runFetchHelper', () => {
     nock(basePath).post(endpointPath).query(true).reply(200, responseBody);
 
     const spy = jest.spyOn(environment, 'fetch');
-    await runFetchHelper(url, options, clientConfig, false);
+    await doFetch(url, options, clientConfig, false);
     expect(spy).toBeCalledTimes(1);
     expect(spy).toBeCalledWith(
       expect.any(String),

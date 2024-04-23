@@ -79,12 +79,12 @@ describe('callCustomEndpoint', () => {
     const expectedUrl = `${
       nockBasePath + nockEndpointPath
     }?queryParam1=query+parameter+1&queryParam2=query+parameter+2`;
-    const runFetchHelperSpy = jest.spyOn(fetchHelper, 'runFetchHelper');
+    const doFetchSpy = jest.spyOn(fetchHelper, 'doFetch');
 
     await callCustomEndpoint(options, clientConfig);
 
-    expect(runFetchHelperSpy).toBeCalledTimes(1);
-    expect(runFetchHelperSpy).toBeCalledWith(
+    expect(doFetchSpy).toBeCalledTimes(1);
+    expect(doFetchSpy).toBeCalledWith(
       expectedUrl,
       options,
       expect.anything(),
@@ -93,7 +93,7 @@ describe('callCustomEndpoint', () => {
     expect(expectedUrl).toContain('/v1/');
   });
 
-  test('runFetchHelper is called with the correct arguments', async () => {
+  test('doFetch is called with the correct arguments', async () => {
     const clientConfig = new ClientConfig({
       parameters: clientConfigParameters,
     });
@@ -114,10 +114,10 @@ describe('callCustomEndpoint', () => {
         'https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}',
     };
 
-    const runFetchHelperSpy = jest.spyOn(fetchHelper, 'runFetchHelper');
+    const doFetchSpy = jest.spyOn(fetchHelper, 'doFetch');
     await callCustomEndpoint(options, clientConfig, true);
-    expect(runFetchHelperSpy).toBeCalledTimes(1);
-    expect(runFetchHelperSpy).toBeCalledWith(
+    expect(doFetchSpy).toBeCalledTimes(1);
+    expect(doFetchSpy).toBeCalledWith(
       expectedUrl,
       options,
       expectedClientConfig,

@@ -1,7 +1,7 @@
 import ClientConfig, { ClientConfigInit } from "./clientConfig";
 // Must not import from ./helpers/index to avoid circular dependency via ShopperLogin
 import { isBrowser } from "./helpers/environment";
-import { runFetchHelper } from "./helpers";
+import { doFetch } from "./helpers";
 import type {
   BaseUriParameters,
   CompositeParameters,
