@@ -81,14 +81,19 @@ describe('callCustomEndpoint', () => {
     }?queryParam1=query+parameter+1&queryParam2=query+parameter+2`;
     const doFetchSpy = jest.spyOn(fetchHelper, 'doFetch');
 
-    await callCustomEndpoint(options, clientConfig);
+    const response = (await callCustomEndpoint(
+      options,
+      clientConfig,
+      true
+    )) as Response;
 
+    expect(response.status).toBe(200);
     expect(doFetchSpy).toBeCalledTimes(1);
     expect(doFetchSpy).toBeCalledWith(
       expectedUrl,
       options,
       expect.anything(),
-      undefined
+      true
     );
     expect(expectedUrl).toContain('/v1/');
   });
