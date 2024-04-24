@@ -33,7 +33,7 @@ export const doFetch = async <Params extends BaseUriParameters>(
     headers?: {
       authorization?: string;
     } & {[key: string]: string};
-    body?: BodyInit | unknown;
+    body?: BodyInit | globalThis.BodyInit | unknown;
   },
   clientConfig?: ClientConfigInit<Params>,
   rawResponse?: boolean
@@ -46,7 +46,7 @@ export const doFetch = async <Params extends BaseUriParameters>(
   const requestOptions: FetchOptions = {
     ...clientConfig?.fetchOptions,
     headers,
-    body: options?.body as BodyInit & string,
+    body: options?.body as (BodyInit & (globalThis.BodyInit | null)) | undefined,
     method: options?.method ?? 'GET',
   };
 

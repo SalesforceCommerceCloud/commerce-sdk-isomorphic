@@ -30,8 +30,10 @@ export interface CustomParams {
  * @param clientConfig - Client Configuration object used by the SDK with properties that can affect the fetch call
  * @param clientConfig.parameters - Path parameters used for custom API endpoints. The required properties are: apiName, endpointPath, organizationId, and shortCode. An error will be thrown if these are not provided.
  * @param clientConfig.headers? - Additional headers that are added to the request. Authorization header should be in this argument or in the options?.headers. options?.headers will override any duplicate properties.
+ * @param clientConfig.baseUri? - baseUri used for the request, where the path parameters are wrapped in curly braces. Default value is 'https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}'
  * @param clientConfig.fetchOptions? - fetchOptions that are passed onto the fetch request
  * @param clientConfig.throwOnBadResponse? - flag that when set true will throw a response error if the fetch request fails
+ * @param clientConfig.proxy? - Routes API calls through a proxy when set
  * @param rawResponse? - Flag to return the raw response from the fetch call. True for raw response object, false for the data from the response
  * @returns Raw response or data from response based on rawResponse argument from fetch call
  */
@@ -44,8 +46,7 @@ export const callCustomEndpoint = async (
     headers?: {
       authorization?: string;
     } & {[key: string]: string};
-    // TODO: probably need to fix this type
-    body?: BodyInit | unknown;
+    body?: BodyInit | globalThis.BodyInit | unknown;
   },
   clientConfig: ClientConfigInit<CustomParams>,
   rawResponse?: boolean
@@ -64,23 +65,27 @@ export const callCustomEndpoint = async (
     }
   });
 
-  const clientConfigCopy: ClientConfigInit<CustomParams> = {
-    ...clientConfig,
-    baseUri:
-      'https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}',
-  };
-
-  if (!clientConfigCopy.parameters?.apiVersion) {
-    clientConfigCopy.parameters.apiVersion = 'v1';
+  const defaultBaseUri = 'https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}'
+  let clientConfigCopy = clientConfig
+  
+  if(!clientConfig.baseUri || !clientConfig.parameters?.apiVersion) {
+    clientConfigCopy = {
+      ...clientConfig,
+      ...(!clientConfig.baseUri && { baseUri: defaultBaseUri }),
+      parameters: {
+        ...clientConfig.parameters,
+        ...(!clientConfig.parameters?.apiVersion && { apiVersion: 'v1' })
+      }
+    };
   }
 
   const url = new TemplateURL(
     '/organizations/{organizationId}/{endpointPath}',
     clientConfigCopy.baseUri as string,
     {
-      pathParams: clientConfigCopy.parameters as unknown as PathParameters,
+      pathParams: clientConfigCopy.parameters as PathParameters,
       queryParams: options.parameters,
-      origin: clientConfig.proxy,
+      origin: clientConfigCopy.proxy,
     }
   );
 
