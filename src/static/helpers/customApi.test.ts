@@ -6,10 +6,9 @@
  */
 
 import nock from 'nock';
-import {callCustomEndpoint} from './customApi';
+import {callCustomEndpoint, CustomParams} from './customApi';
 import * as fetchHelper from './fetchHelper';
 import ClientConfig from '../clientConfig';
-import {CustomParams} from '../../lib/helpers';
 
 describe('callCustomEndpoint', () => {
   beforeEach(() => {
@@ -17,21 +16,25 @@ describe('callCustomEndpoint', () => {
     nock.cleanAll();
   });
 
-  const clientConfigParameters: CustomParams = {
-    shortCode: 'short_code',
-    organizationId: 'organization_id',
-    clientId: 'client_id',
-    siteId: 'site_id',
-    apiName: 'api_name',
-    apiVersion: 'v2',
-    endpointPath: 'endpoint_path',
-  };
+  const clientConfig = new ClientConfig<CustomParams>({
+    parameters: {
+      shortCode: 'short_code',
+      organizationId: 'organization_id',
+      clientId: 'client_id',
+      siteId: 'site_id',
+    },
+  });
 
   const options = {
     method: 'POST',
     parameters: {
       queryParam1: 'query parameter 1',
       queryParam2: 'query parameter 2',
+    },
+    customApiPathParameters: {
+      apiName: 'api_name',
+      apiVersion: 'v2',
+      endpointPath: 'endpoint_path',
     },
     headers: {
       authorization: 'Bearer token',
@@ -42,38 +45,42 @@ describe('callCustomEndpoint', () => {
   };
 
   test('throws an error when required path parameters are not passed', () => {
-    // separate apiName using spread since we can't use 'delete' operator as it isn't marked as optional
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const {apiName, ...copyClientConfigParams} = clientConfigParameters;
-
-    const clientConfig = new ClientConfig({
-      parameters: copyClientConfigParams,
-    });
+    const copyOptions = {
+      ...options,
+      // omit endpointPath
+      customApiPathParameters: {
+        apiName: 'api_name',
+      },
+    };
 
     expect(async () => {
       // eslint-disable-next-line
-      // @ts-ignore <-- we know it'll complain since we removed apiName
-      await callCustomEndpoint(options, clientConfig);
+      // @ts-ignore <-- we know it'll complain since we removed endpointPath
+      await callCustomEndpoint({options: copyOptions, clientConfig});
     })
       .rejects.toThrow(
-        'Missing required property in clientConfig.parameters: apiName'
+        'Missing required property needed in args.options.customApiPathParameters or args.clientConfig.parameters: endpointPath'
       )
       .finally(() => 'resolve promise');
   });
 
   test('sets api version to "v1" if not provided', async () => {
-    const copyClientConfigParams = {...clientConfigParameters};
-    delete copyClientConfigParams.apiVersion;
+    const copyOptions = {
+      ...options,
+      // omit apiVersion
+      customApiPathParameters: {
+        endpointPath: 'endpoint_path',
+        apiName: 'api_name',
+      },
+    };
 
-    const clientConfig = new ClientConfig({
-      parameters: copyClientConfigParams,
-    });
-
-    const {shortCode, apiName, organizationId, endpointPath} =
-      clientConfig.parameters;
+    const {shortCode, organizationId} = clientConfig.parameters;
+    const {apiName, endpointPath} = copyOptions.customApiPathParameters;
 
     const nockBasePath = `https://${shortCode}.api.commercecloud.salesforce.com`;
-    const nockEndpointPath = `/custom/${apiName}/v1/organizations/${organizationId}/${endpointPath}`;
+    const nockEndpointPath = `/custom/${apiName}/v1/organizations/${
+      organizationId as string
+    }/${endpointPath}`;
     nock(nockBasePath).post(nockEndpointPath).query(true).reply(200);
 
     const expectedUrl = `${
@@ -81,17 +88,17 @@ describe('callCustomEndpoint', () => {
     }?queryParam1=query+parameter+1&queryParam2=query+parameter+2`;
     const doFetchSpy = jest.spyOn(fetchHelper, 'doFetch');
 
-    const response = (await callCustomEndpoint(
-      options,
+    const response = (await callCustomEndpoint({
+      options: copyOptions,
       clientConfig,
-      true
-    )) as Response;
+      rawResponse: true,
+    })) as Response;
 
     expect(response.status).toBe(200);
     expect(doFetchSpy).toBeCalledTimes(1);
     expect(doFetchSpy).toBeCalledWith(
       expectedUrl,
-      options,
+      copyOptions,
       expect.anything(),
       true
     );
@@ -99,15 +106,13 @@ describe('callCustomEndpoint', () => {
   });
 
   test('doFetch is called with the correct arguments', async () => {
-    const clientConfig = new ClientConfig({
-      parameters: clientConfigParameters,
-    });
-
-    const {shortCode, apiName, organizationId, endpointPath} =
-      clientConfig.parameters;
+    const {shortCode, organizationId} = clientConfig.parameters;
+    const {apiName, endpointPath} = options.customApiPathParameters;
 
     const nockBasePath = `https://${shortCode}.api.commercecloud.salesforce.com`;
-    const nockEndpointPath = `/custom/${apiName}/v2/organizations/${organizationId}/${endpointPath}`;
+    const nockEndpointPath = `/custom/${apiName}/v2/organizations/${
+      organizationId as string
+    }/${endpointPath}`;
     nock(nockBasePath).post(nockEndpointPath).query(true).reply(200);
 
     const expectedUrl = `${
@@ -120,13 +125,66 @@ describe('callCustomEndpoint', () => {
     };
 
     const doFetchSpy = jest.spyOn(fetchHelper, 'doFetch');
-    await callCustomEndpoint(options, clientConfig, true);
+    await callCustomEndpoint({options, clientConfig, rawResponse: true});
     expect(doFetchSpy).toBeCalledTimes(1);
     expect(doFetchSpy).toBeCalledWith(
       expectedUrl,
       options,
       expectedClientConfig,
       true
+    );
+  });
+
+  test('uses path params from options and clientConfig, prioritizing options', async () => {
+    const copyClientConfig = {
+      ...clientConfig,
+      // Only shortCode will be used
+      parameters: {
+        endpointPath: 'clientConfig_endpoint_path',
+        apiName: 'clientConfig_api_name',
+        shortCode: 'clientconfig_shortcode',
+        apiVersion: 'v2',
+        organizationId: 'clientConfig_organizationId',
+      },
+    };
+
+    const copyOptions = {
+      ...options,
+      // these parameters will be prioritzed
+      customApiPathParameters: {
+        endpointPath: 'customApiPathParameters_endpoint_path',
+        apiName: 'customApiPathParameters_api_name',
+        apiVersion: 'v3',
+        organizationId: 'customApiPathParameters_organizationId',
+      },
+    };
+
+    // nock interception should be using custom API path parameters from options
+    const {apiName, endpointPath, organizationId, apiVersion} =
+      copyOptions.customApiPathParameters;
+    // except shortcode since we didn't implement it in copyOptions.customApiPathParameters
+    const {shortCode} = copyClientConfig.parameters;
+
+    const nockBasePath = `https://${shortCode}.api.commercecloud.salesforce.com`;
+    const nockEndpointPath = `/custom/${apiName}/${apiVersion}/organizations/${organizationId}/${endpointPath}`;
+    nock(nockBasePath).post(nockEndpointPath).query(true).reply(200);
+
+    // expected URL is a mix of both params
+    const expectedUrl = `${
+      nockBasePath + nockEndpointPath
+    }?queryParam1=query+parameter+1&queryParam2=query+parameter+2`;
+
+    const doFetchSpy = jest.spyOn(fetchHelper, 'doFetch');
+    await callCustomEndpoint({
+      options: copyOptions,
+      clientConfig: copyClientConfig,
+    });
+    expect(doFetchSpy).toBeCalledTimes(1);
+    expect(doFetchSpy).toBeCalledWith(
+      expectedUrl,
+      expect.anything(),
+      expect.anything(),
+      undefined
     );
   });
 });
