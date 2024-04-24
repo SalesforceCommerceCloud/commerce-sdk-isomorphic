@@ -65,17 +65,18 @@ export const callCustomEndpoint = async (
     }
   });
 
-  const defaultBaseUri = 'https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}'
-  let clientConfigCopy = clientConfig
-  
-  if(!clientConfig.baseUri || !clientConfig.parameters?.apiVersion) {
+  const defaultBaseUri =
+    'https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}';
+  let clientConfigCopy = clientConfig;
+
+  if (!clientConfig.baseUri || !clientConfig.parameters?.apiVersion) {
     clientConfigCopy = {
       ...clientConfig,
-      ...(!clientConfig.baseUri && { baseUri: defaultBaseUri }),
+      ...(!clientConfig.baseUri && {baseUri: defaultBaseUri}),
       parameters: {
         ...clientConfig.parameters,
-        ...(!clientConfig.parameters?.apiVersion && { apiVersion: 'v1' })
-      }
+        ...(!clientConfig.parameters?.apiVersion && {apiVersion: 'v1'}),
+      },
     };
   }
 

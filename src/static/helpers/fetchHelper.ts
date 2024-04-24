@@ -46,7 +46,9 @@ export const doFetch = async <Params extends BaseUriParameters>(
   const requestOptions: FetchOptions = {
     ...clientConfig?.fetchOptions,
     headers,
-    body: options?.body as (BodyInit & (globalThis.BodyInit | null)) | undefined,
+    body: options?.body as
+      | (BodyInit & (globalThis.BodyInit | null))
+      | undefined,
     method: options?.method ?? 'GET',
   };
 
