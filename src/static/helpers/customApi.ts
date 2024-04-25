@@ -106,7 +106,7 @@ export const callCustomEndpoint = async (args: {
       key => key.toLowerCase() === 'content-type'
     );
   }
-  if(clientConfigCopy.headers && !contentTypeKey) {
+  if (clientConfigCopy.headers && !contentTypeKey) {
     contentTypeKey = Object.keys(clientConfigCopy.headers).find(
       key => key.toLowerCase() === 'content-type'
     );
