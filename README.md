@@ -143,7 +143,7 @@ Invalid query parameters that are not a part of the API and do not follow the `c
 
 ### Custom APIs
 
-The SDK supports calling custom APIs with a helper function, `callCustomEndpoint`.
+The SDK supports calling [custom APIs](https://developer.salesforce.com/docs/commerce/commerce-api/guide/custom-apis.html) with a helper function, `callCustomEndpoint`.
 
 Example usage:
 
@@ -157,26 +157,48 @@ const SHORT_CODE = "<your-short-code>";
 const SITE_ID = "<your-site-id>";
 
 // client configuration parameters
-const clientConfig = {
+const clientConfigExample = {
   parameters: {
     clientId: CLIENT_ID,
     organizationId: ORG_ID,
     shortCode: SHORT_CODE,
     siteId: SITE_ID,
-    // Custom API path parameters
-    endpointPath: 'customers',
-    apiName: 'loyalty-info',
-    apiVersion: 'v1', // defaults to v1 if not provided
-  },
+  }
 };
 
-// Flag to retrieve raw response or data from helper function
-const rawResponse = false;
+// Required params: apiName, endpointPath, shortCode, organizaitonId
+// Required path params can be passed into:
+// options.customApiPathParameters or clientConfig.parameters
+const customApiArgs = { 
+  endpointPath: 'customers',
+  apiName: 'loyalty-info',
+  apiVersion: 'v1', // defaults to v1 if not provided
+}
+
 const accessToken = '<INSERT ACCESS TOKEN HERE>';
 
-let response = await helpers.callCustomEndpoint(
-  {
+let getResponse = await helpers.callCustomEndpoint({
+  options: {
     method: 'GET',
+    parameters: {
+      queryParameter: 'queryParameter1',
+      siteId: SITE_ID,
+    },
+    headers: {
+      // Content-Type is defaulted to application/json if not provided
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${access_token}`
+    },
+    customApiPathParameters: customApiArgs
+  }, 
+  clientConfig: clientConfigExample,
+  // Flag to retrieve raw response or data from helper function
+  rawResponse: false, 
+})
+
+let postResponse = await helpers.callCustomEndpoint({
+  options: {
+    method: 'POST',
     parameters: {
       queryParameter: 'queryParameter1',
       siteId: SITE_ID,
@@ -184,18 +206,22 @@ let response = await helpers.callCustomEndpoint(
     headers: {
       'Content-Type': 'application/json',
       authorization: `Bearer ${access_token}`
-    }
+    },
+    customApiPathParameters: customApiArgs,
+    body: JSON.stringify({ data: 'data' })
   }, 
-  clientConfig,
-  rawResponse
-)
+  clientConfig: clientConfigExample,
+  // Flag to retrieve raw response or data from helper function
+  rawResponse: false, 
+})
 
-console.log('RESPONSE: ', response)
+console.log('get response: ', getResponse)
+console.log('post response: ', postResponse)
 ```
 
 For more documentation about this helper function, please refer to the [commerce-sdk-isomorphic docs](https://salesforcecommercecloud.github.io/commerce-sdk-isomorphic/modules/helpers.html).
 
-For more information about custom APIs, please refer to the [Salesforce Developer Docs](https://developer.salesforce.com/docs/commerce/commerce-api/guide/custom-apis.html?q=custom+API)
+For more information about custom APIs, please refer to the [Salesforce Developer Docs](https://developer.salesforce.com/docs/commerce/commerce-api/guide/custom-apis.html)
 
 ## License Information
 

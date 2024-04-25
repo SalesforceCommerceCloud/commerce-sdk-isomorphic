@@ -4,7 +4,7 @@
 
 #### Enchancements
 
-- Add support for custom APIs with `callCustomEndpoint` helper function [#149](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/149)
+- Add helper function `callCustomEndpoint` to call [Custom APIs](https://developer.salesforce.com/docs/commerce/commerce-api/guide/custom-apis.html) - [#149](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/149)
 
 ## v1.13.1
 

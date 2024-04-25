@@ -21,20 +21,20 @@ export interface CustomParams {
 
 /**
  * A helper function designed to make calls to a custom API endpoint
- * For more information about custom APIs, please refer to the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/guide/custom-apis.html?q=custom+API)
+ * For more information about custom APIs, please refer to the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/guide/custom-apis.html)
  * @param args - Argument object containing data used for custom API request
  * @param args.options - An object containing any custom settings you want to apply to the request
  * @param args.options.method? - The request HTTP operation. 'GET' is the default if no method is provided.
  * @param args.options.parameters? - Query parameters that are added to the request
  * @param args.options.customApiPathParameters? - Path parameters used for custom API. Required path parameters (apiName, endpointPath, organizationId, and shortCode) can be in this object, or args.clientConfig.parameters. apiVersion is defaulted to 'v1' if not provided.
- * @param args.options.headers? - Headers that are added to the request. Authorization header should be in this parameter or in the clientConfig.headers
+ * @param args.options.headers? - Headers that are added to the request. Authorization header should be in this parameter or in the clientConfig.headers. If "Content-Type" is not provided, it will be defaulted to "application/json".
  * @param args.options.body? - Body that is used for the request
  * @param args.clientConfig - Client Configuration object used by the SDK with properties that can affect the fetch call
  * @param args.clientConfig.parameters - Path parameters used for custom API endpoints. The required properties are: apiName, endpointPath, organizationId, and shortCode. An error will be thrown if these are not provided.
  * @param args.clientConfig.headers? - Additional headers that are added to the request. Authorization header should be in this argument or in the options?.headers. options?.headers will override any duplicate properties.
  * @param args.clientConfig.baseUri? - baseUri used for the request, where the path parameters are wrapped in curly braces. Default value is 'https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}'
  * @param args.clientConfig.fetchOptions? - fetchOptions that are passed onto the fetch request
- * @param args.clientConfig.throwOnBadResponse? - flag that when set true will throw a response error if the fetch request fails
+ * @param args.clientConfig.throwOnBadResponse? - flag that when set true will throw a response error if the fetch request fails (returns with a status code outside the range of 200-299 or 304 redirect)
  * @param args.clientConfig.proxy? - Routes API calls through a proxy when set
  * @param args.rawResponse? - Flag to return the raw response from the fetch call. True for raw response object, false for the data from the response
  * @returns Raw response or data from response based on rawResponse argument from fetch call
@@ -77,7 +77,7 @@ export const callCustomEndpoint = async (args: {
   requiredArgs.forEach(arg => {
     if (!pathParams[arg]) {
       throw new Error(
-        `Missing required property needed in args.options.customApiPathParameters or args.clientConfig.parameters: ${arg}`
+        `Missing required property needed in options.customApiPathParameters or clientConfig.parameters: ${arg}`
       );
     }
   });
@@ -97,15 +97,36 @@ export const callCustomEndpoint = async (args: {
     };
   }
 
+  let contentTypeKey;
+  let optionsCopy = options;
+
+  // Look for Content-Type header
+  if (options.headers) {
+    contentTypeKey = Object.keys(options.headers).find(
+      key => key.toLowerCase() === 'content-type'
+    );
+  }
+
+  // If Content-Type header does not exist, we default to "Content-Type": "application/json"
+  if (!contentTypeKey) {
+    optionsCopy = {
+      ...options,
+      headers: {
+        ...options.headers,
+        'Content-Type': 'application/json',
+      },
+    };
+  }
+
   const url = new TemplateURL(
     '/organizations/{organizationId}/{endpointPath}',
     clientConfigCopy.baseUri as string,
     {
       pathParams: pathParams as PathParameters,
-      queryParams: options.parameters,
+      queryParams: optionsCopy.parameters,
       origin: clientConfigCopy.proxy,
     }
   );
 
-  return doFetch(url.toString(), options, clientConfigCopy, rawResponse);
+  return doFetch(url.toString(), optionsCopy, clientConfigCopy, rawResponse);
 };

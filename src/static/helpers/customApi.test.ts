@@ -37,11 +37,10 @@ describe('callCustomEndpoint', () => {
       endpointPath: 'endpoint_path',
     },
     headers: {
+      'Content-Type': 'text/plain',
       authorization: 'Bearer token',
     },
-    body: {
-      data: 'data',
-    },
+    body: 'Hello World',
   };
 
   test('throws an error when required path parameters are not passed', () => {
@@ -59,7 +58,7 @@ describe('callCustomEndpoint', () => {
       await callCustomEndpoint({options: copyOptions, clientConfig});
     })
       .rejects.toThrow(
-        'Missing required property needed in args.options.customApiPathParameters or args.clientConfig.parameters: endpointPath'
+        'Missing required property needed in options.customApiPathParameters or clientConfig.parameters: endpointPath'
       )
       .finally(() => 'resolve promise');
   });
@@ -183,6 +182,49 @@ describe('callCustomEndpoint', () => {
     expect(doFetchSpy).toBeCalledWith(
       expectedUrl,
       expect.anything(),
+      expect.anything(),
+      undefined
+    );
+  });
+
+  test('uses application/json as default content type if not provided', async () => {
+    const copyOptions = {
+      ...options,
+      // exclude Content-Type
+      headers: {
+        authorization: 'Bearer token',
+      },
+    };
+
+    const {apiName, endpointPath, apiVersion} =
+      copyOptions.customApiPathParameters;
+    const {shortCode, organizationId} = clientConfig.parameters;
+
+    const expectedJsonHeaders = {
+      authorization: 'Bearer token',
+      'Content-Type': 'application/json',
+    };
+
+    const nockBasePath = `https://${shortCode}.api.commercecloud.salesforce.com`;
+    const nockEndpointPath = `/custom/${apiName}/${apiVersion}/organizations/${
+      organizationId as string
+    }/${endpointPath}`;
+    nock(nockBasePath, {
+      reqheaders: expectedJsonHeaders,
+    })
+      .post(nockEndpointPath)
+      .query(true)
+      .reply(200);
+
+    const doFetchSpy = jest.spyOn(fetchHelper, 'doFetch');
+    await callCustomEndpoint({
+      options: copyOptions,
+      clientConfig,
+    });
+    expect(doFetchSpy).toBeCalledTimes(1);
+    expect(doFetchSpy).toBeCalledWith(
+      expect.any(String),
+      expect.objectContaining({headers: expectedJsonHeaders}),
       expect.anything(),
       undefined
     );
