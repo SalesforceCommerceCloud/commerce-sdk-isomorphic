@@ -151,7 +151,6 @@ Example usage:
 import pkg from 'commerce-sdk-isomorphic';
 const { helpers } = pkg;
 
-// client configuration parameters
 const clientConfigExample = {
   parameters: {
     clientId: "<your-client-id>",
