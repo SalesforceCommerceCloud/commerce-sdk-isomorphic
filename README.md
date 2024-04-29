@@ -151,18 +151,13 @@ Example usage:
 import pkg from 'commerce-sdk-isomorphic';
 const { helpers } = pkg;
 
-const CLIENT_ID = "<your-client-id>";
-const ORG_ID = "<your-org-id>";
-const SHORT_CODE = "<your-short-code>";
-const SITE_ID = "<your-site-id>";
-
 // client configuration parameters
 const clientConfigExample = {
   parameters: {
-    clientId: CLIENT_ID,
-    organizationId: ORG_ID,
-    shortCode: SHORT_CODE,
-    siteId: SITE_ID,
+    clientId: "<your-client-id>",
+    organizationId: "<your-org-id>",
+    shortCode: "<your-short-code>",
+    siteId: "<your-site-id>",
   }
 };
 
@@ -202,7 +197,6 @@ let postResponse = await helpers.callCustomEndpoint({
       queryParameter: 'queryParameter1',
     },
     headers: {
-      'Content-Type': 'application/json',
       authorization: `Bearer ${access_token}`
     },
     customApiPathParameters: customApiArgs,
