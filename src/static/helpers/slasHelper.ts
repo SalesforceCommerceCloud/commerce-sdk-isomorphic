@@ -5,8 +5,8 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import {nanoid} from 'nanoid';
-
+import {customRandom, urlAlphabet} from 'nanoid';
+import seedrandom, {PRNG} from 'seedrandom';
 import {isBrowser} from './environment';
 
 import {
@@ -39,11 +39,18 @@ export const getCodeAndUsidFromUrl = (
   };
 };
 
+const nanoid = (): string => {
+  const rng: PRNG = seedrandom(String(+new Date()), {entropy: true});
+  return customRandom(urlAlphabet, 128, size =>
+    new Uint8Array(size).map(() => 256 * rng())
+  )();
+};
+
 /**
  * Creates a random string to use as a code verifier. This code is created by the client and sent with both the authorization request (as a code challenge) and the token request.
  * @returns code verifier
  */
-export const createCodeVerifier = (): string => nanoid(128);
+export const createCodeVerifier = (): string => nanoid();
 
 /**
  * Encodes a code verifier to a code challenge to send to the authorization endpoint
