@@ -157,7 +157,11 @@ const clientConfigExample = {
     organizationId: "<your-org-id>",
     shortCode: "<your-short-code>",
     siteId: "<your-site-id>",
-  }
+  },
+  // If not provided, it'll use the default production URI:
+  // 'https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}'
+  // path parameters should be wrapped in curly braces like the default production URI
+  baseUri: "<your-base-uri>"
 };
 
 // Required params: apiName, endpointPath, shortCode, organizaitonId

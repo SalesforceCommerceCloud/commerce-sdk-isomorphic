@@ -9,6 +9,7 @@ import {PathParameters} from './types';
 import {doFetch} from './fetchHelper';
 import TemplateURL from '../templateUrl';
 import {ClientConfigInit} from '../clientConfig';
+import {CUSTOM_API_DEFAULT_BASE_URI} from '../config';
 
 // Helper method to find Content Type header
 // returns true if it exists, false otherwise
@@ -100,14 +101,11 @@ export const callCustomEndpoint = async (args: {
     pathParams.apiVersion = 'v1';
   }
 
-  const defaultBaseUri =
-    'https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}';
-
   let clientConfigCopy = clientConfig;
   if (!clientConfig.baseUri) {
     clientConfigCopy = {
       ...clientConfig,
-      baseUri: defaultBaseUri,
+      baseUri: CUSTOM_API_DEFAULT_BASE_URI,
     };
   }
 
