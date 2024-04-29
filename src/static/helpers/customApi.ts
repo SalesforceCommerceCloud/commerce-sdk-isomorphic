@@ -10,6 +10,20 @@ import {doFetch} from './fetchHelper';
 import TemplateURL from '../templateUrl';
 import {ClientConfigInit} from '../clientConfig';
 
+// Helper method to find Content Type header
+// returns true if it exists, false otherwise
+const contentTypeHeaderExists = (
+  headers: Record<string, string> | undefined
+) => {
+  let foundHeader = false;
+  if (headers) {
+    foundHeader = Boolean(
+      Object.keys(headers).find(key => key.toLowerCase() === 'content-type')
+    );
+  }
+  return foundHeader;
+};
+
 export interface CustomParams {
   apiName?: string;
   apiVersion?: string;
@@ -97,28 +111,27 @@ export const callCustomEndpoint = async (args: {
     };
   }
 
-  let contentTypeKey;
+  // Use siteId from clientConfig if it is not defined in options and is available in clientConfig
+  const useSiteId = Boolean(
+    !options.parameters?.siteId && clientConfig?.parameters?.siteId
+  );
+  const contentTypeExists =
+    contentTypeHeaderExists(options.headers) ||
+    contentTypeHeaderExists(clientConfigCopy.headers);
+
   let optionsCopy = options;
 
-  // Look for Content-Type header
-  if (options.headers) {
-    contentTypeKey = Object.keys(options.headers).find(
-      key => key.toLowerCase() === 'content-type'
-    );
-  }
-  if (clientConfigCopy.headers && !contentTypeKey) {
-    contentTypeKey = Object.keys(clientConfigCopy.headers).find(
-      key => key.toLowerCase() === 'content-type'
-    );
-  }
-
-  // If Content-Type header does not exist, we default to "Content-Type": "application/json"
-  if (!contentTypeKey) {
+  if (!contentTypeExists || useSiteId) {
     optionsCopy = {
       ...options,
       headers: {
         ...options.headers,
-        'Content-Type': 'application/json',
+        // If Content-Type header does not exist, we default to "Content-Type": "application/json"
+        ...(!contentTypeExists && {'Content-Type': 'application/json'}),
+      },
+      parameters: {
+        ...options.parameters,
+        ...(useSiteId && {siteId: clientConfig.parameters.siteId as string}),
       },
     };
   }

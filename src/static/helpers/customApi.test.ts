@@ -43,6 +43,21 @@ describe('callCustomEndpoint', () => {
     body: 'Hello World',
   };
 
+  const queryParamString = new URLSearchParams({
+    ...options.parameters,
+    siteId: clientConfig.parameters.siteId as string,
+  }).toString();
+
+  // helper function that creates a copy of the options object
+  // and adds siteId to the parameters object that comes from clientConfig
+  const addSiteIdToOptions = (optionsObj: Record<string, unknown>) => ({
+    ...optionsObj,
+    parameters: {
+      ...(optionsObj.parameters as Record<string, unknown>),
+      siteId: clientConfig.parameters.siteId,
+    },
+  });
+
   test('throws an error when required path parameters are not passed', () => {
     const copyOptions = {
       ...options,
@@ -84,7 +99,9 @@ describe('callCustomEndpoint', () => {
 
     const expectedUrl = `${
       nockBasePath + nockEndpointPath
-    }?queryParam1=query+parameter+1&queryParam2=query+parameter+2`;
+    }?${queryParamString}`;
+    const expectedOptions = addSiteIdToOptions(copyOptions);
+
     const doFetchSpy = jest.spyOn(fetchHelper, 'doFetch');
 
     const response = (await callCustomEndpoint({
@@ -97,7 +114,7 @@ describe('callCustomEndpoint', () => {
     expect(doFetchSpy).toBeCalledTimes(1);
     expect(doFetchSpy).toBeCalledWith(
       expectedUrl,
-      copyOptions,
+      expectedOptions,
       expect.anything(),
       true
     );
@@ -116,7 +133,9 @@ describe('callCustomEndpoint', () => {
 
     const expectedUrl = `${
       nockBasePath + nockEndpointPath
-    }?queryParam1=query+parameter+1&queryParam2=query+parameter+2`;
+    }?${queryParamString}`;
+    const expectedOptions = addSiteIdToOptions(options);
+
     const expectedClientConfig = {
       ...clientConfig,
       baseUri:
@@ -128,7 +147,7 @@ describe('callCustomEndpoint', () => {
     expect(doFetchSpy).toBeCalledTimes(1);
     expect(doFetchSpy).toBeCalledWith(
       expectedUrl,
-      options,
+      expectedOptions,
       expectedClientConfig,
       true
     );
@@ -144,6 +163,7 @@ describe('callCustomEndpoint', () => {
         shortCode: 'clientconfig_shortcode',
         apiVersion: 'v2',
         organizationId: 'clientConfig_organizationId',
+        siteId: 'site_id',
       },
     };
 
@@ -171,7 +191,7 @@ describe('callCustomEndpoint', () => {
     // expected URL is a mix of both params
     const expectedUrl = `${
       nockBasePath + nockEndpointPath
-    }?queryParam1=query+parameter+1&queryParam2=query+parameter+2`;
+    }?${queryParamString}`;
 
     const doFetchSpy = jest.spyOn(fetchHelper, 'doFetch');
     await callCustomEndpoint({

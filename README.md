@@ -170,9 +170,9 @@ const clientConfigExample = {
 // Required path params can be passed into:
 // options.customApiPathParameters or clientConfig.parameters
 const customApiArgs = { 
-  endpointPath: 'customers',
   apiName: 'loyalty-info',
   apiVersion: 'v1', // defaults to v1 if not provided
+  endpointPath: 'customers'
 }
 
 const accessToken = '<INSERT ACCESS TOKEN HERE>';
@@ -182,7 +182,6 @@ let getResponse = await helpers.callCustomEndpoint({
     method: 'GET',
     parameters: {
       queryParameter: 'queryParameter1',
-      siteId: SITE_ID,
     },
     headers: {
       // Content-Type is defaulted to application/json if not provided
@@ -201,7 +200,6 @@ let postResponse = await helpers.callCustomEndpoint({
     method: 'POST',
     parameters: {
       queryParameter: 'queryParameter1',
-      siteId: SITE_ID,
     },
     headers: {
       'Content-Type': 'application/json',
