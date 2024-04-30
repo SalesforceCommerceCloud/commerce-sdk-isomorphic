@@ -187,26 +187,24 @@
         headers[USER_AGENT_HEADER] = [headers[USER_AGENT_HEADER], USER_AGENT_VALUE].join(" ");
       }
 
-      const requestOptions = {
-        ...this.clientConfig.fetchOptions,
-        {{#if (isRequestWithPayload request)}}body: this.clientConfig.transformRequest(options.body, headers),{{/if}}
-        headers,
-        method: "{{loud method}}"
-      };
+      const response = await doFetch(
+        url.toString(),
+        {
+          method: "{{loud method}}",
+          headers,
+          {{#if (isRequestWithPayload request)}}body: this.clientConfig.transformRequest(options.body, headers){{/if}}
+        }, 
+        this.clientConfig,
+        rawResponse
+      )
 
-      const response = await fetch(url.toString(), requestOptions);
+      {{#if (eq (getReturnTypeFromOperation this) "void") }}
       if (rawResponse) {
-        return response;
-      } else if (this.clientConfig.throwOnBadResponse && !response.ok && response.status !== 304) {
-        throw new ResponseError(response);
+        return response as Response;
       }
-      {{#unless (eq (getReturnTypeFromOperation this) "void") }}
-        else {
-          const text = await response.text();
-          // It's ideal to get "{}" for an empty response body, but we won't throw if it's truly empty
-          return text ? JSON.parse(text) : {};
-        }
-      {{/unless}}
+      {{else}}
+      return response as Response | {{getReturnTypeFromOperation this}};
+      {{/if}}
     }
   {{/each}}
 {{/each}}

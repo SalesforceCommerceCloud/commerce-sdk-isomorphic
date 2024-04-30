@@ -32,6 +32,8 @@ export const fetch: FetchFunction = (() => {
     return require('node-fetch').default;
   }
 
+  // difficult to test in node environment
+  /* istanbul ignore next */
   if (!hasFetchAvailable)
     throw new Error(
       'Bad environment: it is not a node environment but fetch is not defined'

@@ -141,6 +141,83 @@ const searchResult = await shopperSearch.productSearch({
 
 Invalid query parameters that are not a part of the API and do not follow the `c_` custom query parameter convention will be filtered from the request and a warning will be displayed.
 
+### Custom APIs
+
+The SDK supports calling [custom APIs](https://developer.salesforce.com/docs/commerce/commerce-api/guide/custom-apis.html) with a helper function, `callCustomEndpoint`.
+
+Example usage:
+
+```javascript
+import pkg from 'commerce-sdk-isomorphic';
+const { helpers } = pkg;
+
+const clientConfigExample = {
+  parameters: {
+    clientId: "<your-client-id>",
+    organizationId: "<your-org-id>",
+    shortCode: "<your-short-code>",
+    siteId: "<your-site-id>",
+  },
+  // If not provided, it'll use the default production URI:
+  // 'https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}'
+  // path parameters should be wrapped in curly braces like the default production URI
+  baseUri: "<your-base-uri>"
+};
+
+// Required params: apiName, endpointPath, shortCode, organizaitonId
+// Required path params can be passed into:
+// options.customApiPathParameters or clientConfig.parameters
+const customApiArgs = { 
+  apiName: 'loyalty-info',
+  apiVersion: 'v1', // defaults to v1 if not provided
+  endpointPath: 'customers'
+}
+
+const accessToken = '<INSERT ACCESS TOKEN HERE>';
+
+let getResponse = await helpers.callCustomEndpoint({
+  options: {
+    method: 'GET',
+    parameters: {
+      queryParameter: 'queryParameter1',
+    },
+    headers: {
+      // Content-Type is defaulted to application/json if not provided
+      'Content-Type': 'application/json',
+      authorization: `Bearer ${access_token}`
+    },
+    customApiPathParameters: customApiArgs
+  }, 
+  clientConfig: clientConfigExample,
+  // Flag to retrieve raw response or data from helper function
+  rawResponse: false, 
+})
+
+let postResponse = await helpers.callCustomEndpoint({
+  options: {
+    method: 'POST',
+    parameters: {
+      queryParameter: 'queryParameter1',
+    },
+    headers: {
+      authorization: `Bearer ${access_token}`
+    },
+    customApiPathParameters: customApiArgs,
+    body: JSON.stringify({ data: 'data' })
+  }, 
+  clientConfig: clientConfigExample,
+  // Flag to retrieve raw response or data from helper function
+  rawResponse: false, 
+})
+
+console.log('get response: ', getResponse)
+console.log('post response: ', postResponse)
+```
+
+For more documentation about this helper function, please refer to the [commerce-sdk-isomorphic docs](https://salesforcecommercecloud.github.io/commerce-sdk-isomorphic/modules/helpers.html).
+
+For more information about custom APIs, please refer to the [Salesforce Developer Docs](https://developer.salesforce.com/docs/commerce/commerce-api/guide/custom-apis.html)
+
 ## License Information
 
 The Commerce SDK Isomorphic is licensed under BSD-3-Clause license. See the [license](./LICENSE.txt) for details.
