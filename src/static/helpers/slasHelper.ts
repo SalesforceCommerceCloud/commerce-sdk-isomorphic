@@ -5,8 +5,8 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import {nanoid} from 'nanoid';
-
+import {customRandom, urlAlphabet} from 'nanoid';
+import seedrandom, {PRNG} from 'seedrandom';
 import {isBrowser} from './environment';
 
 import {
@@ -40,10 +40,21 @@ export const getCodeAndUsidFromUrl = (
 };
 
 /**
+ * Adds entropy to nanoid() using seedrandom to ensure that the code_challenge sent to SCAPI by Google's crawler browser is unique.
+ * Solves the issue with Google's crawler getting the same result from nanoid() in two different runs, which results in the same PKCE code_challenge being used twice.
+ */
+const nanoid = (): string => {
+  const rng: PRNG = seedrandom(String(+new Date()), {entropy: true});
+  return customRandom(urlAlphabet, 128, size =>
+    new Uint8Array(size).map(() => 256 * rng())
+  )();
+};
+
+/**
  * Creates a random string to use as a code verifier. This code is created by the client and sent with both the authorization request (as a code challenge) and the token request.
  * @returns code verifier
  */
-export const createCodeVerifier = (): string => nanoid(128);
+export const createCodeVerifier = (): string => nanoid();
 
 /**
  * Encodes a code verifier to a code challenge to send to the authorization endpoint

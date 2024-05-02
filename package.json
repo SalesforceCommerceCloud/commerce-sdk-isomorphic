@@ -97,7 +97,8 @@
   },
   "dependencies": {
     "nanoid": "^3.3.4",
-    "node-fetch": "2.6.12"
+    "node-fetch": "2.6.12",
+    "seedrandom": "^3.0.5"
   },
   "devDependencies": {
     "@babel/cli": "7.18.6",
@@ -117,6 +118,7 @@
     "@types/handlebars-helpers": "^0.5.3",
     "@types/node-fetch": "^2.6.2",
     "@types/react-dom": "^16.9.16",
+    "@types/seedrandom": "^3.0.8",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "autoprefixer": "9.8.8",
@@ -175,11 +177,11 @@
   "bundlesize": [
     {
       "path": "lib/**/*.js",
-      "maxSize": "45 kB"
+      "maxSize": "46 kB"
     },
     {
       "path": "commerce-sdk-isomorphic-with-deps.tgz",
-      "maxSize": "350 kB"
+      "maxSize": "400 kB"
     }
   ],
   "proxy": "https://SHORTCODE.api.commercecloud.salesforce.com"
