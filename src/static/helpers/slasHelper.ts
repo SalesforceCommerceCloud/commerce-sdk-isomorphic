@@ -39,6 +39,10 @@ export const getCodeAndUsidFromUrl = (
   };
 };
 
+/**
+ * Adds entropy to nanoid() using seedrandom to ensure that the code_challenge sent to SCAPI by Google's crawler browser is unique.
+ * Solves the issue with Google's crawler getting the same result from nanoid() in two different runs, which results in the same PKCE code_challenge being used twice.
+ */
 const nanoid = (): string => {
   const rng: PRNG = seedrandom(String(+new Date()), {entropy: true});
   return customRandom(urlAlphabet, 128, size =>
