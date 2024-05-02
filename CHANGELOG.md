@@ -6,6 +6,10 @@
 
 - Add helper function `callCustomEndpoint` to call [Custom APIs](https://developer.salesforce.com/docs/commerce/commerce-api/guide/custom-apis.html) - [#149](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/149)
 
+#### Bug fixes
+
+- Fixed createCodeVerifier adding entropy to be successfully indexed by Google Search Console [#150](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/150)
+
 ## v1.13.1
 
 #### Bug fixes
