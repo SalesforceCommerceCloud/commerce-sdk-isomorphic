@@ -1,0 +1,24 @@
+{
+  "main": "shopper-stores.raml",
+  "name": "Shopper Stores",
+  "classifier": "raml",
+  "tags": [],
+  "dependencies": [
+    {
+      "groupId": "893f605e-10e2-423a-bdb4-f952f56eb6d8",
+      "assetId": "api-standards",
+      "version": "1.1.15"
+    },
+    {
+      "groupId": "893f605e-10e2-423a-bdb4-f952f56eb6d8",
+      "assetId": "commerce-cloud-standards",
+      "version": "1.0.26"
+    }
+  ],
+  "groupId": "893f605e-10e2-423a-bdb4-f952f56eb6d8",
+  "backwardsCompatible": false,
+  "assetId": "shopper-stores",
+  "version": "1.0.11",
+  "apiVersion": "v1",
+  "organizationId": "893f605e-10e2-423a-bdb4-f952f56eb6d8"
+}
