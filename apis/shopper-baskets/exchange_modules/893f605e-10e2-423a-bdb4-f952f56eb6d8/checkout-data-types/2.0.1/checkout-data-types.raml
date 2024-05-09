@@ -277,6 +277,21 @@ types:
         type: string
         example:
           "CREDIT_CARD"
+  BasketsResult:
+    description: |-
+      Result document containing an array of baskets.
+    properties:
+      baskets:
+        description: |-
+          The list of baskets for a customer. It is read only.
+        type: array
+        items:
+          type: Basket
+      total:
+        description: |-
+          The total number of baskets. It is read only.
+        type: integer
+        format: int32
   BonusDiscountLineItem:
     description: |-
       Document representing a bonus discount line item.
@@ -891,20 +906,6 @@ types:
         type: string
         example:
           "GP_1234"
-      groupedTaxItems?:
-        description: |-
-            Tax values that are grouped and summed based on the tax rate. The tax totals of the line items with the same
-            tax rate are grouped together and summed up. This does not affect the calculation in any way. It is read only.
-        type:
-            array
-        items:
-            type: GroupedTaxItem
-      guest?:
-        description: |-
-            The registration status of the customer. It is read only.
-        type: boolean
-        example:
-            true
       lastModified?:
         description: |-
           The timestamp when the order was last modified. It is read only.
@@ -1056,12 +1057,6 @@ types:
           - failed
         example:
           "created"
-      taxRoundedAtGroup?:
-        description: |-
-            If the tax is rounded at the group level, this is set to true. If the tax is rounded at the item or unit level, it is set to false. It is read only.
-        type: boolean
-        example:
-          true
       taxTotal?:
         description: |-
           The total tax amount. It is read only.
