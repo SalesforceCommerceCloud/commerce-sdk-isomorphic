@@ -142,6 +142,7 @@
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="helpers.html#loginguestuserprivate-1" class="tsd-kind-icon">login<wbr>Guest<wbr>User<wbr>Private</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="helpers.html#loginregistereduserb2c-1" class="tsd-kind-icon">login<wbr>Registered<wbr>User<wbr>B2C</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="helpers.html#logout-1" class="tsd-kind-icon">logout</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-not-exported"><a href="helpers.html#nanoid" class="tsd-kind-icon">nanoid</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="helpers.html#refreshaccesstoken-1" class="tsd-kind-icon">refresh<wbr>Access<wbr>Token</a></li>
 							</ul>
 						</section>
@@ -431,7 +432,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:94</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:105</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -575,7 +576,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:46</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:57</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -647,7 +648,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:53</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:64</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -723,7 +724,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:199</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:210</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -772,7 +773,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:160</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:171</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -830,7 +831,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:245</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:256</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -903,7 +904,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:386</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:397</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -945,6 +946,29 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+					<a name="nanoid" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> nanoid</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">nanoid<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in src/lib/helpers/slasHelper.ts:46</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Adds entropy to nanoid() using seedrandom to ensure that the code_challenge sent to SCAPI by Google&#39;s crawler browser is unique.
+									Solves the issue with Google&#39;s crawler getting the same result from nanoid() in two different runs, which results in the same PKCE code_challenge being used twice.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
 					<a name="refreshaccesstoken-1" class="tsd-anchor"></a>
 					<h3>refresh<wbr>Access<wbr>Token</h3>
@@ -955,7 +979,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/slasHelper.ts:345</li>
+									<li>Defined in src/lib/helpers/slasHelper.ts:356</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1053,6 +1077,9 @@
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="shopperseo.html">shopper<wbr>Seo</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="shopperstores.html">shopper<wbr>Stores</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="templateurl.html">template<wbr>Url</a>
@@ -1210,6 +1237,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="helpers.html#logout-1" class="tsd-kind-icon">logout</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+						<a href="helpers.html#nanoid" class="tsd-kind-icon">nanoid</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="helpers.html#refreshaccesstoken-1" class="tsd-kind-icon">refresh<wbr>Access<wbr>Token</a>
