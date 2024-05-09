@@ -24,4 +24,5 @@ export const API_LIST: string[] = [
   'shopper-promotions',
   'shopper-search',
   'shopper-seo',
+  'shopper-stores'
 ];
