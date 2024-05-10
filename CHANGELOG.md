@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v1.14.0
+## v2.0.0
 
 #### API Changes
 
