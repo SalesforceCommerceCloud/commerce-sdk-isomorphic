@@ -1,6 +1,27 @@
 # CHANGELOG
 
-## v1.14.0-dev
+## v2.0.0
+
+#### API Changes
+
+*Shopper Stores*
+
+* API Added
+
+*Shopper Orders*
+
+* New endpoint added
+
+  | **Endpoint Name** | **Description** |
+  | ------------- |-------------|
+  | guestOrderLookup | Lookup a guest order |
+
+*Shopper Customers*
+
+- Removal of deprecated endpoints:
+  - `invalidateCustomerAuth`
+  - `authorizeCustomer`
+  - `authorizeTrustedSystem`
 
 #### Enchancements
 

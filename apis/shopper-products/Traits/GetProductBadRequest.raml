@@ -20,11 +20,3 @@ responses:
               "detail": "The property selector '(brand,imageGroups.(**)' is malformed.",
               "selector": "(brand,imageGroups.(**)"
             }
-          FilterExpressionBadRequest: |
-            {
-              "title": "Bad Request",
-              "type": "https://api.commercecloud.salesforce.com/documentation/error/v1/errors/bad-request",
-              "detail": "Filter expressions in select are not supported.",
-              "parameter": "Filter expressions in select are not supported.",
-              "selector": "(recommendations[?(recommendedItemId=='apple-ipod-nano'].(**))"
-            }

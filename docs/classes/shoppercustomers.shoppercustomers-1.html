@@ -90,7 +90,7 @@
   };
   <span class="hljs-keyword">const</span> shopperCustomersClient = <span class="hljs-keyword">new</span> ShopperCustomers(clientConfig);</code></pre>
 					<span style="font-size:.7em; display:block; text-align: right">
-						API Version: 0.0.43<br />
+						API Version: 0.0.48<br />
 						Last Updated: <br />
 					</span>
 				</div>
@@ -131,8 +131,6 @@
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shoppercustomers.shoppercustomers-1.html#authorizecustomer" class="tsd-kind-icon">authorize<wbr>Customer</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shoppercustomers.shoppercustomers-1.html#authorizetrustedsystem" class="tsd-kind-icon">authorize<wbr>Trusted<wbr>System</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shoppercustomers.shoppercustomers-1.html#createcustomeraddress" class="tsd-kind-icon">create<wbr>Customer<wbr>Address</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shoppercustomers.shoppercustomers-1.html#createcustomerpaymentinstrument" class="tsd-kind-icon">create<wbr>Customer<wbr>Payment<wbr>Instrument</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shoppercustomers.shoppercustomers-1.html#createcustomerproductlist" class="tsd-kind-icon">create<wbr>Customer<wbr>Product<wbr>List</a></li>
@@ -153,7 +151,6 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shoppercustomers.shoppercustomers-1.html#getpublicproductlist" class="tsd-kind-icon">get<wbr>Public<wbr>Product<wbr>List</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shoppercustomers.shoppercustomers-1.html#getpublicproductlistsbysearchterm" class="tsd-kind-icon">get<wbr>Public<wbr>Product<wbr>Lists<wbr>BySearch<wbr>Term</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shoppercustomers.shoppercustomers-1.html#getresetpasswordtoken" class="tsd-kind-icon">get<wbr>Reset<wbr>Password<wbr>Token</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shoppercustomers.shoppercustomers-1.html#invalidatecustomerauth" class="tsd-kind-icon">invalidate<wbr>Customer<wbr>Auth</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shoppercustomers.shoppercustomers-1.html#registercustomer" class="tsd-kind-icon">register<wbr>Customer</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shoppercustomers.shoppercustomers-1.html#registerexternalprofile" class="tsd-kind-icon">register<wbr>External<wbr>Profile</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shoppercustomers.shoppercustomers-1.html#removecustomeraddress" class="tsd-kind-icon">remove<wbr>Customer<wbr>Address</a></li>
@@ -180,7 +177,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1112</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1120</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -202,7 +199,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="clientconfig.clientconfig-1.html" class="tsd-signature-type">ClientConfig</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>baseUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperCustomers.ts:1110</li>
+							<li>Defined in src/lib/shopperCustomers.ts:1118</li>
 						</ul>
 					</aside>
 				</section>
@@ -212,209 +209,13 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Base<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"https://{shortCode}.api.commercecloud.salesforce.com/customer/shopper-customers/{version}"</span><span class="tsd-signature-symbol"> = &quot;https://{shortCode}.api.commercecloud.salesforce.com/customer/shopper-customers/{version}&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperCustomers.ts:1112</li>
+							<li>Defined in src/lib/shopperCustomers.ts:1120</li>
 						</ul>
 					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<a name="authorizecustomer" class="tsd-anchor"></a>
-					<h3>authorize<wbr>Customer</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">authorize<wbr>Customer<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shoppercustomers.html#authrequest" class="tsd-signature-type">AuthRequest</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/shoppercustomers.html#customer" class="tsd-signature-type">Customer</a><span class="tsd-signature-symbol">&gt;</span></li>
-						<li class="tsd-signature tsd-kind-icon">authorize<wbr>Customer&lt;T&gt;<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shoppercustomers.html#authrequest" class="tsd-signature-type">AuthRequest</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, rawResponse<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">T</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">Customer</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1473</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>🚨 <strong>DEPRECATION NOTICE</strong></p>
-								</div>
-								<p>To enhance the security and availability of Salesforce services, this endpoint is now <strong>deprecated</strong>, and <strong>we plan to remove it in mid-2022</strong>. This endpoint is not available to new customers, and we discourage existing customers from using it. Instead, we strongly recommend using the endpoints of the <a href="https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary">Shopper Login and API Access Service</a> (SLAS) because they meet our rigorous standards for security and availability.</p>
-								<hr>
-								<p>Obtains a new JSON Web Token (JWT) for a guest or registered
-									customer. Tokens are returned as an HTTP <code>Authorization: Bearer</code> response
-									header entry. The following kinds of request are supported, as specified by the
-								<code>type</code>:</p>
-								<ul>
-									<li><code>\{\&quot;type\&quot;: \&quot;guest\&quot;\}</code> → Creates a guest (non-authenticated) customer and returns a token for the customer.</li>
-									<li><code>\{\&quot;type\&quot;: \&quot;credentials\&quot;\}</code> → Authenticates credentials passed in the <code>HTTP Authorization: Basic</code> request header and returns a token for a successfully authenticated customer (otherwise, it throws an <code>AuthenticationFailedException</code>). This type of request also updates profile attributes for the customer (for example, <code>last-visited</code>) and handles the maximum number of failed login attempts.</li>
-									<li><code>\{\&quot;type\&quot;: \&quot;refresh\&quot;\}</code> → Examines the token passed in the <code>HTTP Authorization: Bearer</code> request header. If valid, a new token is returned with an updated expiry time.</li>
-								</ul>
-								<p>The JWT contains 3 sections:</p>
-								<ol>
-									<li>Header: Specifies token type and algorithm used.</li>
-									<li>Payload: Contains customer information, client ID, issue, and expiration time.</li>
-									<li>Signature: Records the token signature.</li>
-								</ol>
-								<p>A token is created and returned to the client whenever a registered customer logs in (<code>credentials</code> type) or a guest customer requests it (<code>guest</code> type). The token is returned in the response header as <code>Authorization: Bearer --token--</code>.</p>
-								<p>The client has to include the token in the request header as <code>Authorization: Bearer --token--</code> in any follow-up request. The server declines any follow-up requests without a token. The server declines any requests that cannot be verified based on the token signature or expiration time. A token nearing its expiration time should be exchanged for a new one (<code>refresh</code> type).</p>
-								<p>If you would like to get a raw Response object use the other authorizeCustomer function.</p>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shoppercustomers.html#authrequest" class="tsd-signature-type">AuthRequest</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>An object containing the options for this method.</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/shoppercustomers.html#customer" class="tsd-signature-type">Customer</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>A promise of type Customer.</p>
-						</li>
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1523</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>🚨 <strong>DEPRECATION NOTICE</strong></p>
-								</div>
-								<p>To enhance the security and availability of Salesforce services, this endpoint is now <strong>deprecated</strong>, and <strong>we plan to remove it in mid-2022</strong>. This endpoint is not available to new customers, and we discourage existing customers from using it. Instead, we strongly recommend using the endpoints of the <a href="https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary">Shopper Login and API Access Service</a> (SLAS) because they meet our rigorous standards for security and availability.</p>
-								<hr>
-								<p>Obtains a new JSON Web Token (JWT) for a guest or registered
-									customer. Tokens are returned as an HTTP <code>Authorization: Bearer</code> response
-									header entry. The following kinds of request are supported, as specified by the
-								<code>type</code>:</p>
-								<ul>
-									<li><code>\{\&quot;type\&quot;: \&quot;guest\&quot;\}</code> → Creates a guest (non-authenticated) customer and returns a token for the customer.</li>
-									<li><code>\{\&quot;type\&quot;: \&quot;credentials\&quot;\}</code> → Authenticates credentials passed in the <code>HTTP Authorization: Basic</code> request header and returns a token for a successfully authenticated customer (otherwise, it throws an <code>AuthenticationFailedException</code>). This type of request also updates profile attributes for the customer (for example, <code>last-visited</code>) and handles the maximum number of failed login attempts.</li>
-									<li><code>\{\&quot;type\&quot;: \&quot;refresh\&quot;\}</code> → Examines the token passed in the <code>HTTP Authorization: Bearer</code> request header. If valid, a new token is returned with an updated expiry time.</li>
-								</ul>
-								<p>The JWT contains 3 sections:</p>
-								<ol>
-									<li>Header: Specifies token type and algorithm used.</li>
-									<li>Payload: Contains customer information, client ID, issue, and expiration time.</li>
-									<li>Signature: Records the token signature.</li>
-								</ol>
-								<p>A token is created and returned to the client whenever a registered customer logs in (<code>credentials</code> type) or a guest customer requests it (<code>guest</code> type). The token is returned in the response header as <code>Authorization: Bearer --token--</code>.</p>
-								<p>The client has to include the token in the request header as <code>Authorization: Bearer --token--</code> in any follow-up request. The server declines any follow-up requests without a token. The server declines any requests that cannot be verified based on the token signature or expiration time. A token nearing its expiration time should be exchanged for a new one (<code>refresh</code> type).</p>
-							</div>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h4>
-								</li>
-							</ul>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shoppercustomers.html#authrequest" class="tsd-signature-type">AuthRequest</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>clientId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>An object containing the options for this method.</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> rawResponse: <a href="" class="tsd-signature-type">T</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>Set to true to return entire Response object instead of DTO.</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">Customer</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>A promise of type Response if rawResponse is true, a promise of type Customer otherwise.</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<a name="authorizetrustedsystem" class="tsd-anchor"></a>
-					<h3>authorize<wbr>Trusted<wbr>System</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">authorize<wbr>Trusted<wbr>System<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shoppercustomers.html#trustedsystemauthrequest" class="tsd-signature-type">TrustedSystemAuthRequest</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/shoppercustomers.html#customer" class="tsd-signature-type">Customer</a><span class="tsd-signature-symbol">&gt;</span></li>
-						<li class="tsd-signature tsd-kind-icon">authorize<wbr>Trusted<wbr>System&lt;T&gt;<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shoppercustomers.html#trustedsystemauthrequest" class="tsd-signature-type">TrustedSystemAuthRequest</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, rawResponse<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">T</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">Customer</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1692</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>🚨 <strong>DEPRECATION NOTICE</strong></p>
-								</div>
-								<p>To enhance the security and availability of Salesforce services, this endpoint is now <strong>deprecated</strong>, and <strong>we plan to remove it in mid-2022</strong>. This endpoint is not available to new customers, and we discourage existing customers from using it. Instead, we strongly recommend using the endpoints of the <a href="https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary">Shopper Login and API Access Service</a> (SLAS) because they meet our rigorous standards for security and availability.</p>
-								<hr>
-								<p>Obtain the JSON Web Token (JWT) for registered customers whose credentials are stored using a third party system. Accepts <code>loginId</code> and
-								<code>clientId</code>, returns a customer object in the response body and the JWT generated against the <code>clientId</code> in the response header.</p>
-								<p>If you would like to get a raw Response object use the other authorizeTrustedSystem function.</p>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shoppercustomers.html#trustedsystemauthrequest" class="tsd-signature-type">TrustedSystemAuthRequest</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>An object containing the options for this method.</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/shoppercustomers.html#customer" class="tsd-signature-type">Customer</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>A promise of type Customer.</p>
-						</li>
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1724</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>🚨 <strong>DEPRECATION NOTICE</strong></p>
-								</div>
-								<p>To enhance the security and availability of Salesforce services, this endpoint is now <strong>deprecated</strong>, and <strong>we plan to remove it in mid-2022</strong>. This endpoint is not available to new customers, and we discourage existing customers from using it. Instead, we strongly recommend using the endpoints of the <a href="https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary">Shopper Login and API Access Service</a> (SLAS) because they meet our rigorous standards for security and availability.</p>
-								<hr>
-								<p>Obtain the JSON Web Token (JWT) for registered customers whose credentials are stored using a third party system. Accepts <code>loginId</code> and
-								<code>clientId</code>, returns a customer object in the response body and the JWT generated against the <code>clientId</code> in the response header.</p>
-							</div>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h4>
-								</li>
-							</ul>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shoppercustomers.html#trustedsystemauthrequest" class="tsd-signature-type">TrustedSystemAuthRequest</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>An object containing the options for this method.</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> rawResponse: <a href="" class="tsd-signature-type">T</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>Set to true to return entire Response object instead of DTO.</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">Customer</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>A promise of type Response if rawResponse is true, a promise of type Customer otherwise.</p>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 					<a name="createcustomeraddress" class="tsd-anchor"></a>
 					<h3>create<wbr>Customer<wbr>Address</h3>
@@ -426,7 +227,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2815</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2219</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -452,7 +253,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2842</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2246</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -501,7 +302,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4054</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3430</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -527,7 +328,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4081</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3457</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -576,7 +377,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4724</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4083</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -602,7 +403,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4751</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4110</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -651,7 +452,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5427</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4769</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -687,7 +488,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5467</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4809</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -746,7 +547,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4221</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3591</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -772,7 +573,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4248</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3618</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -821,7 +622,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4891</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4244</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -847,7 +648,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4918</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4271</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -896,7 +697,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5630</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4966</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -922,7 +723,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5659</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4995</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -971,7 +772,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2487</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1903</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -997,7 +798,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2512</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1928</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1046,7 +847,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2982</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2380</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1072,7 +873,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3009</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2407</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1121,7 +922,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3505</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2892</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1147,7 +948,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3530</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2917</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1196,7 +997,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3671</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3052</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1222,7 +1023,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3708</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3089</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1271,7 +1072,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4390</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3761</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1297,7 +1098,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4417</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3788</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1346,7 +1147,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5060</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4414</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1372,7 +1173,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5087</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4441</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1421,7 +1222,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5813</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5150</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1447,7 +1248,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5842</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5179</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1496,7 +1297,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4563</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3928</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1522,7 +1323,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:4588</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3953</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1571,7 +1372,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2314</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1736</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1597,7 +1398,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2341</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1763</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1646,7 +1447,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:6561</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5874</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1672,7 +1473,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:6588</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5901</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1721,7 +1522,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:6400</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5719</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1747,7 +1548,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:6425</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5744</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1796,7 +1597,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:6223</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5548</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1822,7 +1623,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:6252</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5577</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1871,7 +1672,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2007</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1441</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1897,7 +1698,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2032</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1466</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1936,87 +1737,6 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<a name="invalidatecustomerauth" class="tsd-anchor"></a>
-					<h3>invalidate<wbr>Customer<wbr>Auth</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">invalidate<wbr>Customer<wbr>Auth<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
-						<li class="tsd-signature tsd-kind-icon">invalidate<wbr>Customer<wbr>Auth&lt;T&gt;<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, rawResponse<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">T</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1295</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>🚨 <strong>DEPRECATION NOTICE</strong></p>
-								</div>
-								<p>To enhance the security and availability of Salesforce services, this endpoint is now <strong>deprecated</strong>, and <strong>we plan to remove it in mid-2022</strong>. This endpoint is not available to new customers, and we discourage existing customers from using it. Instead, we strongly recommend using the endpoints of the <a href="https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary">Shopper Login and API Access Service</a> (SLAS) because they meet our rigorous standards for security and availability.</p>
-								<hr>
-								<p>Log the user out.</p>
-								<p>If you would like to get a raw Response object use the other invalidateCustomerAuth function.</p>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>An object containing the options for this method.</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>A promise of type void.</p>
-						</li>
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1324</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>🚨 <strong>DEPRECATION NOTICE</strong></p>
-								</div>
-								<p>To enhance the security and availability of Salesforce services, this endpoint is now <strong>deprecated</strong>, and <strong>we plan to remove it in mid-2022</strong>. This endpoint is not available to new customers, and we discourage existing customers from using it. Instead, we strongly recommend using the endpoints of the <a href="https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary">Shopper Login and API Access Service</a> (SLAS) because they meet our rigorous standards for security and availability.</p>
-								<hr>
-								<p>Log the user out.</p>
-							</div>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h4>
-								</li>
-							</ul>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>An object containing the options for this method.</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> rawResponse: <a href="" class="tsd-signature-type">T</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>Set to true to return entire Response object instead of DTO.</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>A promise of type Response if rawResponse is true, a promise of type void otherwise.</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 					<a name="registercustomer" class="tsd-anchor"></a>
 					<h3>register<wbr>Customer</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
@@ -2027,12 +1747,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1137</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1145</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Registers a new customer. The mandatory data are the credentials, profile last name, and email. This requires a JSON Web Token (JWT) which needs to be obtained using the POST /customers/auth API with type &quot;guest&quot;, or from the Shopper Login (SLAS) API.</p>
+									<p>Registers a new customer. The mandatory data are the credentials, profile last name, and email. This requires a JSON Web Token (JWT) which needs to be obtained using the POST /customers/auth API with type &quot;guest&quot;, or from the Shopper Login (SLAS) API. The return type object for this endpoint is a common customer object shared by multiple Shopper Customer endpoints. In this case, all customer object details are returned, but attributes that are not included in the response, although they might be part of the customer object, are ignored. For example, although address information is included in the customer object, it is not displayed in the response for this endpoint and is ignored.</p>
 								</div>
 								<p>If you would like to get a raw Response object use the other registerCustomer function.</p>
 							</div>
@@ -2053,12 +1773,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1162</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1170</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Registers a new customer. The mandatory data are the credentials, profile last name, and email. This requires a JSON Web Token (JWT) which needs to be obtained using the POST /customers/auth API with type &quot;guest&quot;, or from the Shopper Login (SLAS) API.</p>
+									<p>Registers a new customer. The mandatory data are the credentials, profile last name, and email. This requires a JSON Web Token (JWT) which needs to be obtained using the POST /customers/auth API with type &quot;guest&quot;, or from the Shopper Login (SLAS) API. The return type object for this endpoint is a common customer object shared by multiple Shopper Customer endpoints. In this case, all customer object details are returned, but attributes that are not included in the response, although they might be part of the customer object, are ignored. For example, although address information is included in the customer object, it is not displayed in the response for this endpoint and is ignored.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -2102,7 +1822,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2160</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1588</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2128,7 +1848,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2185</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1613</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2177,7 +1897,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3156</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2548</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2203,7 +1923,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3183</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2575</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2252,7 +1972,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1859</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1292</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2278,7 +1998,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:1884</li>
+									<li>Defined in src/lib/shopperCustomers.ts:1317</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2327,7 +2047,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2648</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2058</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2353,7 +2073,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:2675</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2085</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2402,7 +2122,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3326</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2719</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2428,7 +2148,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3355</li>
+									<li>Defined in src/lib/shopperCustomers.ts:2748</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2477,7 +2197,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3892</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3267</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2503,7 +2223,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:3919</li>
+									<li>Defined in src/lib/shopperCustomers.ts:3294</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2552,7 +2272,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5235</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4583</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2578,7 +2298,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:5264</li>
+									<li>Defined in src/lib/shopperCustomers.ts:4612</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2627,7 +2347,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:6011</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5342</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2661,7 +2381,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers.ts:6051</li>
+									<li>Defined in src/lib/shopperCustomers.ts:5382</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2719,6 +2439,9 @@
 						<a href="../modules/clientconfig.html">client<wbr>Config</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="../modules/config.html">config</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="../modules/helpers.html">helpers</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -2761,6 +2484,9 @@
 						<a href="../modules/shopperseo.html">shopper<wbr>Seo</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="../modules/shopperstores.html">shopper<wbr>Stores</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="../modules/templateurl.html">template<wbr>Url</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -2783,12 +2509,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
 								<a href="shoppercustomers.shoppercustomers-1.html#defaultbaseuri" class="tsd-kind-icon">default<wbr>Base<wbr>Uri</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-								<a href="shoppercustomers.shoppercustomers-1.html#authorizecustomer" class="tsd-kind-icon">authorize<wbr>Customer</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-								<a href="shoppercustomers.shoppercustomers-1.html#authorizetrustedsystem" class="tsd-kind-icon">authorize<wbr>Trusted<wbr>System</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 								<a href="shoppercustomers.shoppercustomers-1.html#createcustomeraddress" class="tsd-kind-icon">create<wbr>Customer<wbr>Address</a>
@@ -2851,9 +2571,6 @@
 								<a href="shoppercustomers.shoppercustomers-1.html#getresetpasswordtoken" class="tsd-kind-icon">get<wbr>Reset<wbr>Password<wbr>Token</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-								<a href="shoppercustomers.shoppercustomers-1.html#invalidatecustomerauth" class="tsd-kind-icon">invalidate<wbr>Customer<wbr>Auth</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 								<a href="shoppercustomers.shoppercustomers-1.html#registercustomer" class="tsd-kind-icon">register<wbr>Customer</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
@@ -2896,6 +2613,7 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
 				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>

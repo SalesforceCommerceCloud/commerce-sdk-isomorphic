@@ -14,11 +14,4 @@ responses:
               "detail": "The property selector '(data.(name, imageGroups.(**))' is malformed.",
               "selector": "(data.(name, imageGroups.(**))"
             }
-          FilterExpressionBadRequestGetProducts: |
-            {
-              "title": "Bad Request",
-              "type": "https://api.commercecloud.salesforce.com/documentation/error/v1/errors/bad-request",
-              "detail": "Filter expressions in select are not supported.",
-              "parameter": "Filter expressions in select are not supported.",
-              "selector": "(data[?(brand=='abc')].(**))"
-            }
+          

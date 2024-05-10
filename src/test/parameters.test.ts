@@ -6,7 +6,7 @@
  */
 
 import nock from 'nock';
-import {ShopperCustomers} from '../lib/shopperCustomers';
+import {ShopperSearch} from '../lib/shopperSearch';
 
 const SITE_ID = 'SITE_ID';
 const CLIENT_ID = 'CLIENT_ID';
@@ -18,15 +18,15 @@ const MOCK_RESPONSE = {mockResponse: true};
 describe('Parameters', () => {
   beforeEach(() =>
     nock(`https://${SHORT_CODE}.api.commercecloud.salesforce.com`)
-      .post(
-        `/customer/shopper-customers/v1/organizations/${ORGANIZATION_ID}/customers/actions/login`
+      .get(
+        `/search/shopper-search/v1/organizations/${ORGANIZATION_ID}/product-search`
       )
-      .query({siteId: SITE_ID, clientId: CLIENT_ID})
+      .query({siteId: SITE_ID})
       .reply(200, MOCK_RESPONSE)
   );
 
   it('can all be specified in config (no method parameters object)', async () => {
-    const customersClient = new ShopperCustomers({
+    const searchClient = new ShopperSearch({
       parameters: {
         // shortCode is a base URI parameter, not path/query, so it *must* be in the config
         shortCode: SHORT_CODE,
@@ -36,15 +36,13 @@ describe('Parameters', () => {
       },
     });
 
-    const response = await customersClient.authorizeCustomer({
-      body: {type: 'guest'},
-    });
+    const response = await searchClient.productSearch();
 
     expect(response).toEqual(MOCK_RESPONSE);
   });
 
   it('can all be specified in config (empty method parameters object)', async () => {
-    const customersClient = new ShopperCustomers({
+    const searchClient = new ShopperSearch({
       parameters: {
         // shortCode is a base URI parameter, not path/query, so it *must* be in the config
         shortCode: SHORT_CODE,
@@ -54,71 +52,70 @@ describe('Parameters', () => {
       },
     });
 
-    const response = await customersClient.authorizeCustomer({
+    const response = await searchClient.productSearch({
       parameters: {},
-      body: {type: 'guest'},
     });
 
     expect(response).toEqual(MOCK_RESPONSE);
   });
 
   it('can all be specified in method', async () => {
-    const customersClient = new ShopperCustomers({
+    const searchClient = new ShopperSearch({
       parameters: {
         // shortCode is a base URI parameter, not path/query, so it *must* be in the config
         shortCode: SHORT_CODE,
+        // clientId is not a valid path/query parameter for the API, so we'll keep it in the config
+        clientId: CLIENT_ID,
       },
     });
 
-    const response = await customersClient.authorizeCustomer({
+    const response = await searchClient.productSearch({
       parameters: {
         siteId: SITE_ID,
         organizationId: ORGANIZATION_ID,
-        clientId: CLIENT_ID,
       },
-      body: {type: 'guest'},
     });
 
     expect(response).toEqual(MOCK_RESPONSE);
   });
 
   it('can be mixed across config and method', async () => {
-    const customersClient = new ShopperCustomers({
+    const searchClient = new ShopperSearch({
       parameters: {
         // shortCode is a base URI parameter, not path/query, so it *must* be in the config
         shortCode: SHORT_CODE,
+        // clientId is not a valid path/query parameter for the API, so we'll keep it in the config
+        clientId: CLIENT_ID,
         siteId: SITE_ID,
       },
     });
 
-    const response = await customersClient.authorizeCustomer({
+    const response = await searchClient.productSearch({
       parameters: {
         organizationId: ORGANIZATION_ID,
-        clientId: CLIENT_ID,
       },
-      body: {type: 'guest'},
     });
 
     expect(response).toEqual(MOCK_RESPONSE);
   });
 
   it('can be set in method to override config', async () => {
-    const customersClient = new ShopperCustomers({
+    const searchClient = new ShopperSearch({
       parameters: {
         // shortCode is a base URI parameter, not path/query, so it *must* be in the config
         shortCode: SHORT_CODE,
-        siteId: SITE_ID,
+        // clientId is not a valid path/query parameter for the API, so we'll keep it in the config
+        clientId: CLIENT_ID,
+        siteId: 'this one too',
         organizationId: 'will be replaced',
-        clientId: 'this one too',
       },
     });
 
-    const response = await customersClient.authorizeCustomer({
+    const response = await searchClient.productSearch({
       parameters: {
         organizationId: ORGANIZATION_ID,
-        clientId: CLIENT_ID,
+        siteId: SITE_ID,
       },
-      body: {type: 'guest'},
     });
 
     expect(response).toEqual(MOCK_RESPONSE);
@@ -127,7 +124,7 @@ describe('Parameters', () => {
   it('will throw if a required parameter is missing', async () => {
     nock.cleanAll(); // Not needed for this test
 
-    const customersClient = new ShopperCustomers({
+    const searchClient = new ShopperSearch({
       parameters: {
         // shortCode is a base URI parameter, not path/query, so it *must* be in the config
         shortCode: SHORT_CODE,
@@ -136,13 +133,13 @@ describe('Parameters', () => {
 
     // Type assertion is used because we're violating the type to test the implementation
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await expect(customersClient.authorizeCustomer({} as any)).rejects.toEqual(
+    await expect(searchClient.productSearch({} as any)).rejects.toEqual(
       new Error('Missing required path parameter: organizationId')
     );
   });
 
   it('allow custom query params', async () => {
-    const customersClient = new ShopperCustomers({
+    const searchClient = new ShopperSearch({
       parameters: {
         // shortCode is a base URI parameter, not path/query, so it *must* be in the config
         shortCode: SHORT_CODE,
@@ -160,23 +157,22 @@ describe('Parameters', () => {
     };
 
     nock(`https://${SHORT_CODE}.api.commercecloud.salesforce.com`)
-      .post(
-        `/customer/shopper-customers/v1/organizations/${ORGANIZATION_ID}/customers/actions/login`
+      .get(
+        `/search/shopper-search/v1/organizations/${ORGANIZATION_ID}/product-search`
       )
       .query({
         siteId: SITE_ID,
-        clientId: CLIENT_ID,
         c_validCustomParam: 'custom_param',
       })
       .reply(200, MOCK_RESPONSE);
 
-    const response = await customersClient.authorizeCustomer(options);
+    const response = await searchClient.productSearch(options);
 
     expect(response).toEqual(MOCK_RESPONSE);
   });
 
   it('warns user when an invalid parameter is passed', async () => {
-    const customersClient = new ShopperCustomers({
+    const searchClient = new ShopperSearch({
       parameters: {
         // shortCode is a base URI parameter, not path/query, so it *must* be in the config
         shortCode: SHORT_CODE,
@@ -194,11 +190,11 @@ describe('Parameters', () => {
     };
 
     const warnSpy = jest.spyOn(console, 'warn');
-    const response = await customersClient.authorizeCustomer(options);
+    const response = await searchClient.productSearch(options);
 
     expect(response).toEqual(MOCK_RESPONSE);
     expect(warnSpy).toHaveBeenCalledWith(
-      'Invalid Parameter for authorizeCustomer: invalidParameter'
+      'Invalid Parameter for productSearch: invalidParameter'
     );
   });
 });

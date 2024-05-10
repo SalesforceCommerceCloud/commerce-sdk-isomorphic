@@ -213,6 +213,77 @@
   },
 });</code></pre>
 				<p>Invalid query parameters that are not a part of the API and do not follow the <code>c_</code> custom query parameter convention will be filtered from the request and a warning will be displayed.</p>
+				<a href="#custom-apis" id="custom-apis" style="color: inherit; text-decoration: none;">
+					<h3>Custom APIs</h3>
+				</a>
+				<p>The SDK supports calling <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/custom-apis.html">custom APIs</a> with a helper function, <code>callCustomEndpoint</code>.</p>
+				<p>Example usage:</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> pkg <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;commerce-sdk-isomorphic&#x27;</span>;
+<span class="hljs-keyword">const</span> { helpers } = pkg;
+
+<span class="hljs-keyword">const</span> clientConfigExample = {
+  <span class="hljs-attr">parameters</span>: {
+    <span class="hljs-attr">clientId</span>: <span class="hljs-string">&quot;&lt;your-client-id&gt;&quot;</span>,
+    <span class="hljs-attr">organizationId</span>: <span class="hljs-string">&quot;&lt;your-org-id&gt;&quot;</span>,
+    <span class="hljs-attr">shortCode</span>: <span class="hljs-string">&quot;&lt;your-short-code&gt;&quot;</span>,
+    <span class="hljs-attr">siteId</span>: <span class="hljs-string">&quot;&lt;your-site-id&gt;&quot;</span>,
+  },
+  <span class="hljs-comment">// If not provided, it&#x27;ll use the default production URI:</span>
+  <span class="hljs-comment">// &#x27;https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}&#x27;</span>
+  <span class="hljs-comment">// path parameters should be wrapped in curly braces like the default production URI</span>
+  <span class="hljs-attr">baseUri</span>: <span class="hljs-string">&quot;&lt;your-base-uri&gt;&quot;</span>
+};
+
+<span class="hljs-comment">// Required params: apiName, endpointPath, shortCode, organizaitonId</span>
+<span class="hljs-comment">// Required path params can be passed into:</span>
+<span class="hljs-comment">// options.customApiPathParameters or clientConfig.parameters</span>
+<span class="hljs-keyword">const</span> customApiArgs = { 
+  <span class="hljs-attr">apiName</span>: <span class="hljs-string">&#x27;loyalty-info&#x27;</span>,
+  <span class="hljs-attr">apiVersion</span>: <span class="hljs-string">&#x27;v1&#x27;</span>, <span class="hljs-comment">// defaults to v1 if not provided</span>
+  <span class="hljs-attr">endpointPath</span>: <span class="hljs-string">&#x27;customers&#x27;</span>
+}
+
+<span class="hljs-keyword">const</span> accessToken = <span class="hljs-string">&#x27;&lt;INSERT ACCESS TOKEN HERE&gt;&#x27;</span>;
+
+<span class="hljs-keyword">let</span> getResponse = <span class="hljs-keyword">await</span> helpers.callCustomEndpoint({
+  <span class="hljs-attr">options</span>: {
+    <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;GET&#x27;</span>,
+    <span class="hljs-attr">parameters</span>: {
+      <span class="hljs-attr">queryParameter</span>: <span class="hljs-string">&#x27;queryParameter1&#x27;</span>,
+    },
+    <span class="hljs-attr">headers</span>: {
+      <span class="hljs-comment">// Content-Type is defaulted to application/json if not provided</span>
+      <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;application/json&#x27;</span>,
+      <span class="hljs-attr">authorization</span>: <span class="hljs-string">`Bearer <span class="hljs-subst">${access_token}</span>`</span>
+    },
+    <span class="hljs-attr">customApiPathParameters</span>: customApiArgs
+  }, 
+  <span class="hljs-attr">clientConfig</span>: clientConfigExample,
+  <span class="hljs-comment">// Flag to retrieve raw response or data from helper function</span>
+  <span class="hljs-attr">rawResponse</span>: <span class="hljs-literal">false</span>, 
+})
+
+<span class="hljs-keyword">let</span> postResponse = <span class="hljs-keyword">await</span> helpers.callCustomEndpoint({
+  <span class="hljs-attr">options</span>: {
+    <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;POST&#x27;</span>,
+    <span class="hljs-attr">parameters</span>: {
+      <span class="hljs-attr">queryParameter</span>: <span class="hljs-string">&#x27;queryParameter1&#x27;</span>,
+    },
+    <span class="hljs-attr">headers</span>: {
+      <span class="hljs-attr">authorization</span>: <span class="hljs-string">`Bearer <span class="hljs-subst">${access_token}</span>`</span>
+    },
+    <span class="hljs-attr">customApiPathParameters</span>: customApiArgs,
+    <span class="hljs-attr">body</span>: <span class="hljs-built_in">JSON</span>.stringify({ <span class="hljs-attr">data</span>: <span class="hljs-string">&#x27;data&#x27;</span> })
+  }, 
+  <span class="hljs-attr">clientConfig</span>: clientConfigExample,
+  <span class="hljs-comment">// Flag to retrieve raw response or data from helper function</span>
+  <span class="hljs-attr">rawResponse</span>: <span class="hljs-literal">false</span>, 
+})
+
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;get response: &#x27;</span>, getResponse)
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;post response: &#x27;</span>, postResponse)</code></pre>
+				<p>For more documentation about this helper function, please refer to the <a href="https://salesforcecommercecloud.github.io/commerce-sdk-isomorphic/modules/helpers.html">commerce-sdk-isomorphic docs</a>.</p>
+				<p>For more information about custom APIs, please refer to the <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/custom-apis.html">Salesforce Developer Docs</a></p>
 				<a href="#license-information" id="license-information" style="color: inherit; text-decoration: none;">
 					<h2>License Information</h2>
 				</a>
@@ -227,6 +298,9 @@
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/clientconfig.html">client<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/config.html">config</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/helpers.html">helpers</a>
@@ -271,6 +345,9 @@
 						<a href="modules/shopperseo.html">shopper<wbr>Seo</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="modules/shopperstores.html">shopper<wbr>Stores</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="modules/templateurl.html">template<wbr>Url</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -292,6 +369,7 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
 				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
