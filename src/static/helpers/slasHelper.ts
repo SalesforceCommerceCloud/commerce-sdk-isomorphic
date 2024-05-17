@@ -93,10 +93,15 @@ export const generateCodeChallenge = async (
       typeof navigator !== 'undefined' &&
       navigator.product === 'ReactNative'
     ) {
-      challenge =
-        (await crypto.digestStringAsync?.('SHA-256', codeVerifier, {
+      const base64Digest = await crypto.digestStringAsync?.(
+        'SHA-256',
+        codeVerifier,
+        {
           encoding: 'base64',
-        })) || '';
+        }
+      );
+
+      challenge = base64Digest ? urlSafe(base64Digest) : '';
     } else {
       challenge = urlSafe(
         crypto.default
