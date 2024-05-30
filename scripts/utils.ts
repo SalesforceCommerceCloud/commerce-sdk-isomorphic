@@ -131,10 +131,9 @@ export async function setupApis(
  */
 export async function updateApis(
   name: string,
-  deployment: RegExp,
   rootPath: string
 ): Promise<void> {
-  const matchedApis = await download.search(`"${name}"`, deployment);
+  const matchedApis = await download.search(`"${name}"`);
   if (!(matchedApis?.length > 0)) {
     throw new Error(`No results in Exchange for '${name}'`);
   }

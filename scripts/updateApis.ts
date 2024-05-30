@@ -28,5 +28,5 @@ fs.ensureDirSync(PRODUCTION_API_PATH);
 
 API_LIST.forEach(name => {
   // eslint-disable-next-line no-console
-  updateApis(name, /production/i, PRODUCTION_API_PATH).catch(console.error);
+  updateApis(name, PRODUCTION_API_PATH).catch(console.error);
 });
