@@ -124,16 +124,38 @@ export async function setupApis(
  *  Ive spent hours trying to mock download
  *
  * @param name - Api name to search for
- * @param deployment - What deployment to build for
+ * @param deployment - What deployment to build for (optional)
  * @param rootPath - Root path to download to
  *
  * @returns a promise that we will complete
  */
 export async function updateApis(
   name: string,
+  deployment: RegExp,
   rootPath: string
+): Promise<void>;
+export async function updateApis(name: string, rootPath: string): Promise<void>;
+
+export async function updateApis(
+  name: string,
+  arg2: RegExp | string,
+  arg3?: string
 ): Promise<void> {
-  const matchedApis = await download.search(`"${name}"`);
+  let deployment: RegExp | undefined;
+  let rootPath: string;
+
+  if (typeof arg2 === 'string') {
+    rootPath = arg2;
+  } else {
+    deployment = arg2;
+    if (arg3 === undefined) {
+      throw new Error('rootPath is required when deployment is provided');
+    }
+    rootPath = arg3;
+  }
+
+  const matchedApis = await download.search(`"${name}"`, deployment);
+
   if (!(matchedApis?.length > 0)) {
     throw new Error(`No results in Exchange for '${name}'`);
   }
