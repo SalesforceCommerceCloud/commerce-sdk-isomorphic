@@ -100,4 +100,13 @@ describe('test updateApis script', () => {
       updateApis('shopper-customers', /production/i as any)
     ).rejects.toThrow('rootPath is required when deployment is provided');
   });
+
+  it('throws error when download fails', async () => {
+    jest
+      .spyOn(download, 'downloadRestApis')
+      .mockRejectedValue(new Error('It failed.'));
+    await expect(
+      updateApis('shopper-customers', /production/i, '/tmp')
+    ).rejects.toThrow('Failed to download shopper-customers: It failed.');
+  });
 });
