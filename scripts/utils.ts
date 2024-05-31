@@ -129,16 +129,16 @@ export async function setupApis(
  *
  * @returns a promise that we will complete
  */
+export async function updateApis(name: string, rootPath: string): Promise<void>;
 export async function updateApis(
   name: string,
   deployment: RegExp,
   rootPath: string
 ): Promise<void>;
-export async function updateApis(name: string, rootPath: string): Promise<void>;
 
 export async function updateApis(
   name: string,
-  arg2: RegExp | string,
+  arg2: string | RegExp,
   arg3?: string
 ): Promise<void> {
   let deployment: RegExp | undefined;
@@ -148,7 +148,7 @@ export async function updateApis(
     rootPath = arg2;
   } else {
     deployment = arg2;
-    if (arg3 === undefined) {
+    if (!arg3) {
       throw new Error('rootPath is required when deployment is provided');
     }
     rootPath = arg3;

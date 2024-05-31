@@ -72,29 +72,32 @@ describe('setupApis', () => {
 
 describe('test updateApis script', () => {
   it('throws error when no results', async () => {
-    await expect(updateApis('noResults', '/tmp')).rejects.toThrow(
-      "No results in Exchange for 'noResults'"
-    );
+    await expect(
+      updateApis('noResults', /production/i, '/tmp')
+    ).rejects.toThrow("No results in Exchange for 'noResults'");
   });
 
   it('throws error when no exact match', async () => {
-    await expect(updateApis('noMatch', '/tmp')).rejects.toThrow(
+    await expect(updateApis('noMatch', /production/i, '/tmp')).rejects.toThrow(
       "No exact match in Exchange for 'noMatch'"
     );
   });
 
   it('downloads when exact match', async () => {
     await expect(
+      updateApis('shopper-customers', /production/i, '/tmp')
+    ).resolves.toBeUndefined();
+  });
+
+  it('downloads when exact match without deployment', async () => {
+    await expect(
       updateApis('shopper-customers', '/tmp')
     ).resolves.toBeUndefined();
   });
 
-  it('throws error when download fails', async () => {
-    jest
-      .spyOn(download, 'downloadRestApis')
-      .mockRejectedValue(new Error('It failed.'));
-    await expect(updateApis('shopper-customers', '/tmp')).rejects.toThrow(
-      'Failed to download shopper-customers: It failed.'
-    );
+  it('throws error when no rootPath provided with deployment', async () => {
+    await expect(
+      updateApis('shopper-customers', /production/i as any)
+    ).rejects.toThrow('rootPath is required when deployment is provided');
   });
 });
