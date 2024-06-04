@@ -1,15 +1,20 @@
 {{#each encodes.endPoints}}
   {{#each operations}}
 
-    static readonly {{{name}}}ParamKeys = [
+    static readonly {{{name}}}PathParamKeys = [
       {{#each ../parameters}}
       '{{{name}}}',
       {{/each}}
+    ] as const;
+    static readonly {{{name}}}QueryParamKeys = [
       {{#each request.queryParameters}}
       '{{{name}}}',
       {{/each}}
     ] as const;
-
+    static readonly {{{name}}}ParamKeys = [
+      ...{{{@root.name.upperCamelCase}}}.{{{name}}}PathParamKeys,
+      ...{{{@root.name.upperCamelCase}}}.{{{name}}}QueryParamKeys,
+    ] as const;
     static readonly {{{name}}}ParamKeysRequired = [
       {{#each ../parameters}}
       '{{{name}}}',
@@ -150,32 +155,34 @@
         shortCode: configParams.shortCode,
         version: configParams.version || "v1"
       };
-      {{#each ../parameters}}
-      if (optionParams["{{{name}}}"] !== undefined) {
-        pathParams["{{{name}}}"] = optionParams["{{{name}}}"];
-      } else if (configParams["{{{name}}}"] !== undefined) {
-        pathParams["{{{name}}}"] = configParams["{{{name}}}"];
-      }
-      {{#if (is required "true")}}
-      else {
-        throw new Error('Missing required path parameter: {{{name}}}');
-      }
-      {{/if}}
-      {{/each}}
+      // TODO
+      {{{@root.name.upperCamelCase}}}.{{{name}}}PathParamKeys.forEach((paramKey) => {
+        const value = optionParams[paramKey] ?? configParams[paramKey];
+
+        if (value !== undefined) {
+          pathParams[paramKey] = value;
+        } else {
+          const isRequired = {{{@root.name.upperCamelCase}}}.{{{name}}}ParamKeysRequired.includes(paramKey);
+          if (isRequired) {
+            throw new Error(`Missing required path parameter: ${paramKey}`);
+          }
+        }
+      });
 
       const queryParams: {{{@root.name.upperCamelCase}}}QueryParameters & { [key in `c_${string}`]: any } = {};
-      {{#each request.queryParameters}}
-      if (optionParams["{{{name}}}"] !== undefined) {
-        queryParams["{{{name}}}"] = optionParams["{{{name}}}"];
-      } else if (configParams["{{{name}}}"] !== undefined) {
-        queryParams["{{{name}}}"] = configParams["{{{name}}}"];
-      }
-      {{#if (is required "true")}}
-      else {
-        throw new Error('Missing required query parameter: {{{name}}}');
-      }
-      {{/if}}
-      {{/each}}
+      // TODO
+      {{{@root.name.upperCamelCase}}}.{{{name}}}QueryParamKeys.forEach((paramKey) => {
+        const value = optionParams[paramKey] ?? configParams[paramKey];
+
+        if (value !== undefined) {
+          queryParams[paramKey] = value;
+        } else {
+          const isRequired = {{{@root.name.upperCamelCase}}}.{{{name}}}ParamKeysRequired.includes(paramKey);
+          if (isRequired) {
+            throw new Error(`Missing required query parameter: ${paramKey}`);
+          }
+        }
+      });
 
       Object.keys(optionParams).forEach((key) => {
         if(key.startsWith('c_') && optionParams[key as keyof typeof optionParams] !== undefined) {
