@@ -1,5 +1,6 @@
 {{#each encodes.endPoints}}
   {{#each operations}}
+
     static readonly {{{name}}}ParamKeys = [
       {{#each ../parameters}}
       '{{{name}}}',
