@@ -175,8 +175,10 @@
         const value = optionParams[paramKey] ?? configParams[paramKey];
 
         if (value !== undefined) {
+          // @ts-ignore
           queryParams[paramKey] = value;
         } else {
+          // @ts-ignore
           const isRequired = {{{@root.name.upperCamelCase}}}.{{{name}}}ParamKeysRequired.includes(paramKey);
           if (isRequired) {
             throw new Error(`Missing required query parameter: ${paramKey}`);
