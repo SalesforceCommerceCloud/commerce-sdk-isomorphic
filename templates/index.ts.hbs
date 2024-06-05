@@ -1,5 +1,5 @@
 {{#each children}}
-export { {{name.upperCamelCase}} } from "./{{name.lowerCamelCase}}";
+export { {{name.upperCamelCase}}, paramKeys as {{name.upperCamelCase}}ParamKeys } from "./{{name.lowerCamelCase}}";
 import type * as {{name.upperCamelCase}}Types from "./{{name.lowerCamelCase}}";
 export type { {{name.upperCamelCase}}Types };
 {{/each}}

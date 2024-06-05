@@ -110,3 +110,5 @@ const throwMissingRequiredParamError = ({name, paramType}: {name: string, paramT
 const warnInvalidParam = ({paramName, methodName}: {paramName: string, methodName: string}) => {
   console.warn(`Invalid Parameter for ${methodName}: ${paramName}`)
 }
+
+{{> paramKeysPartial model}}

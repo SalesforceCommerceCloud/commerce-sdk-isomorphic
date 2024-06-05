@@ -46,6 +46,10 @@ export function registerPartials(): void {
     'operationsPartial',
     path.join(TEMPLATE_DIRECTORY, 'operations.ts.hbs')
   );
+  registerPartial(
+    'paramKeysPartial',
+    path.join(TEMPLATE_DIRECTORY, 'paramKeys.ts.hbs')
+  );
 }
 
 function addTemplates(apis: ApiMetadata, outputBasePath: string): ApiMetadata {

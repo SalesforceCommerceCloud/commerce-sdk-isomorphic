@@ -1,0 +1,41 @@
+{{#each encodes.endPoints}}
+  {{#each operations}}
+
+    const {{{name}}}PathParamKeys = [
+      {{#each ../parameters}}
+      '{{{name}}}',
+      {{/each}}
+    ] as const;
+    const {{{name}}}QueryParamKeys = [
+      {{#each request.queryParameters}}
+      '{{{name}}}',
+      {{/each}}
+    ] as const;
+    const {{{name}}}ParamKeys = [
+      ...{{{name}}}PathParamKeys,
+      ...{{{name}}}QueryParamKeys,
+    ] as const;
+    const {{{name}}}ParamKeysRequired = [
+      {{#each ../parameters}}
+      '{{{name}}}',
+      {{/each}}
+      {{#each request.queryParameters}}
+      {{#if (is required "true")}}
+      '{{{name}}}',
+      {{/if}}
+      {{/each}}
+    ] as const;
+
+  {{/each}}
+{{/each}}
+
+export const paramKeys = {
+  {{#each encodes.endPoints}}
+  {{#each operations}}
+  {{{name}}}: {{{name}}}ParamKeys,
+  {{{name}}}Path: {{{name}}}PathParamKeys,
+  {{{name}}}Query: {{{name}}}QueryParamKeys,
+  {{{name}}}Required: {{{name}}}ParamKeysRequired,
+  {{/each}}
+  {{/each}}
+}

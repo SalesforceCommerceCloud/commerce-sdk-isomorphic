@@ -1,31 +1,6 @@
 {{#each encodes.endPoints}}
   {{#each operations}}
 
-    static readonly {{{name}}}PathParamKeys = [
-      {{#each ../parameters}}
-      '{{{name}}}',
-      {{/each}}
-    ] as const;
-    static readonly {{{name}}}QueryParamKeys = [
-      {{#each request.queryParameters}}
-      '{{{name}}}',
-      {{/each}}
-    ] as const;
-    static readonly {{{name}}}ParamKeys = [
-      ...{{{@root.name.upperCamelCase}}}.{{{name}}}PathParamKeys,
-      ...{{{@root.name.upperCamelCase}}}.{{{name}}}QueryParamKeys,
-    ] as const;
-    static readonly {{{name}}}ParamKeysRequired = [
-      {{#each ../parameters}}
-      '{{{name}}}',
-      {{/each}}
-      {{#each request.queryParameters}}
-      {{#if (is required "true")}}
-      '{{{name}}}',
-      {{/if}}
-      {{/each}}
-    ] as const;
-
     /**
     * {{{formatForTsDoc description}}}
     *
@@ -156,13 +131,13 @@
         version: configParams.version || "v1"
       };
       // TODO: try extracting this
-      {{{@root.name.upperCamelCase}}}.{{{name}}}PathParamKeys.forEach((paramKey) => {
+      {{{name}}}PathParamKeys.forEach((paramKey) => {
         const value = optionParams[paramKey] ?? configParams[paramKey];
 
         if (value !== undefined) {
           pathParams[paramKey] = value;
         } else {
-          const isRequired = {{{@root.name.upperCamelCase}}}.{{{name}}}ParamKeysRequired.includes(paramKey);
+          const isRequired = {{{name}}}ParamKeysRequired.includes(paramKey);
           if (isRequired) {
             throwMissingRequiredParamError({name: paramKey, paramType: 'path'})
           }
@@ -171,7 +146,7 @@
 
       const queryParams: {{{@root.name.upperCamelCase}}}QueryParameters & { [key in `c_${string}`]: any } = {};
       // TODO: try extracting this
-      {{{@root.name.upperCamelCase}}}.{{{name}}}QueryParamKeys.forEach((paramKey) => {
+      {{{name}}}QueryParamKeys.forEach((paramKey) => {
         const value = optionParams[paramKey] ?? configParams[paramKey];
 
         if (value !== undefined) {
@@ -179,7 +154,7 @@
           queryParams[paramKey] = value;
         } else {
           // @ts-ignore
-          const isRequired = {{{@root.name.upperCamelCase}}}.{{{name}}}ParamKeysRequired.includes(paramKey);
+          const isRequired = {{{name}}}ParamKeysRequired.includes(paramKey);
           if (isRequired) {
             throwMissingRequiredParamError({name: paramKey, paramType: 'query'})
           }
