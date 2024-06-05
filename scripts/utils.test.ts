@@ -113,6 +113,14 @@ describe('test downloadLatestApis script', () => {
     );
   });
 
+  it('downloads when exact match', async () => {
+    jest.spyOn(download, 'downloadRestApis').mockResolvedValue('');
+
+    await expect(
+      downloadLatestApis('shopper-customers', '/tmp')
+    ).resolves.toBeUndefined();
+  });
+
   it('throws error when download fails', async () => {
     jest
       .spyOn(download, 'downloadRestApis')
