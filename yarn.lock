@@ -1124,13 +1124,13 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@commerce-apps/raml-toolkit@^0.5.11":
-  version "0.5.11"
-  resolved "https://registry.yarnpkg.com/@commerce-apps/raml-toolkit/-/raml-toolkit-0.5.11.tgz#fdbc1989ecae9ebc0242b7389eddba0e33f8ca23"
-  integrity sha512-no4LanINCR306fsf+4jInaXKgoozbOyYy0/OBNsX2FnhCZPBr4Z5e0EPcIw6dKNSNzI8lYlhiZgV5uf8e1/dfw==
+"@commerce-apps/raml-toolkit@0.5.12":
+  version "0.5.12"
+  resolved "https://registry.yarnpkg.com/@commerce-apps/raml-toolkit/-/raml-toolkit-0.5.12.tgz#ddb1500e931c2150447bba018596680354b28b48"
+  integrity sha512-DIWmol3ATRPTfIxljR1OORRL9pxsRAoRTgfmtWLiyKKuCQAYjA51Zp8o9joSPWE/VAxPLqNBhXqhcTaTXiG9FA==
   dependencies:
-    "@oclif/command" "1.8.0"
-    "@oclif/config" "1.17.1"
+    "@oclif/command" "1.8.4"
+    "@oclif/config" "1.18.1"
     amf-client-js "4.7.2"
     dotenv "8.6.0"
     fs-extra "8.1.0"
@@ -1139,9 +1139,8 @@
     json-rules-engine "5.3.0"
     jsondiffpatch "0.4.1"
     lodash "4.17.21"
-    loglevel "1.8.0"
+    loglevel "1.8.1"
     make-fetch-happen "8.0.14"
-    snyk "1.787.0"
     tmp "0.2.1"
     ts-node "8.10.2"
     unzipper "0.10.11"
@@ -2963,7 +2962,7 @@
     node-gyp "^7.1.0"
     read-package-json-fast "^2.0.1"
 
-"@oclif/command@1.8.0", "@oclif/command@<=1.8.3", "@oclif/command@^1.8.15":
+"@oclif/command@1.8.4", "@oclif/command@<=1.8.3", "@oclif/command@^1.8.15":
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/@oclif/command/-/command-1.8.3.tgz#1f8bc2c4ecf94b6659a5134d95da179e1dffad9e"
   integrity sha512-OGjrhdVgTT2TAAj/2RrdXjwxaDoTm16c2LfAzrta1xIFe6/XhgQIYDmeRN/RptQoZQBX8e9Vv2JoQq+TbghJmw==
@@ -2975,13 +2974,13 @@
     debug "^4.1.1"
     semver "^7.3.2"
 
-"@oclif/config@1.17.1":
-  version "1.17.1"
-  resolved "https://registry.yarnpkg.com/@oclif/config/-/config-1.17.1.tgz#383515f6715b91d8df5db8108214e93bb46e86ca"
-  integrity sha512-UqV5qsN2np96TNlJspSNlRl7CpFmxYSrB0iLe3XV9NDkbFEE5prGP++h6w6xOR/FL3QV7BoqrbwGuJdJdFbidw==
+"@oclif/config@1.18.1":
+  version "1.18.1"
+  resolved "https://registry.yarnpkg.com/@oclif/config/-/config-1.18.1.tgz#81207d3682fa967bcd6981954fcfe414a29dcc77"
+  integrity sha512-twRJO5RRl3CCDaAASb6LiynfFQl/SbkWWOQy1l0kJZSMPysEhz+fk3BKfmlCCm451Btkp4UezHUwI1JtH+/zYg==
   dependencies:
     "@oclif/errors" "^1.3.3"
-    "@oclif/parser" "^3.8.6"
+    "@oclif/parser" "^3.8.0"
     debug "^4.1.1"
     globby "^11.0.1"
     is-wsl "^2.1.1"
@@ -3065,7 +3064,7 @@
   resolved "https://registry.yarnpkg.com/@oclif/linewrap/-/linewrap-1.0.0.tgz#aedcb64b479d4db7be24196384897b5000901d91"
   integrity sha512-Ups2dShK52xXa8w6iBWLgcjPJWjais6KPJQq3gQ/88AY6BXoTX+MIGFPrWQO1KLMiQfoTpcLnUwloN4brrVUHw==
 
-"@oclif/parser@^3.8.0", "@oclif/parser@^3.8.5", "@oclif/parser@^3.8.6":
+"@oclif/parser@^3.8.0", "@oclif/parser@^3.8.5":
   version "3.8.7"
   resolved "https://registry.yarnpkg.com/@oclif/parser/-/parser-3.8.7.tgz#236d48db05d0b00157d3b42d31f9dac7550d2a7c"
   integrity sha512-b11xBmIUK+LuuwVGJpFs4LwQN2xj2cBWj2c4z1FtiXGrJ85h9xV6q+k136Hw0tGg1jQoRXuvuBnqQ7es7vO9/Q==
@@ -11015,7 +11014,12 @@ logging-helpers@^1.0.0:
     isobject "^3.0.0"
     log-utils "^0.2.1"
 
-loglevel@1.8.0, loglevel@^1.6.8:
+loglevel@1.8.1:
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.8.1.tgz#5c621f83d5b48c54ae93b6156353f555963377b4"
+  integrity sha512-tCRIJM51SHjAayKwC+QAg8hT8vg6z7GSgLJKGvzuPb1Wc+hLzqtuVLxp6/HzSPOozuK+8ErAhy7U/sVzw8Dgfg==
+
+loglevel@^1.6.8:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.8.0.tgz#e7ec73a57e1e7b419cb6c6ac06bf050b67356114"
   integrity sha512-G6A/nJLRgWOuuwdNuA6koovfEV1YpqqAG4pRUlFaz3jj2QNZ8M4vBqnVA+HBTmU/AMNUtlOsMmSpF6NyOjztbA==
@@ -15107,11 +15111,6 @@ snapdragon@^0.8.1:
     source-map "^0.5.6"
     source-map-resolve "^0.5.0"
     use "^3.1.0"
-
-snyk@1.787.0:
-  version "1.787.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.787.0.tgz#d39044ee5987bbb4d7b8e3393c5ebb9952b83a91"
-  integrity sha512-bBOmHyNL+VJt7VCH7K9hfidbkU/AIpbaZpsXPVa+RltJ9QZqdlD6hBTDotyeuHhzygeNmetpxvjwiG9RkN7SAg==
 
 snyk@^1.973.0:
   version "1.973.0"
