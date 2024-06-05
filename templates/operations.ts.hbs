@@ -164,7 +164,7 @@
         } else {
           const isRequired = {{{@root.name.upperCamelCase}}}.{{{name}}}ParamKeysRequired.includes(paramKey);
           if (isRequired) {
-            throw new Error(`Missing required path parameter: ${paramKey}`);
+            throwMissingRequiredParamError({name: paramKey, paramType: 'path'})
           }
         }
       });
@@ -181,7 +181,7 @@
           // @ts-ignore
           const isRequired = {{{@root.name.upperCamelCase}}}.{{{name}}}ParamKeysRequired.includes(paramKey);
           if (isRequired) {
-            throw new Error(`Missing required query parameter: ${paramKey}`);
+            throwMissingRequiredParamError({name: paramKey, paramType: 'query'})
           }
         }
       });
@@ -191,7 +191,7 @@
         if(key.startsWith('c_') && optionParams[key as keyof typeof optionParams] !== undefined) {
           queryParams[key as keyof typeof queryParams] = optionParams[key as keyof typeof optionParams]
         } else if(!queryParams.hasOwnProperty(key) && !pathParams.hasOwnProperty(key)) {
-          console.warn(`Invalid Parameter for {{{name}}}: ${key}`)
+          warnInvalidParam({ paramName: key, methodName: '{{{name}}}' })
         }
       })
 

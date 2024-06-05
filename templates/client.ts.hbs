@@ -80,12 +80,12 @@ export type {{name.upperCamelCase}}Parameters = {{name.upperCamelCase}}PathParam
 *
 * <span style="font-size:.7em; display:block; text-align: right">
 * API Version: {{metadata.version}}<br />
-* Last Updated: {{metadata.updatedDate}}<br />  
+* Last Updated: {{metadata.updatedDate}}<br />
 * </span>
 {{#if (eq (lowercase metadata.categories.[CC Version Status].[0]) "beta")}}
-* @beta 
+* @beta
 * {{/if}}
-* 
+*
 
 */
 export class {{name.upperCamelCase}}<ConfigParameters extends {{{name.upperCamelCase}}}Parameters & Record<string, unknown>> {
@@ -102,5 +102,11 @@ export class {{name.upperCamelCase}}<ConfigParameters extends {{{name.upperCamel
   }
 
   {{> operationsPartial model}}
+}
 
+const throwMissingRequiredParamError = ({name, paramType}: {name: string, paramType: 'query' | 'path'}) => {
+  throw new Error(`Missing required ${paramType} parameter: ${name}`);
+}
+const warnInvalidParam = ({paramName, methodName}: {paramName: string, methodName: string}) => {
+  console.warn(`Invalid Parameter for ${methodName}: ${paramName}`)
 }
