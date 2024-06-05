@@ -130,7 +130,6 @@
         shortCode: configParams.shortCode,
         version: configParams.version || "v1"
       };
-      // TODO: try extracting this
       {{{name}}}PathParamKeys.forEach((paramKey) => {
         const value = optionParams[paramKey] ?? configParams[paramKey];
 
@@ -145,7 +144,6 @@
       });
 
       const queryParams: {{{@root.name.upperCamelCase}}}QueryParameters & { [key in `c_${string}`]: any } = {};
-      // TODO: try extracting this
       {{{name}}}QueryParamKeys.forEach((paramKey) => {
         const value = optionParams[paramKey] ?? configParams[paramKey];
 
@@ -161,7 +159,6 @@
         }
       });
 
-      // TODO: try extracting this
       Object.keys(optionParams).forEach((key) => {
         if(key.startsWith('c_') && optionParams[key as keyof typeof optionParams] !== undefined) {
           queryParams[key as keyof typeof queryParams] = optionParams[key as keyof typeof optionParams]
