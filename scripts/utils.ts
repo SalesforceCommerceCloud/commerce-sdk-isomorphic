@@ -123,6 +123,8 @@ export async function setupApis(
 /**
  * Searches for an API by name and downloads it to a folder.
  *
+ * @deprecated Use `downloadLatestApis` instead.
+ *
  * NOTE: Coverage passes without this function being covered.
  *  We should have some followup to figure out how to cover it.
  *  Ive spent hours trying to mock download
@@ -138,7 +140,43 @@ export async function updateApis(
   deployment: RegExp,
   rootPath: string
 ): Promise<void> {
+  console.warn('updateApis is deprecated. Use downloadLatestApis instead.');
+
   const matchedApis = await download.search(`"${name}"`, deployment);
+  if (!(matchedApis?.length > 0)) {
+    throw new Error(`No results in Exchange for '${name}'`);
+  }
+  const api = matchedApis.find(matchedApi => matchedApi?.assetId === name);
+  if (!api) {
+    throw new Error(`No exact match in Exchange for '${name}'`);
+  }
+  try {
+    await download.downloadRestApis([api], rootPath);
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      err.message = `Failed to download ${name}: ${err.message}`;
+    }
+    throw err;
+  }
+}
+
+/**
+ * Searches for an API by name and downloads it to a folder.
+ *
+ * NOTE: Coverage passes without this function being covered.
+ *  We should have some followup to figure out how to cover it.
+ *  Ive spent hours trying to mock download
+ *
+ * @param name - Api name to search for
+ * @param rootPath - Root path to download to
+ *
+ * @returns a promise that we will complete
+ */
+export async function downloadLatestApis(
+  name: string,
+  rootPath: string
+): Promise<void> {
+  const matchedApis = await download.search(`"${name}"`);
   if (!(matchedApis?.length > 0)) {
     throw new Error(`No results in Exchange for '${name}'`);
   }

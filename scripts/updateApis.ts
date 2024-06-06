@@ -8,7 +8,7 @@
 import path from 'path';
 import fs from 'fs-extra';
 import dotenv from 'dotenv';
-import {updateApis} from './utils';
+import {downloadLatestApis} from './utils';
 import {API_LIST} from './config';
 
 dotenv.config();
@@ -28,5 +28,5 @@ fs.ensureDirSync(PRODUCTION_API_PATH);
 
 API_LIST.forEach(name => {
   // eslint-disable-next-line no-console
-  updateApis(name, /production/i, PRODUCTION_API_PATH).catch(console.error);
+  downloadLatestApis(name, PRODUCTION_API_PATH).catch(console.error);
 });
