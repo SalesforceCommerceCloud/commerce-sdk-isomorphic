@@ -8,7 +8,7 @@ static readonly paramKeys = {
     {{#each request.queryParameters}}
     '{{{name}}}',
     {{/each}}
-  ] as const,
+  ],
   {{{name}}}Required: [
     {{#each ../parameters}}
     '{{{name}}}',
@@ -18,7 +18,7 @@ static readonly paramKeys = {
     '{{{name}}}',
     {{/if}}
     {{/each}}
-  ] as const,
+  ],
   {{/each}}
   {{/each}}
-};
+} as const;
