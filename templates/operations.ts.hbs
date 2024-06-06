@@ -1,26 +1,6 @@
 {{#each encodes.endPoints}}
   {{#each operations}}
 
-    static readonly {{{name}}}ParamKeys = [
-      {{#each ../parameters}}
-      '{{{name}}}',
-      {{/each}}
-      {{#each request.queryParameters}}
-      '{{{name}}}',
-      {{/each}}
-    ] as const;
-
-    static readonly {{{name}}}ParamKeysRequired = [
-      {{#each ../parameters}}
-      '{{{name}}}',
-      {{/each}}
-      {{#each request.queryParameters}}
-      {{#if (is required "true")}}
-      '{{{name}}}',
-      {{/if}}
-      {{/each}}
-    ] as const;
-
     /**
     * {{{formatForTsDoc description}}}
     *
