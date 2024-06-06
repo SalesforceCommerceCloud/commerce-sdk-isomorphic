@@ -80,13 +80,12 @@ export type {{name.upperCamelCase}}Parameters = {{name.upperCamelCase}}PathParam
 *
 * <span style="font-size:.7em; display:block; text-align: right">
 * API Version: {{metadata.version}}<br />
-* Last Updated: {{metadata.updatedDate}}<br />  
+* Last Updated: {{metadata.updatedDate}}<br />
 * </span>
-{{#if (eq (lowercase metadata.categories.[CC Version Status].[0]) "beta")}}
-* @beta 
+* {{#if (eq (lowercase metadata.categories.[CC Version Status].[0]) "beta")}}
+* @beta
 * {{/if}}
-* 
-
+*
 */
 export class {{name.upperCamelCase}}<ConfigParameters extends {{{name.upperCamelCase}}}Parameters & Record<string, unknown>> {
   // baseUri is not required on ClientConfig, but we know that we provide one in the class constructor
@@ -101,6 +100,6 @@ export class {{name.upperCamelCase}}<ConfigParameters extends {{{name.upperCamel
     this.clientConfig = new ClientConfig(cfg) as ClientConfig<ConfigParameters> & { baseUri: string };
   }
 
+  {{> paramKeysPartial model}}
   {{> operationsPartial model}}
-
 }

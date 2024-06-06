@@ -1,0 +1,24 @@
+static readonly paramKeys = {
+  {{#each encodes.endPoints}}
+  {{#each operations}}
+  {{{name}}}: [
+    {{#each ../parameters}}
+    '{{{name}}}',
+    {{/each}}
+    {{#each request.queryParameters}}
+    '{{{name}}}',
+    {{/each}}
+  ],
+  {{{name}}}Required: [
+    {{#each ../parameters}}
+    '{{{name}}}',
+    {{/each}}
+    {{#each request.queryParameters}}
+    {{#if (is required "true")}}
+    '{{{name}}}',
+    {{/if}}
+    {{/each}}
+  ],
+  {{/each}}
+  {{/each}}
+} as const;

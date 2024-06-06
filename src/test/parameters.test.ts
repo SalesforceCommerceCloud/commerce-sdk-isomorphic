@@ -25,6 +25,13 @@ describe('Parameters', () => {
       .reply(200, MOCK_RESPONSE)
   );
 
+  it('has a list of parameter keys (and the required ones)', () => {
+    // eslint-disable-next-line
+    expect(ShopperSearch.paramKeys?.productSearch).toBeDefined();
+    // eslint-disable-next-line
+    expect(ShopperSearch.paramKeys?.productSearchRequired).toBeDefined();
+  });
+
   it('can all be specified in config (no method parameters object)', async () => {
     const searchClient = new ShopperSearch({
       parameters: {

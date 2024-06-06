@@ -1,5 +1,6 @@
 {{#each encodes.endPoints}}
   {{#each operations}}
+
     /**
     * {{{formatForTsDoc description}}}
     *
@@ -193,7 +194,7 @@
           method: "{{loud method}}",
           headers,
           {{#if (isRequestWithPayload request)}}body: this.clientConfig.transformRequest(options.body, headers){{/if}}
-        }, 
+        },
         this.clientConfig,
         rawResponse
       )
