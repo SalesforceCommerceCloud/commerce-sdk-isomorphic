@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import type {FetchFunction, FetchOptions} from '../clientConfig';
+import type {FetchFunction} from '../clientConfig';
 
 /*
  * Copyright (c) 2022, Salesforce, Inc.
@@ -24,8 +24,6 @@ export const globalObject = isBrowser ? window : globalThis;
 
 export const hasFetchAvailable = typeof globalObject.fetch === 'function';
 
-let lazyFetch: FetchFunction;
-
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 export const fetch: FetchFunction = (() => {
   if (isNode) {
@@ -40,13 +38,12 @@ export const fetch: FetchFunction = (() => {
     throw new Error(
       'Bad environment: it is not a node environment but fetch is not defined'
     );
-  return (
-    input: RequestInfo,
-    init?: FetchOptions | undefined
-  ): Promise<Response> => {
+  let lazyFetch: FetchFunction;
+  const browserFetch: FetchFunction = (...args) => {
     if (!lazyFetch) {
       lazyFetch = globalObject.fetch;
     }
-    return lazyFetch.apply(globalObject, [input, init]);
+    return lazyFetch.apply(globalObject, args);
   };
+  return browserFetch;
 })();
