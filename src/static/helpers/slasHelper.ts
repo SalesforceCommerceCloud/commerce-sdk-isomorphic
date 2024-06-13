@@ -217,6 +217,7 @@ export async function loginGuestUser(
   parameters: {
     redirectURI: string;
     usid?: string;
+    dnt?: string;
   }
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
@@ -235,6 +236,7 @@ export async function loginGuestUser(
     grant_type: 'authorization_code_pkce',
     redirect_uri: parameters.redirectURI,
     usid: authResponse.usid,
+    dnt: parameters.dnt
   };
 
   return slasClient.getAccessToken({body: tokenBody});
