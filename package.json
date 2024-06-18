@@ -165,7 +165,7 @@
     "typedoc": "^0.17.7",
     "typedoc-plugin-external-module-map": "1.2.1",
     "typedoc-plugin-nojekyll": "^1.0.1",
-    "typescript": "~4.4.4"
+    "typescript": "^4.4.4"
   },
   "peerDependencies": {
     "react": ">=16.8.0",
