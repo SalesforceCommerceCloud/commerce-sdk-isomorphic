@@ -93,10 +93,7 @@
     "**/@oclif/core": "<=0.5.9",
     "**/isbot": "<=3.0.27",
     "**/yargs": "<17",
-    "depcheck/@babel/parser": "7.16.4",
-    "expect": "26.6.2",
-    "pretty-format": "26.6.2",
-    "triple-beam": "1.3.0"
+    "depcheck/@babel/parser": "7.16.4"
   },
   "dependencies": {
     "nanoid": "^3.3.4",
