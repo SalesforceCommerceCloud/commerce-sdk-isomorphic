@@ -6,7 +6,7 @@ The Salesforce Commerce SDK (Isomorphic) allows easy interaction with the B2C Co
 
 ### Requirements
 
-- Node `^12.x`, `^14.x`, `^16.x`, `^18.x` or `^20.x`
+- Node `^12.x`, `^14.x`, `^16.x`, `^18.x`
 
 
 ### Installation
