@@ -1,6 +1,8 @@
 # CHANGELOG
 
 ## v2.1.0
+
+### Enhancements
 - Export the parameter keys for each API endpoint [#158](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/158)
 
 ### API Changes
