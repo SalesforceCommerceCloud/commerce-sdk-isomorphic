@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## v2.1.0
+
+### Enhancements
+- Export the parameter keys for each API endpoint [#158](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/158)
+
+### API Changes
+*Shopper Baskets*
+
+  | **Endpoint Name** | **Description**                   |
+  | ------------- |-----------------------------------|
+  | updateItemsInBasket | Updates multiple items in a basket. |
+
+
 ## v2.0.0
 
 #### API Changes

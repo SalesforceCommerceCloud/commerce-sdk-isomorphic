@@ -90,7 +90,7 @@
   };
   <span class="hljs-keyword">const</span> shopperExperienceClient = <span class="hljs-keyword">new</span> ShopperExperience(clientConfig);</code></pre>
 					<span style="font-size:.7em; display:block; text-align: right">
-						API Version: 1.0.4<br />
+						API Version: 1.0.5<br />
 						Last Updated: <br />
 					</span>
 				</div>
@@ -126,13 +126,14 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="shopperexperience.shopperexperience-1.html#clientconfig" class="tsd-kind-icon">client<wbr>Config</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="shopperexperience.shopperexperience-1.html#defaultbaseuri" class="tsd-kind-icon">default<wbr>Base<wbr>Uri</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="shopperexperience.shopperexperience-1.html#paramkeys" class="tsd-kind-icon">param<wbr>Keys</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperexperience.shopperexperience-1.html#getpage" class="tsd-kind-icon">get<wbr>Page</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperexperience.shopperexperience-1.html#getpages" class="tsd-kind-icon">get<wbr>Pages</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperexperience.shopperexperience-1.html#getpage-1" class="tsd-kind-icon">get<wbr>Page</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperexperience.shopperexperience-1.html#getpages-1" class="tsd-kind-icon">get<wbr>Pages</a></li>
 							</ul>
 						</section>
 					</div>
@@ -186,11 +187,38 @@
 						</ul>
 					</aside>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="paramkeys" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> param<wbr>Keys</h3>
+					<div class="tsd-signature tsd-kind-icon">param<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>getPage<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pageId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"aspectAttributes"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"parameters"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPageRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pageId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPages<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"categoryId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"productId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"aspectTypeId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"aspectAttributes"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"parameters"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPagesRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"aspectTypeId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {getPages: [&#x27;organizationId&#x27;,&#x27;categoryId&#x27;,&#x27;productId&#x27;,&#x27;aspectTypeId&#x27;,&#x27;aspectAttributes&#x27;,&#x27;parameters&#x27;,&#x27;siteId&#x27;,&#x27;locale&#x27;,],getPagesRequired: [&#x27;organizationId&#x27;,&#x27;aspectTypeId&#x27;,&#x27;siteId&#x27;,],getPage: [&#x27;organizationId&#x27;,&#x27;pageId&#x27;,&#x27;aspectAttributes&#x27;,&#x27;parameters&#x27;,&#x27;siteId&#x27;,&#x27;locale&#x27;,],getPageRequired: [&#x27;organizationId&#x27;,&#x27;pageId&#x27;,&#x27;siteId&#x27;,],} as const</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/lib/shopperExperience.ts:376</li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>get<wbr>Page<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pageId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"aspectAttributes"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"parameters"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>get<wbr>Page<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pageId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>get<wbr>Pages<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"categoryId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"productId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"aspectTypeId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"aspectAttributes"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"parameters"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>get<wbr>Pages<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"aspectTypeId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+						</ul>
+					</div>
+				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<a name="getpage" class="tsd-anchor"></a>
+					<a name="getpage-1" class="tsd-anchor"></a>
 					<h3>get<wbr>Page</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 						<li class="tsd-signature tsd-kind-icon">get<wbr>Page<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>aspectAttributes<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>locale<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>pageId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/shopperexperience.html#page" class="tsd-signature-type">Page</a><span class="tsd-signature-symbol">&gt;</span></li>
@@ -200,7 +228,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperExperience.ts:646</li>
+									<li>Defined in src/lib/shopperExperience.ts:678</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -228,7 +256,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperExperience.ts:686</li>
+									<li>Defined in src/lib/shopperExperience.ts:718</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -269,7 +297,7 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<a name="getpages" class="tsd-anchor"></a>
+					<a name="getpages-1" class="tsd-anchor"></a>
 					<h3>get<wbr>Pages</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 						<li class="tsd-signature tsd-kind-icon">get<wbr>Pages<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>aspectAttributes<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>aspectTypeId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>categoryId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>locale<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>productId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/shopperexperience.html#pageresult" class="tsd-signature-type">PageResult</a><span class="tsd-signature-symbol">&gt;</span></li>
@@ -279,7 +307,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperExperience.ts:408</li>
+									<li>Defined in src/lib/shopperExperience.ts:439</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -308,7 +336,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperExperience.ts:454</li>
+									<li>Defined in src/lib/shopperExperience.ts:485</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -432,11 +460,14 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
 								<a href="shopperexperience.shopperexperience-1.html#defaultbaseuri" class="tsd-kind-icon">default<wbr>Base<wbr>Uri</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-								<a href="shopperexperience.shopperexperience-1.html#getpage" class="tsd-kind-icon">get<wbr>Page</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="shopperexperience.shopperexperience-1.html#paramkeys" class="tsd-kind-icon">param<wbr>Keys</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-								<a href="shopperexperience.shopperexperience-1.html#getpages" class="tsd-kind-icon">get<wbr>Pages</a>
+								<a href="shopperexperience.shopperexperience-1.html#getpage-1" class="tsd-kind-icon">get<wbr>Page</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="shopperexperience.shopperexperience-1.html#getpages-1" class="tsd-kind-icon">get<wbr>Pages</a>
 							</li>
 						</ul>
 					</li>

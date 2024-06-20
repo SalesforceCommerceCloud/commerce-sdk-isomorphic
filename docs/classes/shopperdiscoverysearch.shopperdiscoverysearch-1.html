@@ -130,13 +130,14 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="shopperdiscoverysearch.shopperdiscoverysearch-1.html#clientconfig" class="tsd-kind-icon">client<wbr>Config</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="shopperdiscoverysearch.shopperdiscoverysearch-1.html#defaultbaseuri" class="tsd-kind-icon">default<wbr>Base<wbr>Uri</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="shopperdiscoverysearch.shopperdiscoverysearch-1.html#paramkeys" class="tsd-kind-icon">param<wbr>Keys</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperdiscoverysearch.shopperdiscoverysearch-1.html#getsuggestions" class="tsd-kind-icon">get<wbr>Suggestions</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperdiscoverysearch.shopperdiscoverysearch-1.html#retrieveresults" class="tsd-kind-icon">retrieve<wbr>Results</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperdiscoverysearch.shopperdiscoverysearch-1.html#getsuggestions-1" class="tsd-kind-icon">get<wbr>Suggestions</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperdiscoverysearch.shopperdiscoverysearch-1.html#retrieveresults-1" class="tsd-kind-icon">retrieve<wbr>Results</a></li>
 							</ul>
 						</section>
 					</div>
@@ -190,11 +191,38 @@
 						</ul>
 					</aside>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="paramkeys" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> param<wbr>Keys</h3>
+					<div class="tsd-signature tsd-kind-icon">param<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>getSuggestions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channelId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"suggestionTypes"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"searchText"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getSuggestionsRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channelId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"suggestionTypes"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>retrieveResults<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channelId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"offset"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"limit"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>retrieveResultsRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channelId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {retrieveResults: [&#x27;organizationId&#x27;,&#x27;channelId&#x27;,&#x27;locale&#x27;,&#x27;offset&#x27;,&#x27;limit&#x27;,],retrieveResultsRequired: [&#x27;organizationId&#x27;,&#x27;channelId&#x27;,&#x27;locale&#x27;,],getSuggestions: [&#x27;organizationId&#x27;,&#x27;channelId&#x27;,&#x27;suggestionTypes&#x27;,&#x27;searchText&#x27;,&#x27;locale&#x27;,],getSuggestionsRequired: [&#x27;organizationId&#x27;,&#x27;channelId&#x27;,&#x27;suggestionTypes&#x27;,&#x27;locale&#x27;,],} as const</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/lib/shopperDiscoverySearch.ts:462</li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>get<wbr>Suggestions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channelId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"suggestionTypes"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"searchText"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>get<wbr>Suggestions<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channelId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"suggestionTypes"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>retrieve<wbr>Results<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channelId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"offset"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"limit"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>retrieve<wbr>Results<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channelId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+						</ul>
+					</div>
+				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<a name="getsuggestions" class="tsd-anchor"></a>
+					<a name="getsuggestions-1" class="tsd-anchor"></a>
 					<h3>get<wbr>Suggestions</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 						<li class="tsd-signature tsd-kind-icon">get<wbr>Suggestions<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>channelId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>locale<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>searchText<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>suggestionTypes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/shopperdiscoverysearch.html#suggestions" class="tsd-signature-type">Suggestions</a><span class="tsd-signature-symbol">&gt;</span></li>
@@ -204,7 +232,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperDiscoverySearch.ts:671</li>
+									<li>Defined in src/lib/shopperDiscoverySearch.ts:700</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -234,7 +262,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperDiscoverySearch.ts:702</li>
+									<li>Defined in src/lib/shopperDiscoverySearch.ts:731</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -277,7 +305,7 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<a name="retrieveresults" class="tsd-anchor"></a>
+					<a name="retrieveresults-1" class="tsd-anchor"></a>
 					<h3>retrieve<wbr>Results</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 						<li class="tsd-signature tsd-kind-icon">retrieve<wbr>Results<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperdiscoverysearch.html#queryinput" class="tsd-signature-type">QueryInput</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>channelId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>limit<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>locale<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>offset<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/shopperdiscoverysearch.html#queryoutput" class="tsd-signature-type">QueryOutput</a><span class="tsd-signature-symbol">&gt;</span></li>
@@ -287,7 +315,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperDiscoverySearch.ts:483</li>
+									<li>Defined in src/lib/shopperDiscoverySearch.ts:511</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -317,7 +345,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperDiscoverySearch.ts:516</li>
+									<li>Defined in src/lib/shopperDiscoverySearch.ts:544</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -442,11 +470,14 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
 								<a href="shopperdiscoverysearch.shopperdiscoverysearch-1.html#defaultbaseuri" class="tsd-kind-icon">default<wbr>Base<wbr>Uri</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-								<a href="shopperdiscoverysearch.shopperdiscoverysearch-1.html#getsuggestions" class="tsd-kind-icon">get<wbr>Suggestions</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="shopperdiscoverysearch.shopperdiscoverysearch-1.html#paramkeys" class="tsd-kind-icon">param<wbr>Keys</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-								<a href="shopperdiscoverysearch.shopperdiscoverysearch-1.html#retrieveresults" class="tsd-kind-icon">retrieve<wbr>Results</a>
+								<a href="shopperdiscoverysearch.shopperdiscoverysearch-1.html#getsuggestions-1" class="tsd-kind-icon">get<wbr>Suggestions</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="shopperdiscoverysearch.shopperdiscoverysearch-1.html#retrieveresults-1" class="tsd-kind-icon">retrieve<wbr>Results</a>
 							</li>
 						</ul>
 					</li>
