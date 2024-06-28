@@ -90,7 +90,7 @@
   };
   <span class="hljs-keyword">const</span> shopperStoresClient = <span class="hljs-keyword">new</span> ShopperStores(clientConfig);</code></pre>
 					<span style="font-size:.7em; display:block; text-align: right">
-						API Version: 1.0.13<br />
+						API Version: 1.0.15<br />
 						Last Updated: <br />
 					</span>
 					<dl class="tsd-comment-tags">
@@ -130,13 +130,14 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="shopperstores.shopperstores-1.html#clientconfig" class="tsd-kind-icon">client<wbr>Config</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="shopperstores.shopperstores-1.html#defaultbaseuri" class="tsd-kind-icon">default<wbr>Base<wbr>Uri</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="shopperstores.shopperstores-1.html#paramkeys" class="tsd-kind-icon">param<wbr>Keys</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperstores.shopperstores-1.html#getstores" class="tsd-kind-icon">get<wbr>Stores</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperstores.shopperstores-1.html#searchstores" class="tsd-kind-icon">search<wbr>Stores</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperstores.shopperstores-1.html#getstores-1" class="tsd-kind-icon">get<wbr>Stores</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperstores.shopperstores-1.html#searchstores-1" class="tsd-kind-icon">search<wbr>Stores</a></li>
 							</ul>
 						</section>
 					</div>
@@ -190,11 +191,38 @@
 						</ul>
 					</aside>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="paramkeys" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> param<wbr>Keys</h3>
+					<div class="tsd-signature tsd-kind-icon">param<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>getStores<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"ids"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getStoresRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"ids"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>searchStores<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"countryCode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"distanceUnit"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"latitude"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"longitude"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"maxDistance"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"postalCode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"offset"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"limit"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>searchStoresRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {searchStores: [&#x27;organizationId&#x27;,&#x27;countryCode&#x27;,&#x27;distanceUnit&#x27;,&#x27;latitude&#x27;,&#x27;longitude&#x27;,&#x27;maxDistance&#x27;,&#x27;postalCode&#x27;,&#x27;siteId&#x27;,&#x27;locale&#x27;,&#x27;offset&#x27;,&#x27;limit&#x27;,],searchStoresRequired: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getStores: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,&#x27;ids&#x27;,&#x27;locale&#x27;,],getStoresRequired: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,&#x27;ids&#x27;,],} as const</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/lib/shopperStores.ts:378</li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>get<wbr>Stores<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"ids"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>get<wbr>Stores<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"ids"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>search<wbr>Stores<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"countryCode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"distanceUnit"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"latitude"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"longitude"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"maxDistance"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"postalCode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"offset"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"limit"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>search<wbr>Stores<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+						</ul>
+					</div>
+				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<a name="getstores" class="tsd-anchor"></a>
+					<a name="getstores-1" class="tsd-anchor"></a>
 					<h3>get<wbr>Stores</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 						<li class="tsd-signature tsd-kind-icon">get<wbr>Stores<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>ids<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>locale<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/shopperstores.html#storeresult" class="tsd-signature-type">StoreResult</a><span class="tsd-signature-symbol">&gt;</span></li>
@@ -204,7 +232,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperStores.ts:662</li>
+									<li>Defined in src/lib/shopperStores.ts:718</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -234,7 +262,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperStores.ts:696</li>
+									<li>Defined in src/lib/shopperStores.ts:752</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -277,7 +305,7 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<a name="searchstores" class="tsd-anchor"></a>
+					<a name="searchstores-1" class="tsd-anchor"></a>
 					<h3>search<wbr>Stores</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 						<li class="tsd-signature tsd-kind-icon">search<wbr>Stores<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>countryCode<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>distanceUnit<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>latitude<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>limit<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>locale<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>longitude<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>maxDistance<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>offset<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>postalCode<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/shopperstores.html#storeresult" class="tsd-signature-type">StoreResult</a><span class="tsd-signature-symbol">&gt;</span></li>
@@ -287,13 +315,23 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperStores.ts:409</li>
+									<li>Defined in src/lib/shopperStores.ts:448</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>This resource retrieves a list of stores for the given site that are within a configured distance of a geolocation. The distance is interpreted either in miles or kilometers, depending on the distanceUnit input parameter. The location is specified either by directly providing a latitude and longitude coordinate pair, or by providing a country and a postal code. If a postal code is passed, the resource looks in the system&#39;s geolocation mappings to find the coordinates for this postal code. If no matching geolocation is found, the resource returns an empty list of stores. If coordinates are passed, the values for country and postal code are ignored.</p>
+									<p>This resource retrieves a list of stores for the given site that are within a configured distance of a geolocation:</p>
+									<ul>
+										<li>The distance is interpreted either in miles or kilometers, depending on the <code>distanceUnit</code> input parameter.</li>
+										<li>The location is specified by either directly providing a latitude and longitude coordinate pair, or by providing a country and a postal code. If a postal code is passed, the resource looks in the system&#39;s geolocation mappings in Business Manager to find the coordinates for this postal code. If no matching geolocation is found, the resource returns an empty list of stores. If coordinates are passed, the values for country and postal code are ignored.</li>
+									</ul>
 								</div>
+								<p>To verify site latitude and longitude information in Business Manager:</p>
+								<ul>
+									<li>Navigate to <strong>Merchant Tools -&gt; Online Marketing -&gt; Stores</strong>.</li>
+									<li>Select the applicable site.</li>
+									<li>In the <strong>Address</strong> tab, verify that valid information is provided in the following fields: <strong>Address</strong>, <strong>City</strong>, <strong>Postal Code</strong>, <strong>State</strong>, and <strong>Country</strong>. For latitude and longitude values, you can manually enter values or provide all field values to auto-populate <strong>Latitude</strong> and <strong>Longitude</strong>. You must provide valid values for all of the previous fields for latitude and longitude to auto-populate <strong>Latitude</strong> and <strong>Longitude</strong> values.</li>
+								</ul>
 								<p>If you would like to get a raw Response object use the other searchStores function.</p>
 								<dl class="tsd-comment-tags">
 									<dt>beta</dt>
@@ -317,13 +355,23 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperStores.ts:457</li>
+									<li>Defined in src/lib/shopperStores.ts:504</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>This resource retrieves a list of stores for the given site that are within a configured distance of a geolocation. The distance is interpreted either in miles or kilometers, depending on the distanceUnit input parameter. The location is specified either by directly providing a latitude and longitude coordinate pair, or by providing a country and a postal code. If a postal code is passed, the resource looks in the system&#39;s geolocation mappings to find the coordinates for this postal code. If no matching geolocation is found, the resource returns an empty list of stores. If coordinates are passed, the values for country and postal code are ignored.</p>
+									<p>This resource retrieves a list of stores for the given site that are within a configured distance of a geolocation:</p>
+									<ul>
+										<li>The distance is interpreted either in miles or kilometers, depending on the <code>distanceUnit</code> input parameter.</li>
+										<li>The location is specified by either directly providing a latitude and longitude coordinate pair, or by providing a country and a postal code. If a postal code is passed, the resource looks in the system&#39;s geolocation mappings in Business Manager to find the coordinates for this postal code. If no matching geolocation is found, the resource returns an empty list of stores. If coordinates are passed, the values for country and postal code are ignored.</li>
+									</ul>
 								</div>
+								<p>To verify site latitude and longitude information in Business Manager:</p>
+								<ul>
+									<li>Navigate to <strong>Merchant Tools -&gt; Online Marketing -&gt; Stores</strong>.</li>
+									<li>Select the applicable site.</li>
+									<li>In the <strong>Address</strong> tab, verify that valid information is provided in the following fields: <strong>Address</strong>, <strong>City</strong>, <strong>Postal Code</strong>, <strong>State</strong>, and <strong>Country</strong>. For latitude and longitude values, you can manually enter values or provide all field values to auto-populate <strong>Latitude</strong> and <strong>Longitude</strong>. You must provide valid values for all of the previous fields for latitude and longitude to auto-populate <strong>Latitude</strong> and <strong>Longitude</strong> values.</li>
+								</ul>
 								<dl class="tsd-comment-tags">
 									<dt>beta</dt>
 									<dd></dd>
@@ -442,11 +490,14 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
 								<a href="shopperstores.shopperstores-1.html#defaultbaseuri" class="tsd-kind-icon">default<wbr>Base<wbr>Uri</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-								<a href="shopperstores.shopperstores-1.html#getstores" class="tsd-kind-icon">get<wbr>Stores</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="shopperstores.shopperstores-1.html#paramkeys" class="tsd-kind-icon">param<wbr>Keys</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-								<a href="shopperstores.shopperstores-1.html#searchstores" class="tsd-kind-icon">search<wbr>Stores</a>
+								<a href="shopperstores.shopperstores-1.html#getstores-1" class="tsd-kind-icon">get<wbr>Stores</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="shopperstores.shopperstores-1.html#searchstores-1" class="tsd-kind-icon">search<wbr>Stores</a>
 							</li>
 						</ul>
 					</li>

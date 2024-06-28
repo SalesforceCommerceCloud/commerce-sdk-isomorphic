@@ -8,7 +8,7 @@ _For a Node.js only SDK that can also access Admin APIs checkout [Commerce SDK](
 
 ### Requirements
 
-- Node `^12.x`, `^14.x`, `^16.x`, `^18.x` or `^20.x`
+- Node `^12.x`, `^14.x`, `^16.x`, `^18.x`
 - The SDK requires B2C Commerce API (SCAPI) to be configured. For more info see [Getting started with SCAPI](https://developer.salesforce.com/docs/commerce/commerce-api/guide/get-started.html).
 
 ### Installation
