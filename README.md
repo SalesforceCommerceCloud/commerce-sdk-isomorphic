@@ -1,13 +1,15 @@
 # commerce-sdk-isomorphic
 
-The Salesforce Commerce SDK (Isomorphic) allows easy interaction with the B2C Commerce platform’s Shopper APIs on the Node.js runtime and works both in browsers and Node applications. For a Node-based SDK that can access the Admin APIs in addition to the Shopper APIs, see the main [Commerce SDK](https://github.com/SalesforceCommerceCloud/commerce-sdk). 
+This SDK provides a Browser & Node.js JavaScript client for calling [B2C Commerce Shopper APIs](https://developer.salesforce.com/docs/commerce/commerce-api/overview).
+
+_For a Node.js only SDK that can also access Admin APIs checkout [Commerce SDK](https://github.com/SalesforceCommerceCloud/commerce-sdk)._
 
 ## Getting Started
 
 ### Requirements
 
 - Node `^12.x`, `^14.x`, `^16.x`, `^18.x`
-
+- The SDK requires B2C Commerce API (SCAPI) to be configured. For more info see [Getting started with SCAPI](https://developer.salesforce.com/docs/commerce/commerce-api/guide/get-started.html).
 
 ### Installation
 
@@ -17,54 +19,24 @@ npm install commerce-sdk-isomorphic
 
 ### Usage
 
-> **Note:** These are required parameters.
-
-| Parameter      | Description                                                                |
-| -------------- | :------------------------------------------------------------------------- |
-| clientId       | ID of the client account created with Salesforce Commerce.                 |
-| organizationId | The unique identifier for your Salesforce identity.                        |
-| shortCode      | Region-specific merchant ID.                                               |
-| siteId         | Name of the site to access data from, for example, RefArch or SiteGenesis. |
-
-
-### Configure the Isomorphic SDK
-
-
 ```javascript
-/**
- * Configure required parameters
- *
- * To learn more about the parameters please refer to https://developer.salesforce.com/docs/commerce/commerce-api/guide/get-started.html
- */
 import {helpers, ShopperLogin, ShopperSearch} from 'commerce-sdk-isomorphic';
 
-// Create a configuration to use when creating API clients
 const config = {
-  proxy: 'https://localhost:3000', // Routes API calls through a proxy when set
-  headers: {},
+  // SCAPI does not support CORS, so client side requests must use a reverse proxy.
+  proxy: 'https://localhost:3000',
   parameters: {
     clientId: '<your-client-id>',
     organizationId: '<your-org-id>',
     shortCode: '<your-short-code>',
     siteId: '<your-site-id>',
   },
-  throwOnBadResponse: true,
 };
 
-const shopperLogin = new ShopperLogin(config);
-// Execute Public Client OAuth with PKCE to acquire guest tokens
-const {access_token, refresh_token} = await helpers.loginGuestUser(
-  shopperLogin,
-  {redirectURI: `${config.proxy}/callback`} // Callback URL must be configured in SLAS Admin
+const {access_token} = await helpers.loginGuestUser(
+  new ShopperLogin(config),
+  {redirectURI: `${config.proxy}/callback`}
 );
-
-// Execute Private Client OAuth with PKCE to acquire guest tokens
-// ***WARNING*** Be cautious about using this function in the browser as you may end up exposing your client secret
-// only use it when you know your slas client secret is secured
-// const {access_token, refresh_token} = await helpers.loginGuestUserPrivate(
-//   shopperLogin,
-//   {}, {clientSecret: '<your-slas-client-secret>'}
-// );
 
 const shopperSearch = new ShopperSearch({
   ...config,
@@ -76,59 +48,33 @@ const searchResult = await shopperSearch.productSearch({
 });
 ```
 
-#### CORS
+#### Fetch Options
 
-The Salesforce Commerce API (SCAPI) does not support CORS, so a proxy must be used to be able to use the SDK.
-
-### Advanced Options
-
-Commerce SDK Isomorphic supports Fetch API options for [node-fetch](https://github.com/node-fetch/node-fetch/1#api) on server and [whatwg-fetch](https://github.github.io/fetch/) on browser with a simple configuration.
-This sample code shows how to configure HTTP timeout and agent options.
+You can configure how the SDK makes requests using the `fetchOptions` parameter. It is passed to [node-fetch](https://github.com/node-fetch/node-fetch/1#api) on the server and [whatwg-fetch](https://github.github.io/fetch/) on browser.
 
 ```javascript
-/**
- * Configure advanced timeout and agent parameters
- *
- * To learn more about the parameters please refer to the [Salesforce Developer Center](https://developer.salesforce.com/docs/commerce/commerce-api).
- */
-// Create a configuration to use when creating API clients
-const https = require('https');
+const https = require("https");
 
 const config = {
-  proxy: 'https://localhost:3000',
-  headers: {},
-  parameters: {
-    clientId: '<your-client-id>',
-    organizationId: '<your-org-id>',
-    shortCode: '<your-short-code>',
-    siteId: '<your-site-id>',
-  },
   fetchOptions: {
-    timeout: 2000, //request times out after 2 seconds
-    agent: new https.agent({
-      // a custom http agent
-      keepAlive: true,
-    }),
+    // By default, requests made using the SDK do not include cookies.
+    credentials: "include",
+    timeout: 2000,
+    agent: new https.agent({ keepAlive: true }),
   },
 };
 ```
 
-### Additional Config Settings
+For more info, refer to the [documentation site](https://salesforcecommercecloud.github.io/commerce-sdk-isomorphic/).
 
-_headers:_ A collection of key/value string pairs representing additional headers to include with API requests.
+#### Additional Config Settings
 
-_throwOnBadResponse:_ Default value is false. When set to true, the SDK throws an Error on responses with statuses that are not 2xx or 304.
-
-### Public/Private Client Shopper Login (SLAS) helpers
-
-A collection of helper functions are available in this SDK to simplify [Public/Private Client Shopper Login OAuth flows](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary). See sample code above for guest login.
-
-**⚠️ WARNING ⚠️**
-Users should be extremely cautious about using the SLAS private client helper functions in the browser as it can expose your client secret. Ensure that your client secret is secured before running the function client side.
+* `headers`: Headers to include with API requests.
+* `throwOnBadResponse`: When `true`, the SDK throws an `Error` on responses whose status is not 2xx or 304.
 
 ### Custom Query Parameters
 
-With the introduction of [hooks for Commerce APIs](https://developer.salesforce.com/docs/commerce/commerce-api/guide/extensibility_via_hooks.html), customers can pass custom query parameters through the SDK to be used in their custom hook. Custom query parameters must begin with `c_`:
+You can pass custom query parameters through the SDK to be used in [B2C Commerce API Hooks](https://developer.salesforce.com/docs/commerce/commerce-api/guide/extensibility_via_hooks.html). Custom query parameters must begin with `c_`:
 
 ```javascript
 const searchResult = await shopperSearch.productSearch({
@@ -139,19 +85,17 @@ const searchResult = await shopperSearch.productSearch({
 });
 ```
 
-Invalid query parameters that are not a part of the API and do not follow the `c_` custom query parameter convention will be filtered from the request and a warning will be displayed.
+Invalid query parameters that are not a part of the API and do not follow the `c_` custom query parameter convention are filtered from the request with a warning.
 
 ### Custom APIs
 
-The SDK supports calling [custom APIs](https://developer.salesforce.com/docs/commerce/commerce-api/guide/custom-apis.html) with a helper function, `callCustomEndpoint`.
-
-Example usage:
+The SDK supports calling [B2C Commerce Custom APIs](https://developer.salesforce.com/docs/commerce/commerce-api/guide/custom-apis.html) with a helper function, `callCustomEndpoint`:
 
 ```javascript
-import pkg from 'commerce-sdk-isomorphic';
+import pkg from "commerce-sdk-isomorphic";
 const { helpers } = pkg;
 
-const clientConfigExample = {
+const clientConfig = {
   parameters: {
     clientId: "<your-client-id>",
     organizationId: "<your-org-id>",
@@ -161,62 +105,53 @@ const clientConfigExample = {
   // If not provided, it'll use the default production URI:
   // 'https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}'
   // path parameters should be wrapped in curly braces like the default production URI
-  baseUri: "<your-base-uri>"
+  baseUri: "<your-base-uri>",
 };
 
 // Required params: apiName, endpointPath, shortCode, organizaitonId
 // Required path params can be passed into:
 // options.customApiPathParameters or clientConfig.parameters
-const customApiArgs = { 
-  apiName: 'loyalty-info',
-  apiVersion: 'v1', // defaults to v1 if not provided
-  endpointPath: 'customers'
-}
+const customApiPathParameters = {
+  apiName: "loyalty-info",
+  apiVersion: "v1", // defaults to v1 if not provided
+  endpointPath: "customers",
+};
 
-const accessToken = '<INSERT ACCESS TOKEN HERE>';
+const accessToken = "<INSERT ACCESS TOKEN HERE>";
 
-let getResponse = await helpers.callCustomEndpoint({
+await helpers.callCustomEndpoint({
   options: {
-    method: 'GET',
+    method: "GET",
     parameters: {
-      queryParameter: 'queryParameter1',
+      queryParameter: "queryParameter1",
     },
     headers: {
       // Content-Type is defaulted to application/json if not provided
-      'Content-Type': 'application/json',
-      authorization: `Bearer ${access_token}`
+      "Content-Type": "application/json",
+      authorization: `Bearer ${accessToken}`,
     },
-    customApiPathParameters: customApiArgs
-  }, 
-  clientConfig: clientConfigExample,
-  // Flag to retrieve raw response or data from helper function
-  rawResponse: false, 
-})
+    customApiPathParameters,
+  },
+  clientConfig,
+});
 
-let postResponse = await helpers.callCustomEndpoint({
+await helpers.callCustomEndpoint({
   options: {
-    method: 'POST',
+    method: "POST",
     parameters: {
-      queryParameter: 'queryParameter1',
+      queryParameter: "queryParameter1",
     },
     headers: {
-      authorization: `Bearer ${access_token}`
+      authorization: `Bearer ${accessToken}`,
     },
-    customApiPathParameters: customApiArgs,
-    body: JSON.stringify({ data: 'data' })
-  }, 
-  clientConfig: clientConfigExample,
-  // Flag to retrieve raw response or data from helper function
-  rawResponse: false, 
-})
-
-console.log('get response: ', getResponse)
-console.log('post response: ', postResponse)
+    customApiPathParameters,
+    body: JSON.stringify({ data: "data" }),
+  },
+  clientConfig,
+});
 ```
 
 For more documentation about this helper function, please refer to the [commerce-sdk-isomorphic docs](https://salesforcecommercecloud.github.io/commerce-sdk-isomorphic/modules/helpers.html).
-
-For more information about custom APIs, please refer to the [Salesforce Developer Docs](https://developer.salesforce.com/docs/commerce/commerce-api/guide/custom-apis.html)
 
 ## License Information
 
