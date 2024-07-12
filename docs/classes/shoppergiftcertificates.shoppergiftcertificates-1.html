@@ -90,7 +90,7 @@
   };
   <span class="hljs-keyword">const</span> shopperGiftCertificatesClient = <span class="hljs-keyword">new</span> ShopperGiftCertificates(clientConfig);</code></pre>
 					<span style="font-size:.7em; display:block; text-align: right">
-						API Version: 1.0.15<br />
+						API Version: 1.0.16<br />
 						Last Updated: <br />
 					</span>
 				</div>
@@ -126,12 +126,13 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="shoppergiftcertificates.shoppergiftcertificates-1.html#clientconfig" class="tsd-kind-icon">client<wbr>Config</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="shoppergiftcertificates.shoppergiftcertificates-1.html#defaultbaseuri" class="tsd-kind-icon">default<wbr>Base<wbr>Uri</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="shoppergiftcertificates.shoppergiftcertificates-1.html#paramkeys" class="tsd-kind-icon">param<wbr>Keys</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shoppergiftcertificates.shoppergiftcertificates-1.html#getgiftcertificate" class="tsd-kind-icon">get<wbr>Gift<wbr>Certificate</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shoppergiftcertificates.shoppergiftcertificates-1.html#getgiftcertificate-1" class="tsd-kind-icon">get<wbr>Gift<wbr>Certificate</a></li>
 							</ul>
 						</section>
 					</div>
@@ -185,11 +186,32 @@
 						</ul>
 					</aside>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
+					<a name="paramkeys" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> param<wbr>Keys</h3>
+					<div class="tsd-signature tsd-kind-icon">param<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>getGiftCertificate<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getGiftCertificateRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {getGiftCertificate: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getGiftCertificateRequired: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],} as const</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/lib/shopperGiftCertificates.ts:344</li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>get<wbr>Gift<wbr>Certificate<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>get<wbr>Gift<wbr>Certificate<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+						</ul>
+					</div>
+				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<a name="getgiftcertificate" class="tsd-anchor"></a>
+					<a name="getgiftcertificate-1" class="tsd-anchor"></a>
 					<h3>get<wbr>Gift<wbr>Certificate</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 						<li class="tsd-signature tsd-kind-icon">get<wbr>Gift<wbr>Certificate<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shoppergiftcertificates.html#giftcertificaterequest" class="tsd-signature-type">GiftCertificateRequest</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/shoppergiftcertificates.html#giftcertificate" class="tsd-signature-type">GiftCertificate</a><span class="tsd-signature-symbol">&gt;</span></li>
@@ -199,7 +221,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperGiftCertificates.ts:360</li>
+									<li>Defined in src/lib/shopperGiftCertificates.ts:371</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -225,7 +247,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperGiftCertificates.ts:385</li>
+									<li>Defined in src/lib/shopperGiftCertificates.ts:396</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -346,8 +368,11 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
 								<a href="shoppergiftcertificates.shoppergiftcertificates-1.html#defaultbaseuri" class="tsd-kind-icon">default<wbr>Base<wbr>Uri</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
+								<a href="shoppergiftcertificates.shoppergiftcertificates-1.html#paramkeys" class="tsd-kind-icon">param<wbr>Keys</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-								<a href="shoppergiftcertificates.shoppergiftcertificates-1.html#getgiftcertificate" class="tsd-kind-icon">get<wbr>Gift<wbr>Certificate</a>
+								<a href="shoppergiftcertificates.shoppergiftcertificates-1.html#getgiftcertificate-1" class="tsd-kind-icon">get<wbr>Gift<wbr>Certificate</a>
 							</li>
 						</ul>
 					</li>

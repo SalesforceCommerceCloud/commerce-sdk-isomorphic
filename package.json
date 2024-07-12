@@ -1,6 +1,6 @@
 {
   "name": "commerce-sdk-isomorphic",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": false,
   "description": "Salesforce Commerce SDK Isomorphic",
   "bugs": {
@@ -172,7 +172,7 @@
     "react-dom": ">=16.8.0"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "bundlesize": [
     {
@@ -181,7 +181,7 @@
     },
     {
       "path": "commerce-sdk-isomorphic-with-deps.tgz",
-      "maxSize": "410 kB"
+      "maxSize": "425 kB"
     }
   ],
   "proxy": "https://SHORTCODE.api.commercecloud.salesforce.com"
