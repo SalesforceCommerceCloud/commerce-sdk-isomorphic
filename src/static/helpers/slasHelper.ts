@@ -182,15 +182,15 @@ export async function loginGuestUserPrivate(
     clientSecret: string;
   }
 ): Promise<TokenResponse> {
-  const authorization = `Basic ${stringToBase64(
-    `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
-  )}`;
-
   if (!slasClient.clientConfig.parameters.siteId) {
     throw new Error(
       'Required argument channel_id is not provided through clientConfig.parameters.siteId'
     );
   }
+
+  const authorization = `Basic ${stringToBase64(
+    `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
+  )}`;
 
   const options = {
     headers: {
