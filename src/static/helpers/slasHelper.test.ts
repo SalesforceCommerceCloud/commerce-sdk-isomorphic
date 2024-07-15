@@ -255,6 +255,7 @@ describe('Guest user flow', () => {
       },
       body: {
         grant_type: 'client_credentials',
+        channel_id: 'site_id',
         usid: 'usid',
       },
     };

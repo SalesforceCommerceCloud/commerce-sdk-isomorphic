@@ -186,12 +186,19 @@ export async function loginGuestUserPrivate(
     `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
   )}`;
 
+  if (!slasClient.clientConfig.parameters.siteId) {
+    throw new Error(
+      'Required argument channel_id is not provided through clientConfig.parameters.siteId'
+    );
+  }
+
   const options = {
     headers: {
       Authorization: authorization,
     },
     body: {
       grant_type: 'client_credentials',
+      channel_id: slasClient.clientConfig.parameters.siteId,
       ...(parameters.usid && {usid: parameters.usid}),
     },
   };
