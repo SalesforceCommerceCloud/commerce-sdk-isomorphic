@@ -4,6 +4,10 @@ This SDK provides a Browser & Node.js JavaScript client for calling [B2C Commerc
 
 _For a Node.js only SDK that can also access Admin APIs checkout [Commerce SDK](https://github.com/SalesforceCommerceCloud/commerce-sdk)._
 
+## :warning: Planned Shopper Context Changes :warning:
+
+Starting July 31st 2024, all endpoints in the Shopper context API will require the `siteId` parameter for new customers. This field is marked as optional for backward compatibility and will be changed to mandatory tentatively by January 2025.
+
 ## Getting Started
 
 ### Requirements
