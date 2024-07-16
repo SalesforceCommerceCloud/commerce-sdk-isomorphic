@@ -262,7 +262,33 @@ describe('Guest user flow', () => {
     expect(getAccessTokenMock).toBeCalledWith(expectedReqOptions);
     expect(accessToken).toBe(expectedTokenResponse);
   });
+
+  test('throws an error when channel_id is not passed into private client', async () => {
+    const mockSlasClient = createMockSlasClient();
+    const mockSlasClientNoSiteID = {
+      ...mockSlasClient,
+      clientConfig: {
+        parameters: {
+          ...mockSlasClient.clientConfig.parameters,
+          siteId: undefined, // siteId in client config is used for channel_id
+        },
+      },
+    };
+
+    await expect(
+      slasHelper.loginGuestUserPrivate(
+        // eslint-disable-next-line
+        // @ts-ignore
+        mockSlasClientNoSiteID,
+        parameters,
+        credentialsPrivate
+      )
+    ).rejects.toThrow(
+      'Required argument channel_id is not provided through clientConfig.parameters.siteId'
+    );
+  });
 });
+
 describe('Registered B2C user flow', () => {
   const expectedTokenBody = {
     body: {
