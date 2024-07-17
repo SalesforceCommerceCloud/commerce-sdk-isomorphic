@@ -21,7 +21,7 @@ In practice, we recommend:
 
 ### Enchancements
 
-- Update SLAS helper function `loginGuestUserPrivate` to require `channel_id` [#165](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/165)
+- Update SLAS helper function `loginGuestUserPrivate` to require `channel_id` through `clientConfig.parameters.siteId` [#165](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/165)
 
 ## v2.1.0
 
