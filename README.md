@@ -4,9 +4,22 @@ This SDK provides a Browser & Node.js JavaScript client for calling [B2C Commerc
 
 _For a Node.js only SDK that can also access Admin APIs checkout [Commerce SDK](https://github.com/SalesforceCommerceCloud/commerce-sdk)._
 
-## :warning: Planned Shopper Context Changes :warning:
+## :warning: Planned API Changes :warning:
 
-Starting July 31st 2024, all endpoints in the Shopper context API will require the `siteId` parameter for new customers. This field is marked as optional for backward compatibility and will be changed to mandatory tentatively by January 2025.
+### Shopper Context
+
+Starting July 31st 2024, all endpoints in the Shopper context API will require the `siteId` parameter for new customers. This field is marked as optional for backward compatibility and will be changed to mandatory tentatively by January 2025. You can read more about the planned change [here](https://developer.salesforce.com/docs/commerce/commerce-api/references/shopper-context?meta=Summary) in the notes section.
+
+### Shopper Login (SLAS)
+
+SLAS will soon require new tenants to pass `channel_id` as an argument for retrieving guest access tokens. You can read more about the planned change [here](https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas.html#guest-tokens).
+
+Please be aware that existing tenants are on a temporary allow list and will see no immediate disruption to service.  We do ask that all users seek to adhere to the `channel_id` requirement before the end of August to enhance your security posture before the holiday peak season.
+
+In practice, we recommend:
+
+- For customers using the SLAS helpers with a public client, it is recommended to upgrade to at least `v1.8.0` of the `commerce-sdk-isomorphic`. This includes PWA Kit customers on `v2` of PWA Kit.
+- For customers using private client, it is recommended to upgrade to `v3.0.0` of the `commerce-sdk-isomorphic`.
 
 ## Getting Started
 
