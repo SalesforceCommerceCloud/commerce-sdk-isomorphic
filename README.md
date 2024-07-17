@@ -18,8 +18,8 @@ Please be aware that existing tenants are on a temporary allow list and will see
 
 In practice, we recommend:
 
-- For customers using the SLAS helpers with a public client, it is recommended to upgrade to at least `v1.8.0` of the `commerce-sdk-isomorphic`. This includes PWA Kit customers on `v2` of PWA Kit.
-- For customers using private client, it is recommended to upgrade to `v3.0.0` of the `commerce-sdk-isomorphic`.
+- For customers using the SLAS helpers with a public client, it is recommended to upgrade to at least `v1.8.0` of the `commerce-sdk-isomorphic`.
+- For customers using the SLAS helpers with a private client, it is recommended to upgrade to `v3.0.0` of the `commerce-sdk-isomorphic`.
 
 ## Getting Started
 
