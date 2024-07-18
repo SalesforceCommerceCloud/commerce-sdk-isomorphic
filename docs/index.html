@@ -67,7 +67,25 @@
 				<a href="#commerce-sdk-isomorphic" id="commerce-sdk-isomorphic" style="color: inherit; text-decoration: none;">
 					<h1>commerce-sdk-isomorphic</h1>
 				</a>
-				<p>The Salesforce Commerce SDK (Isomorphic) allows easy interaction with the B2C Commerce platform’s Shopper APIs on the Node.js runtime and works both in browsers and Node applications. For a Node-based SDK that can access the Admin APIs in addition to the Shopper APIs, see the main <a href="https://github.com/SalesforceCommerceCloud/commerce-sdk">Commerce SDK</a>. </p>
+				<p>This SDK provides a Browser &amp; Node.js JavaScript client for calling <a href="https://developer.salesforce.com/docs/commerce/commerce-api/overview">B2C Commerce Shopper APIs</a>.</p>
+				<p><em>For a Node.js only SDK that can also access Admin APIs checkout <a href="https://github.com/SalesforceCommerceCloud/commerce-sdk">Commerce SDK</a>.</em></p>
+				<a href="#warning-planned-api-changes-warning" id="warning-planned-api-changes-warning" style="color: inherit; text-decoration: none;">
+					<h2>:warning: Planned API Changes :warning:</h2>
+				</a>
+				<a href="#shopper-context" id="shopper-context" style="color: inherit; text-decoration: none;">
+					<h3>Shopper Context</h3>
+				</a>
+				<p>Starting July 31st 2024, all endpoints in the Shopper context API will require the <code>siteId</code> parameter for new customers. This field is marked as optional for backward compatibility and will be changed to mandatory tentatively by January 2025. You can read more about the planned change <a href="https://developer.salesforce.com/docs/commerce/commerce-api/references/shopper-context?meta=Summary">here</a> in the notes section.</p>
+				<a href="#shopper-login-slas" id="shopper-login-slas" style="color: inherit; text-decoration: none;">
+					<h3>Shopper Login (SLAS)</h3>
+				</a>
+				<p>SLAS will soon require new tenants to pass <code>channel_id</code> as an argument for retrieving guest access tokens. You can read more about the planned change <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas.html#guest-tokens">here</a>.</p>
+				<p>Please be aware that existing tenants are on a temporary allow list and will see no immediate disruption to service.  We do ask that all users seek to adhere to the <code>channel_id</code> requirement before the end of August to enhance your security posture before the holiday peak season.</p>
+				<p>In practice, we recommend:</p>
+				<ul>
+					<li>For customers using the SLAS helpers with a public client, it is recommended to upgrade to at least <code>v1.8.0</code> of the <code>commerce-sdk-isomorphic</code>.</li>
+					<li>For customers using the SLAS helpers with a private client, it is recommended to upgrade to <code>v3.0.0</code> of the <code>commerce-sdk-isomorphic</code>.</li>
+				</ul>
 				<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
 					<h2>Getting Started</h2>
 				</a>
@@ -76,6 +94,7 @@
 				</a>
 				<ul>
 					<li>Node <code>^12.x</code>, <code>^14.x</code>, <code>^16.x</code>, <code>^18.x</code></li>
+					<li>The SDK requires B2C Commerce API (SCAPI) to be configured. For more info see <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/get-started.html">Getting started with SCAPI</a>.</li>
 				</ul>
 				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
 					<h3>Installation</h3>
@@ -84,70 +103,23 @@
 				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 					<h3>Usage</h3>
 				</a>
-				<blockquote>
-					<p><strong>Note:</strong> These are required parameters.</p>
-				</blockquote>
-				<table>
-					<thead>
-						<tr>
-							<th>Parameter</th>
-							<th align="left">Description</th>
-						</tr>
-					</thead>
-					<tbody><tr>
-							<td>clientId</td>
-							<td align="left">ID of the client account created with Salesforce Commerce.</td>
-						</tr>
-						<tr>
-							<td>organizationId</td>
-							<td align="left">The unique identifier for your Salesforce identity.</td>
-						</tr>
-						<tr>
-							<td>shortCode</td>
-							<td align="left">Region-specific merchant ID.</td>
-						</tr>
-						<tr>
-							<td>siteId</td>
-							<td align="left">Name of the site to access data from, for example, RefArch or SiteGenesis.</td>
-						</tr>
-				</tbody></table>
-				<a href="#configure-the-isomorphic-sdk" id="configure-the-isomorphic-sdk" style="color: inherit; text-decoration: none;">
-					<h3>Configure the Isomorphic SDK</h3>
-				</a>
-				<pre><code class="language-javascript"><span class="hljs-comment">/**
- * Configure required parameters
- *
- * To learn more about the parameters please refer to https://developer.salesforce.com/docs/commerce/commerce-api/guide/get-started.html
- */</span>
-<span class="hljs-keyword">import</span> {helpers, ShopperLogin, ShopperSearch} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;commerce-sdk-isomorphic&#x27;</span>;
+				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> {helpers, ShopperLogin, ShopperSearch} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;commerce-sdk-isomorphic&#x27;</span>;
 
-<span class="hljs-comment">// Create a configuration to use when creating API clients</span>
 <span class="hljs-keyword">const</span> config = {
-  <span class="hljs-attr">proxy</span>: <span class="hljs-string">&#x27;https://localhost:3000&#x27;</span>, <span class="hljs-comment">// Routes API calls through a proxy when set</span>
-  <span class="hljs-attr">headers</span>: {},
+  <span class="hljs-comment">// SCAPI does not support CORS, so client side requests must use a reverse proxy.</span>
+  <span class="hljs-attr">proxy</span>: <span class="hljs-string">&#x27;https://localhost:3000&#x27;</span>,
   <span class="hljs-attr">parameters</span>: {
     <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;&lt;your-client-id&gt;&#x27;</span>,
     <span class="hljs-attr">organizationId</span>: <span class="hljs-string">&#x27;&lt;your-org-id&gt;&#x27;</span>,
     <span class="hljs-attr">shortCode</span>: <span class="hljs-string">&#x27;&lt;your-short-code&gt;&#x27;</span>,
     <span class="hljs-attr">siteId</span>: <span class="hljs-string">&#x27;&lt;your-site-id&gt;&#x27;</span>,
   },
-  <span class="hljs-attr">throwOnBadResponse</span>: <span class="hljs-literal">true</span>,
 };
 
-<span class="hljs-keyword">const</span> shopperLogin = <span class="hljs-keyword">new</span> ShopperLogin(config);
-<span class="hljs-comment">// Execute Public Client OAuth with PKCE to acquire guest tokens</span>
-<span class="hljs-keyword">const</span> {access_token, refresh_token} = <span class="hljs-keyword">await</span> helpers.loginGuestUser(
-  shopperLogin,
-  {<span class="hljs-attr">redirectURI</span>: <span class="hljs-string">`<span class="hljs-subst">${config.proxy}</span>/callback`</span>} <span class="hljs-comment">// Callback URL must be configured in SLAS Admin</span>
+<span class="hljs-keyword">const</span> {access_token} = <span class="hljs-keyword">await</span> helpers.loginGuestUser(
+  <span class="hljs-keyword">new</span> ShopperLogin(config),
+  {<span class="hljs-attr">redirectURI</span>: <span class="hljs-string">`<span class="hljs-subst">${config.proxy}</span>/callback`</span>}
 );
-
-<span class="hljs-comment">// Execute Private Client OAuth with PKCE to acquire guest tokens</span>
-<span class="hljs-comment">// ***WARNING*** Be cautious about using this function in the browser as you may end up exposing your client secret</span>
-<span class="hljs-comment">// only use it when you know your slas client secret is secured</span>
-<span class="hljs-comment">// const {access_token, refresh_token} = await helpers.loginGuestUserPrivate(</span>
-<span class="hljs-comment">//   shopperLogin,</span>
-<span class="hljs-comment">//   {}, {clientSecret: &#x27;&lt;your-slas-client-secret&gt;&#x27;}</span>
-<span class="hljs-comment">// );</span>
 
 <span class="hljs-keyword">const</span> shopperSearch = <span class="hljs-keyword">new</span> ShopperSearch({
   ...config,
@@ -157,71 +129,47 @@
 <span class="hljs-keyword">const</span> searchResult = <span class="hljs-keyword">await</span> shopperSearch.productSearch({
   <span class="hljs-attr">parameters</span>: {<span class="hljs-attr">q</span>: <span class="hljs-string">&#x27;shirt&#x27;</span>},
 });</code></pre>
-				<a href="#cors" id="cors" style="color: inherit; text-decoration: none;">
-					<h4>CORS</h4>
+				<a href="#fetch-options" id="fetch-options" style="color: inherit; text-decoration: none;">
+					<h4>Fetch Options</h4>
 				</a>
-				<p>The Salesforce Commerce API (SCAPI) does not support CORS, so a proxy must be used to be able to use the SDK.</p>
-				<a href="#advanced-options" id="advanced-options" style="color: inherit; text-decoration: none;">
-					<h3>Advanced Options</h3>
-				</a>
-				<p>Commerce SDK Isomorphic supports Fetch API options for <a href="https://github.com/node-fetch/node-fetch/1#api">node-fetch</a> on server and <a href="https://github.github.io/fetch/">whatwg-fetch</a> on browser with a simple configuration.
-				This sample code shows how to configure HTTP timeout and agent options.</p>
-				<pre><code class="language-javascript"><span class="hljs-comment">/**
- * Configure advanced timeout and agent parameters
- *
- * To learn more about the parameters please refer to the [Salesforce Developer Center](https://developer.salesforce.com/docs/commerce/commerce-api).
- */</span>
-<span class="hljs-comment">// Create a configuration to use when creating API clients</span>
-<span class="hljs-keyword">const</span> https = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;https&#x27;</span>);
+				<p>You can configure how the SDK makes requests using the <code>fetchOptions</code> parameter. It is passed to <a href="https://github.com/node-fetch/node-fetch/1#api">node-fetch</a> on the server and <a href="https://github.github.io/fetch/">whatwg-fetch</a> on browser.</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> https = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;https&quot;</span>);
 
 <span class="hljs-keyword">const</span> config = {
-  <span class="hljs-attr">proxy</span>: <span class="hljs-string">&#x27;https://localhost:3000&#x27;</span>,
-  <span class="hljs-attr">headers</span>: {},
-  <span class="hljs-attr">parameters</span>: {
-    <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;&lt;your-client-id&gt;&#x27;</span>,
-    <span class="hljs-attr">organizationId</span>: <span class="hljs-string">&#x27;&lt;your-org-id&gt;&#x27;</span>,
-    <span class="hljs-attr">shortCode</span>: <span class="hljs-string">&#x27;&lt;your-short-code&gt;&#x27;</span>,
-    <span class="hljs-attr">siteId</span>: <span class="hljs-string">&#x27;&lt;your-site-id&gt;&#x27;</span>,
-  },
   <span class="hljs-attr">fetchOptions</span>: {
-    <span class="hljs-attr">timeout</span>: <span class="hljs-number">2000</span>, <span class="hljs-comment">//request times out after 2 seconds</span>
-    <span class="hljs-attr">agent</span>: <span class="hljs-keyword">new</span> https.agent({
-      <span class="hljs-comment">// a custom http agent</span>
-      <span class="hljs-attr">keepAlive</span>: <span class="hljs-literal">true</span>,
-    }),
+    <span class="hljs-comment">// By default, requests made using the SDK do not include cookies.</span>
+    <span class="hljs-attr">credentials</span>: <span class="hljs-string">&quot;include&quot;</span>,
+    <span class="hljs-attr">timeout</span>: <span class="hljs-number">2000</span>,
+    <span class="hljs-attr">agent</span>: <span class="hljs-keyword">new</span> https.agent({ <span class="hljs-attr">keepAlive</span>: <span class="hljs-literal">true</span> }),
   },
 };</code></pre>
+				<p>For more info, refer to the <a href="https://salesforcecommercecloud.github.io/commerce-sdk-isomorphic/">documentation site</a>.</p>
 				<a href="#additional-config-settings" id="additional-config-settings" style="color: inherit; text-decoration: none;">
-					<h3>Additional Config Settings</h3>
+					<h4>Additional Config Settings</h4>
 				</a>
-				<p><em>headers:</em> A collection of key/value string pairs representing additional headers to include with API requests.</p>
-				<p><em>throwOnBadResponse:</em> Default value is false. When set to true, the SDK throws an Error on responses with statuses that are not 2xx or 304.</p>
-				<a href="#publicprivate-client-shopper-login-slas-helpers" id="publicprivate-client-shopper-login-slas-helpers" style="color: inherit; text-decoration: none;">
-					<h3>Public/Private Client Shopper Login (SLAS) helpers</h3>
-				</a>
-				<p>A collection of helper functions are available in this SDK to simplify <a href="https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary">Public/Private Client Shopper Login OAuth flows</a>. See sample code above for guest login.</p>
-				<p><strong>⚠️ WARNING ⚠️</strong>
-				Users should be extremely cautious about using the SLAS private client helper functions in the browser as it can expose your client secret. Ensure that your client secret is secured before running the function client side.</p>
+				<ul>
+					<li><code>headers</code>: Headers to include with API requests.</li>
+					<li><code>throwOnBadResponse</code>: When <code>true</code>, the SDK throws an <code>Error</code> on responses whose status is not 2xx or 304.</li>
+				</ul>
 				<a href="#custom-query-parameters" id="custom-query-parameters" style="color: inherit; text-decoration: none;">
 					<h3>Custom Query Parameters</h3>
 				</a>
-				<p>With the introduction of <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/extensibility_via_hooks.html">hooks for Commerce APIs</a>, customers can pass custom query parameters through the SDK to be used in their custom hook. Custom query parameters must begin with <code>c_</code>:</p>
+				<p>You can pass custom query parameters through the SDK to be used in <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/extensibility_via_hooks.html">B2C Commerce API Hooks</a>. Custom query parameters must begin with <code>c_</code>:</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> searchResult = <span class="hljs-keyword">await</span> shopperSearch.productSearch({
   <span class="hljs-attr">parameters</span>: {
     <span class="hljs-attr">q</span>: <span class="hljs-string">&#x27;shirt&#x27;</span>,
     <span class="hljs-attr">c_paramkey</span>: <span class="hljs-string">&#x27;&lt;param-value&gt;&#x27;</span>
   },
 });</code></pre>
-				<p>Invalid query parameters that are not a part of the API and do not follow the <code>c_</code> custom query parameter convention will be filtered from the request and a warning will be displayed.</p>
+				<p>Invalid query parameters that are not a part of the API and do not follow the <code>c_</code> custom query parameter convention are filtered from the request with a warning.</p>
 				<a href="#custom-apis" id="custom-apis" style="color: inherit; text-decoration: none;">
 					<h3>Custom APIs</h3>
 				</a>
-				<p>The SDK supports calling <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/custom-apis.html">custom APIs</a> with a helper function, <code>callCustomEndpoint</code>.</p>
-				<p>Example usage:</p>
-				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> pkg <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;commerce-sdk-isomorphic&#x27;</span>;
+				<p>The SDK supports calling <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/custom-apis.html">B2C Commerce Custom APIs</a> with a helper function, <code>callCustomEndpoint</code>:</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> pkg <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;commerce-sdk-isomorphic&quot;</span>;
 <span class="hljs-keyword">const</span> { helpers } = pkg;
 
-<span class="hljs-keyword">const</span> clientConfigExample = {
+<span class="hljs-keyword">const</span> clientConfig = {
   <span class="hljs-attr">parameters</span>: {
     <span class="hljs-attr">clientId</span>: <span class="hljs-string">&quot;&lt;your-client-id&gt;&quot;</span>,
     <span class="hljs-attr">organizationId</span>: <span class="hljs-string">&quot;&lt;your-org-id&gt;&quot;</span>,
@@ -231,59 +179,51 @@
   <span class="hljs-comment">// If not provided, it&#x27;ll use the default production URI:</span>
   <span class="hljs-comment">// &#x27;https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}&#x27;</span>
   <span class="hljs-comment">// path parameters should be wrapped in curly braces like the default production URI</span>
-  <span class="hljs-attr">baseUri</span>: <span class="hljs-string">&quot;&lt;your-base-uri&gt;&quot;</span>
+  <span class="hljs-attr">baseUri</span>: <span class="hljs-string">&quot;&lt;your-base-uri&gt;&quot;</span>,
 };
 
 <span class="hljs-comment">// Required params: apiName, endpointPath, shortCode, organizaitonId</span>
 <span class="hljs-comment">// Required path params can be passed into:</span>
 <span class="hljs-comment">// options.customApiPathParameters or clientConfig.parameters</span>
-<span class="hljs-keyword">const</span> customApiArgs = { 
-  <span class="hljs-attr">apiName</span>: <span class="hljs-string">&#x27;loyalty-info&#x27;</span>,
-  <span class="hljs-attr">apiVersion</span>: <span class="hljs-string">&#x27;v1&#x27;</span>, <span class="hljs-comment">// defaults to v1 if not provided</span>
-  <span class="hljs-attr">endpointPath</span>: <span class="hljs-string">&#x27;customers&#x27;</span>
-}
+<span class="hljs-keyword">const</span> customApiPathParameters = {
+  <span class="hljs-attr">apiName</span>: <span class="hljs-string">&quot;loyalty-info&quot;</span>,
+  <span class="hljs-attr">apiVersion</span>: <span class="hljs-string">&quot;v1&quot;</span>, <span class="hljs-comment">// defaults to v1 if not provided</span>
+  <span class="hljs-attr">endpointPath</span>: <span class="hljs-string">&quot;customers&quot;</span>,
+};
 
-<span class="hljs-keyword">const</span> accessToken = <span class="hljs-string">&#x27;&lt;INSERT ACCESS TOKEN HERE&gt;&#x27;</span>;
+<span class="hljs-keyword">const</span> accessToken = <span class="hljs-string">&quot;&lt;INSERT ACCESS TOKEN HERE&gt;&quot;</span>;
 
-<span class="hljs-keyword">let</span> getResponse = <span class="hljs-keyword">await</span> helpers.callCustomEndpoint({
+<span class="hljs-keyword">await</span> helpers.callCustomEndpoint({
   <span class="hljs-attr">options</span>: {
-    <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;GET&#x27;</span>,
+    <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;GET&quot;</span>,
     <span class="hljs-attr">parameters</span>: {
-      <span class="hljs-attr">queryParameter</span>: <span class="hljs-string">&#x27;queryParameter1&#x27;</span>,
+      <span class="hljs-attr">queryParameter</span>: <span class="hljs-string">&quot;queryParameter1&quot;</span>,
     },
     <span class="hljs-attr">headers</span>: {
       <span class="hljs-comment">// Content-Type is defaulted to application/json if not provided</span>
-      <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;application/json&#x27;</span>,
-      <span class="hljs-attr">authorization</span>: <span class="hljs-string">`Bearer <span class="hljs-subst">${access_token}</span>`</span>
+      <span class="hljs-string">&quot;Content-Type&quot;</span>: <span class="hljs-string">&quot;application/json&quot;</span>,
+      <span class="hljs-attr">authorization</span>: <span class="hljs-string">`Bearer <span class="hljs-subst">${accessToken}</span>`</span>,
     },
-    <span class="hljs-attr">customApiPathParameters</span>: customApiArgs
-  }, 
-  <span class="hljs-attr">clientConfig</span>: clientConfigExample,
-  <span class="hljs-comment">// Flag to retrieve raw response or data from helper function</span>
-  <span class="hljs-attr">rawResponse</span>: <span class="hljs-literal">false</span>, 
-})
+    customApiPathParameters,
+  },
+  clientConfig,
+});
 
-<span class="hljs-keyword">let</span> postResponse = <span class="hljs-keyword">await</span> helpers.callCustomEndpoint({
+<span class="hljs-keyword">await</span> helpers.callCustomEndpoint({
   <span class="hljs-attr">options</span>: {
-    <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;POST&#x27;</span>,
+    <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;POST&quot;</span>,
     <span class="hljs-attr">parameters</span>: {
-      <span class="hljs-attr">queryParameter</span>: <span class="hljs-string">&#x27;queryParameter1&#x27;</span>,
+      <span class="hljs-attr">queryParameter</span>: <span class="hljs-string">&quot;queryParameter1&quot;</span>,
     },
     <span class="hljs-attr">headers</span>: {
-      <span class="hljs-attr">authorization</span>: <span class="hljs-string">`Bearer <span class="hljs-subst">${access_token}</span>`</span>
+      <span class="hljs-attr">authorization</span>: <span class="hljs-string">`Bearer <span class="hljs-subst">${accessToken}</span>`</span>,
     },
-    <span class="hljs-attr">customApiPathParameters</span>: customApiArgs,
-    <span class="hljs-attr">body</span>: <span class="hljs-built_in">JSON</span>.stringify({ <span class="hljs-attr">data</span>: <span class="hljs-string">&#x27;data&#x27;</span> })
-  }, 
-  <span class="hljs-attr">clientConfig</span>: clientConfigExample,
-  <span class="hljs-comment">// Flag to retrieve raw response or data from helper function</span>
-  <span class="hljs-attr">rawResponse</span>: <span class="hljs-literal">false</span>, 
-})
-
-<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;get response: &#x27;</span>, getResponse)
-<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;post response: &#x27;</span>, postResponse)</code></pre>
+    customApiPathParameters,
+    <span class="hljs-attr">body</span>: <span class="hljs-built_in">JSON</span>.stringify({ <span class="hljs-attr">data</span>: <span class="hljs-string">&quot;data&quot;</span> }),
+  },
+  clientConfig,
+});</code></pre>
 				<p>For more documentation about this helper function, please refer to the <a href="https://salesforcecommercecloud.github.io/commerce-sdk-isomorphic/modules/helpers.html">commerce-sdk-isomorphic docs</a>.</p>
-				<p>For more information about custom APIs, please refer to the <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/custom-apis.html">Salesforce Developer Docs</a></p>
 				<a href="#license-information" id="license-information" style="color: inherit; text-decoration: none;">
 					<h2>License Information</h2>
 				</a>
