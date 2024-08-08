@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v3.1.0
+
+### Enhancements
+- Update SLAS helpers to support DNT parameter [#167](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/167)
+
 ## v3.0.0
 
 ### :warning: Planned API Changes :warning: 
