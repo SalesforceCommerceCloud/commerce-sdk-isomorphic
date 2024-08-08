@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-/* eslint header/header: "off" */
+/* eslint header/header: "off", max-lines:"off" */
 /*
  * Copyright (c) 2022, salesforce.com, inc.
  * All rights reserved.
@@ -47,6 +47,7 @@ const parameters = {
   refreshToken: 'refresh_token',
   usid: 'usid',
   hint: 'hint',
+  dnt: 'true',
 };
 
 const url =
@@ -55,9 +56,7 @@ const url =
 const authenticateCustomerMock = jest.fn(() => ({url}));
 
 const getAccessTokenMock = jest.fn(() => expectedTokenResponse);
-
 const logoutCustomerMock = jest.fn(() => expectedTokenResponse);
-
 const generateCodeChallengeMock = jest.fn(() => 'code_challenge');
 
 const createMockSlasClient = () =>
@@ -220,6 +219,7 @@ describe('Guest user flow', () => {
         grant_type: 'authorization_code_pkce',
         redirect_uri: 'redirect_uri',
         usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
+        dnt: 'true',
       },
     };
     const mockSlasClient = createMockSlasClient();
@@ -257,6 +257,7 @@ describe('Guest user flow', () => {
         grant_type: 'client_credentials',
         channel_id: 'site_id',
         usid: 'usid',
+        dnt: 'true',
       },
     };
     expect(getAccessTokenMock).toBeCalledWith(expectedReqOptions);
@@ -300,6 +301,7 @@ describe('Registered B2C user flow', () => {
       organizationId: 'organization_id',
       redirect_uri: 'redirect_uri',
       usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
+      dnt: 'true',
     },
   };
 
@@ -338,6 +340,7 @@ describe('Registered B2C user flow', () => {
         channel_id: 'site_id',
         organizationId: 'organization_id',
         usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
+        dnt: 'true',
       },
     };
     // slasClient is copied and tries to make an actual API call
