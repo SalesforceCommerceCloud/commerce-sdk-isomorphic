@@ -166,6 +166,7 @@ export async function authorize(
  * @param credentials.clientSecret - secret associated with client ID
  * @param parameters - parameters to pass in the API calls.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
+ * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
  * @returns TokenResponse
  */
 export async function loginGuestUserPrivate(
@@ -177,6 +178,7 @@ export async function loginGuestUserPrivate(
   }>,
   parameters: {
     usid?: string;
+    dnt?: boolean;
   },
   credentials: {
     clientSecret: string;
@@ -200,6 +202,7 @@ export async function loginGuestUserPrivate(
       grant_type: 'client_credentials',
       channel_id: slasClient.clientConfig.parameters.siteId,
       ...(parameters.usid && {usid: parameters.usid}),
+      ...(parameters.dnt && {dnt: parameters.dnt.toString()}),
     },
   };
 
@@ -212,6 +215,7 @@ export async function loginGuestUserPrivate(
  * @param parameters - parameters to pass in the API calls.
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
+ * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
  * @returns TokenResponse
  */
 export async function loginGuestUser(
@@ -224,6 +228,7 @@ export async function loginGuestUser(
   parameters: {
     redirectURI: string;
     usid?: string;
+    dnt?: boolean;
   }
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
@@ -242,6 +247,7 @@ export async function loginGuestUser(
     grant_type: 'authorization_code_pkce',
     redirect_uri: parameters.redirectURI,
     usid: authResponse.usid,
+    ...(parameters.dnt && {dnt: parameters.dnt.toString()}),
   };
 
   return slasClient.getAccessToken({body: tokenBody});
@@ -258,6 +264,7 @@ export async function loginGuestUser(
  * @param parameters - parameters to pass in the API calls.
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
+ * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
  * @returns TokenResponse
  */
 export async function loginRegisteredUserB2C(
@@ -275,6 +282,7 @@ export async function loginRegisteredUserB2C(
   parameters: {
     redirectURI: string;
     usid?: string;
+    dnt?: boolean;
   }
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
@@ -331,6 +339,7 @@ export async function loginRegisteredUserB2C(
     organizationId: slasClient.clientConfig.parameters.organizationId,
     redirect_uri: parameters.redirectURI,
     usid: authResponse.usid,
+    ...(parameters.dnt && {dnt: parameters.dnt.toString()}),
   };
   // using slas private client
   if (credentials.clientSecret) {
