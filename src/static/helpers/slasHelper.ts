@@ -178,7 +178,7 @@ export async function loginGuestUserPrivate(
   }>,
   parameters: {
     usid?: string;
-    dnt?: string;
+    dnt?: boolean;
   },
   credentials: {
     clientSecret: string;
@@ -202,7 +202,7 @@ export async function loginGuestUserPrivate(
       grant_type: 'client_credentials',
       channel_id: slasClient.clientConfig.parameters.siteId,
       ...(parameters.usid && {usid: parameters.usid}),
-      ...(parameters.dnt && {dnt: parameters.dnt}),
+      ...(parameters.dnt && {dnt: parameters.dnt.toString()}),
     },
   };
 
@@ -228,7 +228,7 @@ export async function loginGuestUser(
   parameters: {
     redirectURI: string;
     usid?: string;
-    dnt?: string;
+    dnt?: boolean;
   }
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
@@ -247,7 +247,7 @@ export async function loginGuestUser(
     grant_type: 'authorization_code_pkce',
     redirect_uri: parameters.redirectURI,
     usid: authResponse.usid,
-    ...(parameters.dnt && {dnt: parameters.dnt}),
+    ...(parameters.dnt && {dnt: parameters.dnt.toString()}),
   };
 
   return slasClient.getAccessToken({body: tokenBody});
@@ -282,7 +282,7 @@ export async function loginRegisteredUserB2C(
   parameters: {
     redirectURI: string;
     usid?: string;
-    dnt?: string;
+    dnt?: boolean;
   }
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
@@ -339,7 +339,7 @@ export async function loginRegisteredUserB2C(
     organizationId: slasClient.clientConfig.parameters.organizationId,
     redirect_uri: parameters.redirectURI,
     usid: authResponse.usid,
-    ...(parameters.dnt && {dnt: parameters.dnt}),
+    ...(parameters.dnt && {dnt: parameters.dnt.toString()}),
   };
   // using slas private client
   if (credentials.clientSecret) {
