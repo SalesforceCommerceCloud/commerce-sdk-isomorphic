@@ -443,6 +443,7 @@ describe('Refresh Token', () => {
         channel_id: 'site_id',
         grant_type: 'refresh_token',
         refresh_token: 'refresh_token',
+        dnt: 'true',
       },
     };
     const token = slasHelper.refreshAccessToken(
@@ -465,6 +466,7 @@ describe('Refresh Token', () => {
         client_id: 'client_id',
         channel_id: 'site_id',
         refresh_token: parameters.refreshToken,
+        dnt: 'true',
       },
     };
     const token = slasHelper.refreshAccessToken(
