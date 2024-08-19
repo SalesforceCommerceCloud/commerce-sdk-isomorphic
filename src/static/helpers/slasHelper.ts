@@ -376,7 +376,10 @@ export function refreshAccessToken(
     clientId: string;
     siteId: string;
   }>,
-  parameters: {refreshToken: string},
+  parameters: {
+    refreshToken: string;
+    dnt?: boolean;
+  },
   credentials?: {clientSecret?: string}
 ): Promise<TokenResponse> {
   const body = {
@@ -384,6 +387,7 @@ export function refreshAccessToken(
     refresh_token: parameters.refreshToken,
     client_id: slasClient.clientConfig.parameters.clientId,
     channel_id: slasClient.clientConfig.parameters.siteId,
+    ...(parameters.dnt && {dnt: parameters.dnt.toString()}),
   };
 
   if (credentials && credentials.clientSecret) {
