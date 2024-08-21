@@ -47,7 +47,7 @@ const parameters = {
   refreshToken: 'refresh_token',
   usid: 'usid',
   hint: 'hint',
-  dnt: true,
+  dnt: false,
 };
 
 const url =
@@ -219,7 +219,7 @@ describe('Guest user flow', () => {
         grant_type: 'authorization_code_pkce',
         redirect_uri: 'redirect_uri',
         usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
-        dnt: 'true',
+        dnt: 'false',
       },
     };
     const mockSlasClient = createMockSlasClient();
@@ -257,7 +257,7 @@ describe('Guest user flow', () => {
         grant_type: 'client_credentials',
         channel_id: 'site_id',
         usid: 'usid',
-        dnt: 'true',
+        dnt: 'false',
       },
     };
     expect(getAccessTokenMock).toBeCalledWith(expectedReqOptions);
@@ -301,7 +301,7 @@ describe('Registered B2C user flow', () => {
       organizationId: 'organization_id',
       redirect_uri: 'redirect_uri',
       usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
-      dnt: 'true',
+      dnt: 'false',
     },
   };
 
@@ -340,7 +340,7 @@ describe('Registered B2C user flow', () => {
         channel_id: 'site_id',
         organizationId: 'organization_id',
         usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
-        dnt: 'true',
+        dnt: 'false',
       },
     };
     // slasClient is copied and tries to make an actual API call
@@ -443,7 +443,7 @@ describe('Refresh Token', () => {
         channel_id: 'site_id',
         grant_type: 'refresh_token',
         refresh_token: 'refresh_token',
-        dnt: 'true',
+        dnt: 'false',
       },
     };
     const token = slasHelper.refreshAccessToken(
@@ -466,7 +466,7 @@ describe('Refresh Token', () => {
         client_id: 'client_id',
         channel_id: 'site_id',
         refresh_token: parameters.refreshToken,
-        dnt: 'true',
+        dnt: 'false',
       },
     };
     const token = slasHelper.refreshAccessToken(
