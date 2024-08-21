@@ -202,7 +202,7 @@ export async function loginGuestUserPrivate(
       grant_type: 'client_credentials',
       channel_id: slasClient.clientConfig.parameters.siteId,
       ...(parameters.usid && {usid: parameters.usid}),
-      ...(parameters.dnt && {dnt: parameters.dnt.toString()}),
+      ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),
     },
   };
 
@@ -247,7 +247,7 @@ export async function loginGuestUser(
     grant_type: 'authorization_code_pkce',
     redirect_uri: parameters.redirectURI,
     usid: authResponse.usid,
-    ...(parameters.dnt && {dnt: parameters.dnt.toString()}),
+    ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),
   };
 
   return slasClient.getAccessToken({body: tokenBody});
@@ -339,7 +339,7 @@ export async function loginRegisteredUserB2C(
     organizationId: slasClient.clientConfig.parameters.organizationId,
     redirect_uri: parameters.redirectURI,
     usid: authResponse.usid,
-    ...(parameters.dnt && {dnt: parameters.dnt.toString()}),
+    ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),
   };
   // using slas private client
   if (credentials.clientSecret) {
@@ -387,7 +387,7 @@ export function refreshAccessToken(
     refresh_token: parameters.refreshToken,
     client_id: slasClient.clientConfig.parameters.clientId,
     channel_id: slasClient.clientConfig.parameters.siteId,
-    ...(parameters.dnt && {dnt: parameters.dnt.toString()}),
+    ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),
   };
 
   if (credentials && credentials.clientSecret) {
