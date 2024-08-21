@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v3.1.1
+
+### Bug fixes
+- Fixed a bug that may cause the DNT flag to be omitted [#170](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/170)
+
 ## v3.1.0
 
 ### Enhancements
