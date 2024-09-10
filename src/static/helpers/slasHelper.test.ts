@@ -435,6 +435,10 @@ describe('Registered B2C user flow', () => {
   });
 });
 
+describe('Social login user flow', () => {
+  
+})
+
 describe('Refresh Token', () => {
   test('refreshes the token with slas public client', () => {
     const expectedBody = {
