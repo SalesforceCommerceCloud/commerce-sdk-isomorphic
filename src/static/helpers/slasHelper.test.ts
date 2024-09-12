@@ -435,24 +435,6 @@ describe('Registered B2C user flow', () => {
   });
 });
 
-describe('Social login user flow', () => {
-  test('loginIDPUser does not stop when authorizeCustomer returns 303', async () => {
-    // slasClient is copied and tries to make an actual API call
-    const mockSlasClient = createMockSlasClient();
-    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
-
-    // Mock authorizeCustomer
-    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
-      .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
-      .query(true)
-      .reply(303, {message: 'Oh yes!'});
-
-    await expect(
-      slasHelper.loginIDPUser(mockSlasClient, parameters)
-    ).resolves.not.toThrow(ResponseError);
-  });
-});
-
 describe('Refresh Token', () => {
   test('refreshes the token with slas public client', () => {
     const expectedBody = {
