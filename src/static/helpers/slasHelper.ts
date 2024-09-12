@@ -379,6 +379,9 @@ export async function loginIDPUser(
     clientId: string;
     siteId: string;
   }>,
+  credentials: {
+    clientSecret?: string;
+  },
   parameters: {
     redirectURI: string;
     hint: string;
@@ -404,6 +407,21 @@ export async function loginIDPUser(
     usid: authResponse.usid,
     ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),
   };
+
+  // Using private client
+  if (credentials.clientSecret) {
+    const authHeaderIdSecret = `Basic ${stringToBase64(
+      `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
+    )}`;
+
+    const optionsToken = {
+      headers: {
+        Authorization: authHeaderIdSecret,
+      },
+      body: tokenBody,
+    };
+    return slasClient.getAccessToken(optionsToken);
+  }
 
   return slasClient.getAccessToken({body: tokenBody});
 }
