@@ -43,11 +43,18 @@ async function loginIDPUser(
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
 
-  const authResponse = await authorize(slasClient, codeVerifier, {
-    redirectURI: parameters.redirectURI,
-    hint: parameters.hint,
-    ...(parameters.usid && {usid: parameters.usid}),
-  });
+  const privateClient = !!credentials.clientSecret;
+
+  const authResponse = await authorize(
+    slasClient,
+    codeVerifier,
+    {
+      redirectURI: parameters.redirectURI,
+      hint: parameters.hint,
+      ...(parameters.usid && {usid: parameters.usid}),
+    },
+    privateClient
+  );
 
   const tokenBody: TokenRequest = {
     client_id: slasClient.clientConfig.parameters.clientId,
