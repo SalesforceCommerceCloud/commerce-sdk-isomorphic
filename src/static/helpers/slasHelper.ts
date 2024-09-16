@@ -114,7 +114,8 @@ export async function authorize(
     redirectURI: string;
     hint?: string;
     usid?: string;
-  }
+  },
+  privateClient = false
 ): Promise<{code: string; url: string; usid: string}> {
   const codeChallenge = await generateCodeChallenge(codeVerifier);
 
@@ -134,7 +135,7 @@ export async function authorize(
     parameters: {
       client_id: slasClient.clientConfig.parameters.clientId,
       channel_id: slasClient.clientConfig.parameters.siteId,
-      code_challenge: codeChallenge,
+      ...(!privateClient && {code_challenge: codeChallenge}),
       ...(parameters.hint && {hint: parameters.hint}),
       organizationId: slasClient.clientConfig.parameters.organizationId,
       redirect_uri: parameters.redirectURI,
