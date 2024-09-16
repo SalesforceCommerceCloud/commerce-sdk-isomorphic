@@ -12,9 +12,16 @@
 import nock from 'nock';
 import {ShopperLogin, TokenResponse} from '../../lib/shopperLogin';
 import loginIDPUser from './IDPLoginHelper';
+import {stringToBase64} from './slasHelper';
 import ResponseError from '../responseError';
 
 const credentialsPublic = {};
+
+const credentialsPrivate = {
+  username: 'shopper_user_id',
+  password: 'shopper_password',
+  clientSecret: 'slas_private_secret',
+};
 
 const expectedTokenResponse: TokenResponse = {
   access_token: 'access_token',
@@ -68,6 +75,11 @@ const createMockSlasClient = () =>
     siteId: string;
   }>);
 
+beforeEach(() => {
+  jest.clearAllMocks();
+  nock.cleanAll();
+});
+
 describe('Social login user flow', () => {
   test('loginIDPUser does not stop when authorizeCustomer returns 303', async () => {
     // slasClient is copied and tries to make an actual API call
@@ -84,4 +96,41 @@ describe('Social login user flow', () => {
       loginIDPUser(mockSlasClient, credentialsPublic, parameters)
     ).resolves.not.toThrow(ResponseError);
   });
+
+  test('generates an access token using slas private client', async () => {
+    const mockSlasClient = createMockSlasClient();
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    // Mock authorizeCustomer
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
+      .query(true)
+      .reply(303, {message: 'Oh yes!'});
+
+    const accessToken = await loginIDPUser(
+      mockSlasClient,
+      credentialsPrivate,
+      parameters
+    );
+
+    const expectedReqOptions = {
+      headers: {
+        Authorization: `Basic ${stringToBase64(
+          `client_id:${credentialsPrivate.clientSecret}`
+        )}`,
+      },
+      body: {
+        grant_type: 'authorization_code_pkce',
+        redirect_uri: 'redirect_uri',
+        client_id: 'client_id',
+        channel_id: 'site_id',
+        usid: 'usid',
+        code_verifier: expect.stringMatching(/./) as string,
+        code: expect.any(String) as string,
+        dnt: 'false',
+      },
+    };
+    expect(getAccessTokenMock).toBeCalledWith(expectedReqOptions);
+    expect(accessToken).toBe(expectedTokenResponse);
+  })
 });
