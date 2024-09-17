@@ -61,7 +61,9 @@ async function loginIDPUser(
     channel_id: slasClient.clientConfig.parameters.siteId,
     code: authResponse.code,
     code_verifier: codeVerifier,
-    grant_type: 'authorization_code_pkce',
+    grant_type: privateClient
+      ? 'authorization_code'
+      : 'authorization_code_pkce',
     redirect_uri: parameters.redirectURI,
     usid: authResponse.usid,
     ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),

@@ -120,7 +120,7 @@ describe('Social login user flow', () => {
         )}`,
       },
       body: {
-        grant_type: 'authorization_code_pkce',
+        grant_type: 'authorization_code',
         redirect_uri: 'redirect_uri',
         client_id: 'client_id',
         channel_id: 'site_id',
