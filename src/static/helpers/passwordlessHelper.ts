@@ -38,7 +38,7 @@ export async function authorizePasswordless(
     locale?: string;
     mode: string;
   }
-): Promise<Response | Object> {
+): Promise<Response> {
   const authHeaderIdSecret = `Basic ${stringToBase64(
     `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
   )}`;
@@ -51,15 +51,18 @@ export async function authorizePasswordless(
     ...(parameters.callbackURI && {callback_uri: parameters.callbackURI}),
   };
 
-  return slasClient.authorizePasswordlessCustomer({
-    headers: {
-      Authorization: authHeaderIdSecret,
+  return slasClient.authorizePasswordlessCustomer(
+    {
+      headers: {
+        Authorization: authHeaderIdSecret,
+      },
+      parameters: {
+        organizationId: slasClient.clientConfig.parameters.organizationId,
+      },
+      body: tokenBody,
     },
-    parameters: {
-      organizationId: slasClient.clientConfig.parameters.organizationId,
-    },
-    body: tokenBody,
-  });
+    true
+  );
 }
 
 /**
@@ -87,27 +90,27 @@ export async function getPasswordLessAccessToken(
   parameters: {
     pwdlessLoginToken: string;
     dnt?: string;
-  } 
+  }
 ): Promise<TokenResponse> {
-    const codeVerifier = createCodeVerifier();
-    const authHeaderIdSecret = `Basic ${stringToBase64(
-        `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
-    )}`;
+  const codeVerifier = createCodeVerifier();
+  const authHeaderIdSecret = `Basic ${stringToBase64(
+    `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
+  )}`;
 
-    const tokenBody = {
-        grant_type: 'client_credentials',
-        hint: 'pwdless_login',
-        pwdless_login_token: parameters.pwdlessLoginToken,
-        code_verifier: codeVerifier,
-        ...(parameters.dnt && {dnt: parameters.dnt}),
-    };
-    return slasClient.getPasswordLessAccessToken({
-        headers: {
-        Authorization: authHeaderIdSecret,
-        },
-        parameters: {
-            organizationId: slasClient.clientConfig.parameters.organizationId,
-        },
-        body: tokenBody,
-    });
+  const tokenBody = {
+    grant_type: 'client_credentials',
+    hint: 'pwdless_login',
+    pwdless_login_token: parameters.pwdlessLoginToken,
+    code_verifier: codeVerifier,
+    ...(parameters.dnt && {dnt: parameters.dnt}),
+  };
+  return slasClient.getPasswordLessAccessToken({
+    headers: {
+      Authorization: authHeaderIdSecret,
+    },
+    parameters: {
+      organizationId: slasClient.clientConfig.parameters.organizationId,
+    },
+    body: tokenBody,
+  });
 }

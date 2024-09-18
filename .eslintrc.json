@@ -91,12 +91,6 @@
         "rules": {
           "@typescript-eslint/explicit-module-boundary-types": "error"
         }
-      },
-      {
-        "files": ["./src/static/helpers/passwordlessHelper.ts"],
-        "rules": {
-          "@typescript-eslint/ban-types": "off"
-        }
       }
     ],
     "settings": {
