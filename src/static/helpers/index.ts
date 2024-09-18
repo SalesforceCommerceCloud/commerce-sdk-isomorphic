@@ -8,6 +8,7 @@
 // Doing so may lead to circular dependencies or duplicate exports (due to rollup mangling the types)
 export * from './environment';
 export * from './slasHelper';
+export * from './passwordlessHelper';
 export * from './types';
 export * from './customApi';
 export * from './fetchHelper';
