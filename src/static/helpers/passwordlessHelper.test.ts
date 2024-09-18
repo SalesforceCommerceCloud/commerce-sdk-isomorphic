@@ -92,7 +92,8 @@ describe('authorizePasswordless is working', () => {
       },
     };
     expect(authorizePasswordlessCustomerMock).toBeCalledWith(
-      expectedReqOptions, true
+      expectedReqOptions, 
+      true
     );
   });
 });

@@ -19,7 +19,7 @@ import {createCodeVerifier, stringToBase64} from './slasHelper';
  * @param parameters.userid - User Id for login
  * @param parameters.locale - The locale of the template. Not needed for the callback mode
  * @param parameters.mode - Medium of sending login token
- * @returns Promise of Response or Object
+ * @returns Promise of Response
  */
 export async function authorizePasswordless(
   slasClient: ShopperLogin<{
