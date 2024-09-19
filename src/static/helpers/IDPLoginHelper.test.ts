@@ -105,7 +105,7 @@ describe('Social login user flow', () => {
     nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
       .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
       .query(true)
-      .reply(303, {message: 'Oh yes!'});
+      .reply(303, {response_body: 'response_body'}, {location: url});
 
     const accessToken = await loginIDPUser(
       mockSlasClient,
@@ -124,13 +124,13 @@ describe('Social login user flow', () => {
         redirect_uri: 'redirect_uri',
         client_id: 'client_id',
         channel_id: 'site_id',
-        usid: 'usid',
+        usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
         code_verifier: expect.stringMatching(/./) as string,
-        code: expect.any(String) as string,
+        code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
         dnt: 'false',
       },
     };
     expect(getAccessTokenMock).toBeCalledWith(expectedReqOptions);
     expect(accessToken).toBe(expectedTokenResponse);
-  })
+  });
 });
