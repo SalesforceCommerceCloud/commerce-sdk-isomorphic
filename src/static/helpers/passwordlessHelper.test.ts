@@ -92,8 +92,41 @@ describe('authorizePasswordless is working', () => {
       },
     };
     expect(authorizePasswordlessCustomerMock).toBeCalledWith(
-      expectedReqOptions, 
+      expectedReqOptions,
       true
+    );
+  });
+  test('Throw when required parameters missing', async () => {
+    const mockSlasClient = {
+      clientConfig: {
+        parameters: {
+          shortCode: 'short_code',
+          organizationId: 'organization_id',
+          clientId: 'client_id',
+        },
+      },
+      authorizePasswordlessCustomer: authorizePasswordlessCustomerMock,
+      getPasswordLessAccessToken: getPasswordLessAccessTokenMock,
+    } as unknown as ShopperLogin<{
+      shortCode: string;
+      organizationId: string;
+      clientId: string;
+      siteId: string;
+    }>;
+    const credentials = {
+      clientSecret: 'slas_private_secret',
+    };
+    const parameters = {
+      callbackURI: 'www.something.com/callback',
+      usid: 'a_usid',
+      userid: 'a_userid',
+      locale: 'a_locale',
+      mode: 'callback',
+    };
+    await expect(
+      authorizePasswordless(mockSlasClient, credentials, parameters)
+    ).rejects.toThrow(
+      'Required argument channel_id is not provided through clientConfig.parameters.siteId'
     );
   });
 });
@@ -130,5 +163,34 @@ describe('getPasswordLessAccessToken is working', () => {
       },
     };
     expect(getPasswordLessAccessTokenMock).toBeCalledWith(expectedReqOptions);
+  });
+  test('Throw when required parameters missing', async () => {
+    const mockSlasClient = {
+      clientConfig: {
+        parameters: {
+          shortCode: 'short_code',
+          clientId: 'client_id',
+        },
+      },
+      authorizePasswordlessCustomer: authorizePasswordlessCustomerMock,
+      getPasswordLessAccessToken: getPasswordLessAccessTokenMock,
+    } as unknown as ShopperLogin<{
+      shortCode: string;
+      organizationId: string;
+      clientId: string;
+      siteId: string;
+    }>;
+    const credentials = {
+      clientSecret: 'slas_private_secret',
+    };
+    const parameters = {
+        pwdlessLoginToken: '123456',
+        dnt: '1',
+      };
+    await expect(
+        getPasswordLessAccessToken(mockSlasClient, credentials, parameters)
+    ).rejects.toThrow(
+      'Required argument organizationId is not provided through clientConfig.parameters.organizationId'
+    );
   });
 });

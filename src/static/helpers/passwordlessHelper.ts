@@ -39,6 +39,11 @@ export async function authorizePasswordless(
     mode: string;
   }
 ): Promise<Response> {
+  if (!slasClient.clientConfig.parameters.siteId) {
+    throw new Error(
+      'Required argument channel_id is not provided through clientConfig.parameters.siteId'
+    );
+  }
   const authHeaderIdSecret = `Basic ${stringToBase64(
     `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
   )}`;
@@ -92,6 +97,11 @@ export async function getPasswordLessAccessToken(
     dnt?: string;
   }
 ): Promise<TokenResponse> {
+  if (!slasClient.clientConfig.parameters.organizationId) {
+    throw new Error(
+      'Required argument organizationId is not provided through clientConfig.parameters.organizationId'
+    );
+  }
   const codeVerifier = createCodeVerifier();
   const authHeaderIdSecret = `Basic ${stringToBase64(
     `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
