@@ -435,6 +435,61 @@ describe('Registered B2C user flow', () => {
   });
 });
 
+describe('Social login user flow', () => {
+  test('loginIDPUser does not stop when authorizeCustomer returns 303', async () => {
+    // slasClient is copied and tries to make an actual API call
+    const mockSlasClient = createMockSlasClient();
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    // Mock authorizeCustomer
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
+      .query(true)
+      .reply(303, {message: 'Oh yes!'});
+
+    await expect(
+      slasHelper.loginIDPUser(mockSlasClient, {}, parameters)
+    ).resolves.not.toThrow(ResponseError);
+  });
+
+  test('generates an access token using slas private client', async () => {
+    const mockSlasClient = createMockSlasClient();
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    // Mock authorizeCustomer
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
+      .query(true)
+      .reply(303, {response_body: 'response_body'}, {location: url});
+
+    const accessToken = await slasHelper.loginIDPUser(
+      mockSlasClient,
+      credentialsPrivate,
+      parameters
+    );
+
+    const expectedReqOptions = {
+      headers: {
+        Authorization: `Basic ${stringToBase64(
+          `client_id:${credentialsPrivate.clientSecret}`
+        )}`,
+      },
+      body: {
+        grant_type: 'authorization_code',
+        redirect_uri: 'redirect_uri',
+        client_id: 'client_id',
+        channel_id: 'site_id',
+        usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
+        code_verifier: expect.stringMatching(/./) as string,
+        code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
+        dnt: 'false',
+      },
+    };
+    expect(getAccessTokenMock).toBeCalledWith(expectedReqOptions);
+    expect(accessToken).toBe(expectedTokenResponse);
+  });
+});
+
 describe('Refresh Token', () => {
   test('refreshes the token with slas public client', () => {
     const expectedBody = {
