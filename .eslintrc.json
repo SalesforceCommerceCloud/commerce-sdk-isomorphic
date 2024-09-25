@@ -91,6 +91,12 @@
         "rules": {
           "@typescript-eslint/explicit-module-boundary-types": "error"
         }
+      },
+      {
+        "files": ["./src/static/helpers/slasHelper.ts"],
+        "rules": {
+          "max-lines": "off"
+        }
       }
     ],
     "settings": {

@@ -58,6 +58,8 @@ const authenticateCustomerMock = jest.fn(() => ({url}));
 const getAccessTokenMock = jest.fn(() => expectedTokenResponse);
 const logoutCustomerMock = jest.fn(() => expectedTokenResponse);
 const generateCodeChallengeMock = jest.fn(() => 'code_challenge');
+const authorizePasswordlessCustomerMock = jest.fn();
+const getPasswordLessAccessTokenMock = jest.fn();
 
 const createMockSlasClient = () =>
   ({
@@ -73,6 +75,8 @@ const createMockSlasClient = () =>
     getAccessToken: getAccessTokenMock,
     logoutCustomer: logoutCustomerMock,
     generateCodeChallenge: generateCodeChallengeMock,
+    authorizePasswordlessCustomer: authorizePasswordlessCustomerMock,
+    getPasswordLessAccessToken: getPasswordLessAccessTokenMock,
   } as unknown as ShopperLogin<{
     shortCode: string;
     organizationId: string;
@@ -432,6 +436,150 @@ describe('Registered B2C user flow', () => {
       parameters
     );
     expect(accessToken).toStrictEqual(expectedTokenResponse);
+  });
+});
+
+describe('authorizePasswordless is working', () => {
+  test('Correct parameters are used to call SLAS Client authorize', async () => {
+    const mockSlasClient = createMockSlasClient();
+    const {clientId, organizationId, siteId} =
+      mockSlasClient.clientConfig.parameters;
+
+    const parametersAuthorizePasswordless = {
+      callbackURI: 'www.something.com/callback',
+      usid: 'a_usid',
+      userid: 'a_userid',
+      locale: 'a_locale',
+      mode: 'callback',
+    };
+    const authHeaderExpected = `Basic ${slasHelper.stringToBase64(
+      `${clientId}:${credentialsPrivate.clientSecret}`
+    )}`;
+    await slasHelper.authorizePasswordless(
+      mockSlasClient,
+      credentialsPrivate,
+      parametersAuthorizePasswordless
+    );
+    const expectedReqOptions = {
+      headers: {
+        Authorization: authHeaderExpected,
+      },
+      parameters: {
+        organizationId,
+      },
+      body: {
+        user_id: parametersAuthorizePasswordless.userid,
+        mode: parametersAuthorizePasswordless.mode,
+        locale: parametersAuthorizePasswordless.locale,
+        channel_id: siteId,
+        callback_uri: parametersAuthorizePasswordless.callbackURI,
+        usid: parametersAuthorizePasswordless.usid,
+      },
+    };
+    expect(authorizePasswordlessCustomerMock).toBeCalledWith(
+      expectedReqOptions,
+      true
+    );
+  });
+  test('Throw when required parameters missing', async () => {
+    const mockSlasClient = {
+      clientConfig: {
+        parameters: {
+          shortCode: 'short_code',
+          organizationId: 'organization_id',
+          clientId: 'client_id',
+        },
+      },
+      authorizePasswordlessCustomer: authorizePasswordlessCustomerMock,
+      getPasswordLessAccessToken: getPasswordLessAccessTokenMock,
+    } as unknown as ShopperLogin<{
+      shortCode: string;
+      organizationId: string;
+      clientId: string;
+      siteId: string;
+    }>;
+    const parametersAuthorizePasswordless = {
+      callbackURI: 'www.something.com/callback',
+      usid: 'a_usid',
+      userid: 'a_userid',
+      locale: 'a_locale',
+      mode: 'callback',
+    };
+    await expect(
+      slasHelper.authorizePasswordless(
+        mockSlasClient,
+        credentialsPrivate,
+        parametersAuthorizePasswordless
+      )
+    ).rejects.toThrow(
+      'Required argument channel_id is not provided through clientConfig.parameters.siteId'
+    );
+  });
+});
+
+describe('getPasswordLessAccessToken is working', () => {
+  test('Correct parameters are used to call SLAS Client helper', async () => {
+    const mockSlasClient = createMockSlasClient();
+    const {clientId, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    const parametersPasswordlessToken = {
+      pwdlessLoginToken: '123456',
+      dnt: '1',
+    };
+    const authHeaderExpected = `Basic ${slasHelper.stringToBase64(
+      `${clientId}:${credentialsPrivate.clientSecret}`
+    )}`;
+    await slasHelper.getPasswordLessAccessToken(
+      mockSlasClient,
+      credentialsPrivate,
+      parametersPasswordlessToken
+    );
+    const expectedReqOptions = {
+      headers: {
+        Authorization: authHeaderExpected,
+      },
+      parameters: {
+        organizationId,
+      },
+      body: {
+        dnt: parametersPasswordlessToken.dnt,
+        code_verifier: expect.stringMatching(/./) as string,
+        grant_type: 'client_credentials',
+        hint: 'pwdless_login',
+        pwdless_login_token: parametersPasswordlessToken.pwdlessLoginToken,
+      },
+    };
+    expect(getPasswordLessAccessTokenMock).toBeCalledWith(expectedReqOptions);
+  });
+  test('Throw when required parameters missing', async () => {
+    const mockSlasClient = {
+      clientConfig: {
+        parameters: {
+          shortCode: 'short_code',
+          clientId: 'client_id',
+        },
+      },
+      authorizePasswordlessCustomer: authorizePasswordlessCustomerMock,
+      getPasswordLessAccessToken: getPasswordLessAccessTokenMock,
+    } as unknown as ShopperLogin<{
+      shortCode: string;
+      organizationId: string;
+      clientId: string;
+      siteId: string;
+    }>;
+    const parametersPasswordlessToken = {
+      pwdlessLoginToken: '123456',
+      dnt: '1',
+    };
+    await expect(
+      slasHelper.getPasswordLessAccessToken(
+        mockSlasClient,
+        credentialsPrivate,
+        parametersPasswordlessToken
+      )
+    ).rejects.toThrow(
+      'Required argument organizationId is not provided through clientConfig.parameters.organizationId'
+    );
   });
 });
 
