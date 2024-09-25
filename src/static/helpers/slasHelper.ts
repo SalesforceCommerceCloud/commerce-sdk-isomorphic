@@ -124,11 +124,13 @@ export async function authorize(
 
   // set manual redirect on server since node allows access to the location
   // header and it skips the extra call. In the browser, only the default
+  // set manual redirect for external idp login so shoppers can grab the authorization url
   // follow setting allows us to get the url.
   /* istanbul ignore next */
   slasClientCopy.clientConfig.fetchOptions = {
     ...slasClient.clientConfig.fetchOptions,
     redirect: isBrowser ? 'follow' : 'manual',
+    mode: 'no-cors',
   };
 
   const options = {
@@ -148,6 +150,7 @@ export async function authorize(
   const redirectUrlString = response.headers?.get('location') || response.url;
   const redirectUrl = new URL(redirectUrlString);
   const searchParams = Object.fromEntries(redirectUrl.searchParams.entries());
+  const {headers} = response;
 
   // url is a read only property we unfortunately cannot mock out using nock
   // meaning redirectUrl will not have a falsy value for unit tests
@@ -156,7 +159,10 @@ export async function authorize(
     throw new ResponseError(response);
   }
 
-  return {url: redirectUrlString, ...getCodeAndUsidFromUrl(redirectUrlString)};
+  return {
+    url: redirectUrlString,
+    ...getCodeAndUsidFromUrl(redirectUrlString)
+  };
 }
 
 /**
