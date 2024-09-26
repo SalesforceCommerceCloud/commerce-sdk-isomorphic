@@ -59,6 +59,7 @@
     * @param body - The data to send as the request body.
     {{/if}}
     * @param rawResponse - Set to true to return entire Response object instead of DTO.
+    * @param rawURL - Set to true to return the Request URL
     * @returns A promise of type Response if rawResponse is true, a promise of type {{getReturnTypeFromOperation this}} otherwise.
     * {{#if (eq (lowercase @root.metadata.categories.[CC Version Status].[0]) "beta")}}
     * @beta
@@ -79,7 +80,8 @@
         body: {{{getPayloadTypeFromRequest request}}}
         {{/if}}
       }>,
-      rawResponse?: T
+      rawResponse?: T,
+      rawURL?: T
     ): Promise<T extends true ? Response : {{getReturnTypeFromOperation this}}>;
 
     /**
@@ -99,6 +101,7 @@
     * @param body - The data to send as the request body.
     {{/if}}
     * @param rawResponse - Set to true to return entire Response object instead of DTO.
+    * @param rawURL - Set to true to return the Request URL
     *
     * @returns A promise of type Response if rawResponse is true, a promise of type {{getReturnTypeFromOperation this}} otherwise.
     * {{#if (eq (lowercase @root.metadata.categories.[CC Version Status].[0]) "beta")}}
@@ -120,8 +123,9 @@
         body: {{{getPayloadTypeFromRequest request}}}
         {{/if}}
       }>,
-      rawResponse?: boolean
-    ): Promise<Response | {{getReturnTypeFromOperation this}}> {
+      rawResponse?: boolean,
+      rawURL?: boolean
+    ): Promise<Response | {{getReturnTypeFromOperation this}} | TemplateURL> {
       const optionParams = options?.parameters || ({} as Partial<NonNullable<NonNullable<typeof options>["parameters"]>>);
       const configParams = this.clientConfig.parameters;
 
@@ -174,6 +178,10 @@
           origin: this.clientConfig.proxy
         }
       );
+
+      if (rawURL) {
+        return url
+      }
 
       const headers: Record<string, string> = {
         {{#if (isRequestWithPayload request)}}

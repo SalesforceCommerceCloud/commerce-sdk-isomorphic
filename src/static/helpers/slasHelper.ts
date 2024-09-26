@@ -130,7 +130,6 @@ export async function authorize(
   slasClientCopy.clientConfig.fetchOptions = {
     ...slasClient.clientConfig.fetchOptions,
     redirect: isBrowser ? 'follow' : 'manual',
-    mode: 'no-cors',
   };
 
   const options = {
@@ -150,7 +149,6 @@ export async function authorize(
   const redirectUrlString = response.headers?.get('location') || response.url;
   const redirectUrl = new URL(redirectUrlString);
   const searchParams = Object.fromEntries(redirectUrl.searchParams.entries());
-  const {headers} = response;
 
   // url is a read only property we unfortunately cannot mock out using nock
   // meaning redirectUrl will not have a falsy value for unit tests
@@ -161,8 +159,57 @@ export async function authorize(
 
   return {
     url: redirectUrlString,
-    ...getCodeAndUsidFromUrl(redirectUrlString)
+    ...getCodeAndUsidFromUrl(redirectUrlString),
   };
+}
+
+/**
+ * Wrapper for the authorization endpoint. For federated login (3rd party IDP non-guest), the caller should redirect the user to the url in the url field of the returned object. The url will be the login page for the 3rd party IDP and the user will be sent to the redirectURI on success. Guest sessions return the code and usid directly with no need to redirect.
+ * @param slasClient a configured instance of the ShopperLogin SDK client
+ * @param codeVerifier - random string created by client app to use as a secret in the request
+ * @param parameters - Request parameters used by the `authorizeCustomer` endpoint.
+ * @param parameters.redirectURI - the location the client will be returned to after successful login with 3rd party IDP. Must be registered in SLAS.
+ * @param parameters.hint? - optional string to hint at a particular IDP. Guest sessions are created by setting this to 'guest'
+ * @param parameters.usid? - optional saved SLAS user id to link the new session to a previous session
+ * @returns login url, user id and authorization code if available
+ */
+export async function authorizeIDP(
+  slasClient: ShopperLogin<{
+    shortCode: string;
+    organizationId: string;
+    clientId: string;
+    siteId: string;
+  }>,
+  credentials: {
+    clientSecret?: string;
+  },
+  parameters: {
+    redirectURI: string;
+    hint: string;
+    usid?: string;
+  }
+): Promise<string> {
+  const codeVerifier = createCodeVerifier();
+  const codeChallenge = await generateCodeChallenge(codeVerifier);
+
+  const privateClient = !!credentials.clientSecret;
+
+  const options = {
+    parameters: {
+      client_id: slasClient.clientConfig.parameters.clientId,
+      channel_id: slasClient.clientConfig.parameters.siteId,
+      ...(!privateClient && {code_challenge: codeChallenge}),
+      hint: parameters.hint,
+      organizationId: slasClient.clientConfig.parameters.organizationId,
+      redirect_uri: parameters.redirectURI,
+      response_type: 'code',
+      ...(parameters.usid && {usid: parameters.usid}),
+    },
+  };
+
+  const url = await slasClient.authorizeCustomer(options, true, true);
+
+  return url.toString();
 }
 
 /**
