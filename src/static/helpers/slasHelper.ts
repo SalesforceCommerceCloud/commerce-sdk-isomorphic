@@ -253,6 +253,7 @@ export async function loginIDPUser(
     grant_type: privateClient
       ? 'authorization_code'
       : 'authorization_code_pkce',
+    organizationId: slasClient.clientConfig.parameters.organizationId,
     redirect_uri: parameters.redirectURI,
     ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),
     ...(parameters.usid && {usid: parameters.usid}),
