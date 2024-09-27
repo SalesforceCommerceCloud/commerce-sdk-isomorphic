@@ -192,6 +192,9 @@ export async function authorizeIDP(
   const codeVerifier = createCodeVerifier();
   const codeChallenge = await generateCodeChallenge(codeVerifier);
 
+  // Create a copy to override specific fetchOptions
+  const slasClientCopy = new ShopperLogin(slasClient.clientConfig);
+
   const privateClient = !!credentials.clientSecret;
 
   const options = {
@@ -207,7 +210,7 @@ export async function authorizeIDP(
     },
   };
 
-  const url = await slasClient.authorizeCustomer(options, true, true);
+  const url = await slasClientCopy.authorizeCustomer(options, true, true);
 
   return {url: url.toString(), codeVerifier};
 }
@@ -249,7 +252,8 @@ export async function loginIDPUser(
     client_id: slasClient.clientConfig.parameters.clientId,
     channel_id: slasClient.clientConfig.parameters.siteId,
     code: parameters.code,
-    ...(credentials.codeVerifier && {code_verifier: credentials.codeVerifier}),
+    ...(!privateClient &&
+      credentials.codeVerifier && {code_verifier: credentials.codeVerifier}),
     grant_type: privateClient
       ? 'authorization_code'
       : 'authorization_code_pkce',
