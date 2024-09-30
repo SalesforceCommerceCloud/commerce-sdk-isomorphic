@@ -188,22 +188,14 @@ export async function authorizeIDP(
     clientId: string;
     siteId: string;
   }>,
-  credentials: {
-    clientSecret?: string;
-  },
   parameters: {
     redirectURI: string;
     hint: string;
     usid?: string;
-  }
+  },
+  privateClient = false
 ): Promise<{url: string; codeVerifier: string}> {
   const codeVerifier = createCodeVerifier();
-
-  // Create a copy to override specific fetchOptions
-  const slasClientCopy = new ShopperLogin(slasClient.clientConfig);
-
-  const privateClient = !!credentials.clientSecret;
-
   interface ClientOptions {
     codeChallenge?: string;
   }
@@ -211,6 +203,9 @@ export async function authorizeIDP(
   if (!privateClient) {
     clientOptions.codeChallenge = await generateCodeChallenge(codeVerifier);
   }
+
+  // Create a copy to override specific fetchOptions
+  const slasClientCopy = new ShopperLogin(slasClient.clientConfig);
 
   const options = {
     parameters: {
@@ -269,12 +264,12 @@ export async function loginIDPUser(
     client_id: slasClient.clientConfig.parameters.clientId,
     channel_id: slasClient.clientConfig.parameters.siteId,
     code: parameters.code,
+    organizationId: slasClient.clientConfig.parameters.organizationId,
     ...(!privateClient &&
       credentials.codeVerifier && {code_verifier: credentials.codeVerifier}),
     grant_type: privateClient
       ? 'authorization_code'
       : 'authorization_code_pkce',
-    organizationId: slasClient.clientConfig.parameters.organizationId,
     redirect_uri: parameters.redirectURI,
     ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),
     ...(parameters.usid && {usid: parameters.usid}),
