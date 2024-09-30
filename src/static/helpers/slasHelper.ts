@@ -117,7 +117,13 @@ export async function authorize(
   },
   privateClient = false
 ): Promise<{code: string; url: string; usid: string}> {
-  const codeChallenge = await generateCodeChallenge(codeVerifier);
+  interface ClientOptions {
+    codeChallenge?: string;
+  }
+  const clientOptions: ClientOptions = {};
+  if (!privateClient) {
+    clientOptions.codeChallenge = await generateCodeChallenge(codeVerifier);
+  }
 
   // Create a copy to override specific fetchOptions
   const slasClientCopy = new ShopperLogin(slasClient.clientConfig);
@@ -136,7 +142,9 @@ export async function authorize(
     parameters: {
       client_id: slasClient.clientConfig.parameters.clientId,
       channel_id: slasClient.clientConfig.parameters.siteId,
-      ...(!privateClient && {code_challenge: codeChallenge}),
+      ...(clientOptions.codeChallenge && {
+        code_challenge: clientOptions.codeChallenge,
+      }),
       ...(parameters.hint && {hint: parameters.hint}),
       organizationId: slasClient.clientConfig.parameters.organizationId,
       redirect_uri: parameters.redirectURI,
@@ -190,18 +198,27 @@ export async function authorizeIDP(
   }
 ): Promise<{url: string; codeVerifier: string}> {
   const codeVerifier = createCodeVerifier();
-  const codeChallenge = await generateCodeChallenge(codeVerifier);
 
   // Create a copy to override specific fetchOptions
   const slasClientCopy = new ShopperLogin(slasClient.clientConfig);
 
   const privateClient = !!credentials.clientSecret;
 
+  interface ClientOptions {
+    codeChallenge?: string;
+  }
+  const clientOptions: ClientOptions = {};
+  if (!privateClient) {
+    clientOptions.codeChallenge = await generateCodeChallenge(codeVerifier);
+  }
+
   const options = {
     parameters: {
       client_id: slasClient.clientConfig.parameters.clientId,
       channel_id: slasClient.clientConfig.parameters.siteId,
-      ...(!privateClient && {code_challenge: codeChallenge}),
+      ...(clientOptions.codeChallenge && {
+        code_challenge: clientOptions.codeChallenge,
+      }),
       hint: parameters.hint,
       organizationId: slasClient.clientConfig.parameters.organizationId,
       redirect_uri: parameters.redirectURI,
