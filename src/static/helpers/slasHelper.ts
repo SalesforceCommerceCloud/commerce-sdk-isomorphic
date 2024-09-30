@@ -130,7 +130,6 @@ export async function authorize(
 
   // set manual redirect on server since node allows access to the location
   // header and it skips the extra call. In the browser, only the default
-  // set manual redirect for external idp login so shoppers can grab the authorization url
   // follow setting allows us to get the url.
   /* istanbul ignore next */
   slasClientCopy.clientConfig.fetchOptions = {
