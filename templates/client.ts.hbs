@@ -93,6 +93,14 @@ export class {{name.upperCamelCase}}<ConfigParameters extends {{{name.upperCamel
 
   static readonly defaultBaseUri = "{{getBaseUriFromDocument model}}";
 
+  static readonly apiPaths = {
+    {{#each model.encodes.endPoints}}
+    {{#each operations}}
+    {{{name}}}: "{{{../path}}}",
+    {{/each}}
+    {{/each}}
+  };
+
   constructor(config: ClientConfigInit<ConfigParameters>) {
     const cfg = {...config}
     if (!cfg.baseUri) cfg.baseUri = new.target.defaultBaseUri;

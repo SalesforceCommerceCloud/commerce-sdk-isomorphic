@@ -11,10 +11,13 @@ import {isBrowser} from './environment';
 
 import {
   ShopperLogin,
+  ShopperLoginPathParameters,
+  ShopperLoginQueryParameters,
   TokenRequest,
   TokenResponse,
 } from '../../lib/shopperLogin';
 import ResponseError from '../responseError';
+import TemplateURL from '../templateUrl';
 
 export const stringToBase64 = isBrowser
   ? btoa
@@ -203,25 +206,30 @@ export async function authorizeIDP(
     clientOptions.codeChallenge = await generateCodeChallenge(codeVerifier);
   }
 
-  // Create a copy to override specific fetchOptions
-  const slasClientCopy = new ShopperLogin(slasClient.clientConfig);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+  const apiPath = ShopperLogin.apiPaths.authorizeCustomer;
 
-  const options = {
-    parameters: {
-      client_id: slasClient.clientConfig.parameters.clientId,
-      channel_id: slasClient.clientConfig.parameters.siteId,
-      ...(clientOptions.codeChallenge && {
-        code_challenge: clientOptions.codeChallenge,
-      }),
-      hint: parameters.hint,
-      organizationId: slasClient.clientConfig.parameters.organizationId,
-      redirect_uri: parameters.redirectURI,
-      response_type: 'code',
-      ...(parameters.usid && {usid: parameters.usid}),
-    },
+  const pathParams: ShopperLoginPathParameters = {
+    organizationId: slasClient.clientConfig.parameters.organizationId,
   };
 
-  const url = await slasClientCopy.authorizeCustomer(options, true, true);
+  const queryParams: ShopperLoginQueryParameters = {
+    client_id: slasClient.clientConfig.parameters.clientId,
+    channel_id: slasClient.clientConfig.parameters.siteId,
+    ...(clientOptions.codeChallenge && {
+      code_challenge: clientOptions.codeChallenge,
+    }),
+    hint: parameters.hint,
+    redirect_uri: parameters.redirectURI,
+    response_type: 'code',
+    ...(parameters.usid && {usid: parameters.usid}),
+  };
+
+  const url = new TemplateURL(apiPath, slasClient.clientConfig.baseUri, {
+    pathParams,
+    queryParams,
+    origin: slasClient.clientConfig.proxy,
+  });
 
   return {url: url.toString(), codeVerifier};
 }
