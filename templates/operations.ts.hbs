@@ -121,7 +121,7 @@
         {{/if}}
       }>,
       rawResponse?: boolean
-    ): Promise<Response | {{getReturnTypeFromOperation this}}L> {
+    ): Promise<Response | {{getReturnTypeFromOperation this}}> {
       const optionParams = options?.parameters || ({} as Partial<NonNullable<NonNullable<typeof options>["parameters"]>>);
       const configParams = this.clientConfig.parameters;
 
