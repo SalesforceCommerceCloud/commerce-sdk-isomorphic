@@ -79,7 +79,7 @@
         body: {{{getPayloadTypeFromRequest request}}}
         {{/if}}
       }>,
-      rawResponse?: T,
+      rawResponse?: T
     ): Promise<T extends true ? Response : {{getReturnTypeFromOperation this}}>;
 
     /**
@@ -120,8 +120,8 @@
         body: {{{getPayloadTypeFromRequest request}}}
         {{/if}}
       }>,
-      rawResponse?: boolean,
-    ): Promise<Response | {{getReturnTypeFromOperation this}} | TemplateURL> {
+      rawResponse?: boolean
+    ): Promise<Response | {{getReturnTypeFromOperation this}}L> {
       const optionParams = options?.parameters || ({} as Partial<NonNullable<NonNullable<typeof options>["parameters"]>>);
       const configParams = this.clientConfig.parameters;
 
