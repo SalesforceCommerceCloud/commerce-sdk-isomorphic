@@ -18,6 +18,7 @@ import {
 } from '../../lib/shopperLogin';
 import ResponseError from '../responseError';
 import TemplateURL from '../templateUrl';
+import {BaseUriParameters} from './types';
 
 export const stringToBase64 = isBrowser
   ? btoa
@@ -189,6 +190,7 @@ export async function authorizeIDP(
     organizationId: string;
     clientId: string;
     siteId: string;
+    version?: string;
   }>,
   parameters: {
     redirectURI: string;
@@ -206,13 +208,13 @@ export async function authorizeIDP(
     clientOptions.codeChallenge = await generateCodeChallenge(codeVerifier);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
+  // eslint-disable-next-line
   const apiPath = ShopperLogin.apiPaths.authorizeCustomer;
-
-  const pathParams: ShopperLoginPathParameters = {
+  const pathParams: ShopperLoginPathParameters & Required<BaseUriParameters> = {
     organizationId: slasClient.clientConfig.parameters.organizationId,
+    shortCode: slasClient.clientConfig.parameters.shortCode,
+    version: slasClient.clientConfig.parameters.version || 'v1',
   };
-
   const queryParams: ShopperLoginQueryParameters = {
     client_id: slasClient.clientConfig.parameters.clientId,
     channel_id: slasClient.clientConfig.parameters.siteId,

@@ -261,22 +261,15 @@ test('throws error on 400 response', async () => {
 describe('Authorize IDP User', () => {
   test('returns authorization url for 3rd party idp login', async () => {
     const mockSlasClient = createMockSlasClient();
-    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
-
-    // slasClient is copied and tries to make an actual API call
-    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
-      .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
-      .query(true)
-      .reply(303, {response_body: 'response_body'}, {location: url});
+    mockSlasClient.clientConfig.baseUri = 'https://{shortCode}.api.commercecloud.salesforce.com/shopper/auth/{version}';
 
     const authResponse = await slasHelper.authorizeIDP(
       mockSlasClient,
       parameters
     );
     const expectedAuthURL =
-      'https://short_code.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/organization_id/oauth2/authorize?redirect_uri=redirect_uri&response_type=code&client_id=client_id&usid=usid&hint=hint&channel_id=site_id&code_challenge=';
-    expect(authResponse.url.replace(/code_challenge=[^&]*/, '')).toBe(
-      expectedAuthURL.replace(/code_challenge=[^&]*/, '')
+      'https://short_code.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/organization_id/oauth2/authorize?client_id=client_id&channel_id=site_id&hint=hint&redirect_uri=redirect_uri&response_type=code&usid=usid';
+    expect(authResponse.url.replace(/[&?]code_challenge=[^&]*/, '')).toBe(      expectedAuthURL
     );
   });
 });
