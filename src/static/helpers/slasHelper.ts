@@ -177,12 +177,12 @@ export async function authorize(
 /**
  * Function to return the URL of the authorization endpoint. The url will redirect to the login page for the 3rd party IDP and the user will be sent to the redirectURI on success. Guest sessions return the code and usid directly with no need to redirect.
  * @param slasClient a configured instance of the ShopperLogin SDK client
- * @param codeVerifier - random string created by client app to use as a secret in the request
  * @param parameters - Request parameters used by the `authorizeCustomer` endpoint.
  * @param parameters.redirectURI - the location the client will be returned to after successful login with 3rd party IDP. Must be registered in SLAS.
- * @param parameters.hint? - optional string to hint at a particular IDP. Guest sessions are created by setting this to 'guest'
+ * @param parameters.hint - string to hint at a particular IDP. Required for 3rd party IDP login.
  * @param parameters.usid? - optional saved SLAS user id to link the new session to a previous session
- * @returns login url, user id and authorization code if available
+ * @param privateClient - boolean indicating whether the client is private or not. Defaults to false.
+ * @returns authorization url and code verifier
  */
 export async function authorizeIDP(
   slasClient: ShopperLogin<{
