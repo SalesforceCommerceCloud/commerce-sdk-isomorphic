@@ -196,6 +196,52 @@ describe('Authorize user', () => {
       slasHelper.authorize(mockSlasClient, codeVerifier, parameters)
     ).rejects.toThrow(ResponseError);
   });
+
+  test('generate code challenge for public client only', async () => {
+    const authorizeCustomerMock = jest.fn();
+    const mockSlasClient = {
+      clientConfig: {
+        parameters: {
+          shortCode: 'short_code',
+          organizationId: 'organization_id',
+          clientId: 'client_id',
+          siteId: 'site_id',
+        },
+      },
+      authorizeCustomer: authorizeCustomerMock,
+    } as unknown as ShopperLogin<{
+      shortCode: string;
+      organizationId: string;
+      clientId: string;
+      siteId: string;
+    }>;
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    let capturedQueryParams;
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
+      .query(true)
+      .reply(uri => {
+        const urlObject = new URL(
+          `https://${shortCode}.api.commercecloud.salesforce.com${uri}`
+        );
+        capturedQueryParams = Object.fromEntries(urlObject.searchParams); // Capture the query params
+        return [303, {response_body: 'response_body'}, {location: url}];
+      });
+
+    await slasHelper.authorize(mockSlasClient, codeVerifier, parameters, true);
+
+    // There should be no code_challenge for private client
+    const expectedReqOptions = {
+      client_id: 'client_id',
+      channel_id: 'site_id',
+      hint: 'hint',
+      redirect_uri: 'redirect_uri',
+      response_type: 'code',
+      usid: 'usid',
+    };
+    expect(capturedQueryParams).toEqual(expectedReqOptions);
+  });
 });
 
 test('throws error on 400 response', async () => {
@@ -210,6 +256,93 @@ test('throws error on 400 response', async () => {
   await expect(
     slasHelper.authorize(mockSlasClient, codeVerifier, parameters)
   ).rejects.toThrow(ResponseError);
+});
+
+describe('Authorize IDP User', () => {
+  test('returns authorization url for 3rd party idp login', async () => {
+    const mockSlasClient = createMockSlasClient();
+    mockSlasClient.clientConfig.baseUri =
+      'https://{shortCode}.api.commercecloud.salesforce.com/shopper/auth/{version}';
+
+    const authResponse = await slasHelper.authorizeIDP(
+      mockSlasClient,
+      parameters
+    );
+    const expectedAuthURL =
+      'https://short_code.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/organization_id/oauth2/authorize?client_id=client_id&channel_id=site_id&hint=hint&redirect_uri=redirect_uri&response_type=code&usid=usid';
+    expect(authResponse.url.replace(/[&?]code_challenge=[^&]*/, '')).toBe(
+      expectedAuthURL
+    );
+  });
+});
+
+describe('IDP Login flow', () => {
+  const loginParams = {
+    ...parameters,
+    usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
+    code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
+  };
+
+  const mockSlasClient = createMockSlasClient();
+  const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+
+  // Mock authorizeCustomer
+  nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+    .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
+    .query(true)
+    .reply(303, {response_body: 'response_body'}, {location: url});
+
+  test('retrieves usid and code and generates an access token for private client', async () => {
+    const accessToken = await slasHelper.loginIDPUser(
+      mockSlasClient,
+      {clientSecret: credentialsPrivate.clientSecret},
+      loginParams
+    );
+
+    const expectedReqOptions = {
+      headers: {
+        Authorization: `Basic ${stringToBase64(
+          `client_id:${credentialsPrivate.clientSecret}`
+        )}`,
+      },
+      body: {
+        grant_type: 'authorization_code',
+        redirect_uri: 'redirect_uri',
+        client_id: 'client_id',
+        channel_id: 'site_id',
+        organizationId: 'organization_id',
+        usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
+        code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
+        dnt: 'false',
+      },
+    };
+    expect(getAccessTokenMock).toBeCalledWith(expectedReqOptions);
+    expect(accessToken).toBe(expectedTokenResponse);
+  });
+
+  test('retrieves usid and code and generates an access token for public client', async () => {
+    const accessToken = await slasHelper.loginIDPUser(
+      mockSlasClient,
+      {codeVerifier: 'code_verifier'},
+      loginParams
+    );
+
+    const expectedReqOptions = {
+      body: {
+        grant_type: 'authorization_code_pkce',
+        redirect_uri: 'redirect_uri',
+        client_id: 'client_id',
+        channel_id: 'site_id',
+        organizationId: 'organization_id',
+        usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
+        code_verifier: expect.stringMatching(/./) as string,
+        code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
+        dnt: 'false',
+      },
+    };
+    expect(getAccessTokenMock).toBeCalledWith(expectedReqOptions);
+    expect(accessToken).toBe(expectedTokenResponse);
+  });
 });
 
 describe('Guest user flow', () => {

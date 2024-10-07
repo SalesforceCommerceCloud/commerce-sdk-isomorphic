@@ -11,10 +11,14 @@ import {isBrowser} from './environment';
 
 import {
   ShopperLogin,
+  ShopperLoginPathParameters,
+  ShopperLoginQueryParameters,
   TokenRequest,
   TokenResponse,
 } from '../../lib/shopperLogin';
 import ResponseError from '../responseError';
+import TemplateURL from '../templateUrl';
+import {BaseUriParameters} from './types';
 
 export const stringToBase64 = isBrowser
   ? btoa
@@ -114,9 +118,16 @@ export async function authorize(
     redirectURI: string;
     hint?: string;
     usid?: string;
-  }
+  },
+  privateClient = false
 ): Promise<{code: string; url: string; usid: string}> {
-  const codeChallenge = await generateCodeChallenge(codeVerifier);
+  interface ClientOptions {
+    codeChallenge?: string;
+  }
+  const clientOptions: ClientOptions = {};
+  if (!privateClient) {
+    clientOptions.codeChallenge = await generateCodeChallenge(codeVerifier);
+  }
 
   // Create a copy to override specific fetchOptions
   const slasClientCopy = new ShopperLogin(slasClient.clientConfig);
@@ -134,7 +145,9 @@ export async function authorize(
     parameters: {
       client_id: slasClient.clientConfig.parameters.clientId,
       channel_id: slasClient.clientConfig.parameters.siteId,
-      code_challenge: codeChallenge,
+      ...(clientOptions.codeChallenge && {
+        code_challenge: clientOptions.codeChallenge,
+      }),
       ...(parameters.hint && {hint: parameters.hint}),
       organizationId: slasClient.clientConfig.parameters.organizationId,
       redirect_uri: parameters.redirectURI,
@@ -155,7 +168,137 @@ export async function authorize(
     throw new ResponseError(response);
   }
 
-  return {url: redirectUrlString, ...getCodeAndUsidFromUrl(redirectUrlString)};
+  return {
+    url: redirectUrlString,
+    ...getCodeAndUsidFromUrl(redirectUrlString),
+  };
+}
+
+/**
+ * Function to return the URL of the authorization endpoint. The url will redirect to the login page for the 3rd party IDP and the user will be sent to the redirectURI on success. Guest sessions return the code and usid directly with no need to redirect.
+ * @param slasClient a configured instance of the ShopperLogin SDK client
+ * @param parameters - Request parameters used by the `authorizeCustomer` endpoint.
+ * @param parameters.redirectURI - the location the client will be returned to after successful login with 3rd party IDP. Must be registered in SLAS.
+ * @param parameters.hint - string to hint at a particular IDP. Required for 3rd party IDP login.
+ * @param parameters.usid? - optional saved SLAS user id to link the new session to a previous session
+ * @param privateClient - boolean indicating whether the client is private or not. Defaults to false.
+ * @returns authorization url and code verifier
+ */
+export async function authorizeIDP(
+  slasClient: ShopperLogin<{
+    shortCode: string;
+    organizationId: string;
+    clientId: string;
+    siteId: string;
+    version?: string;
+  }>,
+  parameters: {
+    redirectURI: string;
+    hint: string;
+    usid?: string;
+  },
+  privateClient = false
+): Promise<{url: string; codeVerifier: string}> {
+  const codeVerifier = createCodeVerifier();
+  interface ClientOptions {
+    codeChallenge?: string;
+  }
+  const clientOptions: ClientOptions = {};
+  if (!privateClient) {
+    clientOptions.codeChallenge = await generateCodeChallenge(codeVerifier);
+  }
+
+  // eslint-disable-next-line
+  const apiPath = ShopperLogin.apiPaths.authorizeCustomer;
+  const pathParams: ShopperLoginPathParameters & Required<BaseUriParameters> = {
+    organizationId: slasClient.clientConfig.parameters.organizationId,
+    shortCode: slasClient.clientConfig.parameters.shortCode,
+    version: slasClient.clientConfig.parameters.version || 'v1',
+  };
+  const queryParams: ShopperLoginQueryParameters = {
+    client_id: slasClient.clientConfig.parameters.clientId,
+    channel_id: slasClient.clientConfig.parameters.siteId,
+    ...(clientOptions.codeChallenge && {
+      code_challenge: clientOptions.codeChallenge,
+    }),
+    hint: parameters.hint,
+    redirect_uri: parameters.redirectURI,
+    response_type: 'code',
+    ...(parameters.usid && {usid: parameters.usid}),
+  };
+
+  const url = new TemplateURL(apiPath, slasClient.clientConfig.baseUri, {
+    pathParams,
+    queryParams,
+    origin: slasClient.clientConfig.proxy,
+  });
+
+  return {url: url.toString(), codeVerifier};
+}
+
+/**
+ * Function to execute the ShopperLogin External IDP Login with proof key for code exchange flow as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary).
+ * **Note**: this func can run on client side. Only use private slas when the slas client secret is secured.
+ * @param slasClient a configured instance of the ShopperLogin SDK client.
+ * @param credentials - the id and password and clientSecret (if applicable) to login with.
+ * @param credentials.clientSecret? - secret associated with client ID
+ * @param credentials.codeVerifier? - random string created by client app to use as a secret in the request
+ * @param parameters - parameters to pass in the API calls.
+ * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
+ * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
+ * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
+ * @returns TokenResponse
+ */
+export async function loginIDPUser(
+  slasClient: ShopperLogin<{
+    shortCode: string;
+    organizationId: string;
+    clientId: string;
+    siteId: string;
+  }>,
+  credentials: {
+    clientSecret?: string;
+    codeVerifier?: string;
+  },
+  parameters: {
+    redirectURI: string;
+    code: string;
+    usid?: string;
+    dnt?: boolean;
+  }
+): Promise<TokenResponse> {
+  const privateClient = !!credentials.clientSecret;
+
+  const tokenBody: TokenRequest = {
+    client_id: slasClient.clientConfig.parameters.clientId,
+    channel_id: slasClient.clientConfig.parameters.siteId,
+    code: parameters.code,
+    organizationId: slasClient.clientConfig.parameters.organizationId,
+    ...(!privateClient &&
+      credentials.codeVerifier && {code_verifier: credentials.codeVerifier}),
+    grant_type: privateClient
+      ? 'authorization_code'
+      : 'authorization_code_pkce',
+    redirect_uri: parameters.redirectURI,
+    ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),
+    ...(parameters.usid && {usid: parameters.usid}),
+  };
+  // Using slas private client
+  if (credentials.clientSecret) {
+    const authHeaderIdSecret = `Basic ${stringToBase64(
+      `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
+    )}`;
+
+    const optionsToken = {
+      headers: {
+        Authorization: authHeaderIdSecret,
+      },
+      body: tokenBody,
+    };
+    return slasClient.getAccessToken(optionsToken);
+  }
+  // default is to use slas public client
+  return slasClient.getAccessToken({body: tokenBody});
 }
 
 /**
@@ -359,8 +502,7 @@ export async function loginRegisteredUserB2C(
   return slasClient.getAccessToken({body: tokenBody});
 }
 
-/**
- * Function to send passwordless login token
+/* Function to send passwordless login token
  * **Note** At the moment, passwordless is only supported on private client
  * @param slasClient a configured instance of the ShopperLogin SDK client.
  * @param credentials - the id and password and clientSecret (if applicable) to login with.
