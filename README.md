@@ -100,14 +100,14 @@ const shopperSearch = new ShopperSearch({
 
 // in an async function
 try {
-    const searchResult = await shopperSearch.productSearch({
-      parameters: { q: "shirt" },
-    });
-  } catch (e) {
-    const error = await e.response.json();
-    console.log(error);
-    // error is the JSON object - {error: ",,,"}
-  }
+  const searchResult = await shopperSearch.productSearch({
+    parameters: { q: "shirt" },
+  });
+} catch (e) {
+  const error = await e.response.json();
+  console.log(error);
+  // error is the JSON object - {error: ",,,"}
+}
 ```
 
 #### Additional Config Settings
