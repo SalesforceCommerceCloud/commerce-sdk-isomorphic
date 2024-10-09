@@ -84,10 +84,35 @@ const config = {
 
 For more info, refer to the [documentation site](https://salesforcecommercecloud.github.io/commerce-sdk-isomorphic/).
 
+#### `throwOnBasResponse`
+
+When `true`, the SDK throws an `Error` on responses whose status is not 2xx or 304. By default, the value of this flag is `false` for backwards compatibility. Below is an example for accessing the error object via `e.response.json()`.
+
+```js
+const config = {
+  throwOnBadResponse: true
+  // rest of the config object...
+};
+
+const shopperSearch = new ShopperSearch({
+  ...config
+});
+
+// in an async function
+try {
+    const searchResult = await shopperSearch.productSearch({
+      parameters: { q: "shirt" },
+    });
+  } catch (e) {
+    const error = await e.response.json();
+    console.log(error);
+    // error is the JSON object - {error: ",,,"}
+  }
+```
+
 #### Additional Config Settings
 
 * `headers`: Headers to include with API requests.
-* `throwOnBadResponse`: When `true`, the SDK throws an `Error` on responses whose status is not 2xx or 304.
 
 ### Custom Query Parameters
 
