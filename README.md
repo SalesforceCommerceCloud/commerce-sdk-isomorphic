@@ -84,7 +84,7 @@ const config = {
 
 For more info, refer to the [documentation site](https://salesforcecommercecloud.github.io/commerce-sdk-isomorphic/).
 
-#### `throwOnBasResponse`
+#### `throwOnBadResponse`
 
 When `true`, the SDK throws an `Error` on responses whose status is not 2xx or 304. By default, the value of this flag is `false` for backwards compatibility. Below is an example for accessing the error object via `e.response.json()`.
 
