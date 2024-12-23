@@ -20,12 +20,42 @@ import pkg from './package.json';
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
+const inputs = [
+    "src/lib/clientConfig.ts",
+    "src/lib/config.ts",
+    "src/lib/helpers/customApi.ts",
+    "src/lib/helpers/environment.ts",
+    "src/lib/helpers/fetchHelper.ts",
+    "src/lib/helpers/index.ts",
+    "src/lib/helpers/slasHelper.ts",
+    "src/lib/helpers/types.ts",
+    "src/lib/index.ts",
+    "src/lib/responseError.ts",
+    "src/lib/shopperBaskets.ts",
+    "src/lib/shopperContexts.ts",
+    "src/lib/shopperCustomers.ts",
+    "src/lib/shopperDiscoverySearch.ts",
+    "src/lib/shopperExperience.ts",
+    "src/lib/shopperGiftCertificates.ts",
+    "src/lib/shopperLogin.ts",
+    "src/lib/shopperOrders.ts",
+    "src/lib/shopperProducts.ts",
+    "src/lib/shopperPromotions.ts",
+    "src/lib/shopperSearch.ts",
+    "src/lib/shopperSeo.ts",
+    "src/lib/shopperStores.ts",
+    "src/lib/templateUrl.ts",
+    "src/lib/version.ts",
+]
+
 const outputs = [
+//   {
+//     dir: 'temp/umd',
+//     file: process.env.REACT_APP_PKG_MAIN || pkg.main,
+//     format: 'umd',
+//   },
   {
-    file: process.env.REACT_APP_PKG_MAIN || pkg.main,
-    format: 'umd',
-  },
-  {
+    dir: 'lib',
     file: process.env.REACT_APP_PKG_MODULE || pkg.module,
     format: 'es',
   },
@@ -39,10 +69,12 @@ const postcssPlugins = [
   autoprefixer(),
 ];
 
-const config = outputs.map(({file, format}) => ({
-  input: 'src/lib/index.ts',
+const config = outputs.map(({dir, file, format}) => ({
+//   input: 'src/lib/index.ts',
+  input: inputs,
   output: {
-    file,
+    // file,
+    dir,
     format,
     name: 'CommerceSdk',
     globals: {
@@ -87,6 +119,9 @@ const config = outputs.map(({file, format}) => ({
     terser(),
     filesize(),
   ],
+  treeshake: {
+    moduleSideEffects: false, // Ignore side effects
+  },
 }));
 
 export default config;
