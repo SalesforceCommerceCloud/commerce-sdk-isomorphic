@@ -122,7 +122,7 @@
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "autoprefixer": "9.8.8",
-    "bundlesize2": "^0.0.32",
+    "bundlesize2": "0.0.31",
     "depcheck": "^1.4.3",
     "dotenv": "^16.0.3",
     "eslint": "^7.32.0",
