@@ -32,7 +32,7 @@
     "eject": "react-scripts eject",
     "fix": "yarn run lint -- --fix",
     "fix:style": "yarn run lint:style -- --fix",
-    "lint": " ",
+    "lint": "eslint --ext js,jsx,ts,tsx .",
     "lint:style": "stylelint ./src/",
     "prepare": "snyk protect",
     "renderTemplates": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/generate.ts",
