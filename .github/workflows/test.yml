@@ -10,6 +10,7 @@ jobs:
     strategy:
       matrix:
         # TODO: remove older versions of node
+        # TODO: fix linting issues
         node: [12, 14, 16, 18, 20, 22]
       fail-fast: false
     runs-on: ubuntu-latest
