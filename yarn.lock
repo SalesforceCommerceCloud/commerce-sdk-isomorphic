@@ -5438,10 +5438,10 @@ builtins@^1.0.3:
   resolved "https://registry.yarnpkg.com/builtins/-/builtins-1.0.3.tgz#cb94faeb61c8696451db36534e1422f94f0aee88"
   integrity sha512-uYBjakWipfaO/bXI7E8rq6kpwHRZK5cNYrUv2OzZSI/FvmdMyXJ2tG9dKcjEC5YHmHpUAwsargWIZNWdxb/bnQ==
 
-bundlesize2@^0.0.32:
-  version "0.0.32"
-  resolved "https://registry.yarnpkg.com/bundlesize2/-/bundlesize2-0.0.32.tgz#0f399d34a726d3f3822a39f92acc7cc9b7211d79"
-  integrity sha512-1yAxSlRYM//v74FZvcnydV/LrKCaKB3k8Xstz8gN7WgLuvwpLq3NFXz815s3TAPQRmEA1tN+g6ar2Z+AIP63eg==
+bundlesize2@^0.0.31:
+  version "0.0.31"
+  resolved "https://registry.yarnpkg.com/bundlesize2/-/bundlesize2-0.0.31.tgz#cef6830dbbe5360e27fce07593ec0f4e3e5355d9"
+  integrity sha512-MdzJW/u+n+0jH0Uz78g8WENHAW7QNUdLD/c8aLuPB/aCIwt52zMJ4fc2fBU2y1K2iMwE/9+JoR8ojsAF0r0Xjw==
   dependencies:
     bytes "^3.1.0"
     chalk "^4.0.0"
@@ -5451,8 +5451,9 @@ bundlesize2@^0.0.32:
     figures "^3.2.0"
     glob "^7.1.6"
     gzip-size "^5.1.1"
-    node-fetch "^2.6.7"
+    node-fetch "^2.6.0"
     plur "^4.0.0"
+    right-pad "^1.0.1"
 
 bytes@3.0.0:
   version "3.0.0"
@@ -11603,7 +11604,7 @@ node-fetch@2.6.7:
   dependencies:
     whatwg-url "^5.0.0"
 
-node-fetch@^2.6.7:
+node-fetch@^2.6.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.7.0.tgz#d0f0fa6e3e2dc1d27efcd8ad99d550bda94d187d"
   integrity sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==
@@ -14347,6 +14348,11 @@ rgba-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/rgba-regex/-/rgba-regex-1.0.0.tgz#43374e2e2ca0968b0ef1523460b7d730ff22eeb3"
   integrity sha512-zgn5OjNQXLUTdq8m17KdaicF6w89TZs8ZU8y0AYENIU6wG8GG6LLm0yLSiPY8DmaYmHdgRW8rnApjoT0fQRfMg==
+
+right-pad@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/right-pad/-/right-pad-1.0.1.tgz#8ca08c2cbb5b55e74dafa96bf7fd1a27d568c8d0"
+  integrity sha512-bYBjgxmkvTAfgIYy328fmkwhp39v8lwVgWhhrzxPV3yHtcSqyYKe9/XOhvW48UFjATg3VuJbpsp5822ACNvkmw==
 
 rimraf@2, rimraf@^2.5.4, rimraf@^2.6.3:
   version "2.7.1"
