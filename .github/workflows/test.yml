@@ -9,7 +9,8 @@ jobs:
   linux-tests:
     strategy:
       matrix:
-        node: [12, 14, 16, 18]
+        # TODO: remove older versions of node
+        node: [12, 14, 16, 18, 20, 22]
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
