@@ -108,6 +108,11 @@ description: !include shopper-search-description.md
           type: boolean
           required: false
           example: false
+        ilids:
+          description: A comma-separated list of inventory IDs used to filter products by store-level inventory. This parameter is available from version TBD.
+          type: string[]
+          required: false
+          example: false
   /search-suggestions:
     type: CommerceCloudStandards.Organization
     get:
