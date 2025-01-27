@@ -104,6 +104,7 @@ export const generateCodeChallenge = async (
  * @param parameters.redirectURI - the location the client will be returned to after successful login with 3rd party IDP. Must be registered in SLAS.
  * @param parameters.hint? - optional string to hint at a particular IDP. Guest sessions are created by setting this to 'guest'
  * @param parameters.usid? - optional saved SLAS user id to link the new session to a previous session
+ * @param headers? - optional headers to pass in the API calls.
  * @returns login url, user id and authorization code if available
  */
 export async function authorize(
@@ -119,7 +120,8 @@ export async function authorize(
     hint?: string;
     usid?: string;
   },
-  privateClient = false
+  privateClient = false,
+  headers: Record<string, string>
 ): Promise<{code: string; url: string; usid: string}> {
   interface ClientOptions {
     codeChallenge?: string;
@@ -132,13 +134,23 @@ export async function authorize(
   // Create a copy to override specific fetchOptions
   const slasClientCopy = new ShopperLogin(slasClient.clientConfig);
 
+  const hdrs = {
+    ...headers,
+    // Add CORS headers for the Salesforce request
+    Origin: new URL(parameters.redirectURI).origin,
+  };
+
   // set manual redirect on server since node allows access to the location
   // header and it skips the extra call. In the browser, only the default
   // follow setting allows us to get the url.
   /* istanbul ignore next */
   slasClientCopy.clientConfig.fetchOptions = {
     ...slasClient.clientConfig.fetchOptions,
+    // In browser, we need to follow redirects
     redirect: isBrowser ? 'follow' : 'manual',
+    // Ensure CORS mode is set
+    mode: 'cors',
+    headers: hdrs,
   };
 
   const options = {
@@ -154,6 +166,7 @@ export async function authorize(
       response_type: 'code',
       ...(parameters.usid && {usid: parameters.usid}),
     },
+    headers: hdrs,
   };
 
   const response = await slasClientCopy.authorizeCustomer(options, true);
@@ -376,11 +389,21 @@ export async function loginGuestUser(
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
 
-  const authResponse = await authorize(slasClient, codeVerifier, {
-    redirectURI: parameters.redirectURI,
-    hint: 'guest',
-    ...(parameters.usid && {usid: parameters.usid}),
-  });
+  const authResponse = await authorize(
+    slasClient,
+    codeVerifier,
+    {
+      redirectURI: parameters.redirectURI,
+      hint: 'guest',
+      ...(parameters.usid ? {usid: parameters.usid} : {}),
+    },
+    // TODO: this is hard-coded and should not be
+    false,
+    {
+      // Origin: 'https://scaffold-pwa-254-cors-demo.mobify-storefront.com',
+      'X-Force-Preflight': 'true',
+    }
+  );
 
   const tokenBody: TokenRequest = {
     client_id: slasClient.clientConfig.parameters.clientId,
