@@ -1002,7 +1002,7 @@ types:
               The `code_challenge` is created by SHA256 hashing the `code_verifier` and Base64 encoding the resulting hash.
 
               The `code_verifier` should be a high entropy cryptographically random string with a minimum of 43 characters and a maximum of 128 characters.
-            required: false
+            required: true
             type: string
             minLength: 43
             maxLength: 128
