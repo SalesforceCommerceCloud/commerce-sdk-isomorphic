@@ -18,7 +18,7 @@ export const API_LIST: string[] = [
   'shopper-discovery-search',
   'shopper-experience',
   'shopper-gift-certificates',
-  'shopper-login',
+  'slas-shopper-login-uap',
   'shopper-orders',
   'shopper-products',
   'shopper-promotions',
