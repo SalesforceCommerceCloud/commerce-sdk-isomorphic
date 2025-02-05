@@ -90,7 +90,7 @@
   };
   <span class="hljs-keyword">const</span> shopperProductsClient = <span class="hljs-keyword">new</span> ShopperProducts(clientConfig);</code></pre>
 					<span style="font-size:.7em; display:block; text-align: right">
-						API Version: 0.0.33<br />
+						API Version: 0.0.37<br />
 						Last Updated: <br />
 					</span>
 				</div>
@@ -138,6 +138,12 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperproducts.shopperproducts-1.html#getproducts-1" class="tsd-kind-icon">get<wbr>Products</a></li>
 							</ul>
 						</section>
+						<section class="tsd-index-section ">
+							<h3>Object literals</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-object-literal tsd-parent-kind-class tsd-is-static"><a href="shopperproducts.shopperproducts-1.html#apipaths" class="tsd-kind-icon">api<wbr>Paths</a></li>
+							</ul>
+						</section>
 					</div>
 				</section>
 			</section>
@@ -153,7 +159,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperProducts.ts:552</li>
+									<li>Defined in src/lib/shopperProducts.ts:565</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -175,7 +181,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="clientconfig.clientconfig-1.html" class="tsd-signature-type">ClientConfig</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>baseUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperProducts.ts:550</li>
+							<li>Defined in src/lib/shopperProducts.ts:556</li>
 						</ul>
 					</aside>
 				</section>
@@ -185,7 +191,7 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Base<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"https://{shortCode}.api.commercecloud.salesforce.com/product/shopper-products/{version}"</span><span class="tsd-signature-symbol"> = &quot;https://{shortCode}.api.commercecloud.salesforce.com/product/shopper-products/{version}&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperProducts.ts:552</li>
+							<li>Defined in src/lib/shopperProducts.ts:558</li>
 						</ul>
 					</aside>
 				</section>
@@ -195,7 +201,7 @@
 					<div class="tsd-signature tsd-kind-icon">param<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>getCategories<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"ids"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"levels"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getCategoriesRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"ids"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getCategory<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"levels"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getCategoryRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getProduct<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"select"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"inventoryIds"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"currency"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"expand"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"allImages"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"perPricebook"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getProductRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getProducts<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"select"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"ids"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"inventoryIds"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"currency"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"expand"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"allImages"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"perPricebook"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getProductsRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"ids"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {getProducts: [&#x27;organizationId&#x27;,&#x27;select&#x27;,&#x27;ids&#x27;,&#x27;inventoryIds&#x27;,&#x27;currency&#x27;,&#x27;expand&#x27;,&#x27;locale&#x27;,&#x27;allImages&#x27;,&#x27;perPricebook&#x27;,&#x27;siteId&#x27;,],getProductsRequired: [&#x27;organizationId&#x27;,&#x27;ids&#x27;,&#x27;siteId&#x27;,],getProduct: [&#x27;organizationId&#x27;,&#x27;id&#x27;,&#x27;select&#x27;,&#x27;inventoryIds&#x27;,&#x27;currency&#x27;,&#x27;expand&#x27;,&#x27;locale&#x27;,&#x27;allImages&#x27;,&#x27;perPricebook&#x27;,&#x27;siteId&#x27;,],getProductRequired: [&#x27;organizationId&#x27;,&#x27;id&#x27;,&#x27;siteId&#x27;,],getCategories: [&#x27;organizationId&#x27;,&#x27;ids&#x27;,&#x27;levels&#x27;,&#x27;locale&#x27;,&#x27;siteId&#x27;,],getCategoriesRequired: [&#x27;organizationId&#x27;,&#x27;ids&#x27;,&#x27;siteId&#x27;,],getCategory: [&#x27;organizationId&#x27;,&#x27;id&#x27;,&#x27;levels&#x27;,&#x27;locale&#x27;,&#x27;siteId&#x27;,],getCategoryRequired: [&#x27;organizationId&#x27;,&#x27;id&#x27;,&#x27;siteId&#x27;,],} as const</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperProducts.ts:561</li>
+							<li>Defined in src/lib/shopperProducts.ts:574</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -242,12 +248,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperProducts.ts:1104</li>
+									<li>Defined in src/lib/shopperProducts.ts:1117</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>When you use the URL template, the server returns multiple categories (a result object of category documents). You can use this template as a convenient way of obtaining multiple categories in a single request, instead of issuing separate requests for each category. You can specify up to 50 multiple IDs. You must enclose the list of IDs in parentheses. If a category identifier contains parenthesis or the separator sign, you must URL encode the character. The server only returns online categories.</p>
+									<p>When you use the URL template, the server returns multiple categories (a result object of category documents). You can use this template as a convenient way of obtaining multiple categories in a single request, instead of issuing separate requests for each category. You can specify up to 50 multiple IDs. You must enclose the list of IDs in parentheses. If a category identifier contains parenthesis or the separator sign, you must URL encode the character.</p>
 								</div>
 								<p>If you would like to get a raw Response object use the other getCategories function.</p>
 							</div>
@@ -268,12 +274,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperProducts.ts:1133</li>
+									<li>Defined in src/lib/shopperProducts.ts:1146</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>When you use the URL template, the server returns multiple categories (a result object of category documents). You can use this template as a convenient way of obtaining multiple categories in a single request, instead of issuing separate requests for each category. You can specify up to 50 multiple IDs. You must enclose the list of IDs in parentheses. If a category identifier contains parenthesis or the separator sign, you must URL encode the character. The server only returns online categories.</p>
+									<p>When you use the URL template, the server returns multiple categories (a result object of category documents). You can use this template as a convenient way of obtaining multiple categories in a single request, instead of issuing separate requests for each category. You can specify up to 50 multiple IDs. You must enclose the list of IDs in parentheses. If a category identifier contains parenthesis or the separator sign, you must URL encode the character.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -317,14 +323,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperProducts.ts:1283</li>
+									<li>Defined in src/lib/shopperProducts.ts:1296</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>When you use the URL template below, the server returns a category identified by its ID; by default, the server
 										also returns the first level of subcategories, but you can specify another level by setting the levels
-									parameter. The server only returns online categories.</p>
+									parameter.</p>
 								</div>
 								<p>If you would like to get a raw Response object use the other getCategory function.</p>
 							</div>
@@ -345,14 +351,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperProducts.ts:1314</li>
+									<li>Defined in src/lib/shopperProducts.ts:1327</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>When you use the URL template below, the server returns a category identified by its ID; by default, the server
 										also returns the first level of subcategories, but you can specify another level by setting the levels
-									parameter. The server only returns online categories.</p>
+									parameter.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -396,7 +402,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperProducts.ts:877</li>
+									<li>Defined in src/lib/shopperProducts.ts:890</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -422,7 +428,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperProducts.ts:916</li>
+									<li>Defined in src/lib/shopperProducts.ts:929</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -471,7 +477,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperProducts.ts:645</li>
+									<li>Defined in src/lib/shopperProducts.ts:658</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -497,7 +503,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperProducts.ts:684</li>
+									<li>Defined in src/lib/shopperProducts.ts:697</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -534,6 +540,59 @@
 							<p>A promise of type Response if rawResponse is true, a promise of type ProductResult otherwise.</p>
 						</li>
 					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Object literals</h2>
+				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-class tsd-is-static">
+					<a name="apipaths" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> api<wbr>Paths</h3>
+					<div class="tsd-signature tsd-kind-icon">api<wbr>Paths<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/lib/shopperProducts.ts:560</li>
+						</ul>
+					</aside>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="apipaths.getcategories-2" class="tsd-anchor"></a>
+						<h3>get<wbr>Categories</h3>
+						<div class="tsd-signature tsd-kind-icon">get<wbr>Categories<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/categories&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in src/lib/shopperProducts.ts:563</li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="apipaths.getcategory-2" class="tsd-anchor"></a>
+						<h3>get<wbr>Category</h3>
+						<div class="tsd-signature tsd-kind-icon">get<wbr>Category<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/categories/{id}&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in src/lib/shopperProducts.ts:564</li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="apipaths.getproduct-2" class="tsd-anchor"></a>
+						<h3>get<wbr>Product</h3>
+						<div class="tsd-signature tsd-kind-icon">get<wbr>Product<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/products/{id}&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in src/lib/shopperProducts.ts:562</li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="apipaths.getproducts-2" class="tsd-anchor"></a>
+						<h3>get<wbr>Products</h3>
+						<div class="tsd-signature tsd-kind-icon">get<wbr>Products<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/products&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in src/lib/shopperProducts.ts:561</li>
+							</ul>
+						</aside>
+					</section>
 				</section>
 			</section>
 		</div>
@@ -632,6 +691,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 								<a href="shopperproducts.shopperproducts-1.html#getproducts-1" class="tsd-kind-icon">get<wbr>Products</a>
+							</li>
+							<li class=" tsd-kind-object-literal tsd-parent-kind-class tsd-is-static">
+								<a href="shopperproducts.shopperproducts-1.html#apipaths" class="tsd-kind-icon">api<wbr>Paths</a>
 							</li>
 						</ul>
 					</li>

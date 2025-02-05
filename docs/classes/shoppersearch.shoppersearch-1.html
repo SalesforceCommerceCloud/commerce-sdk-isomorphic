@@ -90,7 +90,7 @@
   };
   <span class="hljs-keyword">const</span> shopperSearchClient = <span class="hljs-keyword">new</span> ShopperSearch(clientConfig);</code></pre>
 					<span style="font-size:.7em; display:block; text-align: right">
-						API Version: 1.0.41<br />
+						API Version: 1.0.42<br />
 						Last Updated: <br />
 					</span>
 				</div>
@@ -136,6 +136,12 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shoppersearch.shoppersearch-1.html#productsearch-1" class="tsd-kind-icon">product<wbr>Search</a></li>
 							</ul>
 						</section>
+						<section class="tsd-index-section ">
+							<h3>Object literals</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-object-literal tsd-parent-kind-class tsd-is-static"><a href="shoppersearch.shoppersearch-1.html#apipaths" class="tsd-kind-icon">api<wbr>Paths</a></li>
+							</ul>
+						</section>
 					</div>
 				</section>
 			</section>
@@ -151,7 +157,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperSearch.ts:540</li>
+									<li>Defined in src/lib/shopperSearch.ts:551</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -173,7 +179,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="clientconfig.clientconfig-1.html" class="tsd-signature-type">ClientConfig</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>baseUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperSearch.ts:538</li>
+							<li>Defined in src/lib/shopperSearch.ts:544</li>
 						</ul>
 					</aside>
 				</section>
@@ -183,7 +189,7 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Base<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"https://{shortCode}.api.commercecloud.salesforce.com/search/shopper-search/{version}/"</span><span class="tsd-signature-symbol"> = &quot;https://{shortCode}.api.commercecloud.salesforce.com/search/shopper-search/{version}/&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperSearch.ts:540</li>
+							<li>Defined in src/lib/shopperSearch.ts:546</li>
 						</ul>
 					</aside>
 				</section>
@@ -193,7 +199,7 @@
 					<div class="tsd-signature tsd-kind-icon">param<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>getSearchSuggestions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"q"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"limit"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"currency"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getSearchSuggestionsRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"q"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>productSearch<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"select"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"q"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"refine"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"sort"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"currency"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"expand"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"allImages"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"perPricebook"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"allVariationProperties"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"offset"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"limit"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>productSearchRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {productSearch: [&#x27;organizationId&#x27;,&#x27;select&#x27;,&#x27;siteId&#x27;,&#x27;q&#x27;,&#x27;refine&#x27;,&#x27;sort&#x27;,&#x27;currency&#x27;,&#x27;locale&#x27;,&#x27;expand&#x27;,&#x27;allImages&#x27;,&#x27;perPricebook&#x27;,&#x27;allVariationProperties&#x27;,&#x27;offset&#x27;,&#x27;limit&#x27;,],productSearchRequired: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getSearchSuggestions: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,&#x27;q&#x27;,&#x27;limit&#x27;,&#x27;currency&#x27;,&#x27;locale&#x27;,],getSearchSuggestionsRequired: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,&#x27;q&#x27;,],} as const</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperSearch.ts:549</li>
+							<li>Defined in src/lib/shopperSearch.ts:560</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -228,7 +234,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperSearch.ts:910</li>
+									<li>Defined in src/lib/shopperSearch.ts:921</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -254,7 +260,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperSearch.ts:941</li>
+									<li>Defined in src/lib/shopperSearch.ts:952</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -303,7 +309,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperSearch.ts:623</li>
+									<li>Defined in src/lib/shopperSearch.ts:634</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -330,7 +336,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperSearch.ts:681</li>
+									<li>Defined in src/lib/shopperSearch.ts:692</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -368,6 +374,39 @@
 							<p>A promise of type Response if rawResponse is true, a promise of type ProductSearchResult otherwise.</p>
 						</li>
 					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Object literals</h2>
+				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-parent-kind-class tsd-is-static">
+					<a name="apipaths" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> api<wbr>Paths</h3>
+					<div class="tsd-signature tsd-kind-icon">api<wbr>Paths<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in src/lib/shopperSearch.ts:548</li>
+						</ul>
+					</aside>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="apipaths.getsearchsuggestions-2" class="tsd-anchor"></a>
+						<h3>get<wbr>Search<wbr>Suggestions</h3>
+						<div class="tsd-signature tsd-kind-icon">get<wbr>Search<wbr>Suggestions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/search-suggestions&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in src/lib/shopperSearch.ts:550</li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="apipaths.productsearch-2" class="tsd-anchor"></a>
+						<h3>product<wbr>Search</h3>
+						<div class="tsd-signature tsd-kind-icon">product<wbr>Search<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/product-search&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in src/lib/shopperSearch.ts:549</li>
+							</ul>
+						</aside>
+					</section>
 				</section>
 			</section>
 		</div>
@@ -460,6 +499,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 								<a href="shoppersearch.shoppersearch-1.html#productsearch-1" class="tsd-kind-icon">product<wbr>Search</a>
+							</li>
+							<li class=" tsd-kind-object-literal tsd-parent-kind-class tsd-is-static">
+								<a href="shoppersearch.shoppersearch-1.html#apipaths" class="tsd-kind-icon">api<wbr>Paths</a>
 							</li>
 						</ul>
 					</li>
