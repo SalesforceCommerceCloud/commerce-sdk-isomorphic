@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v3.2.0
+- Add SLAS passwordless login helpers [#173](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/173)
+- Add SLAS social login helper [#172](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/172)
+- Support Node 22 [#178](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/178)
+
+### Enhancements
+- Add to README docs to explain error handling for the SDK [#174](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/174)
+
 ## v3.1.1
 
 ### Bug fixes
