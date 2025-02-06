@@ -40,7 +40,7 @@
         body: {{{getPayloadTypeFromRequest request}}}
         {{/if}}
       }>
-    ): Promise<{{getReturnTypeFromOperation this}}>;
+    ): Promise<{{getReturnTypeFromOperation this}} | Object>;
 
     /**
     * {{{formatForTsDoc description}}}
@@ -80,7 +80,7 @@
         {{/if}}
       }>,
       rawResponse?: T
-    ): Promise<T extends true ? Response : {{getReturnTypeFromOperation this}}>;
+    ): Promise<T extends true ? Response : {{getReturnTypeFromOperation this}} | Object>;
 
     /**
     * {{{formatForTsDoc description}}}
@@ -121,7 +121,7 @@
         {{/if}}
       }>,
       rawResponse?: boolean
-    ): Promise<Response | {{getReturnTypeFromOperation this}}> {
+    ): Promise<Response | {{getReturnTypeFromOperation this}} | Object> {
       const optionParams = options?.parameters || ({} as Partial<NonNullable<NonNullable<typeof options>["parameters"]>>);
       const configParams = this.clientConfig.parameters;
 
@@ -204,7 +204,7 @@
         return response as Response;
       }
       {{else}}
-      return response as Response | {{getReturnTypeFromOperation this}};
+      return response as Response | {{getReturnTypeFromOperation this}} | Object;
       {{/if}}
     }
   {{/each}}
