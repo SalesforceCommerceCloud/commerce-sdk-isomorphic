@@ -1,6 +1,6 @@
 {
   "name": "commerce-sdk-isomorphic",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "private": false,
   "description": "Salesforce Commerce SDK Isomorphic",
   "bugs": {
@@ -181,7 +181,7 @@
     },
     {
       "path": "commerce-sdk-isomorphic-with-deps.tgz",
-      "maxSize": "550 kB"
+      "maxSize": "560 kB"
     }
   ],
   "proxy": "https://SHORTCODE.api.commercecloud.salesforce.com"

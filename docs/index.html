@@ -144,12 +144,34 @@
   },
 };</code></pre>
 				<p>For more info, refer to the <a href="https://salesforcecommercecloud.github.io/commerce-sdk-isomorphic/">documentation site</a>.</p>
+				<a href="#throwonbadresponse" id="throwonbadresponse" style="color: inherit; text-decoration: none;">
+					<h4><code>throwOnBadResponse</code></h4>
+				</a>
+				<p>When <code>true</code>, the SDK throws an <code>Error</code> on responses whose status is not 2xx or 304. By default, the value of this flag is <code>false</code> for backwards compatibility. Below is an example for accessing the error object via <code>e.response.json()</code>.</p>
+				<pre><code class="language-js"><span class="hljs-keyword">const</span> config = {
+  <span class="hljs-attr">throwOnBadResponse</span>: <span class="hljs-literal">true</span>
+  <span class="hljs-comment">// rest of the config object...</span>
+};
+
+<span class="hljs-keyword">const</span> shopperSearch = <span class="hljs-keyword">new</span> ShopperSearch({
+  ...config
+});
+
+<span class="hljs-comment">// in an async function</span>
+<span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">const</span> searchResult = <span class="hljs-keyword">await</span> shopperSearch.productSearch({
+    <span class="hljs-attr">parameters</span>: { <span class="hljs-attr">q</span>: <span class="hljs-string">&quot;shirt&quot;</span> },
+  });
+} <span class="hljs-keyword">catch</span> (e) {
+  <span class="hljs-keyword">const</span> error = <span class="hljs-keyword">await</span> e.response.json();
+  <span class="hljs-built_in">console</span>.log(error);
+  <span class="hljs-comment">// error is the JSON object - {error: &quot;,,,&quot;}</span>
+}</code></pre>
 				<a href="#additional-config-settings" id="additional-config-settings" style="color: inherit; text-decoration: none;">
 					<h4>Additional Config Settings</h4>
 				</a>
 				<ul>
 					<li><code>headers</code>: Headers to include with API requests.</li>
-					<li><code>throwOnBadResponse</code>: When <code>true</code>, the SDK throws an <code>Error</code> on responses whose status is not 2xx or 304.</li>
 				</ul>
 				<a href="#custom-query-parameters" id="custom-query-parameters" style="color: inherit; text-decoration: none;">
 					<h3>Custom Query Parameters</h3>

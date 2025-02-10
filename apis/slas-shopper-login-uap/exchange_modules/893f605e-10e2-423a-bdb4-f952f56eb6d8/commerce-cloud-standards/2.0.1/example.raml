@@ -27,7 +27,6 @@ uses:
     description: Example get Method
     securedBy:
       - CommerceCloudStandards.AmOAuth2: { scopes: [example]}
-      - CommerceCloudStandards.BearerToken: { scopes: [example]}
         
     is: 
       - CommerceCloudStandards.QueryParamsOffset:
@@ -35,6 +34,7 @@ uses:
       - CommerceCloudStandards.SiteSpecific:
           objectType: SiteId
           objectId: SiteGenesis
+      - CommerceCloudStandards.Selectable
     responses:
       200:
         description: an example response

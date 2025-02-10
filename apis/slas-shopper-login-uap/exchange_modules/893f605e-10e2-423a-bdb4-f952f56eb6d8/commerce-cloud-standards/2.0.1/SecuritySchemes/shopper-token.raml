@@ -1,11 +1,11 @@
 #%RAML 1.0 SecurityScheme
 
 description: |
-  `ShopperToken` authentication follows the authorization code grant flow, as defined by the OAuth 2.0 standard. Depending on the type of OAuth client (public or private), this authorization flow has further requirements. For a detailed description of the authorization flow, see the [SLAS overview](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary).
+  `ShopperToken` authentication follows the authorization code grant flow, as defined by the OAuth 2.1 standard. Depending on the type of OAuth client (public or private), this authorization flow has further requirements. For a detailed description of the authorization flow, see the [SLAS overview](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary).
   A shopper token allows you to access the Shopper API endpoints of both OCAPI and the B2C Commerce API. These endpoints can be used to build headless storefronts and other applications.
   The `ShopperToken` security scheme is a parent of other security schemes, such as `ShopperTokenTsob`. A Shopper API endpoint can require a specific child scheme (`ShopperTokenTsob`, for example) that cannot be accessed with a regular shopper token.
 
-type: x-custom
+type: OAuth 2.0
 displayName: ShopperToken
 
 uses:
@@ -43,4 +43,8 @@ describedBy:
           example:
             type: "https://api.commercecloud.salesforce.com/documentation/error/v1/errors/forbidden"
             title: Forbidden
-            detail: Your token is valid, but you have no permissions to access the resource.
+            detail: Your access token is valid, but you don’t have the required permissions to access the resource.
+settings:
+  authorizationUri: https://{short-code}.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/{organizationId}/oauth2/authorize
+  accessTokenUri: https://{short-code}.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/{organizationId}/oauth2/token
+  authorizationGrants: [authorization_code,client_credentials]

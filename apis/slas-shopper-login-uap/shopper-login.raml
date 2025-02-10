@@ -15,7 +15,7 @@ traits:
 
 uses:
   ApiStandards: exchange_modules/893f605e-10e2-423a-bdb4-f952f56eb6d8/api-standards/1.1.15/api-standards.raml
-  CommerceCloudStandards: exchange_modules/893f605e-10e2-423a-bdb4-f952f56eb6d8/commerce-cloud-standards/1.0.24/commerce-cloud-standards.raml
+  CommerceCloudStandards: exchange_modules/893f605e-10e2-423a-bdb4-f952f56eb6d8/commerce-cloud-standards/2.0.1/commerce-cloud-standards.raml
 types:
   ResponseType:
     type: string
@@ -42,7 +42,7 @@ types:
     enum: [access_token, refresh_token]
   ThirdPartyIdps:
     type: string
-    description: IDPs that work with SLAS. Use `ecom` when using ECOM is the identity provider.
+    description: IDPs that work with SLAS. Use `ecom` when using B2C Commerce is the identity provider.
     enum:
       [
         apple,
@@ -50,6 +50,7 @@ types:
         azure,
         azure_adb2c,
         cognito,
+        default,
         ecom,
         facebook,
         forgerock,
@@ -121,7 +122,12 @@ types:
         maxLength: 40
         example: "z99ec276-cg53-4g94-cf72-76f300c6778zc"
       channel_id:
-        description: The channel (ECOM site) that the user is associated with.
+        description: |-
+          The channel (B2C Commerce site) that the user is associated with.
+
+          **Important: We strongly recommended using the channel_id query parameter because it will be required in the future.
+
+          **NOTE - As of July 31, 2024**, SLAS will be requiring the `channel_id` query parameter in token requests.
         required: false
         type: string
         maxLength: 100
@@ -130,7 +136,7 @@ types:
         description: |-
           This is an optional parameter to set `Do Not Track` for the session. 
           
-          SLAS is making this available, but will not be used by ECOM until after the 24.4 release.
+          SLAS is making this available, but will not be used by B2C Commerce until after the 24.4 release.
           
           Values are:
             * `false`
@@ -185,7 +191,7 @@ types:
         example: "1000005"
       enc_user_id:
         type: string
-        description: MD5 Hashed ECOM user ID in uppercase.
+        description: MD5 Hashed B2C Commerce user ID in uppercase.
         example: "45D39A8499A95288F82855427EBA99B5"
       idp_access_token:
         type: string
@@ -230,7 +236,7 @@ types:
         maxLength: 128
         example: "samantha.sampleson@example.com"
       idp_origin:
-        description: The external IDP that the user is associated with. Use `ecom` as the `idp_origin` value when using ECOM as the identity provider.
+        description: The external IDP that the user is associated with. Use `ecom` as the `idp_origin` value when using B2C Commerce as the identity provider.
         type: ThirdPartyIdps
         maxLength: 16
         example: "google"
@@ -254,13 +260,15 @@ types:
         description: |-
           This is an optional parameter to set `Do Not Track` for the session.
 
-          SLAS is making this available, but will not be used by ECOM until after the 24.4 release.
+          SLAS is making this available, but will not be used by B2C Commerce until after the 24.4 release.
           
           Values are:
             * `false`
             * `true`
           
           If not added the `dnt` value will default to `false`.
+
+          Note: The default value for `dnt` is set to `false` for SLAS token requests except for Trusted Agent token request. For Trusted Agent token requests the default value for `dnt` is `true`.
           
         required: false
         type: string
@@ -286,7 +294,7 @@ types:
         maxLength: 40
         example: "6c388ebd-6843-4863-aef9-781382c9e8cd"
       channel_id:
-        description: The channel (ECOM site) that the user is associated with.
+        description: The channel (B2C Commerce site) that the user is associated with.
         type: string
         required: true
         maxLength: 100
@@ -310,12 +318,18 @@ types:
       login_id:
         description: |-
           The ID is the shopper for trusted agent access.
+
+          For TAOB Guest the `login_id` must be set to `Guest`.
         type: string
         required: true
         maxLength: 128
         example: "jack.shopper@example.com"
       idp_origin:
-        description: The IDP that the user is associated with.
+        description: |-
+          The IDP that the user is associated with. 
+          
+          For TAOB Guest the `idp_origin` parameter should be `slas`. If set to any other IDP origin a 400 Bad Request will be returned.
+        
         type: string
         required: true
         maxLength: 16
@@ -329,22 +343,39 @@ types:
         description: |-
           This is an optional parameter to set `Do Not Track` for the session. 
 
-          SLAS is making this available, but will not be used by ECOM until after the 24.4 release.
+          SLAS is making this available, but will not be used by B2C Commerce until after the 24.4 release.
           
           Values are:
             * `false`
             * `true`
           
-          If not added the `dnt` value will default to `false`.
+            If not added the `dnt` value will default to `true`
+
+            Note: The default value for `dnt` is set to `true` for all TAOB flows. This is opposite from other SLAS token requests.
 
         required: false
         type: string
         example: "true"
+      state:
+        description: |-
+          This is an optional parameter to set state for the trusted agent session. 
+
+          If the `state` parameter is used it will be validated and a 400 Bad Request will be returned if missing or invalid.
+
+          For TAOB Guest you must pass the `state` parameter to transfer the state from the TAOB Guest authorization call to the token call. 
+          The `state` parameter value is returned with the authorization code in the response url from the TAOB guest authorization call, 
+          for example: `.../taob/callback?code=HETXpvg5LKBNIHjDTWkRrf2MLVU&state=taob.gst.7bc7fb7f-e646-44fd-bc73-dfd5c3c9019b`.
+
+          You would use `taob.gst.7bc7fb7f-e646-44fd-bc73-dfd5c3c9019b` for the `state` value in the TAOB request.
+
+        required: false
+        type: string
+        example: "taobgst.3ebdcbb6-ef87-4f41-8173-67728636e513"
   SessionBridgeTokenRequest:
     properties:
       code:
         description: |-
-          Authorization code returned from session bridge authorization received in the front channel that is used to get session bridge access tokens and refresh tokens. Required with a grant type of `session_bridge`.
+          Authorization code returned from session bridge authorization received in the front channel that is used to get session bridge access tokens and refresh tokens. Required with a grant type of `session_bridge`. The SLAS client must have the `sfcc.session_bridge` scope to request a session bridge token.
         type: string
         maxLength: 256
         example: "M0t1K0pyoFKhBpUZnuUYO07xf8iYyMJrAc7h31h_ra8.gglPClJHsofqdTm_yPe5n6m2yCXzFmD8qICwIEjQGVA"
@@ -355,7 +386,7 @@ types:
         maxLength: 40
         example: "6c388ebd-6843-4863-aef9-781382c9e8cd"
       channel_id:
-        description: The channel (ECOM site) that the user is associated with.
+        description: The channel (B2C Commerce site) that the user is associated with.
         type: string
         required: true
         maxLength: 100
@@ -373,11 +404,10 @@ types:
         description: |-
           Cookie passed back from the '/authorize' endpoint call for session bridge. This parameter is optional and not needed if using the `dwsgst` parameter.
 
-          DEPRECATED - As of January 31, 2024, SLAS will no longer support the SESB `dwsid` parameter for `guest` users for session-bridge/token calls. It is recommended to transition over to using a SESB `dwsgst` token. 
+          **DEPRECATED** - As of January 31, 2024, SLAS will no longer support the SESB `dwsid` parameter for `guest` users for `session-bridge/token` calls. It is recommended to transition over to using a SESB `dwsgst` token. 
           
           The `dwsid` will still be needed for `registered` user session-bridge/token calls.
 
-           
 
         type: string
         example: pATvWUO3KSdt-Kmcy-8-RsxKnoO4BMDwoec7ACVlW6tZNnhaOL7gt7mHqL-h7QYn5TyE61z0DeSMCqxngsWeHw==
@@ -394,7 +424,7 @@ types:
         example: session_bridge
       login_id:
         description: |-
-          The ID of the shopper for session bridge access.
+          The ID of the shopper for session bridge access. If requesting a token for a guest user set login_id to `guest`.
         type: string
         required: true
         maxLength: 128
@@ -403,8 +433,17 @@ types:
         type: string
         required: false
         description: |-
-          Signed guest Json Web Token (JWT) that was obtained from ECOM. This parameter is optional and not needed if using the `dwsid` parameter.
+          Signed guest Json Web Token (JWT) that was obtained from B2C Commerce. This parameter is optional and not needed if using the guest `dwsid` parameter.
         example: eyJraWQiOiIxNjgxNTU5OTkxNzkwIiwiYWxnIjoiRVMyNTYifQ.eyJ0ZW5hbnRJZCI6IkJHVk5fUzA1IiwiZHdzaWQiOiJuWHRhckdNU2ZxbnBaSUNJUGFKTHJSWGZ6b2lWYXBBU3BBTFNfeFdUMV9QZjRBWDA0N1lMQ1dSUFByM1BiSEl4d2RaODFiVGZoM3M1Wlgza2NhOG0zZz09IiwiY3VzdG9tZXJJZCI6ImJjQXI5N2NuMm1ZdmhjMGhqTGsxYmFXSzRqIiwiaWF0IjoxNjg1MTI4NjM2LCJleHAiOjE2ODUxMjkyMzksImlzcyI6ImNvbW1lcmNlY2xvdWQvcHJvZHVjdGlvbi9iZ3ZuczA1IiwidmVycyI6IjEiLCJ0eXBlIjoiRyJ9.BGY4kyOXbQSzZxubE3BrSzhf8ByehGUfJa7_J2XRQ93xY4dAOhF_xbXcHmBaEUBUzSny-Cf0pATzEaSsKpTxkg
+      dwsrst:
+        type: string
+        required: false
+        description: |-
+          Signed registered customer Json Web Token (JWT) that was obtained from B2C Commerce. This parameter is optional and not needed if using the registered user `dwsid` parameter. 
+          
+          **NOTE:** The registered customer Json Web Token (JWT) will be available in ECOM versions 25.4 and higher.
+
+        example: eyJraWQiOiIxNjMwOTM5MzAyODE0IiwiYWxnIjoiRVMyNTYifQ.eyJmbmFtZSI6Ikx1a2UiLCJkd3NpZCI6IkdkWWpSQjViZGVpU0xkb3Ixdy15QzRTZ1l3dDJHYl9Ec255OG5nZ2I3c0VDajVMWndnT0ZJWTZsa21sNlVRMXZoazl1SDVJUGxMek5rZTJhNTV2YU9nPT0iLCJ2ZXJzIjoiMiIsImlzcyI6InNsYXMvZGV2L2Jndm5fc3RnIiwidHlwZSI6IlIiLCJsbmFtZSI6IlNreXdhbGtlciIsInJjdXN0b21lcklkIjoiOGgzNHh6dDQxOTVpOHA1MmE2ejAzczIxNDgiLCJwaG9uZSI6bnVsbCwidGVuYW50SWQiOiJiZ3ZuX3N0ZyIsImN1c3RvbWVySWQiOiI0OHB1eXA4dTdmMmM5NHgzMTUxeDA4bGEweiIsImV4cCI6MTczNTE1NDQ4NiwiaWF0IjoxNzMyNTYyNDg2LCJlbWFpbCI6Imx1a2Uuc2t5d2Fsa2VyQG5hYm9vLm9yZyJ9.Q2nF0wuEl1X7aVZ-ycCwxDjjmq5toJred5AEDqKXXjj89BY_0HIQoAEMbx9UDqOmhjdBkxN4idVzYVoXcl0c2A
       usid:
         type: string
         required: false
@@ -414,7 +453,7 @@ types:
         description: |-
           This is an optional parameter to set `Do Not Track` for the session. 
 
-          SLAS is making this available, but will not be used by ECOM until after the 24.4 release.
+          SLAS is making this available, but will not be used by B2C Commerce until after the 24.4 release.
           
           Values are:
             * `false`
@@ -427,7 +466,7 @@ types:
         example: "true"
   PasswordlessLoginRequest:
     type: object
-    description: A request for a passwordless login token. This is only available for resgistered users using ECOM.
+    description: A request for a passwordless login token. This is only available for resgistered users using B2C Commerce.
     properties:
       user_id:
         description: User ID for logging in.
@@ -449,7 +488,7 @@ types:
         type: string
         example: 18cda486-fe32-4e27-888b-6e4f89938e67
       channel_id:
-        description: The channel (ECOM site) that the user is associated with.
+        description: The channel (B2C Commerce site) that the user is associated with.
         type: string
         maxLength: 100
         example: "RefArch"
@@ -463,7 +502,7 @@ types:
         example: "http://localhost:9050/passwordless/login/callback"
   PasswordActionRequest:
     type: object
-    description: A request for a password reset token. This is only available for resgistered users using ECOM.
+    description: A request for a password reset token. This is only available for resgistered users using B2C Commerce.
     properties:
       user_id:
         description: User ID for logging in. This is the id that is used to log into SFCC.
@@ -475,7 +514,7 @@ types:
         type: PasswordActionModes
         example: "callback"
       channel_id:
-        description: The channel (ECOM site) that the user is associated with.
+        description: The channel (B2C Commerce site) that the user is associated with.
         type: string
         example: "RefArch"
       locale:
@@ -484,7 +523,10 @@ types:
         type: string
         example: "en-us"
       client_id:
-        description: The public client ID. Requires setting `grant_type` to `passwordless_login_pkce`
+        description: -|
+          The public client ID. Requires setting `grant_type` to `passwordless_login_pkce`. 
+          
+          When using the `hint` query parameter either a public or private client ID can be used.
         required: false
         type: string
         maxLength: 40
@@ -516,12 +558,21 @@ types:
         required: false
         type: string
         example: "okta"
+      hint:
+        description: Adding a `hint` query parameter with a value of `cross_device` will remove the need to have the code_challenge for password reset request. If the `hint` query parameter is used it must also be used in the password reset request.
+        required: false
+        type: string
+        example: "cross_device"
+  
   PasswordActionVerifyRequest:
     type: object
     description: A request for creating a new password using the password action token.
     properties:
       client_id:
-        description: The public client ID.
+        description:  -|
+          The public client ID. 
+          
+          When using the `hint` query parameter either a public or private client ID can be used.
         type: string
         maxLength: 40
         example: "6b200ebd-7843-4073-aef9-792482c9e1de"
@@ -540,14 +591,21 @@ types:
         example: "Ar0lAwU_jsuA~ZXX8-JnMbZFxrnDot2OtgLEi1kOT_FxD6Bo0EQDbbrvoym9xHvatNGnNzrObLJeK6e4U9m4pveRMbdwNGa4jwiAlKGvijVn0PW0hqb03_w1gQE00wTo"
       new_password:
         description: The new password to set for the shopper associated with the password action token.
+        required: false
         type: string
         example: "new_password"
       channel_id:
-        description: The channel that the request is for. For an ECOM request, this is angalous to the site ID.
+        description: The channel that the request is for. For a B2C Commerce request, this is angalous to the site ID.
         required: true
         type: string
         maxLength: 100
         example: "RefArch"
+      hint:
+        description: Adding a `hint` query parameter with a value of `cross_device` will remove the need to have the code_verifier for password reset request. If the `hint` query parameter is used it must also have been used in the password action request.
+        required: false
+        type: string
+        example: "cross_device"
+
   PasswordLessLoginTokenRequest:
     type: object
     description: A request for an access token using a passwordless token.
@@ -617,8 +675,18 @@ types:
         type: string
         required: false
         example: "Missing access token or refresh token."
-  LoginRequest:
+  JwksSuccessResponse:
     type: object
+    properties:
+      keys:
+        type: array
+  LoginRequest:
+    description: |-
+      Supports multiple custom parameters to invoke hooks in B2C Commerce API. Multiple custom parameters can be added. Use the `c_` prefix to distinguish custom query parameters from standard query parameters, for example: c_captcha=true
+      
+      If there is a validation error, a 400 Bad_Request with the details of the error is thrown.
+    type:
+      CommerceCloudStandards.OpenObject
     properties:
       client_id:
         description: SLAS client ID. Required when the grant type is `authorization_code_pkce`.
@@ -661,7 +729,7 @@ types:
         type: string
         example: "18cda486-fe32-4e27-888b-6e4f89938e67"
       channel_id:
-        description: The channel that the request is for. For an ECOM request, this is angalous to the site ID.
+        description: The channel that the request is for. For a B2C Commerce request, this is angalous to the site ID.
         required: true
         type: string
         maxLength: 100
@@ -680,17 +748,18 @@ types:
         minLength: 43
         maxLength: 128
         example: "krc5G3_5lRUcXDUzFZQ88oJA_-ZmlHWkyGsgOrSLEWg"
+ 
 /organizations/{organizationId}:
   type: CommerceCloudStandards.Organization
   /oauth2:
     /login:
       description: |
         **Deprecation notice**: The `GET` method is deprecated for this endpoint. Please use `POST` instead.
-        Get authorization code after authenticating a user using a B2C Commerce (ECOM) instance.
+        Get authorization code after authenticating a user using a B2C Commerce (B2C Commerce) instance.
 
       post:
         description: |
-          Logs in a shopper with credentials that are managed by a B2C Commerce instance (ECOM). It follows the authorization code grant flow as defined by the OAuth 2.1 standard. It also uses a proof key for code exchange (PKCE).
+          Logs in a shopper with credentials that are managed by a B2C Commerce instance (B2C Commerce). It follows the authorization code grant flow as defined by the OAuth 2.1 standard. It also uses a proof key for code exchange (PKCE).
 
           For PKCE values:
           - The `code_verifier` string is a random string used for the `/token` endpoint request.
@@ -724,21 +793,18 @@ types:
             type: LoginRequest
         responses:
           303:
-            description: Success. The authorization code is added to the `redirect_uri`.
+            description: Success. The authorization code and usid is added to the location header and sent to the callback as query parameters.
             body:
               application/json:
                 type: string
                 example: |
-                  {
-                    "authorizationCode": "eyJ2ZXIiOiIxLjAiLCJraWQiOiJTTEFTIiwidHlwIjoiand0IiwiY2x2IjoiS",
-                    "usid": "156c4e69-e89b-406b-a4b7-576980bb234e"              
-                  }
+                  location: https://<host>:<port>/callback?usid=d11392ae-cbf0-4296-9723-8f9f0e49fd73&state=1728422547223&scope=openid%20offline_access&code=561X8NOKvoRezq2aucazwwkrevUoIP37YRTfsRHX8ow
           400:
             description: Bad Request
             body:
               application/problem+json:
                 type: Oauth2ErrorResponse
-                example: |
+                example: |-
                   {
                     "error": "invalid_request",
                     "error_description": "Bad or missing client_id."
@@ -774,7 +840,7 @@ types:
                   "error_description": "The server has encountered a situation that it doesn't know how to handle."
                   }
     /passwordless/login:
-      description: Log in a customer using Core with their customer profiles loaded in ECOM. Allows the user to authenticate when their identity provider (Core) is down. Client must have the `sfcc.pwdless_login` scope to access this endpoint.
+      description: Log in a customer using Core with their customer profiles loaded in B2C Commerce. Allows the user to authenticate when their identity provider (Core) is down. The SLAS client must have the `sfcc.pwdless_login` scope to access this endpoint.
       post:
         description: Allows the customer to authenticate when their identity provider is down.
         displayName: authorizePasswordlessCustomer
@@ -835,7 +901,7 @@ types:
       description: Log out a shopper.
       get:
         description: |-
-          Log out a shopper. The shopper's access token and refresh token are revoked. If the shopper authenticated with a B2C Commerce (ECOM) instance, the OCAPI JWT is also revoked. This should be called for Registered users that have logged in using SLAS. his should be called for registered users that have logged in using SLAS. This endpoint is not for use with guest users.
+          Log out a shopper. The shopper's access token and refresh token are revoked. If the shopper authenticated with a B2C Commerce (B2C Commerce) instance, the OCAPI JWT is also revoked. This should be called for Registered users that have logged in using SLAS. his should be called for registered users that have logged in using SLAS. This endpoint is not for use with guest users.
 
           Required header: Authorization header bearer token of the Shopper access token to logout.
 
@@ -865,7 +931,7 @@ types:
             required: true
             type: string
           channel_id:
-            description: The `channel_id` parameter must be provided if the shopper authenticated using the `login` endpoint with ECOM.
+            description: The `channel_id` parameter must be provided if the shopper authenticated using the `login` endpoint with B2C Commerce.
             required: false
             type: string
             maxLength: 100
@@ -984,13 +1050,13 @@ types:
 
               To use a public client, set `hint` to `guest` and use a public client ID to get an authorization code. If no `hint` is provided, the preferred IDP of the tenant is used by default.
 
-              For session bridge authorization the `hint` should be set to `sb-user` for a registered customer and to `sb-guest` for a guest.
+              For session bridge authorization the `hint` should be set to `sb-user` for a registered customer and to `sb-guest` for a guest. For session bridge authorization the SLAS Client `sfcc.session_bridge` scope.
             required: false
             type: string
             maxLength: 256
             example: "google"
           channel_id:
-            description: The channel that this request is for. For an ECOM request, this is angalous to the site ID.
+            description: The channel that this request is for. For a B2C Commerce request, this is angalous to the site ID.
             required: false
             type: string
             maxLength: 100
@@ -1016,7 +1082,7 @@ types:
             type: string
             maxLength: 256
             example: "en es-A fr-CA"
-
+ 
         responses:
           303:
             description: Success. The authorization code is added to the `redirect_uri`.
@@ -1076,6 +1142,8 @@ types:
           See the Body section for required parameters, including `grant_type` and others, depending on the value of `grant_type`.
 
           **Important**: We strongly recommended using the `channel_id` query parameter because **it will be required in the future**.
+
+          **NOTE - As of July 31, 2024**, SLAS will be requiring the `channel_id` query parameter in token requests.
         displayName: getAccessToken
         is:
           - SlasRateLimit:
@@ -1143,11 +1211,12 @@ types:
                   "error_description": "The server has encountered a situation that it doesn't know how to handle."
                   }
     /session-bridge/token:
-      description: Evaluate the session bridge authorization code and issue a shopper token (JWT).
+      description: Evaluate the session bridge authorization code and issue a shopper token (JWT). The SLAS client must have the `sfcc.session_bridge` scope to access this endpoint.
+
       post:
         description: |-
-          Get a shopper JWT access token for a registered customer using session bridge.
-
+          Get a shopper JWT access token for a registered customer using session bridge. 
+          
           For public client id requests the grant_type must be set to `session_bridge`.
 
           For  private client_id and secret the grant_type must be set to `client_credentials` along with a basic authorization header.
@@ -1155,6 +1224,8 @@ types:
           **DEPRECATED** - As of January 31, 2024, SLAS will no longer support the SESB `dwsid` parameter for `guest` users for `session-bridge/token` calls. It is recommended to transition over to using a SESB `dwsgst` token. 
           
           The `dwsid` will still be needed for `registered` user `session-bridge/token` calls.
+
+          **NOTE:** The registered customer Json Web Token (JWT) will be available in ECOM versions 25.4 and higher.
 
         displayName: getSessionBridgeAccessToken
         is:
@@ -1219,9 +1290,13 @@ types:
       description: Shopper OAuth 2.1 token endpoint.
       post:
         description: |-
-          Get a shopper JWT access token for a registered customer whose credentials are stored using a third party system.
+          Get a shopper JWT access token for a registered customer whose credentials are stored using a third party. The SLAS client must have the `sfcc.ts_ext_on_behalf_of` scope to access this endpoint.
 
-          For trusted-system requests, a basic authorization header that includes a SLAS client ID and SLAS client secret can be used in place of the bearer token.
+
+          For trusted-system requests, a basic authorization header that includes a SLAS private client ID and SLAS private client secret can be used in place of the bearer token.
+
+
+          For trusted-system requests SLAS public client_ids can not be used.
 
         displayName: getTrustedSystemAccessToken
         is:
@@ -1300,7 +1375,7 @@ types:
                   "error_description": "The server has encountered a situation that it doesn't know how to handle."
                   }
     /trusted-agent/authorize:
-      description: Obtains a new agent on behalf authorization token for a registered customer.
+      description: Obtains a new agent on behalf authorization token for a registered customer. The SLAS client must have the `sfcc.ta_ext_on_behalf_of` scope to access this endpoint.
       get:
         description: Obtains a new agent on behalf authorization token for a registered customer.
         displayName: getTrustedAgentAuthorizationToken
@@ -1318,7 +1393,7 @@ types:
             maxLength: 40
             example: "6c388ebd-6843-4863-aef9-781382c9e8cd"
           channel_id:
-            description: The channel (ECOM site) that the user is associated with.
+            description: The channel (B2C Commerce site) that the user is associated with.
             type: string
             required: true
             maxLength: 100
@@ -1339,11 +1414,16 @@ types:
           login_id:
             description: |-
               The ID of the shopper for trusted agent access.
+
+              For TAOB Guest the `login_id` must be set to `Guest`.
             type: string
             maxLength: 128
             example: "jack.shopper@example.com"
           idp_origin:
-            description: The IDP that the shopper is associated with.
+            description: |-
+              The IDP that the shopper is associated with.
+
+              For TAOB Guest the `idp_origin` must be set to `slas`. This is standard for SLAS Guest requests. If any other `idp_origin` value is used, SLAS returns a bad request.
             type: string
             required: true
             maxLength: 16
@@ -1411,8 +1491,10 @@ types:
           The value of the `_sfdc_client_auth` header must be a Base64-encoded string. The string is composed of a SLAS private client ID and client secret, separated by a colon (`:`). For example, `privateClientId:privateClientsecret` becomes `cHJpdmF0ZUNsaWVudElkOnByaXZhdGVDbGllbnRzZWNyZXQ=` after Base64 encoding.
         displayName: getTrustedAgentAccessToken
         securedBy:
-          - CommerceCloudStandards.BearerToken:
-              { Bearer J1G-R6uJ2VPrYvwKmYXF41Ujm2bo83AYOHVqEEEPT8Kgw }
+          - CommerceCloudStandards.ShopperToken:
+              {
+                Bearer eyJ2ZXIiOiIxLjAiLCJraWQiOiI0ZTQyNTFkOS0zM2Y2LTRjMTMtYjZmZC1mOWJkNTJmYTZhNDciLCJ0eXAiOiJqd3QiLCJjbHYiOiJKMi4xLjAiLCJhbGciOiJFUzI1NiJ9.eyJhdXQiOiJHVUlEIiwic2NwIjoic2ZjYy5wcm9kdWN0cy5ybyBzZmNjLmNhdGFsb2dzLnJvIHNmY2Muc2hvcHBlci5ydyIsInN1YiI6ImNjLXNsYXM6OnNsc2FfZGV2OjpzY2lkOjU1M2FjOGFjLTRkYjktNGVkMy04MjVjLTNhZTNiZjVkMzI3Yjo6dXNpZDoxY2E3OWZiNi0xYjIyLTRmOWItOGJiNi05YmU5NWNjMjA4NjMiLCJjdHgiOiJzbGFzLm5vdF9mb3JfZXh0ZXJuYWxfdXNlIiwiaXNzIjoic2xhcy9kZXYvc2xzYV9kZXYiLCJpc3QiOjEsImF1ZCI6ImNvbW1lcmNlY2xvdWQvZGV2L3Nsc2FfZGV2IiwibmJmIjoxNTk0NzY0MDgwLCJzdHkiOiJVc2VyIiwiaXNiIjoidWlkbzpzbGFzOjp1cG46R3Vlc3Q6OnVpZG46R3Vlc3QgVXNlciIsImV4cCI6MTU5NDc2NTkxMCwiaWF0IjoxNTk0NzY0MTEwLCJqdGkiOiJDMkMxNjM0NTE0NTEwLTE3MTQzMTg2NzY0MjcwNTcyNjQ2NTYxMzgifQ.UVYAsWXCn3hoUPy8vLlc7O96RZEHD3N3ZgdNH-ZVvJ1G-R6uJ2VPrYvwKmYXF41Ujm2bo83AYOHVqEEEPT8Kgw,
+              }
         is:
           - SlasRateLimit:
               responseStatus: 200
@@ -1489,7 +1571,10 @@ types:
                   }
     /password:
       /reset:
-        description: Request a password reset token. The password reset token will be sent to the shopper using a redirect URI back to the merchant who will then send the token to the customer.
+        description: -|
+            Request a password reset token. The password reset token will be sent to the shopper using a redirect URI back to the merchant who will then send the token to the customer.
+
+            Adding a `hint` query parameter with a value of `cross_device` will remove the need to have the code_verifier for password reset request. If the `hint` query parameter is used it must also have been used in the password action request.
         post:
           description: Request a reset password token
           displayName: getPasswordResetToken
@@ -1537,7 +1622,12 @@ types:
                     }
 
       /action:
-        description: Creates a new password. Creates a new password that is passed in with the password action token that was sent from the `/password/reset` endpoint.
+        description: -|
+          Creates a new password. Creates a new password that is passed in with the password action token that was sent from the `/password/reset` endpoint. 
+          
+          Adding a `hint` query parameter with a value of `cross_device` will remove the need to have the code_challenge for password reset request. If the `hint` query parameter is used it must also be used in the password reset request.
+
+          When using the `hint` query parameter either a public or private client_id can be used.
         post:
           description: Creates a new password
           displayName: resetPassword
@@ -1591,7 +1681,7 @@ types:
                     "error_description": "A service that the server relies on is down or is having difficulty."
                     }
     /passwordless/token:
-      description: Evaluate the passwordless token and issue a shopper token (JWT).
+      description: Evaluate the passwordless token and issue a shopper token (JWT). The SLAS client must have the `sfcc.pwdless_login` scope to access this endpoint.
       post:
         description: Issue a shopper token (JWT).
         displayName: getPasswordLessAccessToken
@@ -1815,7 +1905,7 @@ types:
         #            example: "eyJ2ZXIiOiIxLjAiLCJraWQiOiI0ZTQyNTFkOS0zM2Y2LTRjMTMtYjZmZC1mOWJkNTJmYTZhNDciLCJ0eXAiOiJqd3QiLCJjbHYiOiJKMi4xLjAiLCJhbGciOiJFUzI1NiJ9.eyJhdXQiOiJHVUlEIiwic2NwIjoic2ZjYy5wcm9kdWN0cy5ybyBzZmNjLmNhdGFsb2dzLnJvIHNmY2Muc2hvcHBlci5ydyIsInN1YiI6ImNjLXNsYXM6OnNsc2FfZGV2OjpzY2lkOjU1M2FjOGFjLTRkYjktNGVkMy04MjVjLTNhZTNiZjVkMzI3Yjo6dXNpZDoxY2E3OWZiNi0xYjIyLTRmOWItOGJiNi05YmU5NWNjMjA4NjMiLCJjdHgiOiJzbGFzLm5vdF9mb3JfZXh0ZXJuYWxfdXNlIiwiaXNzIjoic2xhcy9kZXYvc2xzYV9kZXYiLCJpc3QiOjEsImF1ZCI6ImNvbW1lcmNlY2xvdWQvZGV2L3Nsc2FfZGV2IiwibmJmIjoxNTk0NzY0MDgwLCJzdHkiOiJVc2VyIiwiaXNiIjoidWlkbzpzbGFzOjp1cG46R3Vlc3Q6OnVpZG46R3Vlc3QgVXNlciIsImV4cCI6MTU5NDc2NTkxMCwiaWF0IjoxNTk0NzY0MTEwLCJqdGkiOiJDMkMxNjM0NTE0NTEwLTE3MTQzMTg2NzY0MjcwNTcyNjQ2NTYxMzgifQ.UVYAsWXCn3hoUPy8vLlc7O96RZEHD3N3ZgdNH-ZVvJ1G-R6uJ2VPrYvwKmYXF41Ujm2bo83AYOHVqEEEPT8Kgw"
         queryParameters:
           channel_id:
-            description: Used when getting user information for a SFCC login. For an ECOM customer, this is angalous to the site ID. Required when getting user information for an ECOM customer.
+            description: Used when getting user information for a SFCC login. For an B2C Commerce customer, this is angalous to the site ID. Required when getting user information for an B2C Commerce customer.
             required: false
             maxLength: 100
             type: string
@@ -1867,7 +1957,7 @@ types:
         description: |
           Returns a JSON listing of the OpenID/OAuth endpoints, supported scopes and claims, public keys used to sign the tokens, and other details.
 
-          For performance purposes, the `/jwks` endpoint is rate limited to 25 call per minute.
+          For performance purposes, the `/.well-known/openid-configuration` endpoint is rate limited to 25 call per minute.
         displayName: getWellknownOpenidConfiguration
         responses:
           200:
@@ -1938,42 +2028,27 @@ types:
                   }
     /jwks:
       description: |
-        The JSON Web Key Set (JWKS) is a set of keys that contains the public keys used to verify any JSON Web Token (JWT) issued by the authorization server and signed using the EC256 signing algorithm. 
+        The `/jwks` endpoint provides a JSON Web Key Set (JWKS) that includes current, past, and future public keys. These keys allow clients to validate the Shopper JSON Web Token (JWT) issued by SLAS, ensuring that no tampering has occurred with the token. Every SLAS JWT that is passed into SLAS, SCAPI, or OCAPI is always validated and is rejected if the signature validation does not match.
 
-        For performance purposes, the `/jwks` endpoint is rate limited to 25 call per minute.
+        To optimize performance, the `/jwks` endpoint is limited to 25 calls per minute, so it is recommended to cache the JWKS keys and refresh them only when necessary, instead of making frequent requests. Typically, the JWKs endpoint can be used once per DAY.
+
+        For additional information on using JWKS, see https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-validate-jwt-with-jwks.html
       get:
         description: |
-          Returns a JSON Web Key Set (JWKS) containing the current, past, and future public keys. The key set enables clients to validate the Shopper JSON Web Token (JWT) issued by SLAS.
+          The `/jwks` endpoint provides a JSON Web Key Set (JWKS) that includes current, past, and future public keys. These keys allow clients to validate the Shopper JSON Web Token (JWT) issued by SLAS, ensuring that no tampering has occurred with the token. Every SLAS JWT that is passed into SLAS, SCAPI, or OCAPI is always validated and is rejected if the signature validation does not match.
 
-          For performance purposes, the `/jwks` endpoint is rate limited to 25 call per minute.
+          To optimize performance, the `/jwks` endpoint is limited to 25 calls per minute, so it is recommended to cache the JWKS keys and refresh them only when necessary, instead of making frequent requests. Typically, the JWKs endpoint can be used once per DAY.
+
+          For additional information on using JWKS, see https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-validate-jwt-with-jwks.html
         displayName: getJwksUri
         responses:
           200:
-            description: Success
+            description: Success, the response body contains the JWKS keys.
             body:
               application/json:
-                type: string
-                example: |
-                  {
-                    "keys": [
-                        {
-                            "kty": "EC",
-                            "crv": "P-256",
-                            "use": "sig",
-                            "kid": "2d670fa8-0f28-44a1-b8b4-87a6d2feb1d8",
-                            "x": "_2tPqxGhgX6cA5Qg7v6UH_9om8OR3-OehkgXXWraTp8",
-                            "y": "DAykmQPtf282buIcL0rLwKYbK6ApgripMjazdAthUFw"
-                        },
-                        {
-                            "kty": "EC",
-                            "crv": "P-256",
-                            "use": "sig",
-                            "kid": "eb70508f-4d64-46f7-a3d5-b36558d6e6b6",
-                            "x": "VV0JVJFhkz71wY0E73Z-snorZ5oJf1QOdkIbCjyMqLs",
-                            "y": "QLkqBVSPPrkd7HjaSEMgMU9Ob-FDpg1W-oLq5I4ExqQ"
-                        }
-                    ]
-                  }
+                type: object
+                examples: 
+                  object: !include examples/jwks-get-response.json
           400:
             description: Bad Request
             body:

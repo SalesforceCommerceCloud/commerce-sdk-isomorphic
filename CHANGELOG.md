@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## v3.2.0
+
+### Enhancements
+- Add to README docs to explain error handling for the SDK [#174](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/174)
+- Add SLAS passwordless login helpers [#173](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/173)
+- Add SLAS social login helper [#172](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/172)
+- Support Node 22 [#178](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/178)
+
+### API Changes
+- The `expand` query parameter for `Shopper Products` calls now includes a new argument, `page_meta_tags`
+- The `expand` query parameter for `Shopper Search` calls now includes a new argument, `page_meta_tags`
+- `X-Geolocation` header was added to `Shopper Context`
+
 ## v3.1.1
 
 ### Bug fixes
