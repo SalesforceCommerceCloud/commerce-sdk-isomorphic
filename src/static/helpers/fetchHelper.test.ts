@@ -141,7 +141,7 @@ describe('doFetch', () => {
 });
 
 describe('transferParams', () => {
-  const optionParams = {
+  const optionParams: Record<string, unknown> = {
     // organizationId and siteId are not defined here
     id: 'id',
     inventoryIds: 'inventoryIds',

@@ -89,10 +89,10 @@ export type ParameterKey = {
  * @param options.paramKeys - Array of parameter keys to process
  */
 export const transferParams = (options: {
-  optionParams: Record<string, any>;
-  configParams: Record<string, any>;
-  queryParams: Record<string, any>;
-  pathParams: Record<string, any>;
+  optionParams: Record<string, unknown>;
+  configParams: Record<string, unknown>;
+  queryParams: Record<string, unknown>;
+  pathParams: Record<string, unknown>;
   paramKeys: Array<ParameterKey>;
   requiredParamKeys: readonly string[];
 }): void => {
