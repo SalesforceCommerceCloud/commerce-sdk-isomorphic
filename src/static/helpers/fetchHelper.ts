@@ -68,3 +68,51 @@ export const doFetch = async <Params extends BaseUriParameters>(
     return (text ? JSON.parse(text) : {}) as unknown | Response;
   }
 };
+
+export type ParameterKey = {
+  parameterName: string;
+  required?: boolean;
+  isQueryParameter?: boolean;
+  isPathParameter?: boolean;
+};
+
+/**
+ * Transfers parameters from option and config objects to the query parameters object
+ * based on a list of parameter keys
+ *
+ * @param options - The options object
+ * @param options.optionParams - The options parameters object (higher priority)
+ * @param options.configParams - The config parameters object (lower priority)
+ * @param options.queryParams - The query parameters object to populate
+ * @param options.pathParams - The path parameters object to populate
+ * @param options.paramKeys - Array of parameter keys to process
+ * @param options.paramKeys - Array of parameter keys to process
+ */
+export const transferParams = (options: {
+  optionParams: Record<string, any>;
+  configParams: Record<string, any>;
+  queryParams: Record<string, any>;
+  pathParams: Record<string, any>;
+  paramKeys: Array<ParameterKey>;
+  requiredParamKeys: readonly string[];
+}): void => {
+  const {
+    optionParams,
+    configParams,
+    queryParams,
+    paramKeys,
+    pathParams,
+    requiredParamKeys,
+  } = options;
+  paramKeys.forEach(paramKey => {
+    const currentParams = paramKey.isQueryParameter ? queryParams : pathParams;
+    const key = paramKey.parameterName;
+    if (optionParams[key] !== undefined) {
+      currentParams[key] = optionParams[key];
+    } else if (configParams[key] !== undefined) {
+      currentParams[key] = configParams[key];
+    } else if (requiredParamKeys.includes(key)) {
+      throw new Error(`Missing required parameter: ${paramKey.parameterName}`);
+    }
+  });
+};
