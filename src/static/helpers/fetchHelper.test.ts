@@ -8,7 +8,7 @@ import nock from 'nock';
 import {Response} from 'node-fetch';
 import * as environment from './environment';
 import ClientConfig from '../clientConfig';
-import {doFetch} from './fetchHelper';
+import {doFetch, transferParams, ParameterKey} from './fetchHelper';
 
 describe('doFetch', () => {
   const basePath = 'https://short_code.api.commercecloud.salesforce.com';
@@ -137,5 +137,123 @@ describe('doFetch', () => {
       expect.any(String),
       expect.objectContaining(clientConfig.fetchOptions)
     );
+  });
+});
+
+describe('transferParams', () => {
+  const optionParams: Record<string, unknown> = {
+    // organizationId and siteId are not defined here
+    id: 'id',
+    inventoryIds: 'inventoryIds',
+    expand: ['expand1', 'expand2'],
+    allImages: true,
+    perPricebook: true,
+    select: 'select',
+    currency: 'currency',
+    locale: 'locale',
+  };
+
+  const configParameters = {
+    shortCode: 'short_code',
+    organizationId: 'organization_id',
+    clientId: 'client_id',
+    siteId: 'site_id',
+  };
+
+  const getProductRequired = ['organizationId', 'id'];
+
+  const currentParamKeys: Array<ParameterKey> = [
+    {
+      parameterName: 'organizationId',
+      isQueryParameter: false,
+    },
+    {
+      parameterName: 'id',
+      isQueryParameter: false,
+    },
+    {
+      parameterName: 'inventoryIds',
+      isQueryParameter: true,
+    },
+    {
+      parameterName: 'expand',
+      isQueryParameter: true,
+    },
+    {
+      parameterName: 'allImages',
+      isQueryParameter: true,
+    },
+    {
+      parameterName: 'perPricebook',
+      isQueryParameter: true,
+    },
+    {
+      parameterName: 'select',
+      isQueryParameter: true,
+    },
+    {
+      parameterName: 'currency',
+      isQueryParameter: true,
+    },
+    {
+      parameterName: 'locale',
+      isQueryParameter: true,
+    },
+    {
+      parameterName: 'siteId',
+      isQueryParameter: true,
+    },
+  ];
+
+  test('transferParams successfully populates the query and path parameters object', () => {
+    const queryParameters = {};
+    const pathParameters = {};
+
+    transferParams({
+      optionParams,
+      configParams: configParameters,
+      queryParams: queryParameters,
+      pathParams: pathParameters,
+      paramKeys: currentParamKeys,
+      requiredParamKeys: getProductRequired,
+    });
+
+    const expectedQueryParameters = {
+      allImages: true,
+      currency: 'currency',
+      expand: ['expand1', 'expand2'],
+      inventoryIds: 'inventoryIds',
+      locale: 'locale',
+      perPricebook: true,
+      siteId: 'site_id',
+      select: 'select',
+    };
+
+    const expectedPathParameters = {
+      id: 'id',
+      organizationId: 'organization_id',
+    };
+
+    expect(queryParameters).toEqual(expectedQueryParameters);
+    expect(pathParameters).toEqual(expectedPathParameters);
+  });
+
+  test('transferParams throws error when required parameter is not passed', () => {
+    const queryParameters = {};
+    const pathParameters = {};
+
+    // remove id from optionParams
+    const {id, ...newOptionParams} = optionParams;
+
+    expect(() =>
+      transferParams({
+        optionParams: newOptionParams,
+        configParams: configParameters,
+        queryParams: queryParameters,
+        pathParams: pathParameters,
+        paramKeys: currentParamKeys,
+        requiredParamKeys: getProductRequired,
+      })
+    ).toThrowError('Missing required parameter: id');
   });
 });
