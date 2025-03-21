@@ -278,7 +278,8 @@ describe('Authorize IDP User', () => {
 
 describe('IDP Login flow', () => {
   const loginParams = {
-    ...parameters,
+    redirectURI: 'redirect_uri',
+    dnt: false,
     usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
     code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
   };
@@ -749,6 +750,13 @@ describe('Refresh Token', () => {
         refresh_token: parameters.refreshToken,
         dnt: 'false',
       },
+      parameters: {
+        accessToken: 'access_token',
+        hint: 'hint',
+        redirectURI: 'redirect_uri',
+        refreshToken: 'refresh_token',
+        usid: 'usid',
+      },
     };
     const token = slasHelper.refreshAccessToken(
       createMockSlasClient(),
@@ -775,7 +783,10 @@ describe('Logout', () => {
   };
 
   test('logs out the customer', () => {
-    const token = slasHelper.logout(createMockSlasClient(), parameters);
+    const token = slasHelper.logout(createMockSlasClient(), {
+      accessToken: 'access_token',
+      refreshToken: 'refresh_token',
+    });
     expect(logoutCustomerMock).toBeCalledWith(expectedOptions);
     expect(token).toStrictEqual(expectedTokenResponse);
   });

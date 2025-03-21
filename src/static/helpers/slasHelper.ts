@@ -10,6 +10,7 @@ import seedrandom, {PRNG} from 'seedrandom';
 import {isBrowser} from './environment';
 
 import {
+  LoginRequest,
   ShopperLogin,
   ShopperLoginPathParameters,
   ShopperLoginQueryParameters,
@@ -253,6 +254,7 @@ export async function authorizeIDP(
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
+ * @param headers - optional headers to pass in the 'getAccessToken'
  * @returns TokenResponse
  */
 export async function loginIDPUser(
@@ -275,7 +277,7 @@ export async function loginIDPUser(
   headers?: {[key: string]: string}
 ): Promise<TokenResponse> {
   const privateClient = !!credentials.clientSecret;
-  const {code, dnt, usid, ...restOfParams} = parameters;
+  const {code, dnt, usid, redirectURI, ...restOfParams} = parameters;
 
   const tokenBody: TokenRequest = {
     client_id: slasClient.clientConfig.parameters.clientId,
@@ -287,9 +289,9 @@ export async function loginIDPUser(
     grant_type: privateClient
       ? 'authorization_code'
       : 'authorization_code_pkce',
-    redirect_uri: parameters.redirectURI,
+    redirect_uri: redirectURI,
     ...(dnt !== undefined && {dnt: dnt.toString()}),
-    ...(usid && {usid: parameters.usid}),
+    ...(usid && {usid}),
     // no need to validate here since `slasClient.getAccessToken` will do that
     ...restOfParams,
   };
@@ -302,6 +304,7 @@ export async function loginIDPUser(
     const optionsToken = {
       headers: {
         Authorization: authHeaderIdSecret,
+        ...headers,
       },
       body: tokenBody,
     };
@@ -348,7 +351,6 @@ export async function loginGuestUserPrivate(
   const authorization = `Basic ${stringToBase64(
     `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
   )}`;
-  const {usid, dnt, ...restOfParams} = parameters;
   const options = {
     headers: {
       Authorization: authorization,
@@ -387,8 +389,7 @@ export async function loginGuestUser(
     usid?: string;
     dnt?: boolean;
   } & {[key in `c_${string}`]: any},
-  headers?: {[key: string]: string},
-  body?: {[key: string]: string}
+  headers?: {[key: string]: string}
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
 
@@ -414,7 +415,6 @@ export async function loginGuestUser(
     redirect_uri: redirectURI,
     usid: authResponse.usid,
     ...(dnt !== undefined && {dnt: dnt.toString()}),
-    ...body,
   };
 
   return slasClient.getAccessToken({body: tokenBody, headers});
@@ -454,7 +454,7 @@ export async function loginRegisteredUserB2C(
     dnt?: boolean;
   } & {[key in `c_${string}`]: any},
   headers?: {[key: string]: string},
-  body?: {[key: string]: string}
+  body?: LoginRequest & {[key in `c_${string}`]: any}
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
   const codeChallenge = await generateCodeChallenge(codeVerifier);
@@ -639,7 +639,7 @@ export async function getPasswordLessAccessToken(
   parameters: {
     pwdlessLoginToken: string;
     dnt?: string;
-  },
+  } & {[key in `c_${string}`]: any},
   headers?: {[key: string]: string}
 ): Promise<TokenResponse> {
   if (!credentials.clientSecret) {
@@ -660,11 +660,11 @@ export async function getPasswordLessAccessToken(
     `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
   )}`;
 
-  const {dnt, ...restOfParams} = parameters;
+  const {dnt, pwdlessLoginToken, ...restOfParams} = parameters;
   const tokenBody = {
     grant_type: 'client_credentials',
     hint: 'pwdless_login',
-    pwdless_login_token: parameters.pwdlessLoginToken,
+    pwdless_login_token: pwdlessLoginToken,
     code_verifier: codeVerifier,
     ...(dnt && {dnt}),
   };
@@ -706,12 +706,13 @@ export function refreshAccessToken(
   credentials?: {clientSecret?: string},
   headers?: {[key: string]: string}
 ): Promise<TokenResponse> {
+  const {dnt, ...restOfParams} = parameters;
   const body = {
     grant_type: 'refresh_token',
     refresh_token: parameters.refreshToken,
     client_id: slasClient.clientConfig.parameters.clientId,
     channel_id: slasClient.clientConfig.parameters.siteId,
-    ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),
+    ...(dnt !== undefined && {dnt: dnt.toString()}),
   };
 
   if (credentials && credentials.clientSecret) {
@@ -719,6 +720,7 @@ export function refreshAccessToken(
       `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
     )}`;
     const options = {
+      ...(Object.keys(parameters) && {parameters: restOfParams}),
       headers: {
         Authorization: authorization,
         ...headers,
@@ -753,14 +755,17 @@ export function logout(
   } & {[key in `c_${string}`]: any},
   headers?: {[key: string]: string}
 ): Promise<TokenResponse> {
+  const {refreshToken, accessToken, ...restOfParams} = parameters;
   return slasClient.logoutCustomer({
     headers: {
-      Authorization: `Bearer ${parameters.accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
+      ...headers,
     },
     parameters: {
-      refresh_token: parameters.refreshToken,
+      refresh_token: refreshToken,
       client_id: slasClient.clientConfig.parameters.clientId,
       channel_id: slasClient.clientConfig.parameters.siteId,
+      ...restOfParams,
     },
   });
 }
