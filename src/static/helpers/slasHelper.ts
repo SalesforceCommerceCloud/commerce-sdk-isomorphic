@@ -121,8 +121,8 @@ export async function authorize(
     hint?: string;
     usid?: string;
   } & {[key in `c_${string}`]: any},
-  headers?: {[key: string]: string},
-  privateClient = false
+  privateClient = false,
+  headers?: {[key: string]: string}
 ): Promise<{code: string; url: string; usid: string}> {
   interface ClientOptions {
     codeChallenge?: string;
@@ -359,8 +359,6 @@ export async function loginGuestUserPrivate(
       channel_id: slasClient.clientConfig.parameters.siteId,
       ...(parameters.usid && {usid: parameters.usid}),
       ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),
-      // no need to validate here since `slasClient.getAccessToken` will do that
-      ...restOfParams,
     },
   };
 
@@ -389,10 +387,12 @@ export async function loginGuestUser(
     usid?: string;
     dnt?: boolean;
   } & {[key in `c_${string}`]: any},
-  headers?: {[key: string]: string}
+  headers?: {[key: string]: string},
+  body?: {[key: string]: string}
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
 
+  const {dnt, redirectURI, ...restOfParams} = parameters;
   const authResponse = await authorize(
     slasClient,
     codeVerifier,
@@ -400,10 +400,11 @@ export async function loginGuestUser(
       redirectURI: parameters.redirectURI,
       hint: 'guest',
       ...(parameters.usid && {usid: parameters.usid}),
+      ...restOfParams,
     },
+    false,
     headers
   );
-  const {dnt, redirectURI, ...restOfParams} = parameters;
   const tokenBody: TokenRequest = {
     client_id: slasClient.clientConfig.parameters.clientId,
     channel_id: slasClient.clientConfig.parameters.siteId,
@@ -413,7 +414,7 @@ export async function loginGuestUser(
     redirect_uri: redirectURI,
     usid: authResponse.usid,
     ...(dnt !== undefined && {dnt: dnt.toString()}),
-    ...restOfParams,
+    ...body,
   };
 
   return slasClient.getAccessToken({body: tokenBody, headers});
