@@ -462,6 +462,45 @@ describe('Registered B2C user flow', () => {
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
   });
 
+  test('can pass custom parameters, headers and body field', async () => {
+    // slasClient is copied and tries to make an actual API call
+    const mockSlasClient = createMockSlasClient();
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    // // Mocking slasCopy.authenticateCustomer
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .post(
+        `/shopper/auth/v1/organizations/${organizationId}/oauth2/login?c_color=red`
+      )
+      .reply((uri, requestBody) => {
+        expect(requestBody).toMatch(/c_body=test/i);
+        return [303, {response_body: 'response_body'}, {location: url}];
+      });
+
+    await slasHelper.loginRegisteredUserB2C(
+      mockSlasClient,
+      credentials,
+      {
+        redirectURI: 'redirect_uri',
+        dnt: false,
+        c_color: 'red',
+      },
+      {
+        headers: {custom_header: 'test'},
+        body: {
+          redirect_uri: 'redirect_uri',
+          c_body: 'test',
+          channel_id: 'site_id',
+        },
+      }
+    );
+
+    expect(getAccessTokenMock).toBeCalledWith({
+      ...expectedTokenBody,
+      headers: {custom_header: 'test'},
+    });
+  });
+
   test('uses code challenge and authorization header to generate auth code with slas private client', async () => {
     const expectedReqOptions = {
       headers: {

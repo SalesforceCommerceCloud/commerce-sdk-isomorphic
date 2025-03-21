@@ -419,6 +419,7 @@ export async function loginGuestUser(
 
   return slasClient.getAccessToken({body: tokenBody, headers});
 }
+type BodyRequest = LoginRequest & {[key in `c_${string}`]: any};
 
 /**
  * A single function to execute the ShopperLogin Public Client Registered User B2C Login with proof key for code exchange flow as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary).
@@ -432,8 +433,9 @@ export async function loginGuestUser(
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
- * @param headers - optional headers to pass in the 'getAccessToken' and 'authenticateCustomer' endpoints.
- * @param body - optional body parameters to pass in the 'authenticateCustomer' endpoint.
+ * @param opts - optional headers or body to pass in the authenticateCustomer call.
+ * @param opts.headers - optional headers to pass in the 'getAccessToken' and 'authenticateCustomer' endpoints.
+ * @param opts.body - optional body parameters to pass in the 'authenticateCustomer' endpoint.
  * @returns TokenResponse
  */
 export async function loginRegisteredUserB2C(
@@ -453,8 +455,10 @@ export async function loginRegisteredUserB2C(
     usid?: string;
     dnt?: boolean;
   } & {[key in `c_${string}`]: any},
-  headers?: {[key: string]: string},
-  body?: LoginRequest & {[key in `c_${string}`]: any}
+  opts?: {
+    headers?: {[key: string]: string};
+    body?: {[key in `c_${string}`]: any} & LoginRequest;
+  }
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
   const codeChallenge = await generateCodeChallenge(codeVerifier);
@@ -478,7 +482,7 @@ export async function loginRegisteredUserB2C(
   const options = {
     headers: {
       Authorization: authorization,
-      ...headers,
+      ...(opts?.headers || {}),
     },
     parameters: {
       organizationId: slasClient.clientConfig.parameters.organizationId,
@@ -490,7 +494,7 @@ export async function loginRegisteredUserB2C(
       code_challenge: codeChallenge,
       channel_id: slasClient.clientConfig.parameters.siteId,
       ...(usid && {usid}),
-      ...body,
+      ...(opts?.body || {}),
     },
   };
 
@@ -524,14 +528,14 @@ export async function loginRegisteredUserB2C(
     const optionsToken = {
       headers: {
         Authorization: authHeaderIdSecret,
-        ...headers,
+        ...(opts?.headers || {}),
       },
       body: tokenBody,
     };
     return slasClient.getAccessToken(optionsToken);
   }
   // default is to use slas public client
-  return slasClient.getAccessToken({body: tokenBody, headers});
+  return slasClient.getAccessToken({body: tokenBody, headers: opts?.headers});
 }
 
 /* Function to send passwordless login token
