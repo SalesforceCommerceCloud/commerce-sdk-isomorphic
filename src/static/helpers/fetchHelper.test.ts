@@ -138,4 +138,71 @@ describe('doFetch', () => {
       expect.objectContaining(clientConfig.fetchOptions)
     );
   });
+
+  test('throws error when fetchOptions.signal is passed and aborted during fetch call', async () => {
+    nock(basePath)
+      .post(endpointPath)
+      .query(true)
+      .delayConnection(200)
+      .reply(200, responseBody);
+
+    const controller = new AbortController();
+    const copyClientConfig = {
+      ...clientConfig,
+      fetchOptions: {...clientConfig.fetchOptions, signal: controller.signal},
+    };
+    setTimeout(() => controller.abort(), 100);
+    const spy = jest.spyOn(environment, 'fetch');
+    await expect(
+      doFetch(url, options, copyClientConfig, false)
+    ).rejects.toThrow('The user aborted a request.');
+    expect(spy).toBeCalledTimes(1);
+    expect(spy).toBeCalledWith(
+      expect.any(String),
+      expect.objectContaining({signal: controller.signal})
+    );
+  });
+
+  test('throws error when options.signal is passed and aborted during fetch call', async () => {
+    nock(basePath)
+      .post(endpointPath)
+      .query(true)
+      .delayConnection(200)
+      .reply(200, responseBody);
+
+    const controller = new AbortController();
+    const copyOptions = {...options, signal: controller.signal};
+    setTimeout(() => controller.abort(), 100);
+    const spy = jest.spyOn(environment, 'fetch');
+    await expect(
+      doFetch(url, copyOptions, clientConfig, false)
+    ).rejects.toThrow('The user aborted a request.');
+    expect(spy).toBeCalledTimes(1);
+    expect(spy).toBeCalledWith(
+      expect.any(String),
+      expect.objectContaining({signal: controller.signal})
+    );
+  });
+
+  test('options.signal overrides fetchOptions.signal', async () => {
+    nock(basePath).post(endpointPath).query(true).reply(200, responseBody);
+
+    const clientConfigController = new AbortController();
+    const optionsController = new AbortController();
+    const copyClientConfig = {
+      ...clientConfig,
+      fetchOptions: {
+        ...clientConfig.fetchOptions,
+        signal: clientConfigController.signal,
+      },
+    };
+    const copyOptions = {...options, signal: optionsController.signal};
+    const spy = jest.spyOn(environment, 'fetch');
+    await doFetch(url, copyOptions, copyClientConfig, false);
+    expect(spy).toBeCalledTimes(1);
+    expect(spy).toBeCalledWith(
+      expect.any(String),
+      expect.objectContaining({signal: optionsController.signal})
+    );
+  });
 });

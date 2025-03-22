@@ -43,6 +43,7 @@ export interface CustomParams {
  * @param args.options.parameters? - Query parameters that are added to the request
  * @param args.options.customApiPathParameters? - Path parameters used for custom API. Required path parameters (apiName, endpointPath, organizationId, and shortCode) can be in this object, or args.clientConfig.parameters. apiVersion is defaulted to 'v1' if not provided.
  * @param args.options.headers? - Headers that are added to the request. Authorization header should be in this parameter or in the clientConfig.headers. If "Content-Type" is not provided in either header, it will be defaulted to "application/json".
+ * @param args.options.signal? - An AbortSignal object that can be used to cancel the fetch request
  * @param args.options.body? - Body that is used for the request
  * @param args.clientConfig - Client Configuration object used by the SDK with properties that can affect the fetch call
  * @param args.clientConfig.parameters - Path parameters used for custom API endpoints. The required properties are: apiName, endpointPath, organizationId, and shortCode. An error will be thrown if these are not provided.
