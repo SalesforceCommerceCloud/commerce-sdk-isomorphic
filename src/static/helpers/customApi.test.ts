@@ -249,4 +249,54 @@ describe('callCustomEndpoint', () => {
       undefined
     );
   });
+
+  test('doFetch is called with signal from options and throws aborted error when aborted', async () => {
+    const controller = new AbortController();
+
+    const copyOptions = {
+      ...options,
+      signal: controller.signal,
+    };
+
+    const {shortCode, organizationId} = clientConfig.parameters;
+    const {apiName, endpointPath} = copyOptions.customApiPathParameters;
+
+    const nockBasePath = `https://${shortCode}.api.commercecloud.salesforce.com`;
+    const nockEndpointPath = `/custom/${apiName}/v2/organizations/${
+      organizationId as string
+    }/${endpointPath}`;
+    nock(nockBasePath)
+      .post(nockEndpointPath)
+      .query(true)
+      .delayConnection(200)
+      .reply(200);
+
+    const expectedUrl = `${
+      nockBasePath + nockEndpointPath
+    }?${queryParamString}`;
+    const expectedOptions = addSiteIdToOptions(copyOptions);
+
+    const expectedClientConfig = {
+      ...clientConfig,
+      baseUri:
+        'https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}',
+    };
+
+    const doFetchSpy = jest.spyOn(fetchHelper, 'doFetch');
+    setTimeout(() => controller.abort(), 100);
+    await expect(
+      callCustomEndpoint({
+        options: copyOptions,
+        clientConfig,
+        rawResponse: true,
+      })
+    ).rejects.toThrow('The user aborted a request.');
+    expect(doFetchSpy).toBeCalledTimes(1);
+    expect(doFetchSpy).toBeCalledWith(
+      expectedUrl,
+      expectedOptions,
+      expectedClientConfig,
+      true
+    );
+  });
 });

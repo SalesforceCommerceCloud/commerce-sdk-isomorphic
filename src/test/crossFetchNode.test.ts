@@ -372,3 +372,34 @@ test('throwOnBadResponse flag defaults to false', async () => {
 
   expect(response).toEqual({content: 'not empty'});
 });
+
+test('should use signal from fetch options and throw aborted error', async () => {
+  nock('https://localhost:3000')
+    .get(
+      `/search/shopper-search/v1/organizations/${config.parameters.organizationId}/product-search?siteId=${config.parameters.siteId}&q=sony`
+    )
+    .matchHeader('authorization', 'Bearer test-auth')
+    .delayConnection(200)
+    .reply(200, {}, {'content-type': 'application-json charset=UTF-8'});
+
+  const abortController = new AbortController();
+  const clientConfig: ClientConfigInit<TestConfigParameters> = {
+    ...config,
+    fetchOptions: {
+      signal: abortController.signal,
+    },
+  };
+
+  expect.assertions(1);
+  const client = new ShopperSearch(clientConfig);
+  setTimeout(() => abortController.abort(), 100);
+  await expect(
+    client.productSearch({
+      parameters: {q: 'sony'},
+      headers: {authorization: 'Bearer test-auth'},
+    })
+  ).rejects.toEqual({
+    message: 'The user aborted a request.',
+    type: 'aborted',
+  });
+});
