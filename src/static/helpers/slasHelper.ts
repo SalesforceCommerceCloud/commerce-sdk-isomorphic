@@ -110,7 +110,7 @@ export const generateCodeChallenge = async (
  * @param parameters.hint? - optional string to hint at a particular IDP. Guest sessions are created by setting this to 'guest'
  * @param parameters.usid? - optional saved SLAS user id to link the new session to a previous session
  * @param privateClient? - flag to indicate if the client is private or not. Defaults to false.
- * @param options - an object containing the options for this method.
+ * @param options - an object containing the options for this function.
  * @param options.headers? - optional header to pass in the 'authorizeCustomer` endpoint.
  * @returns login url, user id and authorization code if available
  */
@@ -261,7 +261,7 @@ export async function authorizeIDP(
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
- * @param options - an object containing the options for this method
+ * @param options - an object containing the options for this function
  * @param options?.headers - optional headers to pass in the 'getAccessToken'
  * @returns TokenResponse
  */
@@ -336,7 +336,7 @@ export async function loginIDPUser(
  * @param parameters - parameters to pass in the API calls.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
- * @param options - an object containing the options for this method.
+ * @param options - an object containing the options for this function.
  * @param option.headers? - optional headers to pass in the 'getAccessToken` endpoint.
  * @returns TokenResponse
  */
@@ -390,7 +390,7 @@ export async function loginGuestUserPrivate(
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
- * @param options - an object containing the options for this method.
+ * @param options - an object containing the options for this function.
  * @param option.headers? - optional headers to pass in the 'getAccessToken` endpoint.
  * @returns TokenResponse
  */
@@ -454,7 +454,7 @@ export async function loginGuestUser(
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
- * @param options - an object containing the options for this method.
+ * @param options - an object containing the options for this function.
  * @param options.headers - optional headers to pass in the 'getAccessToken' and 'authenticateCustomer' endpoints.
  * @param options.body - optional body parameters to pass in the 'authenticateCustomer' endpoint.
  * @returns TokenResponse
@@ -573,7 +573,7 @@ export async function loginRegisteredUserB2C(
  * @param parameters.userid - User Id for login
  * @param parameters.locale - The locale of the template. Not needed for the callback mode
  * @param parameters.mode - Medium of sending login token
- * @param options - an object containing the options for this method.
+ * @param options - an object containing the options for this function.
  * @param options?.headers - optional headers to pass in the 'authorizePasswordlessCustomer' endpoint
  * @returns Promise of Response
  */
@@ -655,7 +655,7 @@ export async function authorizePasswordless(
  * @param parameters.callbackURI? - URI to send the passwordless login token to. Must be listed in your SLAS configuration. Required when mode is callback
  * @param parameters.pwdlessLoginToken - Passwordless login token
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
- * @param options - an object containing the options for this method.
+ * @param options - an object containing the options for this function.
  * @param options?.headers - optional headers to pass in the 'getPasswordLessAccessToken' endpoint
  * @returns Promise of Response or Object
  */
@@ -724,7 +724,7 @@ export async function getPasswordLessAccessToken(
  * @param parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
  * @param credentials - the clientSecret (if applicable) to login with.
  * @param credentials.clientSecret - secret associated with client ID
- * @param options - an object containing the options for this method.
+ * @param options - an object containing the options for this function.
  * @param options?.headers - optional headers to pass in the 'getAccessToken' endpoint
  * @returns TokenResponse
  */
@@ -777,7 +777,7 @@ export function refreshAccessToken(
  * @param parameters - parameters to pass in the API calls.
  * @param parameters.accessToken - a valid access token to exchange for a new access token (and refresh token).
  * @param parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
- * @param options - an object containing the options for this method.
+ * @param options - an object containing the options for this function.
  * @param options?.headers - optional headers to pass in the 'logoutCustomer' endpoint
  * @returns TokenResponse
  */
