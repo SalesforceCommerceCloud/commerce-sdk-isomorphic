@@ -111,7 +111,7 @@ export const generateCodeChallenge = async (
  * @param parameters.usid? - optional saved SLAS user id to link the new session to a previous session
  * @param privateClient? - flag to indicate if the client is private or not. Defaults to false.
  * @param options - an object containing the options for this function.
- * @param options.headers? - optional header to pass in the 'authorizeCustomer` endpoint.
+ * @param options.headers? - optional header to pass in the  ShopperLogin 'authorizeCustomer` method.
  * @returns login url, user id and authorization code if available
  */
 export async function authorize(
@@ -262,7 +262,7 @@ export async function authorizeIDP(
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
  * @param options - an object containing the options for this function
- * @param options?.headers - optional headers to pass in the 'getAccessToken'
+ * @param options?.headers - optional headers to pass in the ShopperLogin 'getAccessToken' method
  * @returns TokenResponse
  */
 export async function loginIDPUser(
@@ -337,7 +337,7 @@ export async function loginIDPUser(
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
  * @param options - an object containing the options for this function.
- * @param option.headers? - optional headers to pass in the 'getAccessToken` endpoint.
+ * @param option.headers? - optional headers to pass in the ShopperLogin 'getAccessToken' method
  * @returns TokenResponse
  */
 export async function loginGuestUserPrivate(
@@ -391,7 +391,7 @@ export async function loginGuestUserPrivate(
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
  * @param options - an object containing the options for this function.
- * @param option.headers? - optional headers to pass in the 'getAccessToken` endpoint.
+ * @param option.headers? - optional headers to pass in the ShopperLogin 'getAccessToken' method
  * @returns TokenResponse
  */
 export async function loginGuestUser(
@@ -455,8 +455,8 @@ export async function loginGuestUser(
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
  * @param options - an object containing the options for this function.
- * @param options.headers - optional headers to pass in the 'getAccessToken' and 'authenticateCustomer' endpoints.
- * @param options.body - optional body parameters to pass in the 'authenticateCustomer' endpoint.
+ * @param options.headers - optional headers to pass in the ShopperLogin 'getAccessToken' and 'authenticateCustomer' methods.
+ * @param options.body - optional body parameters to pass in the ShopperLogin 'authenticateCustomer' method.
  * @returns TokenResponse
  */
 export async function loginRegisteredUserB2C(
@@ -574,7 +574,7 @@ export async function loginRegisteredUserB2C(
  * @param parameters.locale - The locale of the template. Not needed for the callback mode
  * @param parameters.mode - Medium of sending login token
  * @param options - an object containing the options for this function.
- * @param options?.headers - optional headers to pass in the 'authorizePasswordlessCustomer' endpoint
+ * @param options?.headers - optional headers to pass in the ShopperLogin 'authorizePasswordlessCustomer' method
  * @returns Promise of Response
  */
 export async function authorizePasswordless(
@@ -656,7 +656,7 @@ export async function authorizePasswordless(
  * @param parameters.pwdlessLoginToken - Passwordless login token
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
  * @param options - an object containing the options for this function.
- * @param options?.headers - optional headers to pass in the 'getPasswordLessAccessToken' endpoint
+ * @param options?.headers - optional headers to pass in the ShopperLogin 'getPasswordLessAccessToken' method
  * @returns Promise of Response or Object
  */
 export async function getPasswordLessAccessToken(
@@ -725,7 +725,7 @@ export async function getPasswordLessAccessToken(
  * @param credentials - the clientSecret (if applicable) to login with.
  * @param credentials.clientSecret - secret associated with client ID
  * @param options - an object containing the options for this function.
- * @param options?.headers - optional headers to pass in the 'getAccessToken' endpoint
+ * @param options?.headers - optional headers to pass in the ShopperLogin 'getAccessToken' method
  * @returns TokenResponse
  */
 export function refreshAccessToken(
@@ -778,7 +778,7 @@ export function refreshAccessToken(
  * @param parameters.accessToken - a valid access token to exchange for a new access token (and refresh token).
  * @param parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
  * @param options - an object containing the options for this function.
- * @param options?.headers - optional headers to pass in the 'logoutCustomer' endpoint
+ * @param options?.headers - optional headers to pass in the  ShopperLogin 'logoutCustomer' method
  * @returns TokenResponse
  */
 export function logout(
