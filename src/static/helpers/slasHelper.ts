@@ -19,7 +19,11 @@ import {
 } from '../../lib/shopperLogin';
 import ResponseError from '../responseError';
 import TemplateURL from '../templateUrl';
-import {BaseUriParameters} from './types';
+import {
+  BaseUriParameters,
+  CustomQueryParameters,
+  CustomRequestBody,
+} from './types';
 
 export const stringToBase64 = isBrowser
   ? btoa
@@ -106,7 +110,8 @@ export const generateCodeChallenge = async (
  * @param parameters.hint? - optional string to hint at a particular IDP. Guest sessions are created by setting this to 'guest'
  * @param parameters.usid? - optional saved SLAS user id to link the new session to a previous session
  * @param privateClient - flag to indicate if the client is private or not. Defaults to false.
- * @param headers - optional headers to pass in the 'authorizeCustomer` endpoint.
+ * @param options - an object containing the options for this method.
+ * @param options.headers? - optional header to pass in the 'authorizeCustomer` endpoint.
  * @returns login url, user id and authorization code if available
  */
 export async function authorize(
@@ -121,9 +126,11 @@ export async function authorize(
     redirectURI: string;
     hint?: string;
     usid?: string;
-  } & {[key in `c_${string}`]: any},
+  } & CustomQueryParameters,
   privateClient = false,
-  headers?: {[key: string]: string}
+  options?: {
+    headers?: {[key: string]: string};
+  }
 ): Promise<{code: string; url: string; usid: string}> {
   interface ClientOptions {
     codeChallenge?: string;
@@ -145,25 +152,25 @@ export async function authorize(
     redirect: isBrowser ? 'follow' : 'manual',
   };
 
-  const options = {
+  const {hint, redirectURI, usid, ...restOfParams} = parameters;
+  const opts = {
     parameters: {
       client_id: slasClient.clientConfig.parameters.clientId,
       channel_id: slasClient.clientConfig.parameters.siteId,
       ...(clientOptions.codeChallenge && {
         code_challenge: clientOptions.codeChallenge,
       }),
-      ...(parameters.hint && {hint: parameters.hint}),
+      ...(hint && {hint}),
       organizationId: slasClient.clientConfig.parameters.organizationId,
-      redirect_uri: parameters.redirectURI,
+      redirect_uri: redirectURI,
       response_type: 'code',
-      ...(parameters.usid && {usid: parameters.usid}),
-      // we don't need to validate c_params because shopperLogin func will do that
-      ...parameters,
+      ...(usid && {usid}),
+      ...restOfParams,
     },
-    headers,
+    ...(options?.headers || {}),
   };
 
-  const response = await slasClientCopy.authorizeCustomer(options, true);
+  const response = await slasClientCopy.authorizeCustomer(opts, true);
   const redirectUrlString = response.headers?.get('location') || response.url;
   const redirectUrl = new URL(redirectUrlString);
   const searchParams = Object.fromEntries(redirectUrl.searchParams.entries());
@@ -254,7 +261,8 @@ export async function authorizeIDP(
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
- * @param headers - optional headers to pass in the 'getAccessToken'
+ * @param options - an object containing the options for this method
+ * @param options?.headers - optional headers to pass in the 'getAccessToken'
  * @returns TokenResponse
  */
 export async function loginIDPUser(
@@ -273,8 +281,10 @@ export async function loginIDPUser(
     code: string;
     usid?: string;
     dnt?: boolean;
-  } & {[key in `c_${string}`]: any},
-  headers?: {[key: string]: string}
+  } & CustomQueryParameters,
+  options?: {
+    headers?: {[key: string]: string};
+  }
 ): Promise<TokenResponse> {
   const privateClient = !!credentials.clientSecret;
   const {code, dnt, usid, redirectURI, ...restOfParams} = parameters;
@@ -304,14 +314,17 @@ export async function loginIDPUser(
     const optionsToken = {
       headers: {
         Authorization: authHeaderIdSecret,
-        ...headers,
+        ...options?.headers,
       },
       body: tokenBody,
     };
     return slasClient.getAccessToken(optionsToken);
   }
   // default is to use slas public client
-  return slasClient.getAccessToken({body: tokenBody, headers});
+  return slasClient.getAccessToken({
+    body: tokenBody,
+    headers: options?.headers,
+  });
 }
 
 /**
@@ -323,7 +336,8 @@ export async function loginIDPUser(
  * @param parameters - parameters to pass in the API calls.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
- * @param headers - optional headers to pass in the 'getAccessToken` endpoint.
+ * @param options - an object containing the options for this method.
+ * @param option.headers? - optional headers to pass in the 'getAccessToken` endpoint.
  * @returns TokenResponse
  */
 export async function loginGuestUserPrivate(
@@ -336,11 +350,13 @@ export async function loginGuestUserPrivate(
   parameters: {
     usid?: string;
     dnt?: boolean;
-  } & {[key in `c_${string}`]: any},
+  } & CustomQueryParameters,
   credentials: {
     clientSecret: string;
   },
-  headers?: {[key: string]: string}
+  options?: {
+    headers?: {[key: string]: string};
+  }
 ): Promise<TokenResponse> {
   if (!slasClient.clientConfig.parameters.siteId) {
     throw new Error(
@@ -351,10 +367,10 @@ export async function loginGuestUserPrivate(
   const authorization = `Basic ${stringToBase64(
     `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
   )}`;
-  const options = {
+  const opts = {
     headers: {
       Authorization: authorization,
-      ...headers,
+      ...options?.headers,
     },
     body: {
       grant_type: 'client_credentials',
@@ -364,7 +380,7 @@ export async function loginGuestUserPrivate(
     },
   };
 
-  return slasClient.getAccessToken(options);
+  return slasClient.getAccessToken(opts);
 }
 
 /**
@@ -374,7 +390,8 @@ export async function loginGuestUserPrivate(
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
- * @param headers - optional headers to pass in the 'getAccessToken` and authorize` endpoints.
+ * @param options - an object containing the options for this method.
+ * @param option.headers? - optional headers to pass in the 'getAccessToken` endpoint.
  * @returns TokenResponse
  */
 export async function loginGuestUser(
@@ -388,8 +405,10 @@ export async function loginGuestUser(
     redirectURI: string;
     usid?: string;
     dnt?: boolean;
-  } & {[key in `c_${string}`]: any},
-  headers?: {[key: string]: string}
+  } & CustomQueryParameters,
+  options?: {
+    headers?: {[key: string]: string};
+  }
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
 
@@ -404,7 +423,7 @@ export async function loginGuestUser(
       ...restOfParams,
     },
     false,
-    headers
+    {headers: options?.headers}
   );
   const tokenBody: TokenRequest = {
     client_id: slasClient.clientConfig.parameters.clientId,
@@ -417,7 +436,10 @@ export async function loginGuestUser(
     ...(dnt !== undefined && {dnt: dnt.toString()}),
   };
 
-  return slasClient.getAccessToken({body: tokenBody, headers});
+  return slasClient.getAccessToken({
+    body: tokenBody,
+    headers: options?.headers,
+  });
 }
 
 /**
@@ -432,9 +454,9 @@ export async function loginGuestUser(
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
- * @param opts - optional headers or body to pass in the authenticateCustomer call.
- * @param opts.headers - optional headers to pass in the 'getAccessToken' and 'authenticateCustomer' endpoints.
- * @param opts.body - optional body parameters to pass in the 'authenticateCustomer' endpoint.
+ * @param options - an object containing the options for this method.
+ * @param options.headers - optional headers to pass in the 'getAccessToken' and 'authenticateCustomer' endpoints.
+ * @param options.body - optional body parameters to pass in the 'authenticateCustomer' endpoint.
  * @returns TokenResponse
  */
 export async function loginRegisteredUserB2C(
@@ -453,10 +475,10 @@ export async function loginRegisteredUserB2C(
     redirectURI: string;
     usid?: string;
     dnt?: boolean;
-  } & {[key in `c_${string}`]: any},
-  opts?: {
+  } & CustomQueryParameters,
+  options?: {
     headers?: {[key: string]: string};
-    body?: {[key in `c_${string}`]: any} & LoginRequest;
+    body?: CustomRequestBody & LoginRequest;
   }
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
@@ -478,10 +500,10 @@ export async function loginRegisteredUserB2C(
     `${credentials.username}:${credentials.password}`
   )}`;
   const {dnt, usid, redirectURI, ...restOfParams} = parameters;
-  const options = {
+  const opts = {
     headers: {
       Authorization: authorization,
-      ...(opts?.headers || {}),
+      ...(options?.headers || {}),
     },
     parameters: {
       organizationId: slasClient.clientConfig.parameters.organizationId,
@@ -493,11 +515,11 @@ export async function loginRegisteredUserB2C(
       code_challenge: codeChallenge,
       channel_id: slasClient.clientConfig.parameters.siteId,
       ...(usid && {usid}),
-      ...(opts?.body || {}),
+      ...(options?.body || {}),
     },
   };
 
-  const response = await slasClientCopy.authenticateCustomer(options, true);
+  const response = await slasClientCopy.authenticateCustomer(opts, true);
   const redirectUrlString = response.headers?.get('location') || response.url;
   const redirectUrl = new URL(redirectUrlString);
   const searchParams = Object.fromEntries(redirectUrl.searchParams.entries());
@@ -527,14 +549,17 @@ export async function loginRegisteredUserB2C(
     const optionsToken = {
       headers: {
         Authorization: authHeaderIdSecret,
-        ...(opts?.headers || {}),
+        ...options?.headers,
       },
       body: tokenBody,
     };
     return slasClient.getAccessToken(optionsToken);
   }
   // default is to use slas public client
-  return slasClient.getAccessToken({body: tokenBody, headers: opts?.headers});
+  return slasClient.getAccessToken({
+    body: tokenBody,
+    headers: options?.headers,
+  });
 }
 
 /* Function to send passwordless login token
@@ -548,6 +573,8 @@ export async function loginRegisteredUserB2C(
  * @param parameters.userid - User Id for login
  * @param parameters.locale - The locale of the template. Not needed for the callback mode
  * @param parameters.mode - Medium of sending login token
+ * @param options - an object containing the options for this method.
+ * @param options?.headers - optional headers to pass in the 'authorizePasswordlessCustomer' endpoint
  * @returns Promise of Response
  */
 export async function authorizePasswordless(
@@ -566,8 +593,10 @@ export async function authorizePasswordless(
     userid: string;
     locale?: string;
     mode: string;
-  } & {[key in `c_${string}`]: any},
-  headers?: {[key: string]: string}
+  } & CustomQueryParameters,
+  options?: {
+    headers?: {[key: string]: string};
+  }
 ): Promise<Response> {
   if (!credentials.clientSecret) {
     throw new Error('Required argument client secret is not provided');
@@ -604,7 +633,7 @@ export async function authorizePasswordless(
     {
       headers: {
         Authorization: authHeaderIdSecret,
-        ...headers,
+        ...options?.headers,
       },
       parameters: {
         organizationId: slasClient.clientConfig.parameters.organizationId,
@@ -626,7 +655,8 @@ export async function authorizePasswordless(
  * @param parameters.callbackURI? - URI to send the passwordless login token to. Must be listed in your SLAS configuration. Required when mode is callback
  * @param parameters.pwdlessLoginToken - Passwordless login token
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
- * @param headers - optional headers to pass in the 'getPasswordLessAccessToken'
+ * @param options - an object containing the options for this method.
+ * @param options?.headers - optional headers to pass in the 'getPasswordLessAccessToken' endpoint
  * @returns Promise of Response or Object
  */
 export async function getPasswordLessAccessToken(
@@ -642,8 +672,10 @@ export async function getPasswordLessAccessToken(
   parameters: {
     pwdlessLoginToken: string;
     dnt?: string;
-  } & {[key in `c_${string}`]: any},
-  headers?: {[key: string]: string}
+  } & CustomQueryParameters,
+  options?: {
+    headers?: {[key: string]: string};
+  }
 ): Promise<TokenResponse> {
   if (!credentials.clientSecret) {
     throw new Error('Required argument client secret is not provided');
@@ -674,7 +706,7 @@ export async function getPasswordLessAccessToken(
   return slasClient.getPasswordLessAccessToken({
     headers: {
       Authorization: authHeaderIdSecret,
-      ...headers,
+      ...options?.headers,
     },
     parameters: {
       organizationId: slasClient.clientConfig.parameters.organizationId,
@@ -692,7 +724,8 @@ export async function getPasswordLessAccessToken(
  * @param parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
  * @param credentials - the clientSecret (if applicable) to login with.
  * @param credentials.clientSecret - secret associated with client ID
- * @param headers - optional headers to pass in the 'get
+ * @param options - an object containing the options for this method.
+ * @param options?.headers - optional headers to pass in the 'getAccessToken' endpoint
  * @returns TokenResponse
  */
 export function refreshAccessToken(
@@ -705,9 +738,11 @@ export function refreshAccessToken(
   parameters: {
     refreshToken: string;
     dnt?: boolean;
-  } & {[key in `c_${string}`]: any},
+  } & CustomQueryParameters,
   credentials?: {clientSecret?: string},
-  headers?: {[key: string]: string}
+  options?: {
+    headers?: {[key: string]: string};
+  }
 ): Promise<TokenResponse> {
   const {dnt, ...restOfParams} = parameters;
   const body = {
@@ -722,18 +757,18 @@ export function refreshAccessToken(
     const authorization = `Basic ${stringToBase64(
       `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
     )}`;
-    const options = {
+    const opts = {
       ...(Object.keys(parameters) && {parameters: restOfParams}),
       headers: {
         Authorization: authorization,
-        ...headers,
+        ...options?.headers,
       },
       body,
     };
-    return slasClient.getAccessToken(options);
+    return slasClient.getAccessToken(opts);
   }
 
-  return slasClient.getAccessToken({body});
+  return slasClient.getAccessToken({body, headers: options?.headers});
 }
 
 /**
@@ -742,7 +777,8 @@ export function refreshAccessToken(
  * @param parameters - parameters to pass in the API calls.
  * @param parameters.accessToken - a valid access token to exchange for a new access token (and refresh token).
  * @param parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
- * @param headers -  optional headers to pass in the 'logoutCustomer` endpoint.
+ * @param options - an object containing the options for this method.
+ * @param options?.headers - optional headers to pass in the 'logoutCustomer' endpoint
  * @returns TokenResponse
  */
 export function logout(
@@ -755,14 +791,16 @@ export function logout(
   parameters: {
     accessToken: string;
     refreshToken: string;
-  } & {[key in `c_${string}`]: any},
-  headers?: {[key: string]: string}
+  } & CustomQueryParameters,
+  options?: {
+    headers?: {[key: string]: string};
+  }
 ): Promise<TokenResponse> {
   const {refreshToken, accessToken, ...restOfParams} = parameters;
   return slasClient.logoutCustomer({
     headers: {
       Authorization: `Bearer ${accessToken}`,
-      ...headers,
+      ...options?.headers,
     },
     parameters: {
       refresh_token: refreshToken,
