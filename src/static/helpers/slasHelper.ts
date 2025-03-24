@@ -109,7 +109,7 @@ export const generateCodeChallenge = async (
  * @param parameters.redirectURI - the location the client will be returned to after successful login with 3rd party IDP. Must be registered in SLAS.
  * @param parameters.hint? - optional string to hint at a particular IDP. Guest sessions are created by setting this to 'guest'
  * @param parameters.usid? - optional saved SLAS user id to link the new session to a previous session
- * @param privateClient - flag to indicate if the client is private or not. Defaults to false.
+ * @param privateClient? - flag to indicate if the client is private or not. Defaults to false.
  * @param options - an object containing the options for this method.
  * @param options.headers? - optional header to pass in the 'authorizeCustomer` endpoint.
  * @returns login url, user id and authorization code if available
