@@ -419,7 +419,6 @@ export async function loginGuestUser(
 
   return slasClient.getAccessToken({body: tokenBody, headers});
 }
-type BodyRequest = LoginRequest & {[key in `c_${string}`]: any};
 
 /**
  * A single function to execute the ShopperLogin Public Client Registered User B2C Login with proof key for code exchange flow as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary).
