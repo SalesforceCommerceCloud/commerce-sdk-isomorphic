@@ -48,6 +48,12 @@ it.each([
     {pathParams: {baseParam: 'short', sub: 'one', sub2: 'two'}},
     'http://short.example.com/one/two',
   ],
+  [
+    '/categories/{id}',
+    'http://example.com',
+    {pathParams: {id: 'womens;,%$^@$(!3'}},
+    'http://example.com/categories/womens%253B%252C%2525%2524%255E%2540%2524(!3',
+  ],
 ])('combines %s, %s and %s into %s', (url, base, parameters, expected) => {
   expect(new TemplateURL(url, base, parameters).toString()).toBe(expected);
 });
