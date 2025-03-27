@@ -379,6 +379,55 @@ describe('Guest user flow', () => {
     expect(accessToken).toBe(expectedTokenResponse);
   });
 
+  test('throw warning for invalid params', async () => {
+    // Spy on console.warn
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+
+    const expectedTokenBody = {
+      body: {
+        client_id: 'client_id',
+        channel_id: 'site_id',
+        code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
+        code_verifier: expect.stringMatching(/./) as string,
+        grant_type: 'authorization_code_pkce',
+        redirect_uri: 'redirect_uri',
+        usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
+        dnt: 'false',
+      },
+    };
+    const mockSlasClient = createMockSlasClient();
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
+      .query(true)
+      .reply(303, {response_body: 'response_body'}, {location: url});
+
+    const accessToken = await slasHelper.loginGuestUser(mockSlasClient, {
+      redirectURI: parameters.redirectURI,
+      dnt: false,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      hello: 'world',
+    });
+
+    // Assert the warning was logged
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Invalid Parameter for authorizeCustomer: hello')
+    );
+
+    expect(getAccessTokenMock).toBeCalledWith({
+      ...expectedTokenBody,
+      parameters: {
+        hello: 'world',
+      },
+    });
+    expect(accessToken).toBe(expectedTokenResponse);
+
+    // Restore the original console.warn
+    consoleWarnSpy.mockRestore();
+  });
+
   test('can pass custom params, headers on public guest', async () => {
     const expectedTokenBody = {
       body: {
@@ -527,7 +576,9 @@ describe('Registered B2C user flow', () => {
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
   });
 
-  test('can pass custom parameters, headers and body field', async () => {
+  test('can pass custom parameters, headers and body field, and throw warning for invalid params', async () => {
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+
     // slasClient is copied and tries to make an actual API call
     const mockSlasClient = createMockSlasClient();
     const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
@@ -549,6 +600,9 @@ describe('Registered B2C user flow', () => {
         redirectURI: 'redirect_uri',
         dnt: false,
         c_color: 'red',
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore intentionally passing invalid param
+        invalid_param: 'invalid param',
       },
       {
         headers: {c_header: 'test'},
@@ -559,12 +613,18 @@ describe('Registered B2C user flow', () => {
         },
       }
     );
-
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      expect.stringContaining(
+        'Invalid Parameter for authenticateCustomer: invalid_param'
+      )
+    );
     expect(getAccessTokenMock).toBeCalledWith({
       ...expectedTokenBody,
       headers: {c_header: 'test'},
-      parameters: {c_color: 'red'},
+      parameters: {c_color: 'red', invalid_param: 'invalid param'},
     });
+    // Restore the original console.warn
+    consoleWarnSpy.mockRestore();
   });
 
   test('uses code challenge and authorization header to generate auth code with slas private client', async () => {
