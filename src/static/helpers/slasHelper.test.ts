@@ -770,6 +770,50 @@ describe('authorizePasswordless is working', () => {
       'Required argument channel_id is not provided through clientConfig.parameters.siteId'
     );
   });
+
+  test('Throw when required mode missing', async () => {
+    const mockSlasClient = createMockSlasClient();
+    const parametersAuthorizePasswordless = {
+      callbackURI: 'www.something.com/callback',
+      usid: 'a_usid',
+      userid: 'a_userid',
+      locale: 'a_locale',
+    };
+    await expect(
+      slasHelper.authorizePasswordless(
+        mockSlasClient,
+        credentialsPrivate,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore intentionally missing mode
+        parametersAuthorizePasswordless
+      )
+    ).rejects.toThrow(
+      'Required argument mode is not provided through parameters'
+    );
+  });
+
+  test('Throw when clientSecret is missing', async () => {
+    const mockSlasClient = createMockSlasClient();
+    const parametersAuthorizePasswordless = {
+      callbackURI: 'www.something.com/callback',
+      usid: 'a_usid',
+      userid: 'a_userid',
+      locale: 'a_locale',
+      mode: 'callback',
+    };
+    await expect(
+      slasHelper.authorizePasswordless(
+        mockSlasClient,
+        {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore intentionally missing mode
+          username: 'Jeff',
+          password: 'password',
+        },
+        parametersAuthorizePasswordless
+      )
+    ).rejects.toThrow('Required argument client secret is not provided');
+  });
 });
 
 describe('getPasswordLessAccessToken is working', () => {
