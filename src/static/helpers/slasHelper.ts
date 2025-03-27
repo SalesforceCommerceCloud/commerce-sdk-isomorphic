@@ -439,7 +439,7 @@ export async function loginGuestUser(
       ...(usid && {usid}),
     },
     false,
-    {headers: options?.headers}
+    options?.headers && {headers: options.headers}
   );
   const tokenBody: TokenRequest = {
     client_id: slasClient.clientConfig.parameters.clientId,
@@ -454,7 +454,7 @@ export async function loginGuestUser(
 
   return slasClient.getAccessToken({
     body: tokenBody,
-    headers: options?.headers,
+    ...(options?.headers && {headers: options.headers}),
     // only add custom parameters if there are any
     ...(Object.keys(restOfParams).length > 0 && {parameters: restOfParams}),
   });
@@ -529,12 +529,12 @@ export async function loginRegisteredUserB2C(
       organizationId: slasClient.clientConfig.parameters.organizationId,
     },
     body: {
+      ...(options?.body || {}),
       redirect_uri: redirectURI,
       client_id: slasClient.clientConfig.parameters.clientId,
       code_challenge: codeChallenge,
       channel_id: slasClient.clientConfig.parameters.siteId,
       ...(usid && {usid}),
-      ...(options?.body || {}),
     },
   };
 
@@ -568,18 +568,19 @@ export async function loginRegisteredUserB2C(
     const optionsToken = {
       headers: {
         // do not allow overriding of the Authorization header
-        ...options?.headers,
+        ...(options?.headers || {}),
         Authorization: authHeaderIdSecret,
       },
       body: tokenBody,
+      ...(Object.keys(restOfParams).length > 0 && {parameters: restOfParams}),
     };
     return slasClient.getAccessToken(optionsToken);
   }
   // default is to use slas public client
   return slasClient.getAccessToken({
     body: tokenBody,
-    headers: options?.headers,
-    ...(Object.keys(parameters) && {parameters: restOfParams}),
+    ...(options?.headers && {headers: options.headers}),
+    ...(Object.keys(restOfParams).length > 0 && {parameters: restOfParams}),
   });
 }
 
@@ -785,7 +786,7 @@ export function refreshAccessToken(
       `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
     )}`;
     const opts = {
-      ...(Object.keys(parameters) && {parameters: restOfParams}),
+      ...(Object.keys(restOfParams) && {parameters: restOfParams}),
       headers: {
         // we don't want any overriding for the Authorization header
         ...options?.headers,
@@ -798,8 +799,8 @@ export function refreshAccessToken(
 
   return slasClient.getAccessToken({
     body,
-    headers: options?.headers,
-    ...(Object.keys(parameters) && {parameters: restOfParams}),
+    ...(options?.headers && {headers: options.headers}),
+    ...(Object.keys(restOfParams) && {parameters: restOfParams}),
   });
 }
 

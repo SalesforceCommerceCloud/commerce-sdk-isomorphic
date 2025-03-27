@@ -254,7 +254,10 @@ test('throws error on 400 response', async () => {
     .reply(400, {response_body: 'response_body'}, {location: ''});
 
   await expect(
-    slasHelper.authorize(mockSlasClient, codeVerifier, parameters)
+    slasHelper.authorize(mockSlasClient, codeVerifier, {
+      redirectURI: parameters.redirectURI,
+      usid: parameters.usid,
+    })
   ).rejects.toThrow(ResponseError);
 });
 
@@ -368,20 +371,73 @@ describe('Guest user flow', () => {
       .query(true)
       .reply(303, {response_body: 'response_body'}, {location: url});
 
-    const accessToken = await slasHelper.loginGuestUser(
-      mockSlasClient,
-      parameters
-    );
+    const accessToken = await slasHelper.loginGuestUser(mockSlasClient, {
+      redirectURI: parameters.redirectURI,
+      dnt: false,
+    });
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
     expect(accessToken).toBe(expectedTokenResponse);
   });
 
-  test('generates an access token using slas private client', async () => {
+  test('can pass custom params, headers on public guest', async () => {
+    const expectedTokenBody = {
+      body: {
+        client_id: 'client_id',
+        channel_id: 'site_id',
+        code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
+        code_verifier: expect.stringMatching(/./) as string,
+        grant_type: 'authorization_code_pkce',
+        redirect_uri: 'redirect_uri',
+        usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
+        dnt: 'false',
+      },
+      headers: {
+        c_headers: 'custom header',
+      },
+      parameters: {
+        c_color: 'red',
+      },
+    };
+    const mockSlasClient = createMockSlasClient();
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    // Mocking the authorize call to verify query parameters and headers
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
+      .query(query => query.c_color === 'red')
+      .matchHeader('c_headers', 'custom header') // Verify the custom header is included
+      .reply(303, {response_body: 'response_body'}, {location: url});
+
+    const accessToken = await slasHelper.loginGuestUser(
+      mockSlasClient,
+      {
+        redirectURI: parameters.redirectURI,
+        dnt: false,
+        c_color: 'red',
+      },
+      {
+        headers: {
+          c_headers: 'custom header',
+        },
+      }
+    );
+
+    // Verify getAccessToken was called with the right parameters,
+    // including custom headers and parameters
+    expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
+    expect(accessToken).toBe(expectedTokenResponse);
+  });
+
+  test('generates an access token using slas private client (with a custom params)', async () => {
     const mockSlasClient = createMockSlasClient();
 
     const accessToken = await slasHelper.loginGuestUserPrivate(
       mockSlasClient,
-      parameters,
+      {
+        usid: parameters.usid,
+        dnt: false,
+        c_color: 'red',
+      },
       credentialsPrivate
     );
 
@@ -396,6 +452,9 @@ describe('Guest user flow', () => {
         channel_id: 'site_id',
         usid: 'usid',
         dnt: 'false',
+      },
+      parameters: {
+        c_color: 'red',
       },
     };
     expect(getAccessTokenMock).toBeCalledWith(expectedReqOptions);
@@ -443,6 +502,12 @@ describe('Registered B2C user flow', () => {
     },
   };
 
+  const registeredUserFlowParams = {
+    redirectURI: parameters.redirectURI,
+    dnt: parameters.dnt,
+    usid: parameters.usid,
+  };
+
   test('uses code challenge and authorization header to generate auth code with slas public client', async () => {
     // slasClient is copied and tries to make an actual API call
     const mockSlasClient = createMockSlasClient();
@@ -456,7 +521,7 @@ describe('Registered B2C user flow', () => {
     await slasHelper.loginRegisteredUserB2C(
       mockSlasClient,
       credentials,
-      parameters
+      registeredUserFlowParams
     );
 
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
@@ -486,7 +551,7 @@ describe('Registered B2C user flow', () => {
         c_color: 'red',
       },
       {
-        headers: {custom_header: 'test'},
+        headers: {c_header: 'test'},
         body: {
           redirect_uri: 'redirect_uri',
           c_body: 'test',
@@ -497,7 +562,8 @@ describe('Registered B2C user flow', () => {
 
     expect(getAccessTokenMock).toBeCalledWith({
       ...expectedTokenBody,
-      headers: {custom_header: 'test'},
+      headers: {c_header: 'test'},
+      parameters: {c_color: 'red'},
     });
   });
 
@@ -532,7 +598,7 @@ describe('Registered B2C user flow', () => {
     await slasHelper.loginRegisteredUserB2C(
       mockSlasClient,
       credentialsPrivate,
-      parameters
+      registeredUserFlowParams
     );
 
     expect(getAccessTokenMock).toBeCalledWith(expectedReqOptions);
@@ -548,7 +614,11 @@ describe('Registered B2C user flow', () => {
       .reply(400, {message: 'Oh no!'});
 
     await expect(
-      slasHelper.loginRegisteredUserB2C(mockSlasClient, credentials, parameters)
+      slasHelper.loginRegisteredUserB2C(
+        mockSlasClient,
+        credentials,
+        registeredUserFlowParams
+      )
     ).rejects.toThrow(ResponseError);
   });
 
@@ -562,7 +632,11 @@ describe('Registered B2C user flow', () => {
       .reply(401, {message: 'Oh no!'});
 
     await expect(
-      slasHelper.loginRegisteredUserB2C(mockSlasClient, credentials, parameters)
+      slasHelper.loginRegisteredUserB2C(
+        mockSlasClient,
+        credentials,
+        registeredUserFlowParams
+      )
     ).rejects.toThrow(ResponseError);
   });
 
@@ -576,7 +650,11 @@ describe('Registered B2C user flow', () => {
       .reply(500, {message: 'Oh no!'});
 
     await expect(
-      slasHelper.loginRegisteredUserB2C(mockSlasClient, credentials, parameters)
+      slasHelper.loginRegisteredUserB2C(
+        mockSlasClient,
+        credentials,
+        registeredUserFlowParams
+      )
     ).rejects.toThrow(ResponseError);
   });
 
@@ -590,7 +668,11 @@ describe('Registered B2C user flow', () => {
       .reply(303, {message: 'Oh yes!'});
 
     await expect(
-      slasHelper.loginRegisteredUserB2C(mockSlasClient, credentials, parameters)
+      slasHelper.loginRegisteredUserB2C(
+        mockSlasClient,
+        credentials,
+        registeredUserFlowParams
+      )
     ).resolves.not.toThrow(ResponseError);
   });
 
@@ -606,7 +688,7 @@ describe('Registered B2C user flow', () => {
     const accessToken = await slasHelper.loginRegisteredUserB2C(
       mockSlasClient,
       credentials,
-      parameters
+      registeredUserFlowParams
     );
     expect(accessToken).toStrictEqual(expectedTokenResponse);
   });
@@ -758,7 +840,7 @@ describe('getPasswordLessAccessToken is working', () => {
 
 describe('Refresh Token', () => {
   test('refreshes the token with slas public client', () => {
-    const expectedBody = {
+    const expectedOptions = {
       body: {
         client_id: 'client_id',
         channel_id: 'site_id',
@@ -766,12 +848,15 @@ describe('Refresh Token', () => {
         refresh_token: 'refresh_token',
         dnt: 'false',
       },
+      parameters: {
+        refreshToken: parameters.refreshToken,
+      },
     };
-    const token = slasHelper.refreshAccessToken(
-      createMockSlasClient(),
-      parameters
-    );
-    expect(getAccessTokenMock).toBeCalledWith(expectedBody);
+    const token = slasHelper.refreshAccessToken(createMockSlasClient(), {
+      refreshToken: parameters.refreshToken,
+      dnt: parameters.dnt,
+    });
+    expect(getAccessTokenMock).toBeCalledWith(expectedOptions);
     expect(token).toStrictEqual(expectedTokenResponse);
   });
 
