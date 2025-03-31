@@ -452,7 +452,7 @@ export async function loginRegisteredUserB2C(
     dnt?: boolean;
   } & CustomQueryParameters,
   options?: {
-    body?: CustomRequestBody & LoginRequest;
+    body?: CustomRequestBody;
   }
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
