@@ -207,9 +207,10 @@ export async function authorizeIDP(
     redirectURI: string;
     hint: string;
     usid?: string;
-  },
+  } & CustomQueryParameters,
   privateClient = false
 ): Promise<{url: string; codeVerifier: string}> {
+  const {hint, redirectURI, usid, ...restOfParams} = parameters;
   const codeVerifier = createCodeVerifier();
   interface ClientOptions {
     codeChallenge?: string;
@@ -227,15 +228,17 @@ export async function authorizeIDP(
     version: slasClient.clientConfig.parameters.version || 'v1',
   };
   const queryParams: ShopperLoginQueryParameters = {
+    // put it at the top to avoid overriding the rest of params
+    ...restOfParams,
     client_id: slasClient.clientConfig.parameters.clientId,
     channel_id: slasClient.clientConfig.parameters.siteId,
     ...(clientOptions.codeChallenge && {
       code_challenge: clientOptions.codeChallenge,
     }),
-    hint: parameters.hint,
-    redirect_uri: parameters.redirectURI,
+    hint,
+    redirect_uri: redirectURI,
     response_type: 'code',
-    ...(parameters.usid && {usid: parameters.usid}),
+    ...(usid && {usid}),
   };
 
   const url = new TemplateURL(apiPath, slasClient.clientConfig.baseUri, {

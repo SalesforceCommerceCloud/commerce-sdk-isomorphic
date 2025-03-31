@@ -267,12 +267,14 @@ describe('Authorize IDP User', () => {
     mockSlasClient.clientConfig.baseUri =
       'https://{shortCode}.api.commercecloud.salesforce.com/shopper/auth/{version}';
 
-    const authResponse = await slasHelper.authorizeIDP(
-      mockSlasClient,
-      parameters
-    );
+    const authResponse = await slasHelper.authorizeIDP(mockSlasClient, {
+      hint: parameters.hint,
+      redirectURI: parameters.redirectURI,
+      usid: parameters.usid,
+      c_param: 'test',
+    });
     const expectedAuthURL =
-      'https://short_code.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/organization_id/oauth2/authorize?client_id=client_id&channel_id=site_id&hint=hint&redirect_uri=redirect_uri&response_type=code&usid=usid';
+      'https://short_code.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/organization_id/oauth2/authorize?c_param=test&client_id=client_id&channel_id=site_id&hint=hint&redirect_uri=redirect_uri&response_type=code&usid=usid';
     expect(authResponse.url.replace(/[&?]code_challenge=[^&]*/, '')).toBe(
       expectedAuthURL
     );
