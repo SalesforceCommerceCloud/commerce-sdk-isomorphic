@@ -578,9 +578,7 @@ describe('Registered B2C user flow', () => {
       },
       {
         body: {
-          redirect_uri: 'redirect_uri',
           c_body: 'test',
-          channel_id: 'site_id',
         },
       }
     );
