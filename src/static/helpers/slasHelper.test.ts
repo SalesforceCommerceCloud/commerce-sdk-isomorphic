@@ -416,19 +416,14 @@ describe('Guest user flow', () => {
       expect.stringContaining('Invalid Parameter for authorizeCustomer: hello')
     );
 
-    expect(getAccessTokenMock).toBeCalledWith({
-      ...expectedTokenBody,
-      parameters: {
-        hello: 'world',
-      },
-    });
+    expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
     expect(accessToken).toBe(expectedTokenResponse);
 
     // Restore the original console.warn
     consoleWarnSpy.mockRestore();
   });
 
-  test('can pass custom params, headers on public guest', async () => {
+  test('can pass custom params on public guest', async () => {
     const expectedTokenBody = {
       body: {
         client_id: 'client_id',
@@ -440,12 +435,6 @@ describe('Guest user flow', () => {
         usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
         dnt: 'false',
       },
-      headers: {
-        c_headers: 'custom header',
-      },
-      parameters: {
-        c_color: 'red',
-      },
     };
     const mockSlasClient = createMockSlasClient();
     const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
@@ -454,22 +443,13 @@ describe('Guest user flow', () => {
     nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
       .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
       .query(query => query.c_color === 'red')
-      .matchHeader('c_headers', 'custom header') // Verify the custom header is included
       .reply(303, {response_body: 'response_body'}, {location: url});
 
-    const accessToken = await slasHelper.loginGuestUser(
-      mockSlasClient,
-      {
-        redirectURI: parameters.redirectURI,
-        dnt: false,
-        c_color: 'red',
-      },
-      {
-        headers: {
-          c_headers: 'custom header',
-        },
-      }
-    );
+    const accessToken = await slasHelper.loginGuestUser(mockSlasClient, {
+      redirectURI: parameters.redirectURI,
+      dnt: false,
+      c_color: 'red',
+    });
 
     // Verify getAccessToken was called with the right parameters,
     // including custom headers and parameters
@@ -477,16 +457,12 @@ describe('Guest user flow', () => {
     expect(accessToken).toBe(expectedTokenResponse);
   });
 
-  test('generates an access token using slas private client (with a custom params)', async () => {
+  test('generates an access token using slas private client', async () => {
     const mockSlasClient = createMockSlasClient();
 
     const accessToken = await slasHelper.loginGuestUserPrivate(
       mockSlasClient,
-      {
-        usid: parameters.usid,
-        dnt: false,
-        c_color: 'red',
-      },
+      parameters,
       credentialsPrivate
     );
 
@@ -501,9 +477,6 @@ describe('Guest user flow', () => {
         channel_id: 'site_id',
         usid: 'usid',
         dnt: 'false',
-      },
-      parameters: {
-        c_color: 'red',
       },
     };
     expect(getAccessTokenMock).toBeCalledWith(expectedReqOptions);
@@ -576,7 +549,7 @@ describe('Registered B2C user flow', () => {
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
   });
 
-  test('can pass custom parameters, headers and body field, and throw warning for invalid params', async () => {
+  test('can pass custom body field, and throw warning for invalid params', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
     // slasClient is copied and tries to make an actual API call
@@ -585,9 +558,7 @@ describe('Registered B2C user flow', () => {
 
     // // Mocking slasCopy.authenticateCustomer
     nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
-      .post(
-        `/shopper/auth/v1/organizations/${organizationId}/oauth2/login?c_color=red`
-      )
+      .post(`/shopper/auth/v1/organizations/${organizationId}/oauth2/login`)
       .reply((uri, requestBody) => {
         expect(requestBody).toMatch(/c_body=test/i);
         return [303, {response_body: 'response_body'}, {location: url}];
@@ -599,13 +570,11 @@ describe('Registered B2C user flow', () => {
       {
         redirectURI: 'redirect_uri',
         dnt: false,
-        c_color: 'red',
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore intentionally passing invalid param
         invalid_param: 'invalid param',
       },
       {
-        headers: {c_header: 'test'},
         body: {
           redirect_uri: 'redirect_uri',
           c_body: 'test',
@@ -618,11 +587,7 @@ describe('Registered B2C user flow', () => {
         'Invalid Parameter for authenticateCustomer: invalid_param'
       )
     );
-    expect(getAccessTokenMock).toBeCalledWith({
-      ...expectedTokenBody,
-      headers: {c_header: 'test'},
-      parameters: {c_color: 'red', invalid_param: 'invalid param'},
-    });
+    expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
     // Restore the original console.warn
     consoleWarnSpy.mockRestore();
   });
@@ -944,7 +909,7 @@ describe('getPasswordLessAccessToken is working', () => {
 
 describe('Refresh Token', () => {
   test('refreshes the token with slas public client', () => {
-    const expectedOptions = {
+    const expectedBody = {
       body: {
         client_id: 'client_id',
         channel_id: 'site_id',
@@ -952,15 +917,12 @@ describe('Refresh Token', () => {
         refresh_token: 'refresh_token',
         dnt: 'false',
       },
-      parameters: {
-        refreshToken: parameters.refreshToken,
-      },
     };
-    const token = slasHelper.refreshAccessToken(createMockSlasClient(), {
-      refreshToken: parameters.refreshToken,
-      dnt: parameters.dnt,
-    });
-    expect(getAccessTokenMock).toBeCalledWith(expectedOptions);
+    const token = slasHelper.refreshAccessToken(
+      createMockSlasClient(),
+      parameters
+    );
+    expect(getAccessTokenMock).toBeCalledWith(expectedBody);
     expect(token).toStrictEqual(expectedTokenResponse);
   });
 
@@ -977,13 +939,6 @@ describe('Refresh Token', () => {
         channel_id: 'site_id',
         refresh_token: parameters.refreshToken,
         dnt: 'false',
-      },
-      parameters: {
-        accessToken: 'access_token',
-        hint: 'hint',
-        redirectURI: 'redirect_uri',
-        refreshToken: 'refresh_token',
-        usid: 'usid',
       },
     };
     const token = slasHelper.refreshAccessToken(
@@ -1011,10 +966,7 @@ describe('Logout', () => {
   };
 
   test('logs out the customer', () => {
-    const token = slasHelper.logout(createMockSlasClient(), {
-      accessToken: 'access_token',
-      refreshToken: 'refresh_token',
-    });
+    const token = slasHelper.logout(createMockSlasClient(), parameters);
     expect(logoutCustomerMock).toBeCalledWith(expectedOptions);
     expect(token).toStrictEqual(expectedTokenResponse);
   });
