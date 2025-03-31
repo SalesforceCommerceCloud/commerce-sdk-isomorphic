@@ -10,7 +10,6 @@ import seedrandom, {PRNG} from 'seedrandom';
 import {isBrowser} from './environment';
 
 import {
-  LoginRequest,
   ShopperLogin,
   ShopperLoginPathParameters,
   ShopperLoginQueryParameters,
