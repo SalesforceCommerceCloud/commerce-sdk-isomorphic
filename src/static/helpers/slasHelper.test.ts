@@ -551,9 +551,7 @@ describe('Registered B2C user flow', () => {
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
   });
 
-  test('can pass custom body field, and throw warning for invalid params', async () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-
+  test('can pass custom body field', async () => {
     // slasClient is copied and tries to make an actual API call
     const mockSlasClient = createMockSlasClient();
     const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
@@ -572,9 +570,6 @@ describe('Registered B2C user flow', () => {
       {
         redirectURI: 'redirect_uri',
         dnt: false,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore intentionally passing invalid param
-        invalid_param: 'invalid param',
       },
       {
         body: {
@@ -582,14 +577,7 @@ describe('Registered B2C user flow', () => {
         },
       }
     );
-    expect(consoleWarnSpy).toHaveBeenCalledWith(
-      expect.stringContaining(
-        'Invalid Parameter for authenticateCustomer: invalid_param'
-      )
-    );
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
-    // Restore the original console.warn
-    consoleWarnSpy.mockRestore();
   });
 
   test('uses code challenge and authorization header to generate auth code with slas private client', async () => {

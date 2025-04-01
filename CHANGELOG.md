@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ## v3.3.0
-- Allow custom params for 'loginGuestUser', 'authorizeIDP' and custom body/params for 'loginRegisteredUserB2C' functions [#186](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/186)
+- Allow custom params for 'loginGuestUser', 'authorizeIDP' and custom body for 'loginRegisteredUserB2C' functions [#186](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/186)
 
 ## v3.2.0
 
