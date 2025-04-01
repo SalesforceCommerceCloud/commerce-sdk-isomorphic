@@ -104,7 +104,7 @@ export const generateCodeChallenge = async (
  * Wrapper for the authorization endpoint. For federated login (3rd party IDP non-guest), the caller should redirect the user to the url in the url field of the returned object. The url will be the login page for the 3rd party IDP and the user will be sent to the redirectURI on success. Guest sessions return the code and usid directly with no need to redirect.
  * @param slasClient a configured instance of the ShopperLogin SDK client
  * @param codeVerifier - random string created by client app to use as a secret in the request
- * @param parameters - Request parameters used by the `authorizeCustomer` endpoint.
+ * @param parameters - Request parameters used by the `authorizeCustomer` endpoint. Custom parameters can be passed on by adding a property on the `parameters` object starting with `c_`
  * @param parameters.redirectURI - the location the client will be returned to after successful login with 3rd party IDP. Must be registered in SLAS.
  * @param parameters.hint? - optional string to hint at a particular IDP. Guest sessions are created by setting this to 'guest'
  * @param parameters.usid? - optional saved SLAS user id to link the new session to a previous session
@@ -187,7 +187,7 @@ export async function authorize(
 /**
  * Function to return the URL of the authorization endpoint. The url will redirect to the login page for the 3rd party IDP and the user will be sent to the redirectURI on success. Guest sessions return the code and usid directly with no need to redirect.
  * @param slasClient a configured instance of the ShopperLogin SDK client
- * @param parameters - Request parameters used by the `authorizeCustomer` endpoint.
+ * @param parameters - Request parameters used by the `authorizeCustomer` endpoint. Custom parameters can be passed on by adding a property on the `parameters` object starting with `c_`
  * @param parameters.redirectURI - the location the client will be returned to after successful login with 3rd party IDP. Must be registered in SLAS.
  * @param parameters.hint - string to hint at a particular IDP. Required for 3rd party IDP login.
  * @param parameters.usid? - optional saved SLAS user id to link the new session to a previous session
@@ -368,7 +368,7 @@ export async function loginGuestUserPrivate(
 /**
  * A single function to execute the ShopperLogin Public Client Guest Login with proof key for code exchange flow as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary).
  * @param slasClient a configured instance of the ShopperLogin SDK client.
- * @param parameters - parameters to pass in the API calls.
+ * @param parameters - parameters to pass in the API calls. Custom parameters can be passed on by adding a property on the `parameters` object starting with `c_`, and they will be passed to `authorizeCustomer` call.
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
@@ -425,7 +425,7 @@ export async function loginGuestUser(
  * @param credentials.username - the id of the user to login with.
  * @param credentials.password - the password of the user to login with.
  * @param credentials.clientSecret? - secret associated with client ID
- * @param parameters - parameters to pass in the API calls.
+ * @param parameters - parameters to pass in the API calls. Custom parameters can be passed on by adding a property on the `parameters` object starting with `c_`, and they will be passed to `authenticateCustomer` call.
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
