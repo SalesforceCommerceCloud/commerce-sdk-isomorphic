@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v3.3.0
+- Add helper to encode special SCAPI characters [#189](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/189)
+
 ## v3.2.0
 
 ### Enhancements
