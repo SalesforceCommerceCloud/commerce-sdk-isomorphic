@@ -89,8 +89,7 @@ export default class TemplateURL extends URL {
     return parameters
       ? template.replace(
           /\{([^\}]+)\}/g /* eslint-disable-line no-useless-escape */,
-          (match, param: string) =>
-            String(encodeURIComponent(encodeURIComponent(parameters[param])))
+          (match, param: string) => String(parameters[param])
         )
       : template;
   }
