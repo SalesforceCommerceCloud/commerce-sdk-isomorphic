@@ -254,7 +254,10 @@ test('throws error on 400 response', async () => {
     .reply(400, {response_body: 'response_body'}, {location: ''});
 
   await expect(
-    slasHelper.authorize(mockSlasClient, codeVerifier, parameters)
+    slasHelper.authorize(mockSlasClient, codeVerifier, {
+      redirectURI: parameters.redirectURI,
+      usid: parameters.usid,
+    })
   ).rejects.toThrow(ResponseError);
 });
 
@@ -264,12 +267,14 @@ describe('Authorize IDP User', () => {
     mockSlasClient.clientConfig.baseUri =
       'https://{shortCode}.api.commercecloud.salesforce.com/shopper/auth/{version}';
 
-    const authResponse = await slasHelper.authorizeIDP(
-      mockSlasClient,
-      parameters
-    );
+    const authResponse = await slasHelper.authorizeIDP(mockSlasClient, {
+      hint: parameters.hint,
+      redirectURI: parameters.redirectURI,
+      usid: parameters.usid,
+      c_param: 'test',
+    });
     const expectedAuthURL =
-      'https://short_code.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/organization_id/oauth2/authorize?client_id=client_id&channel_id=site_id&hint=hint&redirect_uri=redirect_uri&response_type=code&usid=usid';
+      'https://short_code.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/organization_id/oauth2/authorize?c_param=test&client_id=client_id&channel_id=site_id&hint=hint&redirect_uri=redirect_uri&response_type=code&usid=usid';
     expect(authResponse.url.replace(/[&?]code_challenge=[^&]*/, '')).toBe(
       expectedAuthURL
     );
@@ -278,7 +283,8 @@ describe('Authorize IDP User', () => {
 
 describe('IDP Login flow', () => {
   const loginParams = {
-    ...parameters,
+    redirectURI: 'redirect_uri',
+    dnt: false,
     usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
     code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
   };
@@ -367,10 +373,88 @@ describe('Guest user flow', () => {
       .query(true)
       .reply(303, {response_body: 'response_body'}, {location: url});
 
-    const accessToken = await slasHelper.loginGuestUser(
-      mockSlasClient,
-      parameters
+    const accessToken = await slasHelper.loginGuestUser(mockSlasClient, {
+      redirectURI: parameters.redirectURI,
+      dnt: false,
+    });
+    expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
+    expect(accessToken).toBe(expectedTokenResponse);
+  });
+
+  test('throw warning for invalid params', async () => {
+    // Spy on console.warn
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+
+    const expectedTokenBody = {
+      body: {
+        client_id: 'client_id',
+        channel_id: 'site_id',
+        code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
+        code_verifier: expect.stringMatching(/./) as string,
+        grant_type: 'authorization_code_pkce',
+        redirect_uri: 'redirect_uri',
+        usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
+        dnt: 'false',
+      },
+    };
+    const mockSlasClient = createMockSlasClient();
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
+      .query(true)
+      .reply(303, {response_body: 'response_body'}, {location: url});
+
+    const accessToken = await slasHelper.loginGuestUser(mockSlasClient, {
+      redirectURI: parameters.redirectURI,
+      dnt: false,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      hello: 'world',
+    });
+
+    // Assert the warning was logged
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('Invalid Parameter for authorizeCustomer: hello')
     );
+
+    expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
+    expect(accessToken).toBe(expectedTokenResponse);
+
+    // Restore the original console.warn
+    consoleWarnSpy.mockRestore();
+  });
+
+  test('can pass custom params on public guest', async () => {
+    const expectedTokenBody = {
+      body: {
+        client_id: 'client_id',
+        channel_id: 'site_id',
+        code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
+        code_verifier: expect.stringMatching(/./) as string,
+        grant_type: 'authorization_code_pkce',
+        redirect_uri: 'redirect_uri',
+        usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
+        dnt: 'false',
+      },
+    };
+    const mockSlasClient = createMockSlasClient();
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    // Mocking the authorize call to verify query parameters and headers
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
+      .query(query => query.c_color === 'red')
+      .reply(303, {response_body: 'response_body'}, {location: url});
+
+    const accessToken = await slasHelper.loginGuestUser(mockSlasClient, {
+      redirectURI: parameters.redirectURI,
+      dnt: false,
+      c_color: 'red',
+    });
+
+    // Verify getAccessToken was called with the right parameters,
+    // including custom headers and parameters
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
     expect(accessToken).toBe(expectedTokenResponse);
   });
@@ -442,6 +526,12 @@ describe('Registered B2C user flow', () => {
     },
   };
 
+  const registeredUserFlowParams = {
+    redirectURI: parameters.redirectURI,
+    dnt: parameters.dnt,
+    usid: parameters.usid,
+  };
+
   test('uses code challenge and authorization header to generate auth code with slas public client', async () => {
     // slasClient is copied and tries to make an actual API call
     const mockSlasClient = createMockSlasClient();
@@ -455,9 +545,38 @@ describe('Registered B2C user flow', () => {
     await slasHelper.loginRegisteredUserB2C(
       mockSlasClient,
       credentials,
-      parameters
+      registeredUserFlowParams
     );
 
+    expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
+  });
+
+  test('can pass custom body field', async () => {
+    // slasClient is copied and tries to make an actual API call
+    const mockSlasClient = createMockSlasClient();
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    // // Mocking slasCopy.authenticateCustomer
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .post(`/shopper/auth/v1/organizations/${organizationId}/oauth2/login`)
+      .reply((uri, requestBody) => {
+        expect(requestBody).toMatch(/c_body=test/i);
+        return [303, {response_body: 'response_body'}, {location: url}];
+      });
+
+    await slasHelper.loginRegisteredUserB2C(
+      mockSlasClient,
+      credentials,
+      {
+        redirectURI: 'redirect_uri',
+        dnt: false,
+      },
+      {
+        body: {
+          c_body: 'test',
+        },
+      }
+    );
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
   });
 
@@ -492,7 +611,7 @@ describe('Registered B2C user flow', () => {
     await slasHelper.loginRegisteredUserB2C(
       mockSlasClient,
       credentialsPrivate,
-      parameters
+      registeredUserFlowParams
     );
 
     expect(getAccessTokenMock).toBeCalledWith(expectedReqOptions);
@@ -508,7 +627,11 @@ describe('Registered B2C user flow', () => {
       .reply(400, {message: 'Oh no!'});
 
     await expect(
-      slasHelper.loginRegisteredUserB2C(mockSlasClient, credentials, parameters)
+      slasHelper.loginRegisteredUserB2C(
+        mockSlasClient,
+        credentials,
+        registeredUserFlowParams
+      )
     ).rejects.toThrow(ResponseError);
   });
 
@@ -522,7 +645,11 @@ describe('Registered B2C user flow', () => {
       .reply(401, {message: 'Oh no!'});
 
     await expect(
-      slasHelper.loginRegisteredUserB2C(mockSlasClient, credentials, parameters)
+      slasHelper.loginRegisteredUserB2C(
+        mockSlasClient,
+        credentials,
+        registeredUserFlowParams
+      )
     ).rejects.toThrow(ResponseError);
   });
 
@@ -536,7 +663,11 @@ describe('Registered B2C user flow', () => {
       .reply(500, {message: 'Oh no!'});
 
     await expect(
-      slasHelper.loginRegisteredUserB2C(mockSlasClient, credentials, parameters)
+      slasHelper.loginRegisteredUserB2C(
+        mockSlasClient,
+        credentials,
+        registeredUserFlowParams
+      )
     ).rejects.toThrow(ResponseError);
   });
 
@@ -550,7 +681,11 @@ describe('Registered B2C user flow', () => {
       .reply(303, {message: 'Oh yes!'});
 
     await expect(
-      slasHelper.loginRegisteredUserB2C(mockSlasClient, credentials, parameters)
+      slasHelper.loginRegisteredUserB2C(
+        mockSlasClient,
+        credentials,
+        registeredUserFlowParams
+      )
     ).resolves.not.toThrow(ResponseError);
   });
 
@@ -566,7 +701,7 @@ describe('Registered B2C user flow', () => {
     const accessToken = await slasHelper.loginRegisteredUserB2C(
       mockSlasClient,
       credentials,
-      parameters
+      registeredUserFlowParams
     );
     expect(accessToken).toStrictEqual(expectedTokenResponse);
   });
@@ -647,6 +782,50 @@ describe('authorizePasswordless is working', () => {
     ).rejects.toThrow(
       'Required argument channel_id is not provided through clientConfig.parameters.siteId'
     );
+  });
+
+  test('Throw when required mode missing', async () => {
+    const mockSlasClient = createMockSlasClient();
+    const parametersAuthorizePasswordless = {
+      callbackURI: 'www.something.com/callback',
+      usid: 'a_usid',
+      userid: 'a_userid',
+      locale: 'a_locale',
+    };
+    await expect(
+      slasHelper.authorizePasswordless(
+        mockSlasClient,
+        credentialsPrivate,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore intentionally missing mode
+        parametersAuthorizePasswordless
+      )
+    ).rejects.toThrow(
+      'Required argument mode is not provided through parameters'
+    );
+  });
+
+  test('Throw when clientSecret is missing', async () => {
+    const mockSlasClient = createMockSlasClient();
+    const parametersAuthorizePasswordless = {
+      callbackURI: 'www.something.com/callback',
+      usid: 'a_usid',
+      userid: 'a_userid',
+      locale: 'a_locale',
+      mode: 'callback',
+    };
+    await expect(
+      slasHelper.authorizePasswordless(
+        mockSlasClient,
+        {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore intentionally missing mode
+          username: 'Jeff',
+          password: 'password',
+        },
+        parametersAuthorizePasswordless
+      )
+    ).rejects.toThrow('Required argument client secret is not provided');
   });
 });
 

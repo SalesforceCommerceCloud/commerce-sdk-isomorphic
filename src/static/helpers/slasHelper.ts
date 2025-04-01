@@ -18,7 +18,11 @@ import {
 } from '../../lib/shopperLogin';
 import ResponseError from '../responseError';
 import TemplateURL from '../templateUrl';
-import {BaseUriParameters} from './types';
+import {
+  BaseUriParameters,
+  CustomQueryParameters,
+  CustomRequestBody,
+} from './types';
 
 export const stringToBase64 = isBrowser
   ? btoa
@@ -100,10 +104,11 @@ export const generateCodeChallenge = async (
  * Wrapper for the authorization endpoint. For federated login (3rd party IDP non-guest), the caller should redirect the user to the url in the url field of the returned object. The url will be the login page for the 3rd party IDP and the user will be sent to the redirectURI on success. Guest sessions return the code and usid directly with no need to redirect.
  * @param slasClient a configured instance of the ShopperLogin SDK client
  * @param codeVerifier - random string created by client app to use as a secret in the request
- * @param parameters - Request parameters used by the `authorizeCustomer` endpoint.
+ * @param parameters - Request parameters used by the `authorizeCustomer` endpoint. Custom parameters can be passed on by adding a property on the `parameters` object starting with `c_`
  * @param parameters.redirectURI - the location the client will be returned to after successful login with 3rd party IDP. Must be registered in SLAS.
  * @param parameters.hint? - optional string to hint at a particular IDP. Guest sessions are created by setting this to 'guest'
  * @param parameters.usid? - optional saved SLAS user id to link the new session to a previous session
+ * @param privateClient? - flag to indicate if the client is private or not. Defaults to false.
  * @returns login url, user id and authorization code if available
  */
 export async function authorize(
@@ -118,7 +123,7 @@ export async function authorize(
     redirectURI: string;
     hint?: string;
     usid?: string;
-  },
+  } & CustomQueryParameters,
   privateClient = false
 ): Promise<{code: string; url: string; usid: string}> {
   interface ClientOptions {
@@ -141,22 +146,27 @@ export async function authorize(
     redirect: isBrowser ? 'follow' : 'manual',
   };
 
-  const options = {
+  const {hint, redirectURI, usid, ...restOfParams} = parameters;
+  const opts = {
     parameters: {
+      // no need to validate here since `slasClient.getAccessToken` will do that
+      // we put this at the top to avoid any overriding on the required query param below
+      // since they are not supposed to be overridden via helpers
+      ...restOfParams,
       client_id: slasClient.clientConfig.parameters.clientId,
       channel_id: slasClient.clientConfig.parameters.siteId,
       ...(clientOptions.codeChallenge && {
         code_challenge: clientOptions.codeChallenge,
       }),
-      ...(parameters.hint && {hint: parameters.hint}),
+      ...(hint && {hint}),
       organizationId: slasClient.clientConfig.parameters.organizationId,
-      redirect_uri: parameters.redirectURI,
+      redirect_uri: redirectURI,
       response_type: 'code',
-      ...(parameters.usid && {usid: parameters.usid}),
+      ...(usid && {usid}),
     },
   };
 
-  const response = await slasClientCopy.authorizeCustomer(options, true);
+  const response = await slasClientCopy.authorizeCustomer(opts, true);
   const redirectUrlString = response.headers?.get('location') || response.url;
   const redirectUrl = new URL(redirectUrlString);
   const searchParams = Object.fromEntries(redirectUrl.searchParams.entries());
@@ -177,7 +187,7 @@ export async function authorize(
 /**
  * Function to return the URL of the authorization endpoint. The url will redirect to the login page for the 3rd party IDP and the user will be sent to the redirectURI on success. Guest sessions return the code and usid directly with no need to redirect.
  * @param slasClient a configured instance of the ShopperLogin SDK client
- * @param parameters - Request parameters used by the `authorizeCustomer` endpoint.
+ * @param parameters - Request parameters used by the `authorizeCustomer` endpoint. Custom parameters can be passed on by adding a property on the `parameters` object starting with `c_`
  * @param parameters.redirectURI - the location the client will be returned to after successful login with 3rd party IDP. Must be registered in SLAS.
  * @param parameters.hint - string to hint at a particular IDP. Required for 3rd party IDP login.
  * @param parameters.usid? - optional saved SLAS user id to link the new session to a previous session
@@ -196,9 +206,10 @@ export async function authorizeIDP(
     redirectURI: string;
     hint: string;
     usid?: string;
-  },
+  } & CustomQueryParameters,
   privateClient = false
 ): Promise<{url: string; codeVerifier: string}> {
+  const {hint, redirectURI, usid, ...restOfParams} = parameters;
   const codeVerifier = createCodeVerifier();
   interface ClientOptions {
     codeChallenge?: string;
@@ -216,15 +227,17 @@ export async function authorizeIDP(
     version: slasClient.clientConfig.parameters.version || 'v1',
   };
   const queryParams: ShopperLoginQueryParameters = {
+    // put it at the top to avoid overriding the rest of params
+    ...restOfParams,
     client_id: slasClient.clientConfig.parameters.clientId,
     channel_id: slasClient.clientConfig.parameters.siteId,
     ...(clientOptions.codeChallenge && {
       code_challenge: clientOptions.codeChallenge,
     }),
-    hint: parameters.hint,
-    redirect_uri: parameters.redirectURI,
+    hint,
+    redirect_uri: redirectURI,
     response_type: 'code',
-    ...(parameters.usid && {usid: parameters.usid}),
+    ...(usid && {usid}),
   };
 
   const url = new TemplateURL(apiPath, slasClient.clientConfig.baseUri, {
@@ -355,7 +368,7 @@ export async function loginGuestUserPrivate(
 /**
  * A single function to execute the ShopperLogin Public Client Guest Login with proof key for code exchange flow as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary).
  * @param slasClient a configured instance of the ShopperLogin SDK client.
- * @param parameters - parameters to pass in the API calls.
+ * @param parameters - parameters to pass in the API calls. Custom parameters can be passed on by adding a property on the `parameters` object starting with `c_`, and they will be passed on the `authorizeCustomer` call.
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
@@ -372,25 +385,33 @@ export async function loginGuestUser(
     redirectURI: string;
     usid?: string;
     dnt?: boolean;
-  }
+  } & CustomQueryParameters
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
 
-  const authResponse = await authorize(slasClient, codeVerifier, {
-    redirectURI: parameters.redirectURI,
-    hint: 'guest',
-    ...(parameters.usid && {usid: parameters.usid}),
-  });
-
+  const {dnt, redirectURI, usid, ...restOfParams} = parameters;
+  const authResponse = await authorize(
+    slasClient,
+    codeVerifier,
+    {
+      // putting this at the top to avoid any overriding on the required query param below
+      // since they are not supposed to be overridden via helpers
+      ...restOfParams,
+      redirectURI,
+      hint: 'guest',
+      ...(usid && {usid}),
+    },
+    false
+  );
   const tokenBody: TokenRequest = {
     client_id: slasClient.clientConfig.parameters.clientId,
     channel_id: slasClient.clientConfig.parameters.siteId,
     code: authResponse.code,
     code_verifier: codeVerifier,
     grant_type: 'authorization_code_pkce',
-    redirect_uri: parameters.redirectURI,
+    redirect_uri: redirectURI,
     usid: authResponse.usid,
-    ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),
+    ...(dnt !== undefined && {dnt: dnt.toString()}),
   };
 
   return slasClient.getAccessToken({body: tokenBody});
@@ -408,6 +429,8 @@ export async function loginGuestUser(
  * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
  * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
+ * @para options? - options to pass in the ShopperLogin 'authenticateCustomer' method
+ * @param options.body - optional body parameters to pass in the ShopperLogin 'authenticateCustomer' method.
  * @returns TokenResponse
  */
 export async function loginRegisteredUserB2C(
@@ -426,6 +449,9 @@ export async function loginRegisteredUserB2C(
     redirectURI: string;
     usid?: string;
     dnt?: boolean;
+  },
+  options?: {
+    body?: CustomRequestBody;
   }
 ): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
@@ -446,8 +472,8 @@ export async function loginRegisteredUserB2C(
   const authorization = `Basic ${stringToBase64(
     `${credentials.username}:${credentials.password}`
   )}`;
-
-  const options = {
+  const {dnt, usid, redirectURI} = parameters;
+  const opts = {
     headers: {
       Authorization: authorization,
     },
@@ -455,15 +481,16 @@ export async function loginRegisteredUserB2C(
       organizationId: slasClient.clientConfig.parameters.organizationId,
     },
     body: {
-      redirect_uri: parameters.redirectURI,
+      ...(options?.body || {}),
+      redirect_uri: redirectURI,
       client_id: slasClient.clientConfig.parameters.clientId,
       code_challenge: codeChallenge,
       channel_id: slasClient.clientConfig.parameters.siteId,
-      ...(parameters.usid && {usid: parameters.usid}),
+      ...(usid && {usid}),
     },
   };
 
-  const response = await slasClientCopy.authenticateCustomer(options, true);
+  const response = await slasClientCopy.authenticateCustomer(opts, true);
   const redirectUrlString = response.headers?.get('location') || response.url;
   const redirectUrl = new URL(redirectUrlString);
   const searchParams = Object.fromEntries(redirectUrl.searchParams.entries());
@@ -482,7 +509,7 @@ export async function loginRegisteredUserB2C(
     organizationId: slasClient.clientConfig.parameters.organizationId,
     redirect_uri: parameters.redirectURI,
     usid: authResponse.usid,
-    ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),
+    ...(dnt !== undefined && {dnt: dnt.toString()}),
   };
   // using slas private client
   if (credentials.clientSecret) {
