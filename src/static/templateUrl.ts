@@ -22,7 +22,8 @@ export default class TemplateURL extends URL {
   ) {
     super(
       TemplateURL.renderTemplateUri(
-        `${base}/${url}`.replace(/\/\/+/g, '/'),
+        `${base}/${url}`
+        .replace(/\/\/+/g, '/'),
         parameters?.pathParams
       )
     );
@@ -86,11 +87,13 @@ export default class TemplateURL extends URL {
     template: string,
     parameters?: PathParameters
   ): string {
-    return parameters
+    return (parameters
       ? template.replace(
           /\{([^\}]+)\}/g /* eslint-disable-line no-useless-escape */,
           (match, param: string) => String(parameters[param])
         )
-      : template;
+      : template)
+      // Sanitize url by removing ../ and variants
+      .replace(/\.\.\/|%2E%2E%2F|%2E%2E%2E%2F/g, '')
   }
 }
