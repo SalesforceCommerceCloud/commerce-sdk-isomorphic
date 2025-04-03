@@ -86,17 +86,20 @@ export default class TemplateURL extends URL {
     template: string,
     parameters?: PathParameters
   ): string {
-    return (
-      (
-        parameters
-          ? template.replace(
-              /\{([^\}]+)\}/g /* eslint-disable-line no-useless-escape */,
-              (match, param: string) => String(parameters[param])
-            )
-          : template
-      )
-        // Sanitize url by removing ../ and variants
-        .replace(/\.\.\/|%2E%2E%2F|%2E%2E%2E%2F/g, '')
-    );
+    const templatedUrl = parameters
+      ? template.replace(
+          /\{([^\}]+)\}/g /* eslint-disable-line no-useless-escape */,
+          (match, param: string) => String(parameters[param])
+        )
+      : template;
+
+    const regex = /\.\.\/|%2E%2E%2F|%2E%2E%2E%2F/g;
+
+    if (templatedUrl.match(regex)) {
+      console.warn('Path traversal attempt detected. Normalizing url');
+      // Remove ../ and variants
+      templatedUrl.replace(/\.\.\/|%2E%2E%2F|%2E%2E%2E%2F/g, '');
+    }
+    return templatedUrl;
   }
 }
