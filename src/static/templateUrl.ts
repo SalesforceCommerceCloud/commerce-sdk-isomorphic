@@ -93,12 +93,13 @@ export default class TemplateURL extends URL {
         )
       : template;
 
-    const regex = /\.\.\/|%2E%2E%2F|%2E%2E%2E%2F/g;
+    
+    // Regex for ./ ../ and encoded variants
+    const regex = /(\.+|(%2E)+|(%252E)+)+(\/+|(%2F)+|%252F)+/g;
 
     if (templatedUrl.match(regex)) {
       console.warn('Path traversal attempt detected. Normalizing url');
-      // Remove ../ and variants
-      templatedUrl.replace(/\.\.\/|%2E%2E%2F|%2E%2E%2E%2F/g, '');
+      templatedUrl.replace(regex, '');
     }
     return templatedUrl;
   }
