@@ -2,6 +2,7 @@
 
 ## v3.3.0
 - Allow custom params for 'loginGuestUser', 'authorizeIDP' and custom body for 'loginRegisteredUserB2C' functions [#186](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/186)
+- Normalize URLs to remove the possibility of path traversal from fetch calls [#192](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/192)
 
 ## v3.2.0
 

@@ -86,11 +86,21 @@ export default class TemplateURL extends URL {
     template: string,
     parameters?: PathParameters
   ): string {
-    return parameters
+    let templatedUrl = parameters
       ? template.replace(
           /\{([^\}]+)\}/g /* eslint-disable-line no-useless-escape */,
           (match, param: string) => String(parameters[param])
         )
       : template;
+
+    // Regex for ./ ../ and encoded variants
+    const regex = /(\.|%2e|%2E|%252e|%252E)+(\/|%2f|%2F|%252f|%252F)+/g;
+
+    if (templatedUrl.match(regex)) {
+      /* eslint-disable-next-line no-console */
+      console.warn('Path traversal attempt detected. Normalizing url');
+      templatedUrl = templatedUrl.replace(regex, '');
+    }
+    return templatedUrl;
   }
 }
