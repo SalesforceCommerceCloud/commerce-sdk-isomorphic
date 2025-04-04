@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## v3.3.0
+- Allow custom params for 'loginGuestUser', 'authorizeIDP' and custom body for 'loginRegisteredUserB2C' functions [#186](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/186)
 - Add helper to encode special SCAPI characters [#189](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/189)
 
 ## v3.2.0
@@ -10,7 +11,7 @@
 - Add SLAS passwordless login helpers [#173](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/173)
 - Add SLAS social login helper [#172](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/172)
 - Support Node 22 [#178](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/178)
-
+- 
 ### API Changes
 - The `expand` query parameter for `Shopper Products` calls now includes a new argument, `page_meta_tags`
 - The `expand` query parameter for `Shopper Search` calls now includes a new argument, `page_meta_tags`
