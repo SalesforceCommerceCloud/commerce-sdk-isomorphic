@@ -72,8 +72,8 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<a href="#slas-shopper-login-uap" id="slas-shopper-login-uap" style="color: inherit; text-decoration: none;">
-							<h1><a href="https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=slas-shopper-login-uap:Summary">SLAS Shopper Login-UAP</a></h1>
+						<a href="#" id="" style="color: inherit; text-decoration: none;">
+							<h1><a href="https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=:Summary"></a></h1>
 						</a>
 					</div>
 					<p>**<br /></p>
@@ -90,7 +90,7 @@
   };
   <span class="hljs-keyword">const</span> shopperLoginClient = <span class="hljs-keyword">new</span> ShopperLogin(clientConfig);</code></pre>
 					<span style="font-size:.7em; display:block; text-align: right">
-						API Version: 1.39.33<br />
+						API Version: <br />
 						Last Updated: <br />
 					</span>
 				</div>
@@ -172,7 +172,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:236</li>
+									<li>Defined in src/lib/shopperLogin.ts:487</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -194,7 +194,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="clientconfig.clientconfig-1.html" class="tsd-signature-type">ClientConfig</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>baseUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperLogin.ts:214</li>
+							<li>Defined in src/lib/shopperLogin.ts:465</li>
 						</ul>
 					</aside>
 				</section>
@@ -204,7 +204,7 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Base<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"https://{shortCode}.api.commercecloud.salesforce.com/shopper/auth/{version}"</span><span class="tsd-signature-symbol"> = &quot;https://{shortCode}.api.commercecloud.salesforce.com/shopper/auth/{version}&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperLogin.ts:216</li>
+							<li>Defined in src/lib/shopperLogin.ts:467</li>
 						</ul>
 					</aside>
 				</section>
@@ -214,7 +214,7 @@
 					<div class="tsd-signature tsd-kind-icon">param<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>authenticateCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authenticateCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizeCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"scope"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"state"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"ui_locales"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizeCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizePasswordlessCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizePasswordlessCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getJwksUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getJwksUriRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordLessAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordLessAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordResetToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordResetTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getSessionBridgeAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getSessionBridgeAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAuthorizationToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAuthorizationTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedSystemAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedSystemAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getUserInfo<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getUserInfoRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getWellknownOpenidConfiguration<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getWellknownOpenidConfigurationRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>introspectToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>introspectTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>logoutCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"refresh_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>logoutCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"refresh_token"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>resetPassword<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>resetPasswordRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>revokeToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>revokeTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {authenticateCustomer: [&#x27;organizationId&#x27;,],authenticateCustomerRequired: [&#x27;organizationId&#x27;,],authorizePasswordlessCustomer: [&#x27;organizationId&#x27;,],authorizePasswordlessCustomerRequired: [&#x27;organizationId&#x27;,],logoutCustomer: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;refresh_token&#x27;,&#x27;channel_id&#x27;,&#x27;hint&#x27;,],logoutCustomerRequired: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;refresh_token&#x27;,],authorizeCustomer: [&#x27;organizationId&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,&#x27;client_id&#x27;,&#x27;scope&#x27;,&#x27;state&#x27;,&#x27;usid&#x27;,&#x27;hint&#x27;,&#x27;channel_id&#x27;,&#x27;code_challenge&#x27;,&#x27;ui_locales&#x27;,],authorizeCustomerRequired: [&#x27;organizationId&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,&#x27;client_id&#x27;,],getAccessToken: [&#x27;organizationId&#x27;,],getAccessTokenRequired: [&#x27;organizationId&#x27;,],getSessionBridgeAccessToken: [&#x27;organizationId&#x27;,],getSessionBridgeAccessTokenRequired: [&#x27;organizationId&#x27;,],getTrustedSystemAccessToken: [&#x27;organizationId&#x27;,],getTrustedSystemAccessTokenRequired: [&#x27;organizationId&#x27;,],getTrustedAgentAuthorizationToken: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;code_challenge&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,],getTrustedAgentAuthorizationTokenRequired: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;code_challenge&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,],getTrustedAgentAccessToken: [&#x27;organizationId&#x27;,],getTrustedAgentAccessTokenRequired: [&#x27;organizationId&#x27;,],getPasswordResetToken: [&#x27;organizationId&#x27;,],getPasswordResetTokenRequired: [&#x27;organizationId&#x27;,],resetPassword: [&#x27;organizationId&#x27;,],resetPasswordRequired: [&#x27;organizationId&#x27;,],getPasswordLessAccessToken: [&#x27;organizationId&#x27;,],getPasswordLessAccessTokenRequired: [&#x27;organizationId&#x27;,],revokeToken: [&#x27;organizationId&#x27;,],revokeTokenRequired: [&#x27;organizationId&#x27;,],introspectToken: [&#x27;organizationId&#x27;,],introspectTokenRequired: [&#x27;organizationId&#x27;,],getUserInfo: [&#x27;organizationId&#x27;,&#x27;channel_id&#x27;,],getUserInfoRequired: [&#x27;organizationId&#x27;,],getWellknownOpenidConfiguration: [&#x27;organizationId&#x27;,],getWellknownOpenidConfigurationRequired: [&#x27;organizationId&#x27;,],getJwksUri: [&#x27;organizationId&#x27;,],getJwksUriRequired: [&#x27;organizationId&#x27;,],} as const</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperLogin.ts:245</li>
+							<li>Defined in src/lib/shopperLogin.ts:496</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -339,7 +339,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:414</li>
+									<li>Defined in src/lib/shopperLogin.ts:665</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -375,7 +375,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:452</li>
+									<li>Defined in src/lib/shopperLogin.ts:703</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -434,7 +434,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:929</li>
+									<li>Defined in src/lib/shopperLogin.ts:1180</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -461,7 +461,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:987</li>
+									<li>Defined in src/lib/shopperLogin.ts:1238</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -511,7 +511,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:580</li>
+									<li>Defined in src/lib/shopperLogin.ts:831</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -537,7 +537,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:603</li>
+									<li>Defined in src/lib/shopperLogin.ts:854</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -586,7 +586,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:1216</li>
+									<li>Defined in src/lib/shopperLogin.ts:1467</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -619,7 +619,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:1253</li>
+									<li>Defined in src/lib/shopperLogin.ts:1504</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -668,14 +668,14 @@
 					<a name="getjwksuri-1" class="tsd-anchor"></a>
 					<h3>get<wbr>Jwks<wbr>Uri</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Jwks<wbr>Uri<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/shopperlogin.html#jwkssuccessresponse" class="tsd-signature-type">JwksSuccessResponse</a><span class="tsd-signature-symbol">&gt;</span></li>
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Jwks<wbr>Uri&lt;T&gt;<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, rawResponse<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">T</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">JwksSuccessResponse</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Jwks<wbr>Uri<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Object</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Jwks<wbr>Uri&lt;T&gt;<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, rawResponse<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">T</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">Object</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:3064</li>
+									<li>Defined in src/lib/shopperLogin.ts:3315</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -697,13 +697,13 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/shopperlogin.html#jwkssuccessresponse" class="tsd-signature-type">JwksSuccessResponse</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>A promise of type JwksSuccessResponse.</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Object</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>A promise of type Object.</p>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:3090</li>
+									<li>Defined in src/lib/shopperLogin.ts:3341</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -738,8 +738,8 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">JwksSuccessResponse</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>A promise of type Response if rawResponse is true, a promise of type JwksSuccessResponse otherwise.</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">Object</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>A promise of type Response if rawResponse is true, a promise of type Object otherwise.</p>
 						</li>
 					</ul>
 				</section>
@@ -754,7 +754,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:2384</li>
+									<li>Defined in src/lib/shopperLogin.ts:2635</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -780,7 +780,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:2407</li>
+									<li>Defined in src/lib/shopperLogin.ts:2658</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -829,7 +829,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:2112</li>
+									<li>Defined in src/lib/shopperLogin.ts:2363</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -855,7 +855,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:2135</li>
+									<li>Defined in src/lib/shopperLogin.ts:2386</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -904,7 +904,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:1388</li>
+									<li>Defined in src/lib/shopperLogin.ts:1639</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -935,7 +935,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:1421</li>
+									<li>Defined in src/lib/shopperLogin.ts:1672</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -989,7 +989,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:1970</li>
+									<li>Defined in src/lib/shopperLogin.ts:2221</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1017,7 +1017,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:1997</li>
+									<li>Defined in src/lib/shopperLogin.ts:2248</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1068,7 +1068,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:1715</li>
+									<li>Defined in src/lib/shopperLogin.ts:1966</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1094,7 +1094,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:1765</li>
+									<li>Defined in src/lib/shopperLogin.ts:2016</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1143,7 +1143,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:1548</li>
+									<li>Defined in src/lib/shopperLogin.ts:1799</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1171,7 +1171,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:1577</li>
+									<li>Defined in src/lib/shopperLogin.ts:1828</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1222,7 +1222,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:2786</li>
+									<li>Defined in src/lib/shopperLogin.ts:3037</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1248,7 +1248,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:2809</li>
+									<li>Defined in src/lib/shopperLogin.ts:3060</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1297,7 +1297,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:2926</li>
+									<li>Defined in src/lib/shopperLogin.ts:3177</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1324,7 +1324,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:2950</li>
+									<li>Defined in src/lib/shopperLogin.ts:3201</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1374,7 +1374,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:2652</li>
+									<li>Defined in src/lib/shopperLogin.ts:2903</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1400,7 +1400,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:2675</li>
+									<li>Defined in src/lib/shopperLogin.ts:2926</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1449,7 +1449,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:721</li>
+									<li>Defined in src/lib/shopperLogin.ts:972</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1477,7 +1477,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:754</li>
+									<li>Defined in src/lib/shopperLogin.ts:1005</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1528,7 +1528,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:2248</li>
+									<li>Defined in src/lib/shopperLogin.ts:2499</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1554,7 +1554,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:2271</li>
+									<li>Defined in src/lib/shopperLogin.ts:2522</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1603,7 +1603,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:2518</li>
+									<li>Defined in src/lib/shopperLogin.ts:2769</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1629,7 +1629,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin.ts:2541</li>
+									<li>Defined in src/lib/shopperLogin.ts:2792</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1676,7 +1676,7 @@
 					<div class="tsd-signature tsd-kind-icon">api<wbr>Paths<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperLogin.ts:218</li>
+							<li>Defined in src/lib/shopperLogin.ts:469</li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -1685,7 +1685,7 @@
 						<div class="tsd-signature tsd-kind-icon">authenticate<wbr>Customer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/login&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin.ts:219</li>
+								<li>Defined in src/lib/shopperLogin.ts:470</li>
 							</ul>
 						</aside>
 					</section>
@@ -1695,7 +1695,7 @@
 						<div class="tsd-signature tsd-kind-icon">authorize<wbr>Customer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/authorize&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin.ts:222</li>
+								<li>Defined in src/lib/shopperLogin.ts:473</li>
 							</ul>
 						</aside>
 					</section>
@@ -1705,7 +1705,7 @@
 						<div class="tsd-signature tsd-kind-icon">authorize<wbr>Passwordless<wbr>Customer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/passwordless/login&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin.ts:220</li>
+								<li>Defined in src/lib/shopperLogin.ts:471</li>
 							</ul>
 						</aside>
 					</section>
@@ -1715,7 +1715,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Access<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/token&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin.ts:223</li>
+								<li>Defined in src/lib/shopperLogin.ts:474</li>
 							</ul>
 						</aside>
 					</section>
@@ -1725,7 +1725,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Jwks<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/jwks&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin.ts:235</li>
+								<li>Defined in src/lib/shopperLogin.ts:486</li>
 							</ul>
 						</aside>
 					</section>
@@ -1735,7 +1735,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Password<wbr>Less<wbr>Access<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/passwordless/token&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin.ts:230</li>
+								<li>Defined in src/lib/shopperLogin.ts:481</li>
 							</ul>
 						</aside>
 					</section>
@@ -1745,7 +1745,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Password<wbr>Reset<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/password/reset&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin.ts:228</li>
+								<li>Defined in src/lib/shopperLogin.ts:479</li>
 							</ul>
 						</aside>
 					</section>
@@ -1755,7 +1755,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Session<wbr>Bridge<wbr>Access<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/session-bridge/token&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin.ts:224</li>
+								<li>Defined in src/lib/shopperLogin.ts:475</li>
 							</ul>
 						</aside>
 					</section>
@@ -1765,7 +1765,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Trusted<wbr>Agent<wbr>Access<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/trusted-agent/token&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin.ts:227</li>
+								<li>Defined in src/lib/shopperLogin.ts:478</li>
 							</ul>
 						</aside>
 					</section>
@@ -1775,7 +1775,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Trusted<wbr>Agent<wbr>Authorization<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/trusted-agent/authorize&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin.ts:226</li>
+								<li>Defined in src/lib/shopperLogin.ts:477</li>
 							</ul>
 						</aside>
 					</section>
@@ -1785,7 +1785,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Trusted<wbr>System<wbr>Access<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/trusted-system/token&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin.ts:225</li>
+								<li>Defined in src/lib/shopperLogin.ts:476</li>
 							</ul>
 						</aside>
 					</section>
@@ -1795,7 +1795,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>User<wbr>Info<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/userinfo&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin.ts:233</li>
+								<li>Defined in src/lib/shopperLogin.ts:484</li>
 							</ul>
 						</aside>
 					</section>
@@ -1805,7 +1805,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Wellknown<wbr>Openid<wbr>Configuration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/.well-known/openid-configuration&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin.ts:234</li>
+								<li>Defined in src/lib/shopperLogin.ts:485</li>
 							</ul>
 						</aside>
 					</section>
@@ -1815,7 +1815,7 @@
 						<div class="tsd-signature tsd-kind-icon">introspect<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/introspect&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin.ts:232</li>
+								<li>Defined in src/lib/shopperLogin.ts:483</li>
 							</ul>
 						</aside>
 					</section>
@@ -1825,7 +1825,7 @@
 						<div class="tsd-signature tsd-kind-icon">logout<wbr>Customer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/logout&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin.ts:221</li>
+								<li>Defined in src/lib/shopperLogin.ts:472</li>
 							</ul>
 						</aside>
 					</section>
@@ -1835,7 +1835,7 @@
 						<div class="tsd-signature tsd-kind-icon">reset<wbr>Password<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/password/action&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin.ts:229</li>
+								<li>Defined in src/lib/shopperLogin.ts:480</li>
 							</ul>
 						</aside>
 					</section>
@@ -1845,7 +1845,7 @@
 						<div class="tsd-signature tsd-kind-icon">revoke<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/revoke&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin.ts:231</li>
+								<li>Defined in src/lib/shopperLogin.ts:482</li>
 							</ul>
 						</aside>
 					</section>
@@ -1994,60 +1994,6 @@
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/shopperlogin.html#introspectresponse" class="tsd-kind-icon">Introspect<wbr>Response</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/shopperlogin.html#jwkssuccessresponse" class="tsd-kind-icon">Jwks<wbr>Success<wbr>Response</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/shopperlogin.html#loginrequest" class="tsd-kind-icon">Login<wbr>Request</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/shopperlogin.html#oauth2errorresponse" class="tsd-kind-icon">Oauth2<wbr>Error<wbr>Response</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/shopperlogin.html#passwordactionrequest" class="tsd-kind-icon">Password<wbr>Action<wbr>Request</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/shopperlogin.html#passwordactionverifyrequest" class="tsd-kind-icon">Password<wbr>Action<wbr>Verify<wbr>Request</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/shopperlogin.html#passwordlesslogintokenrequest" class="tsd-kind-icon">Password<wbr>Less<wbr>Login<wbr>Token<wbr>Request</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/shopperlogin.html#passwordlessloginrequest" class="tsd-kind-icon">Passwordless<wbr>Login<wbr>Request</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/shopperlogin.html#sessionbridgetokenrequest" class="tsd-kind-icon">Session<wbr>Bridge<wbr>Token<wbr>Request</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/shopperlogin.html#shopperloginparameters" class="tsd-kind-icon">Shopper<wbr>Login<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/shopperlogin.html#shopperloginpathparameters" class="tsd-kind-icon">Shopper<wbr>Login<wbr>Path<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/shopperlogin.html#shopperloginqueryparameters" class="tsd-kind-icon">Shopper<wbr>Login<wbr>Query<wbr>Parameters</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported">
-						<a href="../modules/shopperlogin.html#slasratelimit" class="tsd-kind-icon">Slas<wbr>Rate<wbr>Limit</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/shopperlogin.html#tokenactionrequest" class="tsd-kind-icon">Token<wbr>Action<wbr>Request</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/shopperlogin.html#tokenrequest" class="tsd-kind-icon">Token<wbr>Request</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/shopperlogin.html#tokenresponse" class="tsd-kind-icon">Token<wbr>Response</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/shopperlogin.html#trustedagenttokenrequest" class="tsd-kind-icon">Trusted<wbr>Agent<wbr>Token<wbr>Request</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/shopperlogin.html#trustedsystemtokenrequest" class="tsd-kind-icon">Trusted<wbr>System<wbr>Token<wbr>Request</a>
-					</li>
 				</ul>
 			</nav>
 		</div>

@@ -86,6 +86,13 @@
 					<li>For customers using the SLAS helpers with a public client, it is recommended to upgrade to at least <code>v1.8.0</code> of the <code>commerce-sdk-isomorphic</code>.</li>
 					<li>For customers using the SLAS helpers with a private client, it is recommended to upgrade to <code>v3.0.0</code> of the <code>commerce-sdk-isomorphic</code>.</li>
 				</ul>
+				<a href="#warning-planned-sdk-changes-warning" id="warning-planned-sdk-changes-warning" style="color: inherit; text-decoration: none;">
+					<h2>:warning: Planned SDK Changes :warning:</h2>
+				</a>
+				<a href="#encoding-path-parameters" id="encoding-path-parameters" style="color: inherit; text-decoration: none;">
+					<h3>Encoding path parameters</h3>
+				</a>
+				<p>In the next major version release, the SDK will encode special characters (UTF-8 based on SCAPI guidelines) in path parameters by default. Please see the <a href="#encoding-special-characters">Encoding special characters</a> section for more details.</p>
 				<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
 					<h2>Getting Started</h2>
 				</a>
@@ -174,7 +181,7 @@
 					<li><code>headers</code>: Headers to include with API requests.</li>
 				</ul>
 				<a href="#custom-query-parameters" id="custom-query-parameters" style="color: inherit; text-decoration: none;">
-					<h3>Custom Query Parameters</h3>
+					<h4>Custom Query Parameters</h4>
 				</a>
 				<p>You can pass custom query parameters through the SDK to be used in <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/extensibility_via_hooks.html">B2C Commerce API Hooks</a>. Custom query parameters must begin with <code>c_</code>:</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> searchResult = <span class="hljs-keyword">await</span> shopperSearch.productSearch({
@@ -185,7 +192,7 @@
 });</code></pre>
 				<p>Invalid query parameters that are not a part of the API and do not follow the <code>c_</code> custom query parameter convention are filtered from the request with a warning.</p>
 				<a href="#custom-apis" id="custom-apis" style="color: inherit; text-decoration: none;">
-					<h3>Custom APIs</h3>
+					<h4>Custom APIs</h4>
 				</a>
 				<p>The SDK supports calling <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/custom-apis.html">B2C Commerce Custom APIs</a> with a helper function, <code>callCustomEndpoint</code>:</p>
 				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> pkg <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;commerce-sdk-isomorphic&quot;</span>;
@@ -246,6 +253,63 @@
   clientConfig,
 });</code></pre>
 				<p>For more documentation about this helper function, please refer to the <a href="https://salesforcecommercecloud.github.io/commerce-sdk-isomorphic/modules/helpers.html">commerce-sdk-isomorphic docs</a>.</p>
+				<a href="#encoding-special-characters" id="encoding-special-characters" style="color: inherit; text-decoration: none;">
+					<h4>Encoding special characters</h4>
+				</a>
+				<p>The SDK currently single encodes special characters for query parameters in UTF-8 format based on SCAPI guidelines. However, the SDK does NOT encode path parameters, and will require the developer to encode any path parameters with special characters.</p>
+				<p>Additionally, SCAPI has special characters that should be double encoded, specifically <code>%</code> and <code>,</code>:</p>
+				<ul>
+					<li><code>%</code> should always be double encoded</li>
+					<li><code>,</code> should be double encoded when used as part of an ID/parameter string, and single encoded when used to differentiate items in a list </li>
+				</ul>
+				<p>There is a helper function called <code>encodeSCAPISpecialCharacters</code> that can be utilized to single encode the SCAPI special characters and no other special characters.</p>
+				<p>Here&#39;s an example where the <code>getCategory/getCategories</code> endpoints are called with a <code>categoryID</code> with special characters:</p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> pkg <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;commerce-sdk-isomorphic&quot;</span>;
+<span class="hljs-keyword">const</span> { helpers, ShopperProducts } = pkg;
+
+<span class="hljs-keyword">const</span> clientConfig = {
+  <span class="hljs-attr">parameters</span>: {
+    <span class="hljs-attr">clientId</span>: <span class="hljs-string">&quot;&lt;your-client-id&gt;&quot;</span>,
+    <span class="hljs-attr">organizationId</span>: <span class="hljs-string">&quot;&lt;your-org-id&gt;&quot;</span>,
+    <span class="hljs-attr">shortCode</span>: <span class="hljs-string">&quot;&lt;your-short-code&gt;&quot;</span>,
+    <span class="hljs-attr">siteId</span>: <span class="hljs-string">&quot;&lt;your-site-id&gt;&quot;</span>,
+  }
+};
+
+<span class="hljs-keyword">const</span> shopperProducts = <span class="hljs-keyword">new</span> ShopperProducts({
+  ...clientConfig,
+  <span class="hljs-attr">headers</span>: {<span class="hljs-attr">authorization</span>: <span class="hljs-string">`Bearer &lt;insert_access_token&gt;`</span>}
+});
+
+<span class="hljs-keyword">const</span> categoryId = <span class="hljs-string">&quot;SpecialCharacter,%$^@&amp;$;()!123Category&quot;</span>;
+<span class="hljs-comment">// &quot;SpecialCharacter%2C%25$^@&amp;$;()!123Category&quot;</span>
+<span class="hljs-keyword">const</span> scapiSpecialEncodedId = helpers.encodeSCAPISpecialCharacters(categoryId);
+
+
+<span class="hljs-comment">// id is a path parameter for API call:</span>
+<span class="hljs-comment">// &lt;base-url&gt;/product/shopper-products/v1/organizations/{organizationId}/categories/{id}</span>
+<span class="hljs-keyword">const</span> categoryResult = <span class="hljs-keyword">await</span> shopperProducts.getCategory({
+  <span class="hljs-attr">parameters</span>: {
+    <span class="hljs-comment">// Path parameters are NOT encoded by the SDK, so we have to single encode special characters</span>
+    <span class="hljs-comment">// and the SCAPI special characters will end up double encoded</span>
+    <span class="hljs-attr">id</span>: <span class="hljs-built_in">encodeURIComponent</span>(scapiSpecialEncodedId),
+  }
+});
+
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;categoryResult: &quot;</span>, categoryResult);
+
+<span class="hljs-comment">// `ids` are a query parameter and comma delimited to separate category IDs</span>
+<span class="hljs-keyword">const</span> categoriesResult = <span class="hljs-keyword">await</span> shopperProducts.getCategories({
+  <span class="hljs-attr">parameters</span>: {
+    <span class="hljs-comment">// No need to use `encodeURIComponent` as query parameters are single encoded by the SDK</span>
+    <span class="hljs-comment">// So the SCAPI special characters will end up double encoded as well</span>
+    <span class="hljs-comment">// Commas that separate items in a list will end up single encoded</span>
+    <span class="hljs-attr">ids</span>: <span class="hljs-string">`<span class="hljs-subst">${scapiSpecialEncodedId}</span>,<span class="hljs-subst">${scapiSpecialEncodedId}</span>`</span>,
+  }
+});
+
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;categoriesResult: &quot;</span>, categoriesResult);</code></pre>
+				<p><strong>NOTE: In the next major version release, path parameters will be single encoded by default</strong></p>
 				<a href="#license-information" id="license-information" style="color: inherit; text-decoration: none;">
 					<h2>License Information</h2>
 				</a>
