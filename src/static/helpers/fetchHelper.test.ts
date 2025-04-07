@@ -8,7 +8,7 @@ import nock from 'nock';
 import {Response} from 'node-fetch';
 import * as environment from './environment';
 import ClientConfig from '../clientConfig';
-import {doFetch} from './fetchHelper';
+import {doFetch, encodeSCAPISpecialCharacters} from './fetchHelper';
 
 describe('doFetch', () => {
   const basePath = 'https://short_code.api.commercecloud.salesforce.com';
@@ -137,5 +137,20 @@ describe('doFetch', () => {
       expect.any(String),
       expect.objectContaining(clientConfig.fetchOptions)
     );
+  });
+});
+
+describe('encodeSCAPISpecialCharacters', () => {
+  test('only encodes special characters `%` and `,` in a string', () => {
+    const input = "women'sCategory,%@#$%^&*()_+,";
+    const expectedOutput = "women'sCategory%2C%25@#$%25^&*()_+%2C";
+    const output = encodeSCAPISpecialCharacters(input);
+    expect(output).toEqual(expectedOutput);
+  });
+
+  test('returns the same string if no SCAPI special characters are included', () => {
+    const input = "women'sCategory!@#$^&*()_+";
+    const output = encodeSCAPISpecialCharacters(input);
+    expect(output).toEqual(input);
   });
 });
