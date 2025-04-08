@@ -30,7 +30,6 @@ jobs:
             node_modules
             **/node_modules
           key: ${{ runner.os }}-node${{ matrix.node }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}
-      - run: yarn install
         if: ${{ steps.cache-nodemodules.outputs.cache-hit != 'true' }}
       - run: yarn run renderTemplates
       - run: yarn build:lib
