@@ -103,3 +103,41 @@ it.each([
 ])('combines %s, %s and %s into %s', (url, base, parameters, expected) => {
   expect(new TemplateURL(url, base, parameters).toString()).toBe(expected);
 });
+
+it.each([
+  ['../simple', 'https://example.com', {}, 'https://example.com/simple'],
+  ['%2e%2e%2f/simple', 'https://example.com', {}, 'https://example.com/simple'],
+  ['%2E%2E%2F/simple', 'https://example.com', {}, 'https://example.com/simple'],
+  [
+    '%252e%252e%252fsimple',
+    'https://example.com',
+    {},
+    'https://example.com/simple',
+  ],
+  [
+    '..%252e%252e%252f./simple',
+    'https://example.com',
+    {},
+    'https://example.com/simple',
+  ],
+  [
+    '%252E%252e%252F./../%2e%2f/simple',
+    'https://example.com',
+    {},
+    'https://example.com/simple',
+  ],
+  [
+    'simple?q=aa.aaa/',
+    'https://example.com',
+    {},
+    'https://example.com/simple?q=aa.aaa/',
+  ],
+  [
+    '../simple/{sub}//',
+    'https://example.com',
+    {pathParams: {sub: 'one'}},
+    'https://example.com/simple/one/',
+  ],
+])('Normalize %s path', (url, base, parameters, expected) => {
+  expect(new TemplateURL(url, base, parameters).toString()).toBe(expected);
+});

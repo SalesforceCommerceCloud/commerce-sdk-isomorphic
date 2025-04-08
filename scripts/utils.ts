@@ -140,6 +140,7 @@ export async function updateApis(
   deployment: RegExp,
   rootPath: string
 ): Promise<void> {
+  /* eslint-disable-next-line no-console */
   console.warn('updateApis is deprecated. Use downloadLatestApis instead.');
 
   const matchedApis = await download.search(`"${name}"`, deployment);
