@@ -94,7 +94,8 @@ export default class TemplateURL extends URL {
       : template;
 
     // Regex for ./ ../ and encoded variants
-    const pathTraversalRegex = /(\.|%2e|%2E|%252e|%252E)+(\/|%2f|%2F|%252f|%252F)+/g;
+    const pathTraversalRegex =
+      /(\.|%2e|%2E|%252e|%252E)+(\/|%2f|%2F|%252f|%252F)+/g;
 
     if (templatedUrl.match(pathTraversalRegex)) {
       /* eslint-disable-next-line no-console */

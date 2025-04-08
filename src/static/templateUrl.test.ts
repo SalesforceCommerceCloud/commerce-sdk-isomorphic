@@ -132,6 +132,12 @@ it.each([
     {},
     'https://example.com/simple?q=aa.aaa/',
   ],
+  [
+    '../simple/{sub}//',
+    'https://example.com',
+    {pathParams: {sub: 'one'}},
+    'https://example.com/simple/one/',
+  ],
 ])('Normalize %s path', (url, base, parameters, expected) => {
   expect(new TemplateURL(url, base, parameters).toString()).toBe(expected);
 });
