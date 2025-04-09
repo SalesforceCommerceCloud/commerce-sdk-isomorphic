@@ -16,6 +16,7 @@
     {{/each}}
     * @param headers - An object literal of key value pairs of the headers to be
     * sent with this request.
+    * @param signal - An AbortSignal object that can be used to cancel the fetch request
     {{#if (isRequestWithPayload request)}}
     * @param body - The data to send as the request body.
     {{/if}}
@@ -36,6 +37,7 @@
           {{/each}}
         } & { [key in `c_${string}`]: any }, ConfigParameters>,
         headers?: { [key: string]: string },
+        signal?: AbortSignal,
         {{#if (isRequestWithPayload request)}}
         body: {{{getPayloadTypeFromRequest request}}}
         {{/if}}
@@ -55,6 +57,7 @@
     {{/each}}
     * @param headers - An object literal of key value pairs of the headers to be
     * sent with this request.
+    * @param signal - An AbortSignal object that can be used to cancel the fetch request
     {{#if (isRequestWithPayload request)}}
     * @param body - The data to send as the request body.
     {{/if}}
@@ -75,6 +78,7 @@
           {{/each}}
         } & { [key in `c_${string}`]: any }, ConfigParameters>,
         headers?: { [key: string]: string },
+        signal?: AbortSignal,
         {{#if (isRequestWithPayload request)}}
         body: {{{getPayloadTypeFromRequest request}}}
         {{/if}}
@@ -95,6 +99,7 @@
     {{/each}}
     * @param headers - An object literal of key value pairs of the headers to be
     * sent with this request.
+    * @param signal - An AbortSignal object that can be used to cancel the fetch request
     {{#if (isRequestWithPayload request)}}
     * @param body - The data to send as the request body.
     {{/if}}
@@ -116,6 +121,7 @@
           {{/each}}
         } & { [key in `c_${string}`]: any }, ConfigParameters>,
         headers?: { [key: string]: string },
+        signal?: AbortSignal,
         {{#if (isRequestWithPayload request)}}
         body: {{{getPayloadTypeFromRequest request}}}
         {{/if}}
@@ -193,6 +199,7 @@
         {
           method: "{{loud method}}",
           headers,
+          signal: options?.signal,
           {{#if (isRequestWithPayload request)}}body: this.clientConfig.transformRequest(options.body, headers){{/if}}
         },
         this.clientConfig,

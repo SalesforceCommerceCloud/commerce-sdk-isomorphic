@@ -18,6 +18,7 @@ import {ClientConfigInit} from '../clientConfig';
  * @param options.method? - The request HTTP operation. 'GET' is the default if no method is provided.
  * @param options.headers? - Headers that are added to the request. Authorization header should be in this argument or in the clientConfig.headers
  * @param options.body? - Body that is used for the request
+ * @param options.signal? - An AbortSignal object that can be used to cancel the fetch request
  * @param clientConfig? - Client Configuration object used by the SDK with properties that can affect the fetch call
  * @param clientConfig.headers? - Additional headers that are added to the request. Authorization header should be in this argument or in the options?.headers. options?.headers will override any duplicate properties.
  * @param clientConfig.fetchOptions? - fetchOptions that are passed onto the fetch request
@@ -34,6 +35,7 @@ export const doFetch = async <Params extends BaseUriParameters>(
       authorization?: string;
     } & {[key: string]: string};
     body?: BodyInit | globalThis.BodyInit | unknown;
+    signal?: AbortSignal;
   },
   clientConfig?: ClientConfigInit<Params>,
   rawResponse?: boolean
@@ -50,6 +52,7 @@ export const doFetch = async <Params extends BaseUriParameters>(
       | (BodyInit & (globalThis.BodyInit | null))
       | undefined,
     method: options?.method ?? 'GET',
+    ...(options?.signal ? {signal: options.signal} : {}),
   };
 
   const response = await fetch(url, requestOptions);
