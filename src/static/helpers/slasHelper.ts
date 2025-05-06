@@ -24,6 +24,15 @@ import {
   CustomRequestBody,
 } from './types';
 
+interface CryptoLib {
+  digestStringAsync?: (
+    digest: string,
+    data: string,
+    options: {encoding: string}
+  ) => Promise<string>;
+  default: typeof import('crypto');
+}
+
 export const stringToBase64 = isBrowser
   ? btoa
   : (unencoded: string): string => Buffer.from(unencoded).toString('base64');
@@ -86,10 +95,29 @@ export const generateCodeChallenge = async (
     const base64Digest = btoa(String.fromCharCode(...new Uint8Array(digest)));
     challenge = urlSafe(base64Digest);
   } else {
-    const crypto = await import('crypto');
-    challenge = urlSafe(
-      crypto.default.createHash('sha256').update(codeVerifier).digest('base64')
-    );
+    const crypto: CryptoLib = await import('crypto');
+
+    if (
+      typeof navigator !== 'undefined' &&
+      navigator.product === 'ReactNative'
+    ) {
+      const base64Digest = await crypto.digestStringAsync?.(
+        'SHA-256',
+        codeVerifier,
+        {
+          encoding: 'base64',
+        }
+      );
+
+      challenge = base64Digest ? urlSafe(base64Digest) : '';
+    } else {
+      challenge = urlSafe(
+        crypto.default
+          .createHash('sha256')
+          .update(codeVerifier)
+          .digest('base64')
+      );
+    }
   }
 
   /* istanbul ignore next */
