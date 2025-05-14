@@ -30,11 +30,11 @@
     "diffApis": "raml-toolkit diff --dir temp/oldApis apis -f console -o temp/diffApis.txt",
     "doc": "yarn run doc:generate",
     "doc:generate": "typedoc --mode modules src/lib/** --external-modulemap \".*/src/lib/([\\w]+)\" --exclude \"src/lib/index.ts\"",
-    "generate": "raml-toolkit generate",
-    "generate:oas": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/generate-oas.ts",
     "eject": "react-scripts eject",
     "fix": "yarn run lint -- --fix",
     "fix:style": "yarn run lint:style -- --fix",
+    "generate": "raml-toolkit generate",
+    "generate:oas": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/generate-oas.ts",
     "lint": "eslint --ext js,jsx,ts,tsx .",
     "lint:style": "stylelint ./src/",
     "prepare": "snyk protect",
@@ -53,6 +53,7 @@
     }
   },
   "lint-staged": {
+    "package.json": "sort-package-json --check",
     "*.css": "stylelint",
     "*.js?(x)": "eslint --ext js,jsx",
     "*.ts?(x)": "eslint --ext ts,tsx"
