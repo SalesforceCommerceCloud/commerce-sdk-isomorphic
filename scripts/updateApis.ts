@@ -27,6 +27,9 @@ fs.moveSync(PRODUCTION_API_PATH, OLD_APIS_PATH, {overwrite: true});
 fs.ensureDirSync(PRODUCTION_API_PATH);
 
 API_LIST.forEach(name => {
+  // TODO: come up with a way to set isOAS other than using the name
+  const isOAS = name.includes('-oas');
+
   // eslint-disable-next-line no-console
-  downloadLatestApis(name, PRODUCTION_API_PATH).catch(console.error);
+  downloadLatestApis(name, PRODUCTION_API_PATH, isOAS).catch(console.error);
 });

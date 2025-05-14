@@ -175,18 +175,21 @@ export async function updateApis(
  */
 export async function downloadLatestApis(
   name: string,
-  rootPath: string
+  rootPath: string,
+  isOAS = false
 ): Promise<void> {
   const matchedApis = await download.search(`"${name}"`);
   if (!(matchedApis?.length > 0)) {
     throw new Error(`No results in Exchange for '${name}'`);
   }
-  const api = matchedApis.find(matchedApi => matchedApi?.assetId === name);
+  const api = matchedApis.find(
+    (matchedApi: {assetId: string}) => matchedApi?.assetId === name
+  );
   if (!api) {
     throw new Error(`No exact match in Exchange for '${name}'`);
   }
   try {
-    await download.downloadRestApis([api], rootPath);
+    await download.downloadRestApis([api], rootPath, isOAS);
   } catch (err: unknown) {
     if (err instanceof Error) {
       err.message = `Failed to download ${name}: ${err.message}`;

@@ -24,11 +24,14 @@
     "build:lib": "rollup -c",
     "check:size": "npm-pack-all --output commerce-sdk-isomorphic-with-deps.tgz && bundlesize",
     "check:types": "tsc --noEmit",
+    "ci": "rm -rf node_modules && yarn install",
     "clean": "rm -rf build lib src/lib commerce-sdk-isomorphic-with-deps.tgz",
     "depcheck": "depcheck",
     "diffApis": "raml-toolkit diff --dir temp/oldApis apis -f console -o temp/diffApis.txt",
     "doc": "yarn run doc:generate",
     "doc:generate": "typedoc --mode modules src/lib/** --external-modulemap \".*/src/lib/([\\w]+)\" --exclude \"src/lib/index.ts\"",
+    "generate": "raml-toolkit generate",
+    "generate:oas": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/generate-oas.ts",
     "eject": "react-scripts eject",
     "fix": "yarn run lint -- --fix",
     "fix:style": "yarn run lint:style -- --fix",
@@ -50,7 +53,6 @@
     }
   },
   "lint-staged": {
-    "package.json": "sort-package-json --check",
     "*.css": "stylelint",
     "*.js?(x)": "eslint --ext js,jsx",
     "*.ts?(x)": "eslint --ext ts,tsx"
@@ -108,7 +110,7 @@
     "@babel/preset-env": "7.18.6",
     "@babel/preset-react": "7.18.6",
     "@babel/preset-typescript": "^7.18.6",
-    "@commerce-apps/raml-toolkit": "0.5.12",
+    "@commerce-apps/raml-toolkit": "file:../raml-toolkit",
     "@rollup/plugin-babel": "5.3.1",
     "@rollup/plugin-commonjs": "13.0.2",
     "@rollup/plugin-node-resolve": "8.4.0",

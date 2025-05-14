@@ -11,18 +11,4 @@ export const PRIMITIVE_DATA_TYPE_MAP = {
   'http://www.w3.org/2001/XMLSchema#float': 'number',
   'http://www.w3.org/2001/XMLSchema#boolean': 'boolean',
 };
-export const API_LIST: string[] = [
-  'shopper-baskets',
-  'shopper-context',
-  'shopper-customers',
-  'shopper-discovery-search',
-  'shopper-experience',
-  'shopper-gift-certificates',
-  'slas-shopper-login-uap',
-  'shopper-orders',
-  'shopper-products',
-  'shopper-promotions',
-  'shopper-search',
-  'shopper-seo',
-  'shopper-stores',
-];
+export const API_LIST: string[] = ['shopper-baskets-oas', 'shopper-orders-oas'];
