@@ -6,7 +6,7 @@
  */
 
 import nock from 'nock';
-import {ShopperSearch} from '../lib/shopperSearch';
+import {ShopperSearch} from '../lib/shopper-search';
 
 const SITE_ID = 'SITE_ID';
 const CLIENT_ID = 'CLIENT_ID';

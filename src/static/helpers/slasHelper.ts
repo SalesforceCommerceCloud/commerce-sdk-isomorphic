@@ -289,8 +289,8 @@ export async function loginIDPUser(
     ...(!privateClient &&
       credentials.codeVerifier && {code_verifier: credentials.codeVerifier}),
     grant_type: privateClient
-      ? 'authorization_code' as const
-      : 'authorization_code_pkce' as const,
+      ? ('authorization_code' as const)
+      : ('authorization_code_pkce' as const),
     redirect_uri: parameters.redirectURI,
     ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),
     ...(parameters.usid && {usid: parameters.usid}),

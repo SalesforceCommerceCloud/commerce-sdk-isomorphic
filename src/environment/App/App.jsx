@@ -9,7 +9,8 @@
 // eslint-disable-next-line no-use-before-define
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {ShopperLogin, ShopperSearch} from 'lib';
+import {ShopperLogin} from 'lib/shopper-login';
+import {ShopperSearch} from 'lib/shopper-search';
 import * as slasHelper from 'lib/helpers/slasHelper';
 import config from '../config';
 import './App.css';
