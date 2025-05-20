@@ -28,6 +28,7 @@
     "clean": "rm -rf build lib src/lib commerce-sdk-isomorphic-with-deps.tgz",
     "depcheck": "depcheck",
     "diffApis": "raml-toolkit diff --dir temp/oldApis apis -f console -o temp/diffApis.txt",
+    "diffApis:Oas": "raml-toolkit diff --dir ./temp/oldApis ./apis -f console -o temp/diffApis.txt -s oas",
     "doc": "yarn run doc:generate",
     "doc:generate": "typedoc --mode modules src/lib/** --external-modulemap \".*/src/lib/([\\w]+)\" --exclude \"src/lib/index.ts\"",
     "eject": "react-scripts eject",
@@ -44,7 +45,8 @@
     "test": "yarn run check:types && yarn run test:unit && CI=true yarn run test:react",
     "test:react": "react-scripts test --env=jest-environment-jsdom-sixteen src/environment",
     "test:unit": "jest --coverage --testPathIgnorePatterns node_modules src/environment --silent",
-    "updateApis": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/updateApis.ts && yarn diffApis"
+    "updateApis": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/updateApis.ts && yarn diffApis",
+    "updateApis:Oas": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/updateApis.ts && yarn diffApis:Oas"
   },
   "husky": {
     "hooks": {

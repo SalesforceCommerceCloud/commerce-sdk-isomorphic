@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+/* eslint-disable no-console */
 import fs from 'fs-extra';
 import path from 'path';
 import {generateFromOas} from '@commerce-apps/raml-toolkit';
@@ -53,13 +54,17 @@ function generateSDKs(apiSpecDetail: {
 }) {
   const {filepath, filename, name} = apiSpecDetail;
   if (fs.statSync(filepath).isFile() && filepath.includes('shopper')) {
-    console.log(`Generating SDK for ${name}`);
-    generateFromOas.generateFromOas({
-      inputSpec: `${filepath}`,
-      outputDir: `${OUTPUT_DIRECTORY}/${filename.split('-oas')[0]}`,
-      templateDir: `${TEMPLATE_DIRECTORY}`,
-      skipValidateSpec: true,
-    });
+    try {
+      console.log(`Generating SDK for ${name}`);
+      generateFromOas.generateFromOas({
+        inputSpec: `${filepath}`,
+        outputDir: `${OUTPUT_DIRECTORY}/${filename.split('-oas')[0]}`,
+        templateDir: `${TEMPLATE_DIRECTORY}`,
+      });
+    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      console.error(`Error generating SDK for ${name}: ${error}`);
+    }
   }
 }
 
