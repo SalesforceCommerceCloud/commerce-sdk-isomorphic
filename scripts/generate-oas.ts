@@ -31,7 +31,8 @@ type ExchangeConfig = {
 const API_DIRECTORY = process.env.COMMERCE_SDK_INPUT_DIR
   ? path.resolve(process.env.COMMERCE_SDK_INPUT_DIR)
   : path.join(__dirname, '../apis');
-const OUTPUT_DIRECTORY = path.join(__dirname, '../src/lib');
+const STATIC_DIRECTORY = path.join(__dirname, '../src/static');
+const TARGET_DIRECTORY = path.join(__dirname, '../src/lib');
 const TEMPLATE_DIRECTORY = path.join(__dirname, '../templatesOas');
 
 function getAPIDetailsFromExchange(directory: string) {
@@ -56,10 +57,12 @@ function generateSDKs(apiSpecDetail: {
   if (fs.statSync(filepath).isFile() && filepath.includes('shopper')) {
     try {
       console.log(`Generating SDK for ${name}`);
+      const outputDir = `${TARGET_DIRECTORY}/${filename.split('-oas')[0]}`;
       generateFromOas.generateFromOas({
         inputSpec: `${filepath}`,
-        outputDir: `${OUTPUT_DIRECTORY}/${filename.split('-oas')[0]}`,
+        outputDir: `${outputDir}`,
         templateDir: `${TEMPLATE_DIRECTORY}`,
+        skipValidateSpec: true,
       });
     } catch (error) {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -69,6 +72,8 @@ function generateSDKs(apiSpecDetail: {
 }
 
 console.log('Starting OAS generation script');
+const skipTestFiles = (src: string): boolean => !/\.test\.[a-z]+$/.test(src);
+fs.copySync(STATIC_DIRECTORY, TARGET_DIRECTORY, {filter: skipTestFiles});
 fs.readdir(API_DIRECTORY, (err: Error, directories: string[]) => {
   if (err) {
     console.error('Error reading api directory:', err);
@@ -92,6 +97,6 @@ fs.readdir(API_DIRECTORY, (err: Error, directories: string[]) => {
   );
 
   console.log(
-    `OAS generation script completed. Files outputted to ${OUTPUT_DIRECTORY}`
+    `OAS generation script completed. Files outputted to ${TARGET_DIRECTORY}`
   );
 });

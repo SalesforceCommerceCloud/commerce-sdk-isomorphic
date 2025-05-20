@@ -10,7 +10,7 @@
  */
 
 import nock from 'nock';
-import {ShopperLogin, TokenResponse} from '../../lib/shopperLogin';
+import {ShopperLogin, TokenResponse} from '../../lib/shopper-login';
 import * as slasHelper from './slasHelper';
 import {stringToBase64} from './slasHelper';
 import ResponseError from '../responseError';

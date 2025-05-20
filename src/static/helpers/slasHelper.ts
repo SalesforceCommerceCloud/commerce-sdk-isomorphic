@@ -13,9 +13,8 @@ import {
   ShopperLogin,
   ShopperLoginPathParameters,
   ShopperLoginQueryParameters,
-  TokenRequest,
   TokenResponse,
-} from '../../lib/shopperLogin';
+} from '../../lib/shopper-login';
 import ResponseError from '../responseError';
 import TemplateURL from '../templateUrl';
 import {
@@ -161,7 +160,7 @@ export async function authorize(
       ...(hint && {hint}),
       organizationId: slasClient.clientConfig.parameters.organizationId,
       redirect_uri: redirectURI,
-      response_type: 'code',
+      response_type: 'code' as const,
       ...(usid && {usid}),
     },
   };
@@ -282,7 +281,7 @@ export async function loginIDPUser(
 ): Promise<TokenResponse> {
   const privateClient = !!credentials.clientSecret;
 
-  const tokenBody: TokenRequest = {
+  const tokenBody = {
     client_id: slasClient.clientConfig.parameters.clientId,
     channel_id: slasClient.clientConfig.parameters.siteId,
     code: parameters.code,
@@ -290,8 +289,8 @@ export async function loginIDPUser(
     ...(!privateClient &&
       credentials.codeVerifier && {code_verifier: credentials.codeVerifier}),
     grant_type: privateClient
-      ? 'authorization_code'
-      : 'authorization_code_pkce',
+      ? 'authorization_code' as const
+      : 'authorization_code_pkce' as const,
     redirect_uri: parameters.redirectURI,
     ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),
     ...(parameters.usid && {usid: parameters.usid}),
@@ -355,7 +354,7 @@ export async function loginGuestUserPrivate(
       Authorization: authorization,
     },
     body: {
-      grant_type: 'client_credentials',
+      grant_type: 'client_credentials' as const,
       channel_id: slasClient.clientConfig.parameters.siteId,
       ...(parameters.usid && {usid: parameters.usid}),
       ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),
@@ -403,12 +402,12 @@ export async function loginGuestUser(
     },
     false
   );
-  const tokenBody: TokenRequest = {
+  const tokenBody = {
     client_id: slasClient.clientConfig.parameters.clientId,
     channel_id: slasClient.clientConfig.parameters.siteId,
     code: authResponse.code,
     code_verifier: codeVerifier,
-    grant_type: 'authorization_code_pkce',
+    grant_type: 'authorization_code_pkce' as const,
     redirect_uri: redirectURI,
     usid: authResponse.usid,
     ...(dnt !== undefined && {dnt: dnt.toString()}),
@@ -505,7 +504,7 @@ export async function loginRegisteredUserB2C(
     channel_id: slasClient.clientConfig.parameters.siteId,
     code: authResponse.code,
     code_verifier: codeVerifier,
-    grant_type: 'authorization_code_pkce',
+    grant_type: 'authorization_code_pkce' as const,
     organizationId: slasClient.clientConfig.parameters.organizationId,
     redirect_uri: parameters.redirectURI,
     usid: authResponse.usid,
@@ -691,7 +690,7 @@ export function refreshAccessToken(
   credentials?: {clientSecret?: string}
 ): Promise<TokenResponse> {
   const body = {
-    grant_type: 'refresh_token',
+    grant_type: 'refresh_token' as const,
     refresh_token: parameters.refreshToken,
     client_id: slasClient.clientConfig.parameters.clientId,
     channel_id: slasClient.clientConfig.parameters.siteId,
