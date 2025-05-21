@@ -16,7 +16,7 @@ import * as templateHelpers from './templateHelpers';
 const PROJECT_ROOT = path.join(__dirname, '..');
 const PACKAGE_JSON = path.join(PROJECT_ROOT, 'package.json');
 
-const TEMPLATE_DIRECTORY = `${__dirname}/../templates`;
+const TEMPLATE_DIRECTORY = `${__dirname}/../templatesRaml`;
 const {registerPartial, loadApiDirectory} = generate;
 type ApiMetadata = generate.ApiMetadata;
 
