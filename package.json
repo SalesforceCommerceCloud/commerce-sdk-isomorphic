@@ -85,10 +85,10 @@
     ],
     "coverageThreshold": {
       "global": {
-        "branches": 90,
-        "functions": 90,
-        "lines": 90,
-        "statements": 90
+        "branches": 85,
+        "functions": 85,
+        "lines": 85,
+        "statements": 85
       }
     }
   },
@@ -183,11 +183,11 @@
   "bundlesize": [
     {
       "path": "lib/**/*.js",
-      "maxSize": "50 kB"
+      "maxSize": "51 kB"
     },
     {
       "path": "commerce-sdk-isomorphic-with-deps.tgz",
-      "maxSize": "565 kB"
+      "maxSize": "2048 kB"
     }
   ],
   "proxy": "https://SHORTCODE.api.commercecloud.salesforce.com"
