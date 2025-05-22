@@ -48,12 +48,6 @@
     "updateApis": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/updateApis.ts && yarn diffApis",
     "updateApis:Oas": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/updateApis.ts && yarn diffApis:Oas"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "CI=true yarn test --passWithNoTests"
-    }
-  },
   "lint-staged": {
     "package.json": "sort-package-json --check",
     "*.css": "stylelint",
