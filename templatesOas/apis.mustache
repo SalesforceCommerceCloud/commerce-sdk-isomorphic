@@ -406,8 +406,8 @@ export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.came
         {{/queryParams}}
 
         Object.keys(optionParams).forEach((key) => {
-            if(key.startsWith('c_') && optionParams[key] !== undefined) {
-                queryParams[key] = optionParams[key]
+            if(key.startsWith('c_') && optionParams[key as keyof typeof optionParams] !== undefined) {
+                queryParams[key as keyof typeof queryParams] = optionParams[key as keyof typeof optionParams]
             } else if(!queryParams.hasOwnProperty(key) && !pathParams.hasOwnProperty(key)) {
                 console.warn(`Invalid Parameter for {{{nickname}}}: ${key}`)
             }
@@ -444,11 +444,11 @@ export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.came
                 method: '{{httpMethod}}',
                 headers,
                 {{#hasBodyParam}}
-                body: this.clientConfig.transformRequest(options.body, headers)
+                body: this.clientConfig.transformRequest(options{{^hasBodyParam}}?{{/hasBodyParam}}.body, headers)
                 {{/hasBodyParam}}
                 {{^hasBodyParam}}
                 {{#hasFormParams}}
-                body: this.clientConfig.transformRequest(options.body, headers)
+                body: this.clientConfig.transformRequest(options{{^hasBodyParam}}?{{/hasBodyParam}}.body, headers)
                 {{/hasFormParams}}
                 {{/hasBodyParam}}
             },
