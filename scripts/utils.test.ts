@@ -62,10 +62,10 @@ describe('setupApis', () => {
     const children = apis.children.map(child => child.name.original);
     expect(children).toEqual(
       expect.arrayContaining([
-        'shopper-baskets',
-        'shopper-customers',
-        'shopper-products',
-        'shopper-search',
+        'shopper-baskets-oas',
+        'shopper-customers-oas',
+        'shopper-products-oas',
+        'shopper-search-oas',
       ])
     );
   });
