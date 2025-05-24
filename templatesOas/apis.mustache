@@ -408,9 +408,9 @@ export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.came
         Object.keys(optionParams).forEach((key) => {
             if(key.startsWith('c_') && optionParams[key as keyof typeof optionParams] !== undefined) {
                 queryParams[key as keyof typeof queryParams] = optionParams[key as keyof typeof optionParams]
-            } else if(!queryParams.hasOwnProperty(key) && !pathParams.hasOwnProperty(key)) {
+            } <!--else if(!queryParams.hasOwnProperty(key) && !pathParams.hasOwnProperty(key)) {
                 console.warn(`Invalid Parameter for {{{nickname}}}: ${key}`)
-            }
+            }-->
         })
 
         const url = new TemplateURL(
