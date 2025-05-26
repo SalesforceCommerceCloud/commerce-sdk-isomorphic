@@ -41,8 +41,7 @@ export interface BaseUriParameters {
   version?: string; // Optional, will default to "v1" if not provided.
 }
 
-export type LocaleCode = {
-} & { [key: string]: any }
+export type LocaleCode = {[key: string]: any};
 
 /**
  * Generic interface for path parameters.

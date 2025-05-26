@@ -35,7 +35,7 @@ const expectedTokenResponse: TokenResponse = {
   expires_in: 0,
   refresh_token_expires_in: 0,
   token_type: 'Bearer',
-  usid: 'usid', 
+  usid: 'usid',
   customer_id: 'customer_id',
   enc_user_id: 'enc_user_id',
   idp_access_token: 'idp',
