@@ -101,14 +101,19 @@ export function generateIndex(context: {
   fs.writeFileSync(`${TARGET_DIRECTORY}/index.ts`, generatedIndex);
 }
 
+export function copyStaticFiles(): void {
+  const skipTestFiles = (src: string): boolean => !/\.test\.[a-z]+$/.test(src);
+  fs.copySync(STATIC_DIRECTORY, TARGET_DIRECTORY, {filter: skipTestFiles});
+}
+
 export function main(): void {
   console.log('Starting OAS generation script');
   const apiDirectory = process.env.COMMERCE_SDK_INPUT_DIR
     ? path.resolve(process.env.COMMERCE_SDK_INPUT_DIR)
     : DEFAULT_API_DIRECTORY;
 
-  const skipTestFiles = (src: string): boolean => !/\.test\.[a-z]+$/.test(src);
-  fs.copySync(STATIC_DIRECTORY, TARGET_DIRECTORY, {filter: skipTestFiles});
+  copyStaticFiles();
+
   fs.readdir(apiDirectory, (err: Error, directories: string[]) => {
     if (err) {
       console.error('Error reading api directory:', err);
