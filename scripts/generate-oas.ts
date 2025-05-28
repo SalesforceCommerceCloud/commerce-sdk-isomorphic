@@ -45,6 +45,10 @@ const INDEX_TEMPLATE_LOCATION = path.join(
   __dirname,
   '../templates/index.ts.hbs'
 );
+const VERSION_TEMPLATE_LOCATION = path.join(
+  __dirname,
+  '../templates/version.ts.hbs'
+);
 
 export function resolveApiName(name: string): string {
   // Special cases for shopper-orders and shopper-seo where the API name has different casing then the name in exchange.json
@@ -101,6 +105,15 @@ export function generateIndex(context: {
   fs.writeFileSync(`${TARGET_DIRECTORY}/index.ts`, generatedIndex);
 }
 
+export function generateVersionFile(): void {
+  const version = process.env.PACKAGE_VERSION || 'unknown';
+  const versionTemplate = fs.readFileSync(VERSION_TEMPLATE_LOCATION, 'utf8');
+  const generatedVersion = Handlebars.compile(versionTemplate)({
+    metadata: {sdkVersion: version},
+  });
+  fs.writeFileSync(`${STATIC_DIRECTORY}/version.ts`, generatedVersion);
+}
+
 export function copyStaticFiles(): void {
   const skipTestFiles = (src: string): boolean => !/\.test\.[a-z]+$/.test(src);
   fs.copySync(STATIC_DIRECTORY, TARGET_DIRECTORY, {filter: skipTestFiles});
@@ -111,8 +124,6 @@ export function main(): void {
   const apiDirectory = process.env.COMMERCE_SDK_INPUT_DIR
     ? path.resolve(process.env.COMMERCE_SDK_INPUT_DIR)
     : DEFAULT_API_DIRECTORY;
-
-  copyStaticFiles();
 
   fs.readdir(apiDirectory, (err: Error, directories: string[]) => {
     if (err) {
@@ -136,6 +147,8 @@ export function main(): void {
     });
 
     generateIndex({children: apiSpecDetails});
+    generateVersionFile();
+    copyStaticFiles();
 
     console.log(
       `OAS generation script completed. Files outputted to ${TARGET_DIRECTORY}`

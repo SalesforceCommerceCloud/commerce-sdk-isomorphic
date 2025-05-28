@@ -14,6 +14,7 @@ import {
   generateSDKs,
   generateIndex,
   main,
+  generateVersionFile,
 } from './generate-oas';
 
 // Mock dependencies
@@ -27,10 +28,14 @@ jest.mock('@commerce-apps/raml-toolkit', () => ({
 
 describe('generate-oas', () => {
   const mockApiDirectory = '/mock/api/directory';
+  let handlebarsSpy: jest.SpyInstance;
 
   beforeEach(() => {
     // Reset all mocks before each test
     jest.clearAllMocks();
+
+    // Set up Handlebars spy
+    handlebarsSpy = jest.spyOn(Handlebars, 'compile');
 
     // Mock fs-extra methods
     (fs.existsSync as jest.Mock).mockReturnValue(true);
@@ -55,6 +60,8 @@ describe('generate-oas', () => {
   describe('Main execution', () => {
     it('should process all API directories and generate SDKs', () => {
       process.env.COMMERCE_SDK_INPUT_DIR = mockApiDirectory;
+      process.env.PACKAGE_VERSION = '1.0.0';
+
       main();
 
       expect(fs.copySync).toHaveBeenCalledWith(
@@ -162,7 +169,6 @@ describe('generate-oas', () => {
 
   describe('generateIndex', () => {
     it('should generate index file with correct context', () => {
-      jest.spyOn(Handlebars, 'compile');
       const context = {
         children: [
           {
@@ -176,6 +182,19 @@ describe('generate-oas', () => {
 
       expect(fs.writeFileSync).toHaveBeenCalledWith(
         path.join(__dirname, '../src/lib/index.ts'),
+        expect.any(String)
+      );
+    });
+  });
+
+  describe('generateVersionFile', () => {
+    it('should generate version file', () => {
+      process.env.PACKAGE_VERSION = '1.0.0';
+
+      generateVersionFile();
+
+      expect(fs.writeFileSync).toHaveBeenCalledWith(
+        path.join(__dirname, '../src/static/version.ts'),
         expect.any(String)
       );
     });
