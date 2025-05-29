@@ -4,5 +4,5 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-export const USER_AGENT_HEADER = "user-agent";
-export const USER_AGENT_VALUE = "commerce-sdk-isomorphic@3.3.0";
+export const USER_AGENT_HEADER = 'user-agent';
+export const USER_AGENT_VALUE = 'commerce-sdk-isomorphic@3.3.0';

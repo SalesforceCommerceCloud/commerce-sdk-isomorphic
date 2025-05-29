@@ -199,15 +199,15 @@ describe('Parameters', () => {
 
     nock.cleanAll();
     nock(`https://${SHORT_CODE}.api.commercecloud.salesforce.com`)
-        .get(
-            `/search/shopper-search/v1/organizations/${ORGANIZATION_ID}/product-search`
-        )
-        .query({
-          siteId: SITE_ID,
-          unknownParam1: 'param1',
-          unknownParam2: 'param2',
-        })
-        .reply(200, MOCK_RESPONSE);
+      .get(
+        `/search/shopper-search/v1/organizations/${ORGANIZATION_ID}/product-search`
+      )
+      .query({
+        siteId: SITE_ID,
+        unknownParam1: 'param1',
+        unknownParam2: 'param2',
+      })
+      .reply(200, MOCK_RESPONSE);
 
     const warnSpy = jest.spyOn(console, 'warn');
     const response = await searchClient.productSearch(options);
@@ -217,7 +217,7 @@ describe('Parameters', () => {
       'Found unknown parameter for productSearch: unknownParam1, adding as query parameter anyway'
     );
     expect(warnSpy).toHaveBeenCalledWith(
-        'Found unknown parameter for productSearch: unknownParam2, adding as query parameter anyway'
+      'Found unknown parameter for productSearch: unknownParam2, adding as query parameter anyway'
     );
   });
 });
