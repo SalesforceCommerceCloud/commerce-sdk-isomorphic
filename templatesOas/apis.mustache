@@ -406,15 +406,18 @@ export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.came
         {{/queryParams}}
 
         Object.keys(optionParams).forEach((key) => {
-            if(optionParams[key as keyof typeof optionParams] !== undefined) {
-                if(key.startsWith('c_')) {
-                    // add all custom params as query params
-                    queryParams[key as keyof typeof queryParams] = optionParams[key as keyof typeof optionParams]
-                } else if(!(key in queryParams) && !(key in pathParams)) {
-                    console.warn(`Found unknown parameter for {{{nickname}}}: ${key}, adding as query parameter anyway`)
-                    queryParams[key as keyof typeof queryParams] = optionParams[key as keyof typeof optionParams]
-                }
+            const paramValue = optionParams[key as keyof typeof optionParams];
+            if(paramValue === undefined) {
+                return;
             }
+            const isCustomParam = key.startsWith('c_')
+            if(!isCustomParam && ((key in queryParams) || (key in pathParams))) {
+                return;
+            }
+            if (!isCustomParam) {
+                console.warn(`Found unknown parameter for {{{nickname}}}: ${key}, adding as query parameter anyway`);
+            }
+            queryParams[key as keyof typeof queryParams] = paramValue;
         })
 
         const url = new TemplateURL(

@@ -178,7 +178,7 @@ describe('Parameters', () => {
     expect(response).toEqual(MOCK_RESPONSE);
   });
 
-  it('warns user when an invalid parameter is passed', async () => {
+  it('warns user when an unknown parameter is passed', async () => {
     const searchClient = new ShopperSearch({
       parameters: {
         // shortCode is a base URI parameter, not path/query, so it *must* be in the config
@@ -191,17 +191,33 @@ describe('Parameters', () => {
 
     const options = {
       parameters: {
-        invalidParameter: 'this should prompt a warning',
+        unknownParam1: 'param1',
+        unknownParam2: 'param2',
       },
       body: {type: 'guest'},
     };
+
+    nock.cleanAll();
+    nock(`https://${SHORT_CODE}.api.commercecloud.salesforce.com`)
+        .get(
+            `/search/shopper-search/v1/organizations/${ORGANIZATION_ID}/product-search`
+        )
+        .query({
+          siteId: SITE_ID,
+          unknownParam1: 'param1',
+          unknownParam2: 'param2',
+        })
+        .reply(200, MOCK_RESPONSE);
 
     const warnSpy = jest.spyOn(console, 'warn');
     const response = await searchClient.productSearch(options);
 
     expect(response).toEqual(MOCK_RESPONSE);
     expect(warnSpy).toHaveBeenCalledWith(
-      'Invalid Parameter for productSearch: invalidParameter'
+      'Found unknown parameter for productSearch: unknownParam1, adding as query parameter anyway'
+    );
+    expect(warnSpy).toHaveBeenCalledWith(
+        'Found unknown parameter for productSearch: unknownParam2, adding as query parameter anyway'
     );
   });
 });
