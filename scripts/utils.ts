@@ -37,7 +37,7 @@ import {download} from '@commerce-apps/raml-toolkit';
 export async function downloadLatestApis(
   name: string,
   rootPath: string,
-  isOAS = false
+  isOAS = true
 ): Promise<void> {
   const matchedApis = await download.search(`"${name}"`);
   if (!(matchedApis?.length > 0)) {
