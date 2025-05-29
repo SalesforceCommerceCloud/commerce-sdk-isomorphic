@@ -36,7 +36,7 @@
     "lint": "eslint --ext js,jsx,ts,tsx .",
     "lint:style": "stylelint ./src/",
     "prepare": "snyk protect",
-    "renderTemplates": "cross-env PACKAGE_VERSION=$(node -p \"require('./package.json').version\") ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/generate-oas.ts",
+    "renderTemplates": "PACKAGE_VERSION=$(node -p \"require('./package.json').version\") ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/generate-oas.ts",
     "start": "HTTPS=true react-scripts start",
     "pretest": "yarn run lint && yarn run lint:style && depcheck && yarn run check:size",
     "test": "yarn run check:types && yarn run test:unit && CI=true yarn run test:react",
@@ -124,7 +124,6 @@
     "@typescript-eslint/parser": "^4.33.0",
     "autoprefixer": "9.8.8",
     "bundlesize2": "^0.0.31",
-    "cross-env": "^5.2.1",
     "depcheck": "^1.4.3",
     "dotenv": "^16.0.3",
     "eslint": "^7.32.0",
@@ -184,7 +183,7 @@
     },
     {
       "path": "commerce-sdk-isomorphic-with-deps.tgz",
-      "maxSize": "2048 kB"
+      "maxSize": "1096 kB"
     }
   ],
   "proxy": "https://SHORTCODE.api.commercecloud.salesforce.com"
