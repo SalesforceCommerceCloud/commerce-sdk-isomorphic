@@ -217,7 +217,7 @@ export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.came
             {{/isHeaderParam}}
             {{/isBodyParam}}
             {{/allParams}}
-            } & { [key in `c_${string}`]: any }, ConfigParameters>
+            } & { [key: string]: any }, ConfigParameters>
             headers?: { [key: string]: string },
             {{#hasBodyParam}}
             {{#bodyParam}}
@@ -282,7 +282,7 @@ export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.came
                 {{/isHeaderParam}}
                 {{/isBodyParam}}
             {{/allParams}}
-            } & { [key in `c_${string}`]: any }, ConfigParameters>
+            } & { [key: string]: any }, ConfigParameters>
             headers?: { [key: string]: string },
             {{#hasBodyParam}}
             {{#bodyParam}}
@@ -348,7 +348,7 @@ export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.came
                 {{/isHeaderParam}}
                 {{/isBodyParam}}
             {{/allParams}}
-            } & { [key in `c_${string}`]: any }, ConfigParameters>,
+            } & { [key: string]: any }, ConfigParameters>,
             headers?: { [key: string]: string },
             {{#hasBodyParam}}
             {{#bodyParam}}
@@ -390,7 +390,7 @@ export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.came
         {{/required}}
         {{/pathParams}}
 
-        const queryParams: {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}QueryParameters & { [key in `c_${string}`]: any } = {};
+        const queryParams: {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}QueryParameters & { [key: string]: any } = {};
 
         {{#queryParams}}
         if (optionParams["{{paramName}}"] !== undefined) {
@@ -406,11 +406,15 @@ export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.came
         {{/queryParams}}
 
         Object.keys(optionParams).forEach((key) => {
-            if(key.startsWith('c_') && optionParams[key as keyof typeof optionParams] !== undefined) {
-                queryParams[key as keyof typeof queryParams] = optionParams[key as keyof typeof optionParams]
-            } <!--else if(!queryParams.hasOwnProperty(key) && !pathParams.hasOwnProperty(key)) {
-                console.warn(`Invalid Parameter for {{{nickname}}}: ${key}`)
-            }-->
+            if(optionParams[key as keyof typeof optionParams] !== undefined) {
+                if(key.startsWith('c_')) {
+                    // add all custom params as query params
+                    queryParams[key as keyof typeof queryParams] = optionParams[key as keyof typeof optionParams]
+                } else if(!(key in queryParams) && !(key in pathParams)) {
+                    console.warn(`Found unknown parameter for {{{nickname}}}: ${key}, adding as query parameter anyway`)
+                    queryParams[key as keyof typeof queryParams] = optionParams[key as keyof typeof optionParams]
+                }
+            }
         })
 
         const url = new TemplateURL(
