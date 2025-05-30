@@ -10,6 +10,7 @@ import type {
 } from "../../../static/helpers/types";
 import TemplateURL from "../../../static/templateUrl";
 import { USER_AGENT_HEADER, USER_AGENT_VALUE } from "../../../static/version";
+import { QueryParameters } from "../../helpers/types";
 
 import type {
     {{#imports}}
@@ -217,7 +218,7 @@ export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.came
             {{/isHeaderParam}}
             {{/isBodyParam}}
             {{/allParams}}
-            } & { [key: string]: any }, ConfigParameters>
+            } & QueryParameters, ConfigParameters>
             headers?: { [key: string]: string },
             {{#hasBodyParam}}
             {{#bodyParam}}
@@ -282,7 +283,7 @@ export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.came
                 {{/isHeaderParam}}
                 {{/isBodyParam}}
             {{/allParams}}
-            } & { [key: string]: any }, ConfigParameters>
+            } & QueryParameters, ConfigParameters>
             headers?: { [key: string]: string },
             {{#hasBodyParam}}
             {{#bodyParam}}
@@ -348,7 +349,7 @@ export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.came
                 {{/isHeaderParam}}
                 {{/isBodyParam}}
             {{/allParams}}
-            } & { [key: string]: any }, ConfigParameters>,
+            } & QueryParameters, ConfigParameters>,
             headers?: { [key: string]: string },
             {{#hasBodyParam}}
             {{#bodyParam}}
@@ -390,7 +391,7 @@ export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.came
         {{/required}}
         {{/pathParams}}
 
-        const queryParams: {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}QueryParameters & { [key: string]: any } = {};
+        const queryParams: {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}QueryParameters & QueryParameters = {};
 
         {{#queryParams}}
         if (optionParams["{{paramName}}"] !== undefined) {
