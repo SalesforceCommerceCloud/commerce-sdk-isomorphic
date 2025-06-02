@@ -10,8 +10,7 @@ import {
   ShopperLoginPathParameters,
   ShopperLoginQueryParameters
 } from '../lib/shopperLogin';
-import ClientConfig, {ClientConfigInit} from '../lib/clientConfig';
-import {ShopperLogin, ShopperBaskets} from '../lib';
+import {ClientConfig, ClientConfigInit, ShopperLogin, ShopperBaskets} from '../lib';
 
 const config: ClientConfigInit<
   ShopperLoginPathParameters &
