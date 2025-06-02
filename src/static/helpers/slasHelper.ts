@@ -14,7 +14,7 @@ import {
   ShopperLoginPathParameters,
   ShopperLoginQueryParameters,
   TokenResponse,
-} from '../../lib/shopper-login';
+} from '../../lib/shopperLogin';
 import ResponseError from '../responseError';
 import TemplateURL from '../templateUrl';
 import {

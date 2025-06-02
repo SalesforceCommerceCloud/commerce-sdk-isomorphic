@@ -97,12 +97,12 @@ describe('generate-oas', () => {
   describe('getAPIDetailsFromExchange', () => {
     it('should return correct API details from exchange.json', () => {
       const result = getAPIDetailsFromExchange(
-        path.join(mockApiDirectory, 'shopper-orders')
+        path.join(mockApiDirectory, 'shopperOrders')
       );
       expect(result).toEqual({
-        filepath: path.join(mockApiDirectory, 'shopper-orders', 'api.yaml'),
+        filepath: path.join(mockApiDirectory, 'shopperOrders', 'api.yaml'),
         filename: 'api.yaml',
-        directoryName: 'shopper-orders',
+        directoryName: 'shopperOrders',
         name: 'Shopper orders OAS',
         apiName: 'ShopperOrders',
       });
