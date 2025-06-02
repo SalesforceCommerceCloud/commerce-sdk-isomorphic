@@ -7,27 +7,8 @@
 /* eslint-disable no-console */
 import fs from 'fs-extra';
 import path from 'path';
-import {generateFromOas} from '@commerce-apps/raml-toolkit';
+import {generateFromOas, download} from '@commerce-apps/raml-toolkit';
 import Handlebars from 'handlebars';
-
-type ExchangeConfig = {
-  dependencies?: {
-    version: string;
-    assetId: string;
-    groupId: string;
-  }[];
-  version: string;
-  originalFormatVersion: string;
-  apiVersion: string;
-  descriptorVersion: string;
-  classifier: string;
-  main: string;
-  assetId: string;
-  groupId: string;
-  organizationId: string;
-  name: string;
-  tags: string[];
-};
 
 type ApiSpecDetail = {
   filepath: string;
@@ -58,15 +39,13 @@ export function resolveApiName(name: string): string {
   if (name === 'Shopper Seo OAS') {
     return 'ShopperSEO';
   }
-
-  // Remove all whitespace and replace 'OAS' with an empty string
   return name.replace(/\s+/g, '').replace('OAS', '');
 }
 
 export function getAPIDetailsFromExchange(directory: string): ApiSpecDetail {
   const exchangePath = path.join(directory, 'exchange.json');
   if (fs.existsSync(exchangePath)) {
-    const exchangeConfig = fs.readJSONSync(exchangePath) as ExchangeConfig;
+    const exchangeConfig = fs.readJSONSync(exchangePath) as download.ExchangeConfig;
     return {
       filepath: path.join(directory, exchangeConfig.main),
       filename: exchangeConfig.main,
