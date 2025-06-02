@@ -8,11 +8,10 @@ import nock from 'nock';
 import {BaseUriParameters} from 'lib/helpers';
 import {
   ShopperLoginPathParameters,
-  ShopperLoginQueryParameters,
-  ShopperLogin,
+  ShopperLoginQueryParameters
 } from '../lib/shopperLogin';
-import ClientConfig, {ClientConfigInit} from '../static/clientConfig';
-import {ShopperBaskets} from '../lib/shopperBaskets';
+import ClientConfig, {ClientConfigInit} from '../lib/clientConfig';
+import {ShopperLogin, ShopperBaskets} from '../lib';
 
 const config: ClientConfigInit<
   ShopperLoginPathParameters &

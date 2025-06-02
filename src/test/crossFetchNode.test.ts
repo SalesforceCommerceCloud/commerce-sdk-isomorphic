@@ -6,9 +6,8 @@
  */
 
 import nock from 'nock';
-import {FetchOptions, ClientConfigInit} from '../static/clientConfig';
-import {ShopperCustomers} from '../lib/shopperCustomers';
-import {ShopperSearch} from '../lib/shopperSearch';
+import {FetchOptions, ClientConfigInit} from '../lib/clientConfig';
+import {ShopperCustomers, ShopperSearch} from '../lib';
 
 import config from '../environment/config';
 
