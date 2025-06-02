@@ -194,7 +194,7 @@ describe('generate-oas', () => {
       generateVersionFile();
 
       expect(fs.writeFileSync).toHaveBeenCalledWith(
-        path.join(__dirname, '../src/static/version.ts'),
+        path.join(__dirname, '../src/lib/version.ts'),
         expect.any(String)
       );
     });

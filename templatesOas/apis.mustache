@@ -1,15 +1,15 @@
-import ClientConfig, { ClientConfigInit } from "../../../static/clientConfig";
+import ClientConfig, { ClientConfigInit } from "../../clientConfig";
 // Must not import from ./helpers/index to avoid circular dependency via ShopperLogin
-import { isBrowser } from "../../../static/helpers/environment";
+import { isBrowser } from "../../helpers/environment";
 import { defaultBaseUri as currentBaseUri } from "../runtime";
-import { doFetch } from "../../../static/helpers/fetchHelper";
+import { doFetch } from "../../helpers/fetchHelper";
 import type {
     BaseUriParameters,
     CompositeParameters,
     RequireParametersUnlessAllAreOptional
-} from "../../../static/helpers/types";
-import TemplateURL from "../../../static/templateUrl";
-import { USER_AGENT_HEADER, USER_AGENT_VALUE } from "../../../static/version";
+} from "../../helpers/types";
+import TemplateURL from "../../templateUrl";
+import { USER_AGENT_HEADER, USER_AGENT_VALUE } from "../../version";
 
 import type {
     {{#imports}}

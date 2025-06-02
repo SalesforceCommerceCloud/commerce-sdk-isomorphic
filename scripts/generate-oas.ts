@@ -90,7 +90,7 @@ export function generateVersionFile(): void {
   const generatedVersion = Handlebars.compile(versionTemplate)({
     metadata: {sdkVersion: version},
   });
-  fs.writeFileSync(`${STATIC_DIRECTORY}/version.ts`, generatedVersion);
+  fs.writeFileSync(`${TARGET_DIRECTORY}/version.ts`, generatedVersion);
 }
 
 export function copyStaticFiles(): void {
