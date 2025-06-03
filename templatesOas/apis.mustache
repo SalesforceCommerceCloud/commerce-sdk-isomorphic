@@ -408,14 +408,11 @@ export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.came
 
         Object.keys(optionParams).forEach((key) => {
             const paramValue = optionParams[key as keyof typeof optionParams];
-            if(paramValue !== undefined) {
-                if(key.startsWith('c_')) {
-                    queryParams[key as keyof typeof queryParams] = paramValue;
-                }
-                else if(!((key in queryParams) || (key in pathParams))) {
+            if(paramValue !== undefined && (key.startsWith('c_') || !((key in queryParams) || (key in pathParams)))) {
+                if(!key.startsWith('c_')) {
                     console.warn(`Found unknown parameter for {{{nickname}}}: ${key}, adding as query parameter anyway`);
-                    queryParams[key as keyof typeof queryParams] = paramValue;
                 }
+                queryParams[key as keyof typeof queryParams] = paramValue;
             }
         })
 
