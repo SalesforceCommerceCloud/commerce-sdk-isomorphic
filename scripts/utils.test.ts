@@ -5,9 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import {download} from '@commerce-apps/raml-toolkit';
-import {
-  downloadLatestApis,
-} from './utils';
+import {downloadLatestApis} from './utils';
 
 describe('test downloadLatestApis script', () => {
   it('throws error when no results', async () => {

@@ -7,27 +7,8 @@
 /* eslint-disable no-console */
 import fs from 'fs-extra';
 import path from 'path';
-import {generateFromOas} from '@commerce-apps/raml-toolkit';
+import {generateFromOas, download} from '@commerce-apps/raml-toolkit';
 import Handlebars from 'handlebars';
-
-type ExchangeConfig = {
-  dependencies?: {
-    version: string;
-    assetId: string;
-    groupId: string;
-  }[];
-  version: string;
-  originalFormatVersion: string;
-  apiVersion: string;
-  descriptorVersion: string;
-  classifier: string;
-  main: string;
-  assetId: string;
-  groupId: string;
-  organizationId: string;
-  name: string;
-  tags: string[];
-};
 
 type ApiSpecDetail = {
   filepath: string;
@@ -50,6 +31,10 @@ const VERSION_TEMPLATE_LOCATION = path.join(
   '../templates/version.ts.hbs'
 );
 
+function kebabToCamelCase(str: string): string {
+  return str.replace(/-([a-z])/g, (match, letter: string) => letter.toUpperCase());
+}
+
 export function resolveApiName(name: string): string {
   // Special cases for shopper-orders and shopper-seo where the API name has different casing then the name in exchange.json
   if (name === 'Shopper orders OAS') {
@@ -58,19 +43,21 @@ export function resolveApiName(name: string): string {
   if (name === 'Shopper Seo OAS') {
     return 'ShopperSEO';
   }
-
-  // Remove all whitespace and replace 'OAS' with an empty string
   return name.replace(/\s+/g, '').replace('OAS', '');
 }
 
 export function getAPIDetailsFromExchange(directory: string): ApiSpecDetail {
   const exchangePath = path.join(directory, 'exchange.json');
   if (fs.existsSync(exchangePath)) {
-    const exchangeConfig = fs.readJSONSync(exchangePath) as ExchangeConfig;
+    const exchangeConfig = fs.readJSONSync(
+      exchangePath
+    ) as download.ExchangeConfig;
     return {
       filepath: path.join(directory, exchangeConfig.main),
       filename: exchangeConfig.main,
-      directoryName: exchangeConfig.assetId.replace('-oas', ''),
+      directoryName: kebabToCamelCase(
+        exchangeConfig.assetId.replace('-oas', '')
+      ),
       name: exchangeConfig.name,
       apiName: resolveApiName(exchangeConfig.name),
     };
@@ -111,7 +98,7 @@ export function generateVersionFile(): void {
   const generatedVersion = Handlebars.compile(versionTemplate)({
     metadata: {sdkVersion: version},
   });
-  fs.writeFileSync(`${STATIC_DIRECTORY}/version.ts`, generatedVersion);
+  fs.writeFileSync(`${TARGET_DIRECTORY}/version.ts`, generatedVersion);
 }
 
 export function copyStaticFiles(): void {
@@ -131,6 +118,8 @@ export function main(): void {
       return;
     }
 
+    copyStaticFiles();
+
     const apiSpecDetails: ApiSpecDetail[] = [];
     const subDirectories: string[] = directories.filter((directory: string) =>
       fs.lstatSync(path.join(apiDirectory, directory)).isDirectory()
@@ -148,7 +137,6 @@ export function main(): void {
 
     generateIndex({children: apiSpecDetails});
     generateVersionFile();
-    copyStaticFiles();
 
     console.log(
       `OAS generation script completed. Files outputted to ${TARGET_DIRECTORY}`
