@@ -1,6 +1,6 @@
 {{#each children}}
 export { {{apiName}} } from "./{{directoryName}}";
-import type * as {{apiName}}Types from "./{{directoryName}}";
+import { {{apiName}}Types } from "./{{directoryName}}";
 export type { {{apiName}}Types };
 {{/each}}
 export type { ClientConfigInit } from "./clientConfig";

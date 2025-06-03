@@ -2,19 +2,20 @@ export * from './runtime{{importFileExtension}}';
 {{#apiInfo}}
 {{#apis.0}}
 export * from './apis/index{{importFileExtension}}';
+// export { {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}} } from './apis/index{{importFileExtension}}'
 {{/apis.0}}
 {{/apiInfo}}
 {{#models.0}}
 export * from './models/index{{importFileExtension}}';
 {{/models.0}}
 
-import type * as ApiTypes from './apis/index'
-import type * as ModelTypes from './models/index'
+import type * as {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}ApiTypes from './apis/index'
+import type * as {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}ModelTypes from './models/index'
 
 export namespace {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}Types {
     // API types
-    export type {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}PathParameters = ApiTypes.{{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}PathParameters
-    export type {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}QueryParameters = ApiTypes.{{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}QueryParameters
+    export type {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}PathParameters = {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}ApiTypes.{{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}PathParameters
+    export type {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}QueryParameters = {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}ApiTypes.{{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}QueryParameters
     {{#apiInfo}}
     {{#apis}}
     {{#operations}}
@@ -22,12 +23,12 @@ export namespace {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.
     {{#allParams}}
     {{#isEnum}}
     {{^stringEnums}}
-    export type {{operationIdCamelCase}}{{enumName}} = ApiTypes.{{operationIdCamelCase}}{{enumName}}
+    export type {{operationIdCamelCase}}{{enumName}} = {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}ApiTypes.{{operationIdCamelCase}}{{enumName}}
     {{/stringEnums}}
     {{/isEnum}}
     {{/allParams}}
-    export type {{nickname}}QueryParameters = ApiTypes.{{nickname}}QueryParameters
-    export type {{nickname}}PathParameters = ApiTypes.{{nickname}}PathParameters
+    export type {{nickname}}QueryParameters = {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}ApiTypes.{{nickname}}QueryParameters
+    export type {{nickname}}PathParameters = {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}ApiTypes.{{nickname}}PathParameters
     {{/operation}}
     {{/operations}}
     {{/apis}}
@@ -36,11 +37,11 @@ export namespace {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.
     // Model types
     {{#models}}
     {{#model}}
-    export type {{classname}} = ModelTypes.{{classname}}
+    export type {{classname}} = {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}ModelTypes.{{classname}}
     {{#hasEnums}}
     {{#vars}}
     {{#isEnum}}
-    export type {{classname}}{{enumName}} = ModelTypes.{{classname}}{{enumName}}
+    export type {{classname}}{{enumName}} = {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}ModelTypes.{{classname}}{{enumName}}
     {{/isEnum}}
     {{/vars}}
     {{/hasEnums}}
