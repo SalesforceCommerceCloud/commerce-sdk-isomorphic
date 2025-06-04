@@ -16,6 +16,7 @@ type ApiSpecDetail = {
   name: string;
   apiName: string;
   directoryName: string;
+  customClassName?: string;
 };
 
 const DEFAULT_API_DIRECTORY = path.join(__dirname, '../apis');
@@ -135,7 +136,16 @@ export function main(): void {
       generateSDKs(apiSpecDetail);
     });
 
-    generateIndex({children: apiSpecDetails});
+    // TODO: see if there's a way to get the custom class name from the oas file
+    const modifiedApiSpecDetails = apiSpecDetails.map((apiSpecDetail: ApiSpecDetail) => {
+      if (apiSpecDetail.apiName === 'ShopperContext') {
+        return { ...apiSpecDetail, apiName: 'ShopperContexts' };
+      } else {
+        return apiSpecDetail;
+      }
+    });
+
+    generateIndex({children: modifiedApiSpecDetails});
     generateVersionFile();
 
     console.log(

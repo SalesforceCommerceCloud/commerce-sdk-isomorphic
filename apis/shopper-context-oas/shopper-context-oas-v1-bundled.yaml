@@ -8,6 +8,7 @@ servers:
     variables:
       shortCode:
         default: shortCode
+x-sdk-classname: ShopperContexts
 paths:
   /organizations/{organizationId}/shopper-context/{usid}:
     get:

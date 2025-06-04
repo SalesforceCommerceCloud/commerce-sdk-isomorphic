@@ -122,7 +122,7 @@ export type {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camel
 * 
 *
 */
-export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}<ConfigParameters extends {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}Parameters & Record<string, unknown>> {
+export class {{#vendorExtensions}}{{#x-sdk-classname}}{{classname}}{{/x-sdk-classname}}{{^x-sdk-classname}}{{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}{{/x-sdk-classname}}{{/vendorExtensions}}{{^vendorExtensions}}{{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}{{/vendorExtensions}}<ConfigParameters extends {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}Parameters & Record<string, unknown>> {
     // baseUri is not required on ClientConfig, but we know that we provide one in the class constructor
     public clientConfig: ClientConfig<ConfigParameters> & { baseUri: string };
 

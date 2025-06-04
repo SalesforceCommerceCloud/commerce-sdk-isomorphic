@@ -9,11 +9,11 @@ import {customRandom, urlAlphabet} from 'nanoid';
 import seedrandom, {PRNG} from 'seedrandom';
 import {isBrowser} from './environment';
 
+// TODO: replace Response with TokenResponse
 import {
   ShopperLogin,
   ShopperLoginPathParameters,
   ShopperLoginQueryParameters,
-  TokenResponse,
 } from '../../lib/shopperLogin';
 import ResponseError from '../responseError';
 import TemplateURL from '../templateUrl';
@@ -263,7 +263,7 @@ export async function loginIDPUser(
     usid?: string;
     dnt?: boolean;
   }
-): Promise<TokenResponse> {
+): Promise<Response> {
   const privateClient = !!credentials.clientSecret;
 
   const tokenBody = {
@@ -318,7 +318,7 @@ export async function loginGuestUserPrivate(
   credentials: {
     clientSecret: string;
   }
-): Promise<TokenResponse> {
+): Promise<Response> {
   if (!slasClient.clientConfig.parameters.siteId) {
     throw new Error(
       'Required argument channel_id is not provided through clientConfig.parameters.siteId'
@@ -360,7 +360,7 @@ export async function loginGuestUser(
     usid?: string;
     dnt?: boolean;
   } & CustomQueryParameters
-): Promise<TokenResponse> {
+): Promise<Response> {
   const codeVerifier = createCodeVerifier();
 
   const {dnt, redirectURI, usid, ...restOfParams} = parameters;
@@ -422,7 +422,7 @@ export async function loginRegisteredUserB2C(
   options?: {
     body?: CustomRequestBody;
   }
-): Promise<TokenResponse> {
+): Promise<Response> {
   const codeVerifier = createCodeVerifier();
   const codeChallenge = await generateCodeChallenge(codeVerifier);
 
@@ -589,7 +589,7 @@ export async function getPasswordLessAccessToken(
     pwdlessLoginToken: string;
     dnt?: string;
   }
-): Promise<TokenResponse> {
+): Promise<Response> {
   if (!credentials.clientSecret) {
     throw new Error('Required argument client secret is not provided');
   }
@@ -643,7 +643,7 @@ export function refreshAccessToken(
     dnt?: boolean;
   },
   credentials?: {clientSecret?: string}
-): Promise<TokenResponse> {
+): Promise<Response> {
   const body = {
     grant_type: 'refresh_token' as const,
     refresh_token: parameters.refreshToken,
@@ -682,7 +682,7 @@ export function logout(
     accessToken: string;
     refreshToken: string;
   }
-): Promise<TokenResponse> {
+): Promise<Response> {
   return slasClient.logoutCustomer({
     headers: {
       Authorization: `Bearer ${parameters.accessToken}`,
