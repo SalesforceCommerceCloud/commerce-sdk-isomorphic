@@ -1,15 +1,16 @@
-import ClientConfig, { ClientConfigInit } from "../../../static/clientConfig";
+import ClientConfig, { ClientConfigInit } from "../../clientConfig";
 // Must not import from ./helpers/index to avoid circular dependency via ShopperLogin
-import { isBrowser } from "../../../static/helpers/environment";
+import { isBrowser } from "../../helpers/environment";
 import { defaultBaseUri as currentBaseUri } from "../runtime";
-import { doFetch } from "../../../static/helpers/fetchHelper";
+import { doFetch } from "../../helpers/fetchHelper";
 import type {
     BaseUriParameters,
     CompositeParameters,
-    RequireParametersUnlessAllAreOptional
-} from "../../../static/helpers/types";
-import TemplateURL from "../../../static/templateUrl";
-import { USER_AGENT_HEADER, USER_AGENT_VALUE } from "../../../static/version";
+    QueryParameters,
+    RequireParametersUnlessAllAreOptional,
+} from "../../helpers/types";
+import TemplateURL from "../../templateUrl";
+import { USER_AGENT_HEADER, USER_AGENT_VALUE } from "../../version";
 
 import type {
     {{#imports}}
@@ -217,7 +218,7 @@ export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.came
             {{/isHeaderParam}}
             {{/isBodyParam}}
             {{/allParams}}
-            } & { [key in `c_${string}`]: any }, ConfigParameters>
+            } & QueryParameters, ConfigParameters>
             headers?: { [key: string]: string },
             {{#hasBodyParam}}
             {{#bodyParam}}
@@ -282,7 +283,7 @@ export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.came
                 {{/isHeaderParam}}
                 {{/isBodyParam}}
             {{/allParams}}
-            } & { [key in `c_${string}`]: any }, ConfigParameters>
+            } & QueryParameters, ConfigParameters>
             headers?: { [key: string]: string },
             {{#hasBodyParam}}
             {{#bodyParam}}
@@ -348,7 +349,7 @@ export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.came
                 {{/isHeaderParam}}
                 {{/isBodyParam}}
             {{/allParams}}
-            } & { [key in `c_${string}`]: any }, ConfigParameters>,
+            } & QueryParameters, ConfigParameters>,
             headers?: { [key: string]: string },
             {{#hasBodyParam}}
             {{#bodyParam}}
@@ -390,7 +391,7 @@ export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.came
         {{/required}}
         {{/pathParams}}
 
-        const queryParams: {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}QueryParameters & { [key in `c_${string}`]: any } = {};
+        const queryParams: {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}QueryParameters & QueryParameters = {};
 
         {{#queryParams}}
         if (optionParams["{{paramName}}"] !== undefined) {
@@ -406,10 +407,12 @@ export class {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.came
         {{/queryParams}}
 
         Object.keys(optionParams).forEach((key) => {
-            if(key.startsWith('c_') && optionParams[key as keyof typeof optionParams] !== undefined) {
-                queryParams[key as keyof typeof queryParams] = optionParams[key as keyof typeof optionParams]
-            } else if(!queryParams.hasOwnProperty(key) && !pathParams.hasOwnProperty(key)) {
-                console.warn(`Invalid Parameter for {{{nickname}}}: ${key}`)
+            const paramValue = optionParams[key as keyof typeof optionParams];
+            if(paramValue !== undefined && (key.startsWith('c_') || !((key in queryParams) || (key in pathParams)))) {
+                if(!key.startsWith('c_')) {
+                    console.warn(`Found unknown parameter for {{{nickname}}}: ${key}, adding as query parameter anyway`);
+                }
+                queryParams[key as keyof typeof queryParams] = paramValue;
             }
         })
 

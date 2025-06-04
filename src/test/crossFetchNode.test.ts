@@ -6,10 +6,8 @@
  */
 
 import nock from 'nock';
-import {FetchOptions, ClientConfigInit} from '../static/clientConfig';
-import {ShopperCustomers} from '../lib/shopper-customers';
-import {ShopperSearch} from '../lib/shopper-search';
-
+import {FetchOptions} from '../lib/clientConfig';
+import {ClientConfigInit, ShopperCustomers, ShopperSearch} from '../lib';
 import config from '../environment/config';
 
 type TestConfigParameters = typeof config.parameters;
