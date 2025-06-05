@@ -233,10 +233,13 @@ describe('Authorize user', () => {
 
     // There should be no code_challenge for private client
     const expectedReqOptions = {
+      accessToken: "access_token",
       client_id: 'client_id',
       channel_id: 'site_id',
+      dnt: "false",
       hint: 'hint',
       redirect_uri: 'redirect_uri',
+      refreshToken: 'refresh_token',
       response_type: 'code',
       usid: 'usid',
     };
@@ -415,7 +418,7 @@ describe('Guest user flow', () => {
 
     // Assert the warning was logged
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      expect.stringContaining('Invalid Parameter for authorizeCustomer: hello')
+      expect.stringContaining('Found unknown parameter for authorizeCustomer: hello, adding as query parameter anyway')
     );
 
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);

@@ -7,6 +7,7 @@
 
 import {customRandom, urlAlphabet} from 'nanoid';
 import seedrandom, {PRNG} from 'seedrandom';
+import {FetchOptions} from 'lib/clientConfig';
 import {isBrowser} from './environment';
 
 // TODO: replace Response with TokenResponse
@@ -140,7 +141,7 @@ export async function authorize(
   slasClientCopy.clientConfig.fetchOptions = {
     ...slasClient.clientConfig.fetchOptions,
     redirect: isBrowser ? 'follow' : 'manual',
-  };
+  } as FetchOptions;
 
   const {hint, redirectURI, usid, ...restOfParams} = parameters;
   const opts = {
@@ -236,7 +237,7 @@ export async function authorizeIDP(
     {
       pathParams,
       queryParams,
-      origin: slasClient.clientConfig.proxy,
+      origin: slasClient.clientConfig.proxy as string,
     }
   );
 
@@ -441,7 +442,7 @@ export async function loginRegisteredUserB2C(
   slasClientCopy.clientConfig.fetchOptions = {
     ...slasClient.clientConfig.fetchOptions,
     redirect: isBrowser ? 'follow' : 'manual',
-  };
+  } as FetchOptions;
 
   const authorization = `Basic ${stringToBase64(
     `${credentials.username}:${credentials.password}`

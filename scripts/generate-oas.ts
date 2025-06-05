@@ -45,6 +45,9 @@ export function resolveApiName(name: string): string {
   if (name === 'Shopper Seo OAS') {
     return 'ShopperSEO';
   }
+  if (name === 'Shopper Context OAS') {
+    return 'ShopperContexts';
+  }
   return name.replace(/\s+/g, '').replace('OAS', '');
 }
 
@@ -137,17 +140,7 @@ export function main(): void {
       generateSDKs(apiSpecDetail);
     });
 
-    // TODO: see if there's a way to get the custom class name from the oas file
-    const modifiedApiSpecDetails = apiSpecDetails.map(
-      (apiSpecDetail: ApiSpecDetail) => {
-        if (apiSpecDetail.apiName === 'ShopperContext') {
-          return {...apiSpecDetail, apiName: 'ShopperContexts'};
-        }
-        return apiSpecDetail;
-      }
-    );
-
-    generateIndex({children: modifiedApiSpecDetails});
+    generateIndex({children: apiSpecDetails});
     generateVersionFile();
 
     console.log(
