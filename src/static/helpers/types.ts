@@ -8,6 +8,7 @@
 /**
  * Makes a type easier to read.
  */
+
 type Prettify<T> = NonNullable<{
   [K in keyof T]: T[K];
 }>;
@@ -88,100 +89,134 @@ export type CustomRequestBody = {
 // TODO: see if there's a way to fix the types for tests
 export interface ISlasClient {
   authenticateCustomer(
-    options: {
-      parameters?: {
-        organizationId?: string;
-      } & { [key in `c_${string}`]: any };
-      retrySettings?: any;
-      headers?: { [key: string]: string };
-      fetchOptions?: RequestInit;
-      body: any;
-    },
+    options?: RequireParametersUnlessAllAreOptional<{
+      parameters?: CompositeParameters<
+        {organizationId: string} & QueryParameters,
+        any
+      >;
+      headers?: {[key: string]: string};
+      body: {
+        client_id?: string;
+        response_type?: any; // In DefaultApi: ResponseType;
+        redirect_uri: string;
+        state?: string;
+        scope?: string;
+        usid?: string;
+        channel_id: string;
+        code_challenge?: string;
+      };
+    }>,
     rawResponse?: boolean
   ): Promise<Response | void>;
 
   authorizeCustomer(
-    options?: {
-      parameters?: {
-        organizationId?: string;
-        redirect_uri: string;
-        response_type: string;
-        client_id: string;
-        scope?: string;
-        state?: string;
-        usid?: string;
-        hint?: string;
-        channel_id?: string;
-        code_challenge: string;
-      } & { [key in `c_${string}`]: any };
-      retrySettings?: any;
-      fetchOptions?: RequestInit;
-      headers?: { [key: string]: string };
-    },
+    options?: RequireParametersUnlessAllAreOptional<{
+      parameters?: CompositeParameters<
+        {
+          organizationId: string;
+          redirect_uri: string;
+          response_type: 'code';
+          client_id: string;
+          scope?: string;
+          state?: string;
+          usid?: string;
+          hint?: string;
+          channel_id?: string;
+          code_challenge?: string;
+          ui_locales?: string;
+        } & QueryParameters,
+        any
+      >;
+      headers?: {[key: string]: string};
+    }>,
     rawResponse?: boolean
   ): Promise<Response | void>;
 
   getAccessToken(
-    options: {
-      parameters?: {
-        organizationId?: string;
-      } & { [key in `c_${string}`]: any };
-      retrySettings?: any;
-      fetchOptions?: RequestInit;
-      headers?: { [key: string]: string };
-      body: any;
-    },
+    options?: RequireParametersUnlessAllAreOptional<{
+      parameters?: CompositeParameters<
+        {organizationId: string} & QueryParameters,
+        any
+      >;
+      headers?: {[key: string]: string};
+      body: {
+        refresh_token?: string;
+        code?: string;
+        usid?: string;
+        grant_type: any; // In DefaultApi: GrantType
+        redirect_uri?: string;
+        code_verifier?: string;
+        client_id?: string;
+        channel_id?: string;
+        dnt?: string;
+      };
+    }>,
     rawResponse?: boolean
-  ): Promise<Response | any>;
+  ): Promise<any>;
 
   logoutCustomer(
-    options?: {
-      parameters?: {
-        organizationId?: string;
-        client_id: string;
-        refresh_token: string;
-        channel_id?: string;
-      } & { [key in `c_${string}`]: any };
-      retrySettings?: any;
-      fetchOptions?: RequestInit;
-      headers?: { [key: string]: string };
-    },
+    options?: RequireParametersUnlessAllAreOptional<{
+      parameters?: CompositeParameters<
+        {
+          organizationId: string;
+          client_id: string;
+          refresh_token: string;
+          channel_id?: string;
+          hint?: string;
+        } & QueryParameters,
+        any
+      >;
+      headers?: {[key: string]: string};
+    }>,
     rawResponse?: boolean
-  ): Promise<Response | any>;
+  ): Promise<any>;
 
   getPasswordLessAccessToken(
     options?: RequireParametersUnlessAllAreOptional<{
-        parameters?: CompositeParameters<{
-            organizationId: string;
-        } & { [key in `c_${string}`]: any }, any>
-        headers?: { [key: string]: string },
-        body: {
-            grant_type: string;
-            hint: string;
-            pwdless_login_token: string;
-            client_id?: string;
-            code_verifier?: string;
-        }
-    }>
+      parameters?: CompositeParameters<
+        {organizationId: string} & QueryParameters,
+        any
+      >;
+      headers?: {[key: string]: string};
+      body: {
+        grant_type: string;
+        hint: string;
+        pwdless_login_token: string;
+        client_id?: string;
+        code_verifier?: string;
+      };
+    }>,
+    rawResponse?: boolean
   ): Promise<any>;
 
   authorizePasswordlessCustomer(
     options?: RequireParametersUnlessAllAreOptional<{
-        parameters?: CompositeParameters<{
-            organizationId: string;
-        } & { [key in `c_${string}`]: any }, any>,
-        headers?: { [key: string]: string },
-        body: {
-            user_id: string;
-            mode: string;
-            locale?: string;
-            usid?: string;
-            channel_id: string;
-            callback_uri?: string;
-        }
+      parameters?: CompositeParameters<
+        {organizationId: string} & QueryParameters,
+        any
+      >;
+      headers?: {[key: string]: string};
+      body: {
+        user_id: string;
+        mode: string;
+        locale?: string;
+        usid?: string;
+        channel_id: string;
+        callback_uri?: string;
+      };
     }>,
     rawResponse?: boolean
-): Promise<Response | string>;
+  ): Promise<Response | string>;
 
-  clientConfig: any;
+  clientConfig: {
+    baseUri?: string;
+    parameters: {
+      clientId: string;
+      organizationId: string;
+      shortCode: string;
+      siteId: string;
+      version?: string;
+    };
+    [key: string]: any;
+  };
 }

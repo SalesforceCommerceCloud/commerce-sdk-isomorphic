@@ -16,7 +16,6 @@ type ApiSpecDetail = {
   name: string;
   apiName: string;
   directoryName: string;
-  customClassName?: string;
 };
 
 const DEFAULT_API_DIRECTORY = path.join(__dirname, '../apis');
@@ -33,7 +32,9 @@ const VERSION_TEMPLATE_LOCATION = path.join(
 );
 
 function kebabToCamelCase(str: string): string {
-  return str.replace(/-([a-z])/g, (match, letter: string) => letter.toUpperCase());
+  return str.replace(/-([a-z])/g, (match, letter: string) =>
+    letter.toUpperCase()
+  );
 }
 
 export function resolveApiName(name: string): string {
@@ -137,13 +138,14 @@ export function main(): void {
     });
 
     // TODO: see if there's a way to get the custom class name from the oas file
-    const modifiedApiSpecDetails = apiSpecDetails.map((apiSpecDetail: ApiSpecDetail) => {
-      if (apiSpecDetail.apiName === 'ShopperContext') {
-        return { ...apiSpecDetail, apiName: 'ShopperContexts' };
-      } else {
+    const modifiedApiSpecDetails = apiSpecDetails.map(
+      (apiSpecDetail: ApiSpecDetail) => {
+        if (apiSpecDetail.apiName === 'ShopperContext') {
+          return {...apiSpecDetail, apiName: 'ShopperContexts'};
+        }
         return apiSpecDetail;
       }
-    });
+    );
 
     generateIndex({children: modifiedApiSpecDetails});
     generateVersionFile();

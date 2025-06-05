@@ -21,7 +21,7 @@ import {
   BaseUriParameters,
   CustomQueryParameters,
   CustomRequestBody,
-  ISlasClient
+  ISlasClient,
 } from './types';
 
 export const stringToBase64 = isBrowser
@@ -229,7 +229,7 @@ export async function authorizeIDP(
     ...(usid && {usid}),
   };
 
-  const url = new TemplateURL(apiPath, slasClient.clientConfig.baseUri, {
+  const url = new TemplateURL(apiPath, slasClient.clientConfig.baseUri as string, {
     pathParams,
     queryParams,
     origin: slasClient.clientConfig.proxy,
