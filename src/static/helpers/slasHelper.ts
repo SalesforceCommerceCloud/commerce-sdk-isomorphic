@@ -22,6 +22,7 @@ import {
   CustomQueryParameters,
   CustomRequestBody,
   ISlasClient,
+  TokenResponse,
 } from './types';
 
 export const stringToBase64 = isBrowser
@@ -229,11 +230,15 @@ export async function authorizeIDP(
     ...(usid && {usid}),
   };
 
-  const url = new TemplateURL(apiPath, slasClient.clientConfig.baseUri as string, {
-    pathParams,
-    queryParams,
-    origin: slasClient.clientConfig.proxy,
-  });
+  const url = new TemplateURL(
+    apiPath,
+    slasClient.clientConfig.baseUri as string,
+    {
+      pathParams,
+      queryParams,
+      origin: slasClient.clientConfig.proxy,
+    }
+  );
 
   return {url: url.toString(), codeVerifier};
 }
@@ -263,7 +268,7 @@ export async function loginIDPUser(
     usid?: string;
     dnt?: boolean;
   }
-): Promise<Response> {
+): Promise<TokenResponse> {
   const privateClient = !!credentials.clientSecret;
 
   const tokenBody = {
@@ -292,10 +297,10 @@ export async function loginIDPUser(
       },
       body: tokenBody,
     };
-    return slasClient.getAccessToken(optionsToken);
+    return slasClient.getAccessToken(optionsToken) as Promise<TokenResponse>;
   }
   // default is to use slas public client
-  return slasClient.getAccessToken({body: tokenBody});
+  return slasClient.getAccessToken({body: tokenBody}) as Promise<TokenResponse>;
 }
 
 /**
@@ -318,7 +323,7 @@ export async function loginGuestUserPrivate(
   credentials: {
     clientSecret: string;
   }
-): Promise<Response> {
+): Promise<TokenResponse> {
   if (!slasClient.clientConfig.parameters.siteId) {
     throw new Error(
       'Required argument channel_id is not provided through clientConfig.parameters.siteId'
@@ -341,7 +346,7 @@ export async function loginGuestUserPrivate(
     },
   };
 
-  return slasClient.getAccessToken(options);
+  return slasClient.getAccessToken(options) as Promise<TokenResponse>;
 }
 
 /**
@@ -360,7 +365,7 @@ export async function loginGuestUser(
     usid?: string;
     dnt?: boolean;
   } & CustomQueryParameters
-): Promise<Response> {
+): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
 
   const {dnt, redirectURI, usid, ...restOfParams} = parameters;
@@ -388,7 +393,7 @@ export async function loginGuestUser(
     ...(dnt !== undefined && {dnt: dnt.toString()}),
   };
 
-  return slasClient.getAccessToken({body: tokenBody});
+  return slasClient.getAccessToken({body: tokenBody}) as Promise<TokenResponse>;
 }
 
 /**
@@ -422,7 +427,7 @@ export async function loginRegisteredUserB2C(
   options?: {
     body?: CustomRequestBody;
   }
-): Promise<Response> {
+): Promise<TokenResponse> {
   const codeVerifier = createCodeVerifier();
   const codeChallenge = await generateCodeChallenge(codeVerifier);
 
@@ -492,10 +497,10 @@ export async function loginRegisteredUserB2C(
       },
       body: tokenBody,
     };
-    return slasClient.getAccessToken(optionsToken);
+    return slasClient.getAccessToken(optionsToken) as Promise<TokenResponse>;
   }
   // default is to use slas public client
-  return slasClient.getAccessToken({body: tokenBody});
+  return slasClient.getAccessToken({body: tokenBody}) as Promise<TokenResponse>;
 }
 
 /* Function to send passwordless login token
@@ -589,7 +594,7 @@ export async function getPasswordLessAccessToken(
     pwdlessLoginToken: string;
     dnt?: string;
   }
-): Promise<Response> {
+): Promise<TokenResponse> {
   if (!credentials.clientSecret) {
     throw new Error('Required argument client secret is not provided');
   }
@@ -623,7 +628,7 @@ export async function getPasswordLessAccessToken(
       organizationId: slasClient.clientConfig.parameters.organizationId,
     },
     body: tokenBody,
-  });
+  }) as Promise<TokenResponse>;
 }
 
 /**
@@ -643,7 +648,7 @@ export function refreshAccessToken(
     dnt?: boolean;
   },
   credentials?: {clientSecret?: string}
-): Promise<Response> {
+): Promise<TokenResponse> {
   const body = {
     grant_type: 'refresh_token' as const,
     refresh_token: parameters.refreshToken,
@@ -662,10 +667,10 @@ export function refreshAccessToken(
       },
       body,
     };
-    return slasClient.getAccessToken(options);
+    return slasClient.getAccessToken(options) as Promise<TokenResponse>;
   }
 
-  return slasClient.getAccessToken({body});
+  return slasClient.getAccessToken({body}) as Promise<TokenResponse>;
 }
 
 /**
@@ -682,7 +687,7 @@ export function logout(
     accessToken: string;
     refreshToken: string;
   }
-): Promise<Response> {
+): Promise<TokenResponse> {
   return slasClient.logoutCustomer({
     headers: {
       Authorization: `Bearer ${parameters.accessToken}`,
@@ -692,5 +697,5 @@ export function logout(
       client_id: slasClient.clientConfig.parameters.clientId,
       channel_id: slasClient.clientConfig.parameters.siteId,
     },
-  });
+  }) as Promise<TokenResponse>;
 }

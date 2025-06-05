@@ -85,6 +85,19 @@ export type CustomRequestBody = {
     | {[key: string]: unknown};
 };
 
+export type TokenResponse = {
+  access_token: string;
+  id_token: string;
+  refresh_token: string;
+  expires_in: number;
+  refresh_token_expires_in: number;
+  token_type: 'Bearer';
+  usid: string;
+  customer_id: string;
+  enc_user_id: string;
+  idp_access_token: string;
+} & {[key: string]: any};
+
 // TODO: replace any types with proper types
 // TODO: see if there's a way to fix the types for tests
 export interface ISlasClient {
@@ -152,7 +165,7 @@ export interface ISlasClient {
       };
     }>,
     rawResponse?: boolean
-  ): Promise<any>;
+  ): Promise<Response | TokenResponse>;
 
   logoutCustomer(
     options?: RequireParametersUnlessAllAreOptional<{
@@ -169,7 +182,7 @@ export interface ISlasClient {
       headers?: {[key: string]: string};
     }>,
     rawResponse?: boolean
-  ): Promise<any>;
+  ): Promise<Response | TokenResponse>;
 
   getPasswordLessAccessToken(
     options?: RequireParametersUnlessAllAreOptional<{
@@ -187,7 +200,7 @@ export interface ISlasClient {
       };
     }>,
     rawResponse?: boolean
-  ): Promise<any>;
+  ): Promise<Response | TokenResponse>;
 
   authorizePasswordlessCustomer(
     options?: RequireParametersUnlessAllAreOptional<{
