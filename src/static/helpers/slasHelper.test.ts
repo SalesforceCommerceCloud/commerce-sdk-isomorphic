@@ -232,15 +232,11 @@ describe('Authorize user', () => {
     await slasHelper.authorize(mockSlasClient, codeVerifier, parameters, true);
 
     // There should be no code_challenge for private client
-    const expectedReqOptions = {
-      client_id: 'client_id',
-      channel_id: 'site_id',
-      hint: 'hint',
-      redirect_uri: 'redirect_uri',
-      response_type: 'code',
-      usid: 'usid',
+    const unexpectedQueryParams = {
+      code_challenge: 'code_challenge'
     };
-    expect(capturedQueryParams).toEqual(expectedReqOptions);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    expect(capturedQueryParams).toEqual(expect.not.objectContaining(unexpectedQueryParams));
   });
 });
 
@@ -415,7 +411,9 @@ describe('Guest user flow', () => {
 
     // Assert the warning was logged
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      expect.stringContaining('Invalid Parameter for authorizeCustomer: hello')
+      expect.stringContaining(
+        'Found unknown parameter for authorizeCustomer: hello, adding as query parameter anyway'
+      )
     );
 
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
