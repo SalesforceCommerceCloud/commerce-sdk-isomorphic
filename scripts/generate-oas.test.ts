@@ -15,6 +15,7 @@ import {
   generateIndex,
   main,
   generateVersionFile,
+  getAllDirectories
 } from './generate-oas';
 
 // Mock dependencies
@@ -197,6 +198,56 @@ describe('generate-oas', () => {
         path.join(__dirname, '../src/lib/version.ts'),
         expect.any(String)
       );
+    });
+  });
+
+  describe('getAllDirectories', () => {
+    it('should return all directories in the given path', () => {
+      // Mock nested directory structure
+      (fs.readdirSync as jest.Mock).mockImplementation((dirPath: string) => {
+        if (dirPath === mockApiDirectory) {
+          return ['shopper-orders', 'shopper-baskets', 'admin'];
+        }
+        if (dirPath.endsWith('admin')) {
+          return ['customers', 'products'];
+        }
+        if (dirPath.endsWith('customers')) {
+          return ['nested-folder'];
+        }
+        return [];
+      });
+
+      (fs.lstatSync as jest.Mock).mockImplementation((itemPath: string) => ({
+        isDirectory: () => !itemPath.includes('.'),
+      }));
+
+      const result = getAllDirectories(mockApiDirectory);
+      
+      expect(result).toEqual([
+        'shopper-orders',
+        'shopper-baskets', 
+        'admin',
+        'admin/customers',
+        'admin/customers/nested-folder',
+        'admin/products'
+      ]);
+    });
+
+    it('should handle errors gracefully when directory cannot be read', () => {
+      (fs.readdirSync as jest.Mock).mockImplementation(() => {
+        throw new Error('Permission denied');
+      });
+
+      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+      const result = getAllDirectories('/invalid/path');
+      
+      expect(result).toEqual([]);
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Warning: Could not read directory /invalid/path:',
+        expect.any(Error)
+      );
+      
+      consoleSpy.mockRestore();
     });
   });
 });

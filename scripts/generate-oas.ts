@@ -32,7 +32,9 @@ const VERSION_TEMPLATE_LOCATION = path.join(
 );
 
 function kebabToCamelCase(str: string): string {
-  return str.replace(/-([a-z])/g, (match, letter: string) => letter.toUpperCase());
+  return str.replace(/-([a-z])/g, (match, letter: string) =>
+    letter.toUpperCase()
+  );
 }
 
 export function resolveApiName(name: string): string {
@@ -101,6 +103,31 @@ export function generateVersionFile(): void {
   fs.writeFileSync(`${TARGET_DIRECTORY}/version.ts`, generatedVersion);
 }
 
+export function getAllDirectories(basePath: string, relativePath = ''): string[] {
+  const fullPath = path.join(basePath, relativePath);
+  const directories: string[] = [];
+
+  try {
+    const items = fs.readdirSync(fullPath);
+
+    items.forEach(item => {
+      const itemPath = path.join(fullPath, item);
+      const relativeItemPath = relativePath
+        ? path.join(relativePath, item)
+        : item;
+
+      if (fs.lstatSync(itemPath).isDirectory()) {
+        directories.push(relativeItemPath);
+        directories.push(...getAllDirectories(basePath, relativeItemPath));
+      }
+    });
+  } catch (error) {
+    console.warn(`Warning: Could not read directory ${fullPath}:`, error);
+  }
+
+  return directories;
+}
+
 export function copyStaticFiles(): void {
   const skipTestFiles = (src: string): boolean => !/\.test\.[a-z]+$/.test(src);
   fs.copySync(STATIC_DIRECTORY, TARGET_DIRECTORY, {filter: skipTestFiles});
@@ -121,14 +148,17 @@ export function main(): void {
     copyStaticFiles();
 
     const apiSpecDetails: ApiSpecDetail[] = [];
-    const subDirectories: string[] = directories.filter((directory: string) =>
-      fs.lstatSync(path.join(apiDirectory, directory)).isDirectory()
-    );
+    const subDirectories: string[] = getAllDirectories(apiDirectory);
     subDirectories.forEach((directory: string) => {
-      const details = getAPIDetailsFromExchange(
-        path.join(apiDirectory, directory)
-      );
-      apiSpecDetails.push(details);
+      try {
+        const details = getAPIDetailsFromExchange(
+          path.join(apiDirectory, directory)
+        );
+        apiSpecDetails.push(details);
+      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        console.log(`Skipping directory ${directory}: ${error}`);
+      }
     });
 
     apiSpecDetails.forEach((apiSpecDetail: ApiSpecDetail) => {
