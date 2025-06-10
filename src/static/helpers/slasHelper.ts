@@ -7,23 +7,20 @@
 
 import {customRandom, urlAlphabet} from 'nanoid';
 import seedrandom, {PRNG} from 'seedrandom';
-import {FetchOptions} from 'lib/clientConfig';
 import {isBrowser} from './environment';
 
-// TODO: replace Response with TokenResponse
 import {
   ShopperLogin,
   ShopperLoginPathParameters,
   ShopperLoginQueryParameters,
-} from '../../lib/shopperLogin';
+} from '../../lib/shopperLogin/apis';
+import {TokenResponse} from '../../lib/shopperLogin/models';
 import ResponseError from '../responseError';
 import TemplateURL from '../templateUrl';
 import {
   BaseUriParameters,
   CustomQueryParameters,
   CustomRequestBody,
-  ISlasClient,
-  TokenResponse,
 } from './types';
 
 export const stringToBase64 = isBrowser
@@ -114,7 +111,12 @@ export const generateCodeChallenge = async (
  * @returns login url, user id and authorization code if available
  */
 export async function authorize(
-  slasClient: ISlasClient,
+  slasClient: ShopperLogin<{
+    shortCode: string;
+    organizationId: string;
+    clientId: string;
+    siteId: string;
+  }>,
   codeVerifier: string,
   parameters: {
     redirectURI: string;
@@ -141,7 +143,7 @@ export async function authorize(
   slasClientCopy.clientConfig.fetchOptions = {
     ...slasClient.clientConfig.fetchOptions,
     redirect: isBrowser ? 'follow' : 'manual',
-  } as FetchOptions;
+  };
 
   const {hint, redirectURI, usid, ...restOfParams} = parameters;
   const opts = {
@@ -192,7 +194,13 @@ export async function authorize(
  * @returns authorization url and code verifier
  */
 export async function authorizeIDP(
-  slasClient: ISlasClient,
+  slasClient: ShopperLogin<{
+    shortCode: string;
+    organizationId: string;
+    clientId: string;
+    siteId: string;
+    version?: string;
+  }>,
   parameters: {
     redirectURI: string;
     hint: string;
@@ -231,15 +239,11 @@ export async function authorizeIDP(
     ...(usid && {usid}),
   };
 
-  const url = new TemplateURL(
-    apiPath,
-    slasClient.clientConfig.baseUri as string,
-    {
-      pathParams,
-      queryParams,
-      origin: slasClient.clientConfig.proxy as string,
-    }
-  );
+  const url = new TemplateURL(apiPath, slasClient.clientConfig.baseUri, {
+    pathParams,
+    queryParams,
+    origin: slasClient.clientConfig.proxy,
+  });
 
   return {url: url.toString(), codeVerifier};
 }
@@ -258,7 +262,12 @@ export async function authorizeIDP(
  * @returns TokenResponse
  */
 export async function loginIDPUser(
-  slasClient: ISlasClient,
+  slasClient: ShopperLogin<{
+    shortCode: string;
+    organizationId: string;
+    clientId: string;
+    siteId: string;
+  }>,
   credentials: {
     clientSecret?: string;
     codeVerifier?: string;
@@ -298,10 +307,10 @@ export async function loginIDPUser(
       },
       body: tokenBody,
     };
-    return slasClient.getAccessToken(optionsToken) as Promise<TokenResponse>;
+    return slasClient.getAccessToken(optionsToken);
   }
   // default is to use slas public client
-  return slasClient.getAccessToken({body: tokenBody}) as Promise<TokenResponse>;
+  return slasClient.getAccessToken({body: tokenBody});
 }
 
 /**
@@ -316,7 +325,12 @@ export async function loginIDPUser(
  * @returns TokenResponse
  */
 export async function loginGuestUserPrivate(
-  slasClient: ISlasClient,
+  slasClient: ShopperLogin<{
+    shortCode: string;
+    organizationId: string;
+    clientId: string;
+    siteId: string;
+  }>,
   parameters: {
     usid?: string;
     dnt?: boolean;
@@ -347,7 +361,7 @@ export async function loginGuestUserPrivate(
     },
   };
 
-  return slasClient.getAccessToken(options) as Promise<TokenResponse>;
+  return slasClient.getAccessToken(options);
 }
 
 /**
@@ -360,7 +374,12 @@ export async function loginGuestUserPrivate(
  * @returns TokenResponse
  */
 export async function loginGuestUser(
-  slasClient: ISlasClient,
+  slasClient: ShopperLogin<{
+    shortCode: string;
+    organizationId: string;
+    clientId: string;
+    siteId: string;
+  }>,
   parameters: {
     redirectURI: string;
     usid?: string;
@@ -394,7 +413,7 @@ export async function loginGuestUser(
     ...(dnt !== undefined && {dnt: dnt.toString()}),
   };
 
-  return slasClient.getAccessToken({body: tokenBody}) as Promise<TokenResponse>;
+  return slasClient.getAccessToken({body: tokenBody});
 }
 
 /**
@@ -414,7 +433,12 @@ export async function loginGuestUser(
  * @returns TokenResponse
  */
 export async function loginRegisteredUserB2C(
-  slasClient: ISlasClient,
+  slasClient: ShopperLogin<{
+    shortCode: string;
+    organizationId: string;
+    clientId: string;
+    siteId: string;
+  }>,
   credentials: {
     username: string;
     password: string;
@@ -442,7 +466,7 @@ export async function loginRegisteredUserB2C(
   slasClientCopy.clientConfig.fetchOptions = {
     ...slasClient.clientConfig.fetchOptions,
     redirect: isBrowser ? 'follow' : 'manual',
-  } as FetchOptions;
+  };
 
   const authorization = `Basic ${stringToBase64(
     `${credentials.username}:${credentials.password}`
@@ -498,10 +522,10 @@ export async function loginRegisteredUserB2C(
       },
       body: tokenBody,
     };
-    return slasClient.getAccessToken(optionsToken) as Promise<TokenResponse>;
+    return slasClient.getAccessToken(optionsToken);
   }
   // default is to use slas public client
-  return slasClient.getAccessToken({body: tokenBody}) as Promise<TokenResponse>;
+  return slasClient.getAccessToken({body: tokenBody});
 }
 
 /* Function to send passwordless login token
@@ -518,7 +542,12 @@ export async function loginRegisteredUserB2C(
  * @returns Promise of Response
  */
 export async function authorizePasswordless(
-  slasClient: ISlasClient,
+  slasClient: ShopperLogin<{
+    shortCode: string;
+    organizationId: string;
+    clientId: string;
+    siteId: string;
+  }>,
   credentials: {
     clientSecret: string;
   },
@@ -571,7 +600,7 @@ export async function authorizePasswordless(
       body: tokenBody,
     },
     true
-  ) as Promise<Response>;
+  );
 }
 
 /**
@@ -587,7 +616,12 @@ export async function authorizePasswordless(
  * @returns Promise of Response or Object
  */
 export async function getPasswordLessAccessToken(
-  slasClient: ISlasClient,
+  slasClient: ShopperLogin<{
+    shortCode: string;
+    organizationId: string;
+    clientId: string;
+    siteId: string;
+  }>,
   credentials: {
     clientSecret: string;
   },
@@ -629,7 +663,7 @@ export async function getPasswordLessAccessToken(
       organizationId: slasClient.clientConfig.parameters.organizationId,
     },
     body: tokenBody,
-  }) as Promise<TokenResponse>;
+  });
 }
 
 /**
@@ -643,7 +677,12 @@ export async function getPasswordLessAccessToken(
  * @returns TokenResponse
  */
 export function refreshAccessToken(
-  slasClient: ISlasClient,
+  slasClient: ShopperLogin<{
+    shortCode: string;
+    organizationId: string;
+    clientId: string;
+    siteId: string;
+  }>,
   parameters: {
     refreshToken: string;
     dnt?: boolean;
@@ -668,10 +707,10 @@ export function refreshAccessToken(
       },
       body,
     };
-    return slasClient.getAccessToken(options) as Promise<TokenResponse>;
+    return slasClient.getAccessToken(options);
   }
 
-  return slasClient.getAccessToken({body}) as Promise<TokenResponse>;
+  return slasClient.getAccessToken({body});
 }
 
 /**
@@ -683,7 +722,12 @@ export function refreshAccessToken(
  * @returns TokenResponse
  */
 export function logout(
-  slasClient: ISlasClient,
+  slasClient: ShopperLogin<{
+    shortCode: string;
+    organizationId: string;
+    clientId: string;
+    siteId: string;
+  }>,
   parameters: {
     accessToken: string;
     refreshToken: string;
@@ -698,5 +742,5 @@ export function logout(
       client_id: slasClient.clientConfig.parameters.clientId,
       channel_id: slasClient.clientConfig.parameters.siteId,
     },
-  }) as Promise<TokenResponse>;
+  });
 }
