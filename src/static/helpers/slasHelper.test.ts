@@ -233,10 +233,13 @@ describe('Authorize user', () => {
 
     // There should be no code_challenge for private client
     const expectedReqOptions = {
+      accessToken: "access_token",
       client_id: 'client_id',
       channel_id: 'site_id',
+      dnt: "false",
       hint: 'hint',
       redirect_uri: 'redirect_uri',
+      refreshToken: 'refresh_token',
       response_type: 'code',
       usid: 'usid',
     };
@@ -381,7 +384,7 @@ describe('Guest user flow', () => {
     expect(accessToken).toBe(expectedTokenResponse);
   });
 
-  test('throw warning for invalid params', async () => {
+  test('throws warning for invalid params', async () => {
     // Spy on console.warn
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
 
@@ -415,7 +418,7 @@ describe('Guest user flow', () => {
 
     // Assert the warning was logged
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      expect.stringContaining('Invalid Parameter for authorizeCustomer: hello')
+      expect.stringContaining('Found unknown parameter for authorizeCustomer: hello, adding as query parameter anyway')
     );
 
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
@@ -424,7 +427,6 @@ describe('Guest user flow', () => {
     // Restore the original console.warn
     consoleWarnSpy.mockRestore();
   });
-
   test('can pass custom params on public guest', async () => {
     const expectedTokenBody = {
       body: {
