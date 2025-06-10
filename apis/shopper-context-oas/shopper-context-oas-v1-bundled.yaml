@@ -539,5 +539,3 @@ components:
           regionCode: '12345'
           latitude: 10.11
           longitude: 198.34
-x-sdk-classname:
-  classname: ShopperContexts
