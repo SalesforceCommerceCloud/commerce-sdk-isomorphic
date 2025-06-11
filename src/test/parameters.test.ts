@@ -26,9 +26,7 @@ describe('Parameters', () => {
   );
 
   it('has a list of parameter keys (and the required ones)', () => {
-    // eslint-disable-next-line
     expect(ShopperSearch.paramKeys?.productSearch).toBeDefined();
-    // eslint-disable-next-line
     expect(ShopperSearch.paramKeys?.productSearchRequired).toBeDefined();
   });
 
