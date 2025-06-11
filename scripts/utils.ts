@@ -30,12 +30,14 @@ import {download} from '@commerce-apps/raml-toolkit';
  *  Ive spent hours trying to mock download
  *
  * @param rootPath - Root path to download to
+ * @param searchQuery - Query to search exchange
  *
  * @returns a promise that we will complete
  */
-export async function downloadLatestApis(rootPath: string): Promise<void> {
-  const searchQuery =
-    'category:Visibility = "External" category:"SDK Type" = "Commerce" category:"SDK Type" = "Isomorphic"';
+export async function downloadLatestApis(
+  rootPath: string,
+  searchQuery = 'category:Visibility = "External" category:"SDK Type" = "Commerce" category:"SDK Type" = "Isomorphic"'
+): Promise<void> {
   const matchedApis = await download.search(searchQuery, undefined, true);
   if (!(matchedApis?.length > 0)) {
     throw new Error(`No results in Exchange for '${searchQuery}'`);
