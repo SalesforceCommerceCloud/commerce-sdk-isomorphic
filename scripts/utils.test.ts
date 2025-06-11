@@ -9,7 +9,7 @@ import {downloadLatestApis} from './utils';
 
 describe('test downloadLatestApis script', () => {
   it('throws error when no results', async () => {
-    await expect(downloadLatestApis('/tmp', '"noResults"')).rejects.toThrow(
+    await expect(downloadLatestApis('"noResults"', '/tmp')).rejects.toThrow(
       'No results in Exchange for \'"noResults"\''
     );
   });
@@ -17,15 +17,17 @@ describe('test downloadLatestApis script', () => {
   it('downloads the apis with default search query', async () => {
     jest.spyOn(download, 'downloadRestApis').mockResolvedValue('');
 
-    await expect(downloadLatestApis('/tmp')).resolves.toBeUndefined();
+    await expect(
+      downloadLatestApis('category:Visibility = "External"', '/tmp')
+    ).resolves.toBeUndefined();
   });
 
   it('throws error when download fails', async () => {
     jest
       .spyOn(download, 'downloadRestApis')
       .mockRejectedValue(new Error('It failed.'));
-    await expect(downloadLatestApis('/tmp')).rejects.toThrow(
-      'Failed to download API specs: It failed.'
-    );
+    await expect(
+      downloadLatestApis('category:Visibility = "External"', '/tmp')
+    ).rejects.toThrow('Failed to download API specs: It failed.');
   });
 });

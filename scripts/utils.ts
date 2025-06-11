@@ -29,14 +29,14 @@ import {download} from '@commerce-apps/raml-toolkit';
  *  We should have some followup to figure out how to cover it.
  *  Ive spent hours trying to mock download
  *
- * @param rootPath - Root path to download to
  * @param searchQuery - Query to search exchange
+ * @param rootPath - Root path to download to
  *
  * @returns a promise that we will complete
  */
 export async function downloadLatestApis(
-  rootPath: string,
-  searchQuery = 'category:Visibility = "External" category:"SDK Type" = "Commerce" category:"SDK Type" = "Isomorphic"'
+  searchQuery: string,
+  rootPath: string
 ): Promise<void> {
   const matchedApis = await download.search(searchQuery, undefined, true);
   if (!(matchedApis?.length > 0)) {

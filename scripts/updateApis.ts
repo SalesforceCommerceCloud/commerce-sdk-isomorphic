@@ -26,4 +26,8 @@ fs.moveSync(PRODUCTION_API_PATH, OLD_APIS_PATH, {overwrite: true});
 fs.ensureDirSync(PRODUCTION_API_PATH);
 
 // eslint-disable-next-line no-console
-downloadLatestApis(PRODUCTION_API_PATH).catch(console.error);
+
+downloadLatestApis(
+  'category:Visibility = "External" category:"SDK Type" = "Commerce" category:"SDK Type" = "Isomorphic"',
+  PRODUCTION_API_PATH
+).catch(console.error);
