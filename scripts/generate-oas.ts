@@ -32,7 +32,9 @@ const VERSION_TEMPLATE_LOCATION = path.join(
 );
 
 function kebabToCamelCase(str: string): string {
-  return str.replace(/-([a-z])/g, (match, letter: string) => letter.toUpperCase());
+  return str.replace(/-([a-z])/g, (match, letter: string) =>
+    letter.toUpperCase()
+  );
 }
 
 export function resolveApiName(name: string): string {
@@ -42,6 +44,9 @@ export function resolveApiName(name: string): string {
   }
   if (name === 'Shopper Seo OAS') {
     return 'ShopperSEO';
+  }
+  if (name === 'Shopper Context OAS') {
+    return 'ShopperContexts';
   }
   return name.replace(/\s+/g, '').replace('OAS', '');
 }

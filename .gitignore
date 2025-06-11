@@ -3,6 +3,7 @@
 # build files
 /src/lib
 src/react-app-env.d.ts
+openapitools.json
 
 # dependencies
 /node_modules
