@@ -13,8 +13,8 @@ import {
   ShopperLogin,
   ShopperLoginPathParameters,
   ShopperLoginQueryParameters,
-  TokenResponse,
-} from '../../lib/shopperLogin';
+} from '../../lib/shopperLogin/apis';
+import {TokenResponse} from '../../lib/shopperLogin/models';
 import ResponseError from '../responseError';
 import TemplateURL from '../templateUrl';
 import {

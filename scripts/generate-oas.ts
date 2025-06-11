@@ -45,6 +45,9 @@ export function resolveApiName(name: string): string {
   if (name === 'Shopper Seo OAS') {
     return 'ShopperSEO';
   }
+  if (name === 'Shopper Context OAS') {
+    return 'ShopperContexts';
+  }
   return name.replace(/\s+/g, '').replace('OAS', '');
 }
 
