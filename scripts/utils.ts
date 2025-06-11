@@ -36,7 +36,7 @@ import {download} from '@commerce-apps/raml-toolkit';
 export async function downloadLatestApis(rootPath: string): Promise<void> {
   const searchQuery =
     'category:Visibility = "External" category:"SDK Type" = "Commerce" category:"SDK Type" = "Isomorphic"';
-  const matchedApis = await download.search(searchQuery);
+  const matchedApis = await download.search(searchQuery, undefined, true);
   if (!(matchedApis?.length > 0)) {
     throw new Error(`No results in Exchange for '${searchQuery}'`);
   }
