@@ -171,11 +171,11 @@ describe('Authorize user', () => {
       .query(true)
       .reply(303, {response_body: 'response_body'}, {location: url});
 
-    const authResponse = await slasHelper.authorize(
-      mockSlasClient,
+    const authResponse = await slasHelper.authorize({
+      slasClient: mockSlasClient,
       codeVerifier,
-      parameters
-    );
+      parameters,
+    });
     expect(authResponse).toStrictEqual(expectedAuthResponse);
   });
 
@@ -193,7 +193,11 @@ describe('Authorize user', () => {
       .reply(200);
 
     await expect(
-      slasHelper.authorize(mockSlasClient, codeVerifier, parameters)
+      slasHelper.authorize({
+        slasClient: mockSlasClient,
+        codeVerifier,
+        parameters,
+      })
     ).rejects.toThrow(ResponseError);
   });
 
@@ -229,14 +233,19 @@ describe('Authorize user', () => {
         return [303, {response_body: 'response_body'}, {location: url}];
       });
 
-    await slasHelper.authorize(mockSlasClient, codeVerifier, parameters, true);
+    await slasHelper.authorize({
+      slasClient: mockSlasClient,
+      codeVerifier,
+      parameters,
+      privateClient: true,
+    });
 
     // There should be no code_challenge for private client
     const expectedReqOptions = {
-      accessToken: "access_token",
+      accessToken: 'access_token',
       client_id: 'client_id',
       channel_id: 'site_id',
-      dnt: "false",
+      dnt: 'false',
       hint: 'hint',
       redirect_uri: 'redirect_uri',
       refreshToken: 'refresh_token',
@@ -257,9 +266,13 @@ test('throws error on 400 response', async () => {
     .reply(400, {response_body: 'response_body'}, {location: ''});
 
   await expect(
-    slasHelper.authorize(mockSlasClient, codeVerifier, {
-      redirectURI: parameters.redirectURI,
-      usid: parameters.usid,
+    slasHelper.authorize({
+      slasClient: mockSlasClient,
+      codeVerifier,
+      parameters: {
+        redirectURI: parameters.redirectURI,
+        usid: parameters.usid,
+      },
     })
   ).rejects.toThrow(ResponseError);
 });
@@ -270,11 +283,14 @@ describe('Authorize IDP User', () => {
     mockSlasClient.clientConfig.baseUri =
       'https://{shortCode}.api.commercecloud.salesforce.com/shopper/auth/{version}';
 
-    const authResponse = await slasHelper.authorizeIDP(mockSlasClient, {
-      hint: parameters.hint,
-      redirectURI: parameters.redirectURI,
-      usid: parameters.usid,
-      c_param: 'test',
+    const authResponse = await slasHelper.authorizeIDP({
+      slasClient: mockSlasClient,
+      parameters: {
+        hint: parameters.hint,
+        redirectURI: parameters.redirectURI,
+        usid: parameters.usid,
+        c_param: 'test',
+      },
     });
     const expectedAuthURL =
       'https://short_code.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/organization_id/oauth2/authorize?c_param=test&client_id=client_id&channel_id=site_id&hint=hint&redirect_uri=redirect_uri&response_type=code&usid=usid';
@@ -302,11 +318,11 @@ describe('IDP Login flow', () => {
     .reply(303, {response_body: 'response_body'}, {location: url});
 
   test('retrieves usid and code and generates an access token for private client', async () => {
-    const accessToken = await slasHelper.loginIDPUser(
-      mockSlasClient,
-      {clientSecret: credentialsPrivate.clientSecret},
-      loginParams
-    );
+    const accessToken = await slasHelper.loginIDPUser({
+      slasClient: mockSlasClient,
+      credentials: {clientSecret: credentialsPrivate.clientSecret},
+      parameters: loginParams,
+    });
 
     const expectedReqOptions = {
       headers: {
@@ -330,11 +346,11 @@ describe('IDP Login flow', () => {
   });
 
   test('retrieves usid and code and generates an access token for public client', async () => {
-    const accessToken = await slasHelper.loginIDPUser(
-      mockSlasClient,
-      {codeVerifier: 'code_verifier'},
-      loginParams
-    );
+    const accessToken = await slasHelper.loginIDPUser({
+      slasClient: mockSlasClient,
+      credentials: {codeVerifier: 'code_verifier'},
+      parameters: loginParams,
+    });
 
     const expectedReqOptions = {
       body: {
@@ -376,9 +392,12 @@ describe('Guest user flow', () => {
       .query(true)
       .reply(303, {response_body: 'response_body'}, {location: url});
 
-    const accessToken = await slasHelper.loginGuestUser(mockSlasClient, {
-      redirectURI: parameters.redirectURI,
-      dnt: false,
+    const accessToken = await slasHelper.loginGuestUser({
+      slasClient: mockSlasClient,
+      parameters: {
+        redirectURI: parameters.redirectURI,
+        dnt: false,
+      },
     });
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
     expect(accessToken).toBe(expectedTokenResponse);
@@ -408,17 +427,22 @@ describe('Guest user flow', () => {
       .query(true)
       .reply(303, {response_body: 'response_body'}, {location: url});
 
-    const accessToken = await slasHelper.loginGuestUser(mockSlasClient, {
-      redirectURI: parameters.redirectURI,
-      dnt: false,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      hello: 'world',
+    const accessToken = await slasHelper.loginGuestUser({
+      slasClient: mockSlasClient,
+      parameters: {
+        redirectURI: parameters.redirectURI,
+        dnt: false,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        hello: 'world',
+      },
     });
 
     // Assert the warning was logged
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      expect.stringContaining('Found unknown parameter for authorizeCustomer: hello, adding as query parameter anyway')
+      expect.stringContaining(
+        'Found unknown parameter for authorizeCustomer: hello, adding as query parameter anyway'
+      )
     );
 
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
@@ -449,10 +473,13 @@ describe('Guest user flow', () => {
       .query(query => query.c_color === 'red')
       .reply(303, {response_body: 'response_body'}, {location: url});
 
-    const accessToken = await slasHelper.loginGuestUser(mockSlasClient, {
-      redirectURI: parameters.redirectURI,
-      dnt: false,
-      c_color: 'red',
+    const accessToken = await slasHelper.loginGuestUser({
+      slasClient: mockSlasClient,
+      parameters: {
+        redirectURI: parameters.redirectURI,
+        dnt: false,
+        c_color: 'red',
+      },
     });
 
     // Verify getAccessToken was called with the right parameters,
@@ -464,11 +491,11 @@ describe('Guest user flow', () => {
   test('generates an access token using slas private client', async () => {
     const mockSlasClient = createMockSlasClient();
 
-    const accessToken = await slasHelper.loginGuestUserPrivate(
-      mockSlasClient,
+    const accessToken = await slasHelper.loginGuestUserPrivate({
+      slasClient: mockSlasClient,
       parameters,
-      credentialsPrivate
-    );
+      credentials: credentialsPrivate,
+    });
 
     const expectedReqOptions = {
       headers: {
@@ -500,13 +527,13 @@ describe('Guest user flow', () => {
     };
 
     await expect(
-      slasHelper.loginGuestUserPrivate(
+      slasHelper.loginGuestUserPrivate({
         // eslint-disable-next-line
         // @ts-ignore
-        mockSlasClientNoSiteID,
+        slasClient: mockSlasClientNoSiteID,
         parameters,
-        credentialsPrivate
-      )
+        credentials: credentialsPrivate,
+      })
     ).rejects.toThrow(
       'Required argument channel_id is not provided through clientConfig.parameters.siteId'
     );
@@ -544,11 +571,11 @@ describe('Registered B2C user flow', () => {
       .post(`/shopper/auth/v1/organizations/${organizationId}/oauth2/login`)
       .reply(303, {response_body: 'response_body'}, {location: url});
 
-    await slasHelper.loginRegisteredUserB2C(
-      mockSlasClient,
+    await slasHelper.loginRegisteredUserB2C({
+      slasClient: mockSlasClient,
       credentials,
-      registeredUserFlowParams
-    );
+      parameters: registeredUserFlowParams,
+    });
 
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
   });
@@ -566,19 +593,17 @@ describe('Registered B2C user flow', () => {
         return [303, {response_body: 'response_body'}, {location: url}];
       });
 
-    await slasHelper.loginRegisteredUserB2C(
-      mockSlasClient,
+    await slasHelper.loginRegisteredUserB2C({
+      slasClient: mockSlasClient,
       credentials,
-      {
+      parameters: {
         redirectURI: 'redirect_uri',
         dnt: false,
       },
-      {
-        body: {
-          c_body: 'test',
-        },
-      }
-    );
+      body: {
+        c_body: 'test',
+      },
+    });
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);
   });
 
@@ -610,11 +635,11 @@ describe('Registered B2C user flow', () => {
       .post(`/shopper/auth/v1/organizations/${organizationId}/oauth2/login`)
       .reply(303, {response_body: 'response_body'}, {location: url});
 
-    await slasHelper.loginRegisteredUserB2C(
-      mockSlasClient,
-      credentialsPrivate,
-      registeredUserFlowParams
-    );
+    await slasHelper.loginRegisteredUserB2C({
+      slasClient: mockSlasClient,
+      credentials: credentialsPrivate,
+      parameters: registeredUserFlowParams,
+    });
 
     expect(getAccessTokenMock).toBeCalledWith(expectedReqOptions);
   });
@@ -629,11 +654,11 @@ describe('Registered B2C user flow', () => {
       .reply(400, {message: 'Oh no!'});
 
     await expect(
-      slasHelper.loginRegisteredUserB2C(
-        mockSlasClient,
+      slasHelper.loginRegisteredUserB2C({
+        slasClient: mockSlasClient,
         credentials,
-        registeredUserFlowParams
-      )
+        parameters: registeredUserFlowParams,
+      })
     ).rejects.toThrow(ResponseError);
   });
 
@@ -647,11 +672,11 @@ describe('Registered B2C user flow', () => {
       .reply(401, {message: 'Oh no!'});
 
     await expect(
-      slasHelper.loginRegisteredUserB2C(
-        mockSlasClient,
+      slasHelper.loginRegisteredUserB2C({
+        slasClient: mockSlasClient,
         credentials,
-        registeredUserFlowParams
-      )
+        parameters: registeredUserFlowParams,
+      })
     ).rejects.toThrow(ResponseError);
   });
 
@@ -665,11 +690,11 @@ describe('Registered B2C user flow', () => {
       .reply(500, {message: 'Oh no!'});
 
     await expect(
-      slasHelper.loginRegisteredUserB2C(
-        mockSlasClient,
+      slasHelper.loginRegisteredUserB2C({
+        slasClient: mockSlasClient,
         credentials,
-        registeredUserFlowParams
-      )
+        parameters: registeredUserFlowParams,
+      })
     ).rejects.toThrow(ResponseError);
   });
 
@@ -683,11 +708,11 @@ describe('Registered B2C user flow', () => {
       .reply(303, {message: 'Oh yes!'});
 
     await expect(
-      slasHelper.loginRegisteredUserB2C(
-        mockSlasClient,
+      slasHelper.loginRegisteredUserB2C({
+        slasClient: mockSlasClient,
         credentials,
-        registeredUserFlowParams
-      )
+        parameters: registeredUserFlowParams,
+      })
     ).resolves.not.toThrow(ResponseError);
   });
 
@@ -700,11 +725,11 @@ describe('Registered B2C user flow', () => {
       .post(`/shopper/auth/v1/organizations/${organizationId}/oauth2/login`)
       .reply(303, {response_body: 'response_body'}, {location: url});
 
-    const accessToken = await slasHelper.loginRegisteredUserB2C(
-      mockSlasClient,
+    const accessToken = await slasHelper.loginRegisteredUserB2C({
+      slasClient: mockSlasClient,
       credentials,
-      registeredUserFlowParams
-    );
+      parameters: registeredUserFlowParams,
+    });
     expect(accessToken).toStrictEqual(expectedTokenResponse);
   });
 });
@@ -725,11 +750,11 @@ describe('authorizePasswordless is working', () => {
     const authHeaderExpected = `Basic ${slasHelper.stringToBase64(
       `${clientId}:${credentialsPrivate.clientSecret}`
     )}`;
-    await slasHelper.authorizePasswordless(
-      mockSlasClient,
-      credentialsPrivate,
-      parametersAuthorizePasswordless
-    );
+    await slasHelper.authorizePasswordless({
+      slasClient: mockSlasClient,
+      credentials: credentialsPrivate,
+      parameters: parametersAuthorizePasswordless,
+    });
     const expectedReqOptions = {
       headers: {
         Authorization: authHeaderExpected,
@@ -776,11 +801,11 @@ describe('authorizePasswordless is working', () => {
       mode: 'callback',
     };
     await expect(
-      slasHelper.authorizePasswordless(
-        mockSlasClient,
-        credentialsPrivate,
-        parametersAuthorizePasswordless
-      )
+      slasHelper.authorizePasswordless({
+        slasClient: mockSlasClient,
+        credentials: credentialsPrivate,
+        parameters: parametersAuthorizePasswordless,
+      })
     ).rejects.toThrow(
       'Required argument channel_id is not provided through clientConfig.parameters.siteId'
     );
@@ -795,13 +820,13 @@ describe('authorizePasswordless is working', () => {
       locale: 'a_locale',
     };
     await expect(
-      slasHelper.authorizePasswordless(
-        mockSlasClient,
-        credentialsPrivate,
+      slasHelper.authorizePasswordless({
+        slasClient: mockSlasClient,
+        credentials: credentialsPrivate,
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore intentionally missing mode
-        parametersAuthorizePasswordless
-      )
+        parameters: parametersAuthorizePasswordless,
+      })
     ).rejects.toThrow(
       'Required argument mode is not provided through parameters'
     );
@@ -817,16 +842,16 @@ describe('authorizePasswordless is working', () => {
       mode: 'callback',
     };
     await expect(
-      slasHelper.authorizePasswordless(
-        mockSlasClient,
-        {
+      slasHelper.authorizePasswordless({
+        slasClient: mockSlasClient,
+        credentials: {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore intentionally missing mode
           username: 'Jeff',
           password: 'password',
         },
-        parametersAuthorizePasswordless
-      )
+        parameters: parametersAuthorizePasswordless,
+      })
     ).rejects.toThrow('Required argument client secret is not provided');
   });
 });
@@ -843,11 +868,11 @@ describe('getPasswordLessAccessToken is working', () => {
     const authHeaderExpected = `Basic ${slasHelper.stringToBase64(
       `${clientId}:${credentialsPrivate.clientSecret}`
     )}`;
-    await slasHelper.getPasswordLessAccessToken(
-      mockSlasClient,
-      credentialsPrivate,
-      parametersPasswordlessToken
-    );
+    await slasHelper.getPasswordLessAccessToken({
+      slasClient: mockSlasClient,
+      credentials: credentialsPrivate,
+      parameters: parametersPasswordlessToken,
+    });
     const expectedReqOptions = {
       headers: {
         Authorization: authHeaderExpected,
@@ -886,11 +911,11 @@ describe('getPasswordLessAccessToken is working', () => {
       dnt: '1',
     };
     await expect(
-      slasHelper.getPasswordLessAccessToken(
-        mockSlasClient,
-        credentialsPrivate,
-        parametersPasswordlessToken
-      )
+      slasHelper.getPasswordLessAccessToken({
+        slasClient: mockSlasClient,
+        credentials: credentialsPrivate,
+        parameters: parametersPasswordlessToken,
+      })
     ).rejects.toThrow(
       'Required argument organizationId is not provided through clientConfig.parameters.organizationId'
     );
@@ -908,10 +933,10 @@ describe('Refresh Token', () => {
         dnt: 'false',
       },
     };
-    const token = slasHelper.refreshAccessToken(
-      createMockSlasClient(),
-      parameters
-    );
+    const token = slasHelper.refreshAccessToken({
+      slasClient: createMockSlasClient(),
+      parameters,
+    });
     expect(getAccessTokenMock).toBeCalledWith(expectedBody);
     expect(token).toStrictEqual(expectedTokenResponse);
   });
@@ -931,13 +956,13 @@ describe('Refresh Token', () => {
         dnt: 'false',
       },
     };
-    const token = slasHelper.refreshAccessToken(
-      createMockSlasClient(),
+    const token = slasHelper.refreshAccessToken({
+      slasClient: createMockSlasClient(),
       parameters,
-      {
+      credentials: {
         clientSecret: credentialsPrivate.clientSecret,
-      }
-    );
+      },
+    });
     expect(getAccessTokenMock).toBeCalledWith(expectedReqOpts);
     expect(token).toStrictEqual(expectedTokenResponse);
   });
@@ -956,7 +981,10 @@ describe('Logout', () => {
   };
 
   test('logs out the customer', () => {
-    const token = slasHelper.logout(createMockSlasClient(), parameters);
+    const token = slasHelper.logout({
+      slasClient: createMockSlasClient(),
+      parameters,
+    });
     expect(logoutCustomerMock).toBeCalledWith(expectedOptions);
     expect(token).toStrictEqual(expectedTokenResponse);
   });

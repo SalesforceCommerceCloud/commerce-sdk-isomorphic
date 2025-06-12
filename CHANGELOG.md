@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 4.0.0-dev
+
+### Enchancements
+
+- Enum types have been added for certain operations and types
+- Certain operations have had types updated for query parameters
+- SLAS helpers have been refactored to accept a single `options` object argument, where the properties are the old arguments
+- 
+
 ## v3.3.0
 - Allow custom params for 'loginGuestUser', 'authorizeIDP' and custom body for 'loginRegisteredUserB2C' functions [#186](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/186)
 - Add helper to encode special SCAPI characters [#189](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/189)
