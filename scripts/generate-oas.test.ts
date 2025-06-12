@@ -15,7 +15,7 @@ import {
   generateIndex,
   main,
   generateVersionFile,
-  getAllDirectories
+  getAllDirectoriesWithExchangeFiles,
 } from './generate-oas';
 
 // Mock dependencies
@@ -133,7 +133,7 @@ describe('generate-oas', () => {
         inputSpec: '/path/to/shopper/api.yaml',
         outputDir: path.join(__dirname, '../src/lib/test-api'),
         templateDir: path.join(__dirname, '../templatesOas'),
-        skipValidateSpec: true,
+        "flags": "--reserved-words-mappings delete=delete",
       });
     });
 
@@ -221,15 +221,15 @@ describe('generate-oas', () => {
         isDirectory: () => !itemPath.includes('.'),
       }));
 
-      const result = getAllDirectories(mockApiDirectory);
-      
+      const result = getAllDirectoriesWithExchangeFiles(mockApiDirectory);
+
       expect(result).toEqual([
         'shopper-orders',
-        'shopper-baskets', 
+        'shopper-baskets',
         'admin',
         'admin/customers',
         'admin/customers/nested-folder',
-        'admin/products'
+        'admin/products',
       ]);
     });
 
@@ -239,14 +239,14 @@ describe('generate-oas', () => {
       });
 
       const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
-      const result = getAllDirectories('/invalid/path');
-      
+      const result = getAllDirectoriesWithExchangeFiles('/invalid/path');
+
       expect(result).toEqual([]);
       expect(consoleSpy).toHaveBeenCalledWith(
         'Warning: Could not read directory /invalid/path:',
         expect.any(Error)
       );
-      
+
       consoleSpy.mockRestore();
     });
   });

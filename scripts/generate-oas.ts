@@ -57,6 +57,21 @@ export function getAPIDetailsFromExchange(directory: string): ApiSpecDetail {
     const exchangeConfig = fs.readJSONSync(
       exchangePath
     ) as download.ExchangeConfig;
+
+    // Special handling for shopper-baskets-v2
+    if (
+      exchangeConfig.assetId === 'shopper-baskets-oas' &&
+      exchangeConfig.apiVersion === 'v2'
+    ) {
+      return {
+        filepath: path.join(directory, exchangeConfig.main),
+        filename: exchangeConfig.main,
+        directoryName: 'ShopperBasketsV2',
+        name: 'Shopper Baskets V2 OAS',
+        apiName: 'ShopperBasketsV2',
+      };
+    }
+
     return {
       filepath: path.join(directory, exchangeConfig.main),
       filename: exchangeConfig.main,
@@ -70,6 +85,9 @@ export function getAPIDetailsFromExchange(directory: string): ApiSpecDetail {
   throw new Error(`Exchange file does not exist for ${directory}`);
 }
 
+/**
+ * Invokes openapi-generator via raml-toolkit to generate SDKs
+ */
 export function generateSDKs(apiSpecDetail: ApiSpecDetail): void {
   const {filepath, name, directoryName} = apiSpecDetail;
   if (fs.statSync(filepath).isFile() && filepath.includes('shopper')) {
@@ -80,7 +98,7 @@ export function generateSDKs(apiSpecDetail: ApiSpecDetail): void {
         inputSpec: `${filepath}`,
         outputDir: `${outputDir}`,
         templateDir: `${TEMPLATE_DIRECTORY}`,
-        skipValidateSpec: true,
+        flags: `--reserved-words-mappings delete=delete`,
       });
     } catch (error) {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -106,7 +124,10 @@ export function generateVersionFile(): void {
   fs.writeFileSync(`${TARGET_DIRECTORY}/version.ts`, generatedVersion);
 }
 
-export function getAllDirectories(basePath: string, relativePath = ''): string[] {
+export function getAllDirectoriesWithExchangeFiles(
+  basePath: string,
+  relativePath = ''
+): string[] {
   const fullPath = path.join(basePath, relativePath);
   const directories: string[] = [];
 
@@ -120,8 +141,12 @@ export function getAllDirectories(basePath: string, relativePath = ''): string[]
         : item;
 
       if (fs.lstatSync(itemPath).isDirectory()) {
-        directories.push(relativeItemPath);
-        directories.push(...getAllDirectories(basePath, relativeItemPath));
+        if (fs.existsSync(path.join(itemPath, 'exchange.json'))) {
+          directories.push(relativeItemPath);
+        }
+        directories.push(
+          ...getAllDirectoriesWithExchangeFiles(basePath, relativeItemPath)
+        );
       }
     });
   } catch (error) {
@@ -151,14 +176,16 @@ export function main(): void {
     copyStaticFiles();
 
     const apiSpecDetails: ApiSpecDetail[] = [];
-    const subDirectories: string[] = getAllDirectories(apiDirectory);
+    const subDirectories: string[] =
+      getAllDirectoriesWithExchangeFiles(apiDirectory);
+
     subDirectories.forEach((directory: string) => {
       try {
         const details = getAPIDetailsFromExchange(
           path.join(apiDirectory, directory)
         );
         apiSpecDetails.push(details);
-      } catch (error) {
+      } catch (error: unknown) {
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
         console.log(`Skipping directory ${directory}: ${error}`);
       }

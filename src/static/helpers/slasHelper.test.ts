@@ -233,10 +233,12 @@ describe('Authorize user', () => {
 
     // There should be no code_challenge for private client
     const unexpectedQueryParams = {
-      code_challenge: 'code_challenge'
+      code_challenge: 'code_challenge',
     };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    expect(capturedQueryParams).toEqual(expect.not.objectContaining(unexpectedQueryParams));
+    expect(capturedQueryParams).toEqual(
+      expect.not.objectContaining(unexpectedQueryParams)
+    );
   });
 });
 
@@ -411,7 +413,9 @@ describe('Guest user flow', () => {
 
     // Assert the warning was logged
     expect(consoleWarnSpy).toHaveBeenCalledWith(
-      expect.stringContaining('Found unknown parameter for authorizeCustomer: hello, adding as query parameter anyway')
+      expect.stringContaining(
+        'Found unknown parameter for authorizeCustomer: hello, adding as query parameter anyway'
+      )
     );
 
     expect(getAccessTokenMock).toBeCalledWith(expectedTokenBody);

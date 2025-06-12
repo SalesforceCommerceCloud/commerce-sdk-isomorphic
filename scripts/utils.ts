@@ -39,18 +39,14 @@ export async function downloadLatestApis(
   rootPath: string,
   isOAS = true
 ): Promise<void> {
-  const matchedApis = await download.search(`"${name}"`);
-  if (!(matchedApis?.length > 0)) {
-    throw new Error(`No results in Exchange for '${name}'`);
-  }
-  const api = matchedApis.find(
-    (matchedApi: {assetId: string}) => matchedApi?.assetId === name
+  const matchedApis = await download.search(
+    `"${name}" category:Visibility = "External" category:"SDK Type" = "Commerce"  category:"SDK Type" = "Isomorphic"`,
+    undefined,
+    true
   );
-  if (!api) {
-    throw new Error(`No exact match in Exchange for '${name}'`);
-  }
+
   try {
-    await download.downloadRestApis([api], rootPath, isOAS);
+    await download.downloadRestApis(matchedApis, rootPath, isOAS);
   } catch (err: unknown) {
     if (err instanceof Error) {
       err.message = `Failed to download ${name}: ${err.message}`;
