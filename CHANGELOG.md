@@ -7,7 +7,10 @@
 - Enum types have been added for certain operations and types
 - Certain operations have had types updated for query parameters
 - SLAS helpers have been refactored to accept a single `options` object argument, where the properties are the old arguments
-- 
+- Path parameter special characters are encoded by default
+- Allow custom properties on request bodies to be passed
+- Remove API version from client config
+  - Use `ShopperBasketsV2` API class to use V2 of Shopper Baskets
 
 ## v3.3.0
 - Allow custom params for 'loginGuestUser', 'authorizeIDP' and custom body for 'loginRegisteredUserB2C' functions [#186](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/186)

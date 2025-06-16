@@ -26,6 +26,9 @@ export namespace {{#apiInfo}}{{#apis.0}}{{#vendorExtensions}}{{#x-sdk-classname}
     {{/stringEnums}}
     {{/isEnum}}
     {{/allParams}}
+    {{#hasFormParams}}
+    export type {{nickname}}BodyType = {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}ApiTypes.{{nickname}}BodyType
+    {{/hasFormParams}}
     export type {{nickname}}QueryParameters = {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}ApiTypes.{{nickname}}QueryParameters
     export type {{nickname}}PathParameters = {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}ApiTypes.{{nickname}}PathParameters
     {{/operation}}

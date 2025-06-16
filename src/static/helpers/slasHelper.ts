@@ -221,12 +221,10 @@ export async function authorizeIDP(options: {
     clientOptions.codeChallenge = await generateCodeChallenge(codeVerifier);
   }
 
-  // eslint-disable-next-line
   const apiPath = ShopperLogin.apiPaths.authorizeCustomer;
   const pathParams: ShopperLoginPathParameters & Required<BaseUriParameters> = {
     organizationId: slasClient.clientConfig.parameters.organizationId,
     shortCode: slasClient.clientConfig.parameters.shortCode,
-    version: slasClient.clientConfig.parameters.version || 'v1',
   };
   const queryParams: ShopperLoginQueryParameters = {
     // put it at the top to avoid overriding the rest of params

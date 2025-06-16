@@ -7,6 +7,8 @@
 import TemplateURL from './templateUrl';
 
 // TODO: add unit tests for templateURL
+// Update README.md with new example
+// Update CHANGELOG
 
 it.each([
   ['simple', 'http://example.com', 'http://example.com/simple'],

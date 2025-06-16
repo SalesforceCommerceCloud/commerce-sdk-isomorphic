@@ -5,7 +5,6 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import type {PathParameters, QueryParameters} from './helpers/types';
-import { encodeSCAPISpecialCharacters } from './helpers/fetchHelper';
 
 export default class TemplateURL extends URL {
   /**
@@ -22,11 +21,11 @@ export default class TemplateURL extends URL {
     }
   ) {
     const encodedPathParams: PathParameters = {};
-    
+
     Object.keys(parameters?.pathParams || {}).forEach(key => {
       const value = parameters?.pathParams?.[key];
       if (value) {
-        encodedPathParams[key] = typeof value === 'string' ? encodeSCAPISpecialCharacters(value) : value;
+        encodedPathParams[key] = encodeURIComponent(value);
       }
     });
 
