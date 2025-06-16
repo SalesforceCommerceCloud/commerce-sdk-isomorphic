@@ -281,7 +281,7 @@ describe('Authorize IDP User', () => {
   test('returns authorization url for 3rd party idp login', async () => {
     const mockSlasClient = createMockSlasClient();
     mockSlasClient.clientConfig.baseUri =
-      'https://{shortCode}.api.commercecloud.salesforce.com/shopper/auth/{version}';
+      'https://{shortCode}.api.commercecloud.salesforce.com/shopper/auth/v1';
 
     const authResponse = await slasHelper.authorizeIDP({
       slasClient: mockSlasClient,
