@@ -65,7 +65,7 @@ export function getAPIDetailsFromExchange(directory: string): ApiSpecDetail {
     ) as download.ExchangeConfig;
 
     return {
-      filepath: path.join(directory, exchangeConfig.main),
+      filepath: path.join(directory, exchangeConfig.main.replace('-public.yaml', '-internal.yaml')),
       filename: exchangeConfig.main,
       directoryName: kebabToCamelCase(
         appendVersionIfV2(
