@@ -133,7 +133,7 @@ describe('generate-oas', () => {
         inputSpec: '/path/to/shopper/api.yaml',
         outputDir: path.join(__dirname, '../src/lib/test-api'),
         templateDir: path.join(__dirname, '../templatesOas'),
-        "flags": "--reserved-words-mappings delete=delete",
+        flags: '--reserved-words-mappings delete=delete',
       });
     });
 
