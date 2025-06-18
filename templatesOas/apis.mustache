@@ -146,6 +146,9 @@ export class {{#vendorExtensions}}{{#x-sdk-classname}}{{{ . }}}{{/x-sdk-classnam
     static readonly apiPaths = {
         {{#operations}}
         {{#operation}}
+        // @@@ Access custom vendor extension
+        {{#vendorExtensions}}{{{ & . }}}{{/vendorExtensions}}
+        {{#vendorExtensions}}{{#x-scapi-internal}}// x-scapi-internal: true{{/x-scapi-internal}}{{/vendorExtensions}}
         {{nickname}}: "{{path}}",
         {{/operation}}
         {{/operations}}
