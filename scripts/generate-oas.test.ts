@@ -43,7 +43,8 @@ describe('generate-oas', () => {
     (fs.readJSONSync as jest.Mock).mockReturnValue({
       main: 'api.yaml',
       assetId: 'shopper-orders-oas',
-      name: 'Shopper orders OAS',
+      name: 'Shopper Orders OAS',
+      apiVersion: 'v1',
     });
     (fs.statSync as jest.Mock).mockReturnValue({isFile: () => true});
     (fs.readdir as jest.Mock).mockImplementation((dir, callback) => {
@@ -79,19 +80,19 @@ describe('generate-oas', () => {
   });
 
   describe('resolveApiName', () => {
-    it('should handle special case for Shopper orders OAS', () => {
-      const result = resolveApiName('Shopper orders OAS');
-      expect(result).toBe('ShopperOrders');
+    it('should handle special case for Shopper Baskets OAS', () => {
+      const result = resolveApiName('Shopper Baskets OAS', 'v2');
+      expect(result).toBe('ShopperBasketsV2');
     });
 
     it('should handle special case for Shopper Seo OAS', () => {
-      const result = resolveApiName('Shopper Seo OAS');
+      const result = resolveApiName('Shopper Seo OAS', 'v1');
       expect(result).toBe('ShopperSEO');
     });
 
     it('should handle regular API names', () => {
-      const result = resolveApiName('Shopper Baskets OAS');
-      expect(result).toBe('ShopperBaskets');
+      const result = resolveApiName('Shopper Orders OAS', 'v1');
+      expect(result).toBe('ShopperOrders');
     });
   });
 
@@ -104,7 +105,7 @@ describe('generate-oas', () => {
         filepath: path.join(mockApiDirectory, 'shopperOrders', 'api.yaml'),
         filename: 'api.yaml',
         directoryName: 'shopperOrders',
-        name: 'Shopper orders OAS',
+        name: 'Shopper Orders OAS',
         apiName: 'ShopperOrders',
       });
     });
