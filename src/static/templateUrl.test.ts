@@ -173,6 +173,9 @@ it.each([
     {pathParams: {special: 'test!@#$%'}},
     'https://example.com/path/with/test!%40%23%24%25/chars',
   ],
-])('Handles special characters in path: %s', (url, base, parameters, expected) => {
-  expect(new TemplateURL(url, base, parameters).toString()).toBe(expected);
-});
+])(
+  'Handles special characters in path: %s',
+  (url, base, parameters, expected) => {
+    expect(new TemplateURL(url, base, parameters).toString()).toBe(expected);
+  }
+);
