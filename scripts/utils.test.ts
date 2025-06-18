@@ -8,11 +8,17 @@ import {download} from '@commerce-apps/raml-toolkit';
 import {downloadLatestApis} from './utils';
 
 describe('test downloadLatestApis script', () => {
-  it('downloads when match', async () => {
+  it('throws error when no results', async () => {
+    await expect(downloadLatestApis('"noResults"', '/tmp')).rejects.toThrow(
+      'No results in Exchange for \'"noResults"\''
+    );
+  });
+
+  it('downloads the apis with default search query', async () => {
     jest.spyOn(download, 'downloadRestApis').mockResolvedValue('');
 
     await expect(
-      downloadLatestApis('shopper-customers', '/tmp')
+      downloadLatestApis('category:Visibility = "External"', '/tmp')
     ).resolves.toBeUndefined();
   });
 
@@ -21,7 +27,7 @@ describe('test downloadLatestApis script', () => {
       .spyOn(download, 'downloadRestApis')
       .mockRejectedValue(new Error('It failed.'));
     await expect(
-      downloadLatestApis('shopper-customers', '/tmp')
-    ).rejects.toThrow('Failed to download shopper-customers: It failed.');
+      downloadLatestApis('category:Visibility = "External"', '/tmp')
+    ).rejects.toThrow('Failed to download API specs: It failed.');
   });
 });
