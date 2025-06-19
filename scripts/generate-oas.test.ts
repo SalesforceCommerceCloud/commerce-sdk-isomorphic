@@ -15,6 +15,7 @@ import {
   generateIndex,
   main,
   generateVersionFile,
+  getAllAPIDirectories,
 } from './generate-oas';
 
 // Mock dependencies
@@ -41,7 +42,8 @@ describe('generate-oas', () => {
     (fs.readJSONSync as jest.Mock).mockReturnValue({
       main: 'api.yaml',
       assetId: 'shopper-orders-oas',
-      name: 'Shopper orders OAS',
+      name: 'Shopper Orders OAS',
+      apiVersion: 'v1',
     });
     (fs.statSync as jest.Mock).mockReturnValue({isFile: () => true});
     (fs.readdir as jest.Mock).mockImplementation((dir, callback) => {
@@ -77,19 +79,19 @@ describe('generate-oas', () => {
   });
 
   describe('resolveApiName', () => {
-    it('should handle special case for Shopper orders OAS', () => {
-      const result = resolveApiName('Shopper orders OAS');
-      expect(result).toBe('ShopperOrders');
+    it('should handle special case for Shopper Baskets OAS', () => {
+      const result = resolveApiName('Shopper Baskets OAS', 'v2');
+      expect(result).toBe('ShopperBasketsV2');
     });
 
     it('should handle special case for Shopper Seo OAS', () => {
-      const result = resolveApiName('Shopper Seo OAS');
+      const result = resolveApiName('Shopper Seo OAS', 'v1');
       expect(result).toBe('ShopperSEO');
     });
 
     it('should handle regular API names', () => {
-      const result = resolveApiName('Shopper Baskets OAS');
-      expect(result).toBe('ShopperBaskets');
+      const result = resolveApiName('Shopper Orders OAS', 'v1');
+      expect(result).toBe('ShopperOrders');
     });
   });
 
@@ -102,7 +104,7 @@ describe('generate-oas', () => {
         filepath: path.join(mockApiDirectory, 'shopperOrders', 'api.yaml'),
         filename: 'api.yaml',
         directoryName: 'shopperOrders',
-        name: 'Shopper orders OAS',
+        name: 'Shopper Orders OAS',
         apiName: 'ShopperOrders',
       });
     });
@@ -131,7 +133,7 @@ describe('generate-oas', () => {
         inputSpec: '/path/to/shopper/api.yaml',
         outputDir: path.join(__dirname, '../src/lib/test-api'),
         templateDir: path.join(__dirname, '../templatesOas'),
-        skipValidateSpec: true,
+        flags: '--reserved-words-mappings delete=delete',
       });
     });
 
@@ -196,6 +198,56 @@ describe('generate-oas', () => {
         path.join(__dirname, '../src/lib/version.ts'),
         expect.any(String)
       );
+    });
+  });
+
+  describe('getAllDirectories', () => {
+    it('should return all directories in the given path', () => {
+      // Mock nested directory structure
+      (fs.readdirSync as jest.Mock).mockImplementation((dirPath: string) => {
+        if (dirPath === mockApiDirectory) {
+          return ['shopper-orders', 'shopper-baskets', 'admin'];
+        }
+        if (dirPath.endsWith('admin')) {
+          return ['customers', 'products'];
+        }
+        if (dirPath.endsWith('customers')) {
+          return ['nested-folder'];
+        }
+        return [];
+      });
+
+      (fs.lstatSync as jest.Mock).mockImplementation((itemPath: string) => ({
+        isDirectory: () => !itemPath.includes('.'),
+      }));
+
+      const result = getAllAPIDirectories(mockApiDirectory);
+
+      expect(result).toEqual([
+        'shopper-orders',
+        'shopper-baskets',
+        'admin',
+        'admin/customers',
+        'admin/customers/nested-folder',
+        'admin/products',
+      ]);
+    });
+
+    it('should handle errors gracefully when directory cannot be read', () => {
+      (fs.readdirSync as jest.Mock).mockImplementation(() => {
+        throw new Error('Permission denied');
+      });
+
+      const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
+      const result = getAllAPIDirectories('/invalid/path');
+
+      expect(result).toEqual([]);
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Warning: Could not read directory /invalid/path:',
+        expect.any(Error)
+      );
+
+      consoleSpy.mockRestore();
     });
   });
 });

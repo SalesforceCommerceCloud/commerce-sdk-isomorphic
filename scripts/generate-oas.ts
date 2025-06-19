@@ -37,39 +37,69 @@ function kebabToCamelCase(str: string): string {
   );
 }
 
-export function resolveApiName(name: string): string {
-  // Special cases for shopper-orders and shopper-seo where the API name has different casing then the name in exchange.json
-  if (name === 'Shopper orders OAS') {
-    return 'ShopperOrders';
+function appendVersionIfV2(name: string, version: string): string {
+  if (version === 'V1' || version === 'v1') {
+    return name;
   }
-  if (name === 'Shopper Seo OAS') {
-    return 'ShopperSEO';
-  }
-  if (name === 'Shopper Context OAS') {
-    return 'ShopperContexts';
-  }
-  return name.replace(/\s+/g, '').replace('OAS', '');
+  return name + version;
 }
 
+export function resolveApiName(name: string, version: string): string {
+  let apiName;
+
+  // Special handling for ShopperBasketV1 because we want to append V1 in this case
+  if (name === 'Shopper Baskets OAS' && version === 'v1') {
+    return 'ShopperBasketsV1';
+  }
+
+  if (name === 'Shopper Seo OAS') {
+    apiName = 'ShopperSEO';
+  } else if (name === 'Shopper Context OAS') {
+    apiName = 'ShopperContexts';
+  } else {
+    apiName = name.replace(/\s+/g, '').replace('OAS', '');
+  }
+
+  return version !== 'v1' ? apiName + version.toUpperCase() : apiName;
+}
+
+/**
+ * Extracts details needed for API generation from the exchange.json file contained within the given directory
+ * @param directory - The directory containing the exchange.json file
+ * @returns ApiSpecDetail - An object containing the details needed for API generation
+ */
 export function getAPIDetailsFromExchange(directory: string): ApiSpecDetail {
   const exchangePath = path.join(directory, 'exchange.json');
   if (fs.existsSync(exchangePath)) {
     const exchangeConfig = fs.readJSONSync(
       exchangePath
     ) as download.ExchangeConfig;
+
     return {
-      filepath: path.join(directory, exchangeConfig.main),
+      filepath: path.join(
+        directory,
+        exchangeConfig.main.replace('-public.yaml', '-internal.yaml')
+      ),
       filename: exchangeConfig.main,
       directoryName: kebabToCamelCase(
-        exchangeConfig.assetId.replace('-oas', '')
+        appendVersionIfV2(
+          exchangeConfig.assetId.replace('-oas', ''),
+          exchangeConfig.apiVersion
+        )
       ),
-      name: exchangeConfig.name,
-      apiName: resolveApiName(exchangeConfig.name),
+      name:
+        exchangeConfig.apiVersion === 'v2'
+          ? `${exchangeConfig.name} V2`
+          : exchangeConfig.name,
+      apiName: resolveApiName(exchangeConfig.name, exchangeConfig.apiVersion),
     };
   }
   throw new Error(`Exchange file does not exist for ${directory}`);
 }
 
+/**
+ * Invokes openapi-generator via raml-toolkit to generate SDKs
+ */
 export function generateSDKs(apiSpecDetail: ApiSpecDetail): void {
   const {filepath, name, directoryName} = apiSpecDetail;
   if (fs.statSync(filepath).isFile() && filepath.includes('shopper')) {
@@ -80,7 +110,8 @@ export function generateSDKs(apiSpecDetail: ApiSpecDetail): void {
         inputSpec: `${filepath}`,
         outputDir: `${outputDir}`,
         templateDir: `${TEMPLATE_DIRECTORY}`,
-        skipValidateSpec: true,
+        // We use this flag so that the generator can handle delete methods without prepending a '_'
+        flags: `--reserved-words-mappings delete=delete`,
       });
     } catch (error) {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -106,6 +137,43 @@ export function generateVersionFile(): void {
   fs.writeFileSync(`${TARGET_DIRECTORY}/version.ts`, generatedVersion);
 }
 
+/**
+ * Recursively finds and returns all subdirectories within the given base path with an exchange.json file
+ * @param basePath - The base path to search for exchange.json files
+ * @param relativePath - The relative path to the base path
+ * @returns An array of subdirectories with an exchange.json file
+ */
+export function getAllAPIDirectories(
+  basePath: string,
+  relativePath = ''
+): string[] {
+  const fullPath = path.join(basePath, relativePath);
+  const directories: string[] = [];
+
+  try {
+    const items = fs.readdirSync(fullPath);
+
+    items.forEach(item => {
+      const itemPath = path.join(fullPath, item);
+      const relativeItemPath = relativePath
+        ? path.join(relativePath, item)
+        : item;
+
+      // We only want to return directories with an exchange.json file as only directories with exchange.json are considered valid APIs
+      if (fs.lstatSync(itemPath).isDirectory()) {
+        if (fs.existsSync(path.join(itemPath, 'exchange.json'))) {
+          directories.push(relativeItemPath);
+        }
+        directories.push(...getAllAPIDirectories(basePath, relativeItemPath));
+      }
+    });
+  } catch (error) {
+    console.warn(`Warning: Could not read directory ${fullPath}:`, error);
+  }
+
+  return directories;
+}
+
 export function copyStaticFiles(): void {
   const skipTestFiles = (src: string): boolean => !/\.test\.[a-z]+$/.test(src);
   fs.copySync(STATIC_DIRECTORY, TARGET_DIRECTORY, {filter: skipTestFiles});
@@ -126,14 +194,18 @@ export function main(): void {
     copyStaticFiles();
 
     const apiSpecDetails: ApiSpecDetail[] = [];
-    const subDirectories: string[] = directories.filter((directory: string) =>
-      fs.lstatSync(path.join(apiDirectory, directory)).isDirectory()
-    );
+    const subDirectories: string[] = getAllAPIDirectories(apiDirectory);
+
     subDirectories.forEach((directory: string) => {
-      const details = getAPIDetailsFromExchange(
-        path.join(apiDirectory, directory)
-      );
-      apiSpecDetails.push(details);
+      try {
+        const details = getAPIDetailsFromExchange(
+          path.join(apiDirectory, directory)
+        );
+        apiSpecDetails.push(details);
+      } catch (error: unknown) {
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        console.log(`Skipping directory ${directory}: ${error}`);
+      }
     });
 
     apiSpecDetails.forEach((apiSpecDetail: ApiSpecDetail) => {
