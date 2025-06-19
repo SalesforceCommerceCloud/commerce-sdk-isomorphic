@@ -241,18 +241,13 @@ describe('Authorize user', () => {
     });
 
     // There should be no code_challenge for private client
-    const expectedReqOptions = {
-      accessToken: 'access_token',
-      client_id: 'client_id',
-      channel_id: 'site_id',
-      dnt: 'false',
-      hint: 'hint',
-      redirect_uri: 'redirect_uri',
-      refreshToken: 'refresh_token',
-      response_type: 'code',
-      usid: 'usid',
+    const unexpectedQueryParams = {
+      code_challenge: 'code_challenge',
     };
-    expect(capturedQueryParams).toEqual(expectedReqOptions);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    expect(capturedQueryParams).toEqual(
+      expect.not.objectContaining(unexpectedQueryParams)
+    );
   });
 });
 

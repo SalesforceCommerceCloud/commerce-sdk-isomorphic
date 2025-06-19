@@ -35,14 +35,12 @@ export enum {{operationIdCamelCase}}{{enumName}} {
 {{/stringEnums}}
 {{^stringEnums}}
 
-export const {{operationIdCamelCase}}{{enumName}} = {
+export type {{operationIdCamelCase}}{{enumName}} =
 {{#allowableValues}}
     {{#enumVars}}
-    {{{name}}}: {{{value}}}{{^-last}},{{/-last}}
+    {{{value}}}{{^-last}} |{{/-last}}{{#-last}};{{/-last}}
     {{/enumVars}}
 {{/allowableValues}}
-} as const;
-export type {{operationIdCamelCase}}{{enumName}} = typeof {{operationIdCamelCase}}{{enumName}}[keyof typeof {{operationIdCamelCase}}{{enumName}}];
 {{/stringEnums}}
 {{/isEnum}}
 {{/allParams}}
@@ -390,7 +388,7 @@ export class {{#vendorExtensions}}{{#x-sdk-classname}}{{{ . }}}{{/x-sdk-classnam
         {{/required}}
         {{/pathParams}}
 
-        const queryParams: {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}QueryParameters & QueryParameters = {};
+        const queryParams: Partial<{{nickname}}QueryParameters> & QueryParameters = {};
 
         {{#queryParams}}
         if (optionParams["{{paramName}}"] !== undefined) {

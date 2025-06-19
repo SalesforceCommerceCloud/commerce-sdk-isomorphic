@@ -7,21 +7,6 @@
 /* eslint-disable import/prefer-default-export */
 import {download} from '@commerce-apps/raml-toolkit';
 
-// TODO - THIS IS THE OLD WORKAROUND FOR THE SHOPPER CONTEXT API MODEL NAME CLASH
-// DO WE STILL WANT THIS FOR THE OAS GENERATED SDK?
-
-// Editing the name of the Shopper Context API Model so our name is used for generating class name.
-// This is hard-coded for now but in the future if we handle the case where type name and title clash better, this can be removed.
-// function overwriteShopperContextName(apis: ApiMetadata): void {
-//   const shopperContextApi = apis.children.find(
-//     api => api.name.original === 'shopper-context'
-//   );
-
-//   if (shopperContextApi) {
-//     shopperContextApi.name = new Name('shopper-contexts');
-//   }
-// }
-
 /**
  * Searches for an API by name and downloads it to a folder.
  *

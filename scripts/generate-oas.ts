@@ -37,10 +37,16 @@ function kebabToCamelCase(str: string): string {
   );
 }
 
-export function resolveApiName(name: string): string {
-  // Special cases for shopper-orders and shopper-seo where the API name has different casing then the name in exchange.json
-  if (name === 'Shopper orders OAS') {
-    return 'ShopperOrders';
+function appendVersionIfV2(name: string, version: string): string {
+  if (version === 'V1' || version === 'v1') {
+    return name;
+  }
+  return name + version;
+}
+
+export function resolveApiName(name: string, version: string): string {
+  if (name === 'Shopper Baskets OAS') {
+    return version === 'v2' ? 'ShopperBasketsV2' : 'ShopperBasketsV1';
   }
   if (name === 'Shopper Seo OAS') {
     return 'ShopperSEO';
@@ -57,6 +63,7 @@ export function getAPIDetailsFromExchange(directory: string): ApiSpecDetail {
     const exchangeConfig = fs.readJSONSync(
       exchangePath
     ) as download.ExchangeConfig;
+
     return {
       filepath: path.join(
         directory,
@@ -64,15 +71,24 @@ export function getAPIDetailsFromExchange(directory: string): ApiSpecDetail {
       ),
       filename: exchangeConfig.main,
       directoryName: kebabToCamelCase(
-        exchangeConfig.assetId.replace('-oas', '')
+        appendVersionIfV2(
+          exchangeConfig.assetId.replace('-oas', ''),
+          exchangeConfig.apiVersion
+        )
       ),
-      name: exchangeConfig.name,
-      apiName: resolveApiName(exchangeConfig.name),
+      name:
+        exchangeConfig.apiVersion === 'v2'
+          ? `${exchangeConfig.name} V2`
+          : exchangeConfig.name,
+      apiName: resolveApiName(exchangeConfig.name, exchangeConfig.apiVersion),
     };
   }
   throw new Error(`Exchange file does not exist for ${directory}`);
 }
 
+/**
+ * Invokes openapi-generator via raml-toolkit to generate SDKs
+ */
 export function generateSDKs(apiSpecDetail: ApiSpecDetail): void {
   const {filepath, name, directoryName} = apiSpecDetail;
   if (fs.statSync(filepath).isFile() && filepath.includes('shopper')) {
@@ -83,7 +99,7 @@ export function generateSDKs(apiSpecDetail: ApiSpecDetail): void {
         inputSpec: `${filepath}`,
         outputDir: `${outputDir}`,
         templateDir: `${TEMPLATE_DIRECTORY}`,
-        skipValidateSpec: true,
+        flags: `--reserved-words-mappings delete=delete`,
       });
     } catch (error) {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -109,6 +125,38 @@ export function generateVersionFile(): void {
   fs.writeFileSync(`${TARGET_DIRECTORY}/version.ts`, generatedVersion);
 }
 
+export function getAllDirectoriesWithExchangeFiles(
+  basePath: string,
+  relativePath = ''
+): string[] {
+  const fullPath = path.join(basePath, relativePath);
+  const directories: string[] = [];
+
+  try {
+    const items = fs.readdirSync(fullPath);
+
+    items.forEach(item => {
+      const itemPath = path.join(fullPath, item);
+      const relativeItemPath = relativePath
+        ? path.join(relativePath, item)
+        : item;
+
+      if (fs.lstatSync(itemPath).isDirectory()) {
+        if (fs.existsSync(path.join(itemPath, 'exchange.json'))) {
+          directories.push(relativeItemPath);
+        }
+        directories.push(
+          ...getAllDirectoriesWithExchangeFiles(basePath, relativeItemPath)
+        );
+      }
+    });
+  } catch (error) {
+    console.warn(`Warning: Could not read directory ${fullPath}:`, error);
+  }
+
+  return directories;
+}
+
 export function copyStaticFiles(): void {
   const skipTestFiles = (src: string): boolean => !/\.test\.[a-z]+$/.test(src);
   fs.copySync(STATIC_DIRECTORY, TARGET_DIRECTORY, {filter: skipTestFiles});
@@ -129,14 +177,19 @@ export function main(): void {
     copyStaticFiles();
 
     const apiSpecDetails: ApiSpecDetail[] = [];
-    const subDirectories: string[] = directories.filter((directory: string) =>
-      fs.lstatSync(path.join(apiDirectory, directory)).isDirectory()
-    );
+    const subDirectories: string[] =
+      getAllDirectoriesWithExchangeFiles(apiDirectory);
+
     subDirectories.forEach((directory: string) => {
-      const details = getAPIDetailsFromExchange(
-        path.join(apiDirectory, directory)
-      );
-      apiSpecDetails.push(details);
+      try {
+        const details = getAPIDetailsFromExchange(
+          path.join(apiDirectory, directory)
+        );
+        apiSpecDetails.push(details);
+      } catch (error: unknown) {
+        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+        console.log(`Skipping directory ${directory}: ${error}`);
+      }
     });
 
     apiSpecDetails.forEach((apiSpecDetail: ApiSpecDetail) => {
