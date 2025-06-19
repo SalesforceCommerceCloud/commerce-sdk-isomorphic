@@ -110,21 +110,23 @@ export const generateCodeChallenge = async (
  * @param privateClient? - flag to indicate if the client is private or not. Defaults to false.
  * @returns login url, user id and authorization code if available
  */
-export async function authorize(
+export async function authorize(options: {
   slasClient: ShopperLogin<{
     shortCode: string;
     organizationId: string;
     clientId: string;
     siteId: string;
-  }>,
-  codeVerifier: string,
+  }>;
+  codeVerifier: string;
   parameters: {
     redirectURI: string;
     hint?: string;
     usid?: string;
-  } & CustomQueryParameters,
-  privateClient = false
-): Promise<{code: string; url: string; usid: string}> {
+  } & CustomQueryParameters;
+  privateClient?: boolean;
+}): Promise<{code: string; url: string; usid: string}> {
+  const {slasClient, codeVerifier, parameters, privateClient = false} = options;
+
   interface ClientOptions {
     codeChallenge?: string;
   }
@@ -193,21 +195,22 @@ export async function authorize(
  * @param privateClient - boolean indicating whether the client is private or not. Defaults to false.
  * @returns authorization url and code verifier
  */
-export async function authorizeIDP(
+export async function authorizeIDP(options: {
   slasClient: ShopperLogin<{
     shortCode: string;
     organizationId: string;
     clientId: string;
     siteId: string;
     version?: string;
-  }>,
+  }>;
   parameters: {
     redirectURI: string;
     hint: string;
     usid?: string;
-  } & CustomQueryParameters,
-  privateClient = false
-): Promise<{url: string; codeVerifier: string}> {
+  } & CustomQueryParameters;
+  privateClient?: boolean;
+}): Promise<{url: string; codeVerifier: string}> {
+  const {slasClient, parameters, privateClient = false} = options;
   const {hint, redirectURI, usid, ...restOfParams} = parameters;
   const codeVerifier = createCodeVerifier();
   interface ClientOptions {
@@ -218,12 +221,10 @@ export async function authorizeIDP(
     clientOptions.codeChallenge = await generateCodeChallenge(codeVerifier);
   }
 
-  // eslint-disable-next-line
   const apiPath = ShopperLogin.apiPaths.authorizeCustomer;
   const pathParams: ShopperLoginPathParameters & Required<BaseUriParameters> = {
     organizationId: slasClient.clientConfig.parameters.organizationId,
     shortCode: slasClient.clientConfig.parameters.shortCode,
-    version: slasClient.clientConfig.parameters.version || 'v1',
   };
   const queryParams: ShopperLoginQueryParameters = {
     // put it at the top to avoid overriding the rest of params
@@ -261,24 +262,25 @@ export async function authorizeIDP(
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
  * @returns TokenResponse
  */
-export async function loginIDPUser(
+export async function loginIDPUser(options: {
   slasClient: ShopperLogin<{
     shortCode: string;
     organizationId: string;
     clientId: string;
     siteId: string;
-  }>,
+  }>;
   credentials: {
     clientSecret?: string;
     codeVerifier?: string;
-  },
+  };
   parameters: {
     redirectURI: string;
     code: string;
     usid?: string;
     dnt?: boolean;
-  }
-): Promise<TokenResponse> {
+  };
+}): Promise<TokenResponse> {
+  const {slasClient, credentials, parameters} = options;
   const privateClient = !!credentials.clientSecret;
 
   const tokenBody = {
@@ -324,21 +326,22 @@ export async function loginIDPUser(
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
  * @returns TokenResponse
  */
-export async function loginGuestUserPrivate(
+export async function loginGuestUserPrivate(options: {
   slasClient: ShopperLogin<{
     shortCode: string;
     organizationId: string;
     clientId: string;
     siteId: string;
-  }>,
+  }>;
   parameters: {
     usid?: string;
     dnt?: boolean;
-  },
+  };
   credentials: {
     clientSecret: string;
-  }
-): Promise<TokenResponse> {
+  };
+}): Promise<TokenResponse> {
+  const {slasClient, parameters, credentials} = options;
   if (!slasClient.clientConfig.parameters.siteId) {
     throw new Error(
       'Required argument channel_id is not provided through clientConfig.parameters.siteId'
@@ -349,7 +352,7 @@ export async function loginGuestUserPrivate(
     `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
   )}`;
 
-  const options = {
+  const opts = {
     headers: {
       Authorization: authorization,
     },
@@ -361,7 +364,7 @@ export async function loginGuestUserPrivate(
     },
   };
 
-  return slasClient.getAccessToken(options);
+  return slasClient.getAccessToken(opts);
 }
 
 /**
@@ -373,26 +376,27 @@ export async function loginGuestUserPrivate(
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
  * @returns TokenResponse
  */
-export async function loginGuestUser(
+export async function loginGuestUser(options: {
   slasClient: ShopperLogin<{
     shortCode: string;
     organizationId: string;
     clientId: string;
     siteId: string;
-  }>,
+  }>;
   parameters: {
     redirectURI: string;
     usid?: string;
     dnt?: boolean;
-  } & CustomQueryParameters
-): Promise<TokenResponse> {
+  } & CustomQueryParameters;
+}): Promise<TokenResponse> {
+  const {slasClient, parameters} = options;
   const codeVerifier = createCodeVerifier();
 
   const {dnt, redirectURI, usid, ...restOfParams} = parameters;
-  const authResponse = await authorize(
+  const authResponse = await authorize({
     slasClient,
     codeVerifier,
-    {
+    parameters: {
       // putting this at the top to avoid any overriding on the required query param below
       // since they are not supposed to be overridden via helpers
       ...restOfParams,
@@ -400,8 +404,8 @@ export async function loginGuestUser(
       hint: 'guest',
       ...(usid && {usid}),
     },
-    false
-  );
+    privateClient: false,
+  });
   const tokenBody = {
     client_id: slasClient.clientConfig.parameters.clientId,
     channel_id: slasClient.clientConfig.parameters.siteId,
@@ -432,27 +436,26 @@ export async function loginGuestUser(
  * @param options.body - optional body parameters to pass in the ShopperLogin 'authenticateCustomer' method.
  * @returns TokenResponse
  */
-export async function loginRegisteredUserB2C(
+export async function loginRegisteredUserB2C(options: {
   slasClient: ShopperLogin<{
     shortCode: string;
     organizationId: string;
     clientId: string;
     siteId: string;
-  }>,
+  }>;
   credentials: {
     username: string;
     password: string;
     clientSecret?: string;
-  },
+  };
   parameters: {
     redirectURI: string;
     usid?: string;
     dnt?: boolean;
-  },
-  options?: {
-    body?: CustomRequestBody;
-  }
-): Promise<TokenResponse> {
+  };
+  body?: CustomRequestBody;
+}): Promise<TokenResponse> {
+  const {slasClient, credentials, parameters, body} = options;
   const codeVerifier = createCodeVerifier();
   const codeChallenge = await generateCodeChallenge(codeVerifier);
 
@@ -480,7 +483,7 @@ export async function loginRegisteredUserB2C(
       organizationId: slasClient.clientConfig.parameters.organizationId,
     },
     body: {
-      ...(options?.body || {}),
+      ...(body || {}),
       redirect_uri: redirectURI,
       client_id: slasClient.clientConfig.parameters.clientId,
       code_challenge: codeChallenge,
@@ -541,24 +544,25 @@ export async function loginRegisteredUserB2C(
  * @param parameters.mode - Medium of sending login token
  * @returns Promise of Response
  */
-export async function authorizePasswordless(
+export async function authorizePasswordless(options: {
   slasClient: ShopperLogin<{
     shortCode: string;
     organizationId: string;
     clientId: string;
     siteId: string;
-  }>,
+  }>;
   credentials: {
     clientSecret: string;
-  },
+  };
   parameters: {
     callbackURI?: string;
     usid?: string;
     userid: string;
     locale?: string;
     mode: string;
-  }
-): Promise<Response> {
+  };
+}): Promise<Response> {
+  const {slasClient, credentials, parameters} = options;
   if (!credentials.clientSecret) {
     throw new Error('Required argument client secret is not provided');
   }
@@ -615,21 +619,22 @@ export async function authorizePasswordless(
  * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
  * @returns Promise of Response or Object
  */
-export async function getPasswordLessAccessToken(
+export async function getPasswordLessAccessToken(options: {
   slasClient: ShopperLogin<{
     shortCode: string;
     organizationId: string;
     clientId: string;
     siteId: string;
-  }>,
+  }>;
   credentials: {
     clientSecret: string;
-  },
+  };
   parameters: {
     pwdlessLoginToken: string;
     dnt?: string;
-  }
-): Promise<TokenResponse> {
+  };
+}): Promise<TokenResponse> {
+  const {slasClient, credentials, parameters} = options;
   if (!credentials.clientSecret) {
     throw new Error('Required argument client secret is not provided');
   }
@@ -676,19 +681,20 @@ export async function getPasswordLessAccessToken(
  * @param credentials.clientSecret - secret associated with client ID
  * @returns TokenResponse
  */
-export function refreshAccessToken(
+export function refreshAccessToken(options: {
   slasClient: ShopperLogin<{
     shortCode: string;
     organizationId: string;
     clientId: string;
     siteId: string;
-  }>,
+  }>;
   parameters: {
     refreshToken: string;
     dnt?: boolean;
-  },
-  credentials?: {clientSecret?: string}
-): Promise<TokenResponse> {
+  };
+  credentials?: {clientSecret?: string};
+}): Promise<TokenResponse> {
+  const {slasClient, parameters, credentials} = options;
   const body = {
     grant_type: 'refresh_token' as const,
     refresh_token: parameters.refreshToken,
@@ -701,13 +707,13 @@ export function refreshAccessToken(
     const authorization = `Basic ${stringToBase64(
       `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
     )}`;
-    const options = {
+    const opts = {
       headers: {
         Authorization: authorization,
       },
       body,
     };
-    return slasClient.getAccessToken(options);
+    return slasClient.getAccessToken(opts);
   }
 
   return slasClient.getAccessToken({body});
@@ -721,18 +727,19 @@ export function refreshAccessToken(
  * @param parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
  * @returns TokenResponse
  */
-export function logout(
+export function logout(options: {
   slasClient: ShopperLogin<{
     shortCode: string;
     organizationId: string;
     clientId: string;
     siteId: string;
-  }>,
+  }>;
   parameters: {
     accessToken: string;
     refreshToken: string;
-  }
-): Promise<TokenResponse> {
+  };
+}): Promise<TokenResponse> {
+  const {slasClient, parameters} = options;
   return slasClient.logoutCustomer({
     headers: {
       Authorization: `Bearer ${parameters.accessToken}`,

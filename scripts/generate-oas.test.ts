@@ -28,14 +28,13 @@ jest.mock('@commerce-apps/raml-toolkit', () => ({
 
 describe('generate-oas', () => {
   const mockApiDirectory = '/mock/api/directory';
-  let handlebarsSpy: jest.SpyInstance;
 
   beforeEach(() => {
     // Reset all mocks before each test
     jest.clearAllMocks();
 
     // Set up Handlebars spy
-    handlebarsSpy = jest.spyOn(Handlebars, 'compile');
+    jest.spyOn(Handlebars, 'compile');
 
     // Mock fs-extra methods
     (fs.existsSync as jest.Mock).mockReturnValue(true);
