@@ -239,9 +239,9 @@ const scapiSpecialEncodedId = helpers.encodeSCAPISpecialCharacters(categoryId);
 // <base-url>/product/shopper-products/v1/organizations/{organizationId}/categories/{id}
 const categoryResult = await shopperProducts.getCategory({
   parameters: {
-    // Path parameters are NOT encoded by the SDK, so we have to single encode special characters
-    // and the SCAPI special characters will end up double encoded
-    id: encodeURIComponent(scapiSpecialEncodedId),
+    // No need to use `encodeURIComponent` as query parameters are single encoded by the SDK
+    // So the SCAPI special characters will end up double encoded as well
+    id: scapiSpecialEncodedId,
   }
 });
 

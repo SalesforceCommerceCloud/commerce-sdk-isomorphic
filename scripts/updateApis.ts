@@ -9,7 +9,6 @@ import path from 'path';
 import fs from 'fs-extra';
 import dotenv from 'dotenv';
 import {downloadLatestApis} from './utils';
-import {API_LIST} from './config';
 
 dotenv.config();
 
@@ -26,7 +25,9 @@ const PRODUCTION_API_PATH = path.join(__dirname, '../apis');
 fs.moveSync(PRODUCTION_API_PATH, OLD_APIS_PATH, {overwrite: true});
 fs.ensureDirSync(PRODUCTION_API_PATH);
 
-API_LIST.forEach(name => {
-  // eslint-disable-next-line no-console
-  downloadLatestApis(name, PRODUCTION_API_PATH).catch(console.error);
-});
+// eslint-disable-next-line no-console
+
+downloadLatestApis(
+  'category:Visibility = "External" category:"SDK Type" = "Commerce" category:"SDK Type" = "Isomorphic"',
+  PRODUCTION_API_PATH
+).catch(console.error);
