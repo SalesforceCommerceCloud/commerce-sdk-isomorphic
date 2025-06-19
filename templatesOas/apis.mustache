@@ -6,6 +6,7 @@ import { doFetch } from "../../helpers/fetchHelper";
 import type {
     BaseUriParameters,
     CompositeParameters,
+    CustomRequestBody,
     QueryParameters,
     RequireParametersUnlessAllAreOptional,
 } from "../../helpers/types";
@@ -91,6 +92,20 @@ export type {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camel
  */
 export type {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}Parameters = {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}PathParameters & BaseUriParameters & {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}QueryParameters;
 
+{{#operations}}
+{{#operation}}
+{{#hasFormParams}}
+export type {{nickname}}BodyType = {
+    {{#formParams}}
+    {{#isFormParam}}
+    {{paramName}}{{^required}}?{{/required}}: {{#isEnum}}{{{dataType}}}{{/isEnum}}{{^isEnum}}{{^isDateTime}}{{^isDate}}{{{dataType}}}{{/isDate}}{{/isDateTime}}{{#isDateTime}}string{{/isDateTime}}{{#isDate}}string{{/isDate}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}};
+    {{/isFormParam}}
+    {{/formParams}}
+}
+
+{{/hasFormParams}}
+{{/operation}}
+{{/operations}}
 /**
 * [{{appName}}](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta={{#lambda.kebabcase}}{{appName}}{{/lambda.kebabcase}}:Summary)
 * ==================================
@@ -220,18 +235,12 @@ export class {{#vendorExtensions}}{{#x-sdk-classname}}{{{ . }}}{{/x-sdk-classnam
             headers?: { [key: string]: string },
             {{#hasBodyParam}}
             {{#bodyParam}}
-            body: {{{dataType}}}
+            body: {{{dataType}}} & CustomRequestBody
             {{/bodyParam}}
             {{/hasBodyParam}}
             {{^hasBodyParam}}
             {{#hasFormParams}}
-            body: {
-            {{#formParams}}
-            {{#isFormParam}}
-                {{paramName}}{{^required}}?{{/required}}: {{#isEnum}}{{{dataType}}}{{/isEnum}}{{^isEnum}}{{^isDateTime}}{{^isDate}}{{{dataType}}}{{/isDate}}{{/isDateTime}}{{#isDateTime}}string{{/isDateTime}}{{#isDate}}string{{/isDate}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}};
-            {{/isFormParam}}
-            {{/formParams}}
-            }
+            body: {{nickname}}BodyType & CustomRequestBody
             {{/hasFormParams}}
             {{/hasBodyParam}}
         }>
@@ -285,18 +294,12 @@ export class {{#vendorExtensions}}{{#x-sdk-classname}}{{{ . }}}{{/x-sdk-classnam
             headers?: { [key: string]: string },
             {{#hasBodyParam}}
             {{#bodyParam}}
-            body: {{{dataType}}}
+            body: {{{dataType}}} & CustomRequestBody
             {{/bodyParam}}
             {{/hasBodyParam}}
             {{^hasBodyParam}}
             {{#hasFormParams}}
-            body: {
-            {{#formParams}}
-            {{#isFormParam}}
-                {{paramName}}{{^required}}?{{/required}}: {{#isEnum}}{{{dataType}}}{{/isEnum}}{{^isEnum}}{{^isDateTime}}{{^isDate}}{{{dataType}}}{{/isDate}}{{/isDateTime}}{{#isDateTime}}string{{/isDateTime}}{{#isDate}}string{{/isDate}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}};
-            {{/isFormParam}}
-            {{/formParams}}
-            }
+            body: {{nickname}}BodyType & CustomRequestBody
             {{/hasFormParams}}
             {{/hasBodyParam}}
         }>,
@@ -351,18 +354,12 @@ export class {{#vendorExtensions}}{{#x-sdk-classname}}{{{ . }}}{{/x-sdk-classnam
             headers?: { [key: string]: string },
             {{#hasBodyParam}}
             {{#bodyParam}}
-            body: {{{dataType}}}
+            body: {{{dataType}}} & CustomRequestBody
             {{/bodyParam}}
             {{/hasBodyParam}}
             {{^hasBodyParam}}
             {{#hasFormParams}}
-            body: {
-            {{#formParams}}
-            {{#isFormParam}}
-                {{paramName}}{{^required}}?{{/required}}: {{#isEnum}}{{{dataType}}}{{/isEnum}}{{^isEnum}}{{^isDateTime}}{{^isDate}}{{{dataType}}}{{/isDate}}{{/isDateTime}}{{#isDateTime}}string{{/isDateTime}}{{#isDate}}string{{/isDate}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}};
-            {{/isFormParam}}
-            {{/formParams}}
-            }
+            body: {{nickname}}BodyType & CustomRequestBody
             {{/hasFormParams}}
             {{/hasBodyParam}}
         }>,
@@ -373,7 +370,6 @@ export class {{#vendorExtensions}}{{#x-sdk-classname}}{{{ . }}}{{/x-sdk-classnam
         
         const pathParams: {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}PathParameters & Required<BaseUriParameters> = {
           shortCode: configParams.shortCode,
-          version: configParams.version || "v1"
         };
 
         {{#pathParams}}

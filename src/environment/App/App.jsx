@@ -73,8 +73,11 @@ class App extends Component {
   }
 
   async getToken() {
-    const authResponse = await slasHelper.loginGuestUser(slasClient, {
-      redirectURI: new URL('/callback', window.location).href,
+    const authResponse = await slasHelper.loginGuestUser({
+      slasClient,
+      parameters: {
+        redirectURI: new URL('/callback', window.location).href,
+      }
     });
     this.state.token = `Bearer ${authResponse.access_token}`;
   }

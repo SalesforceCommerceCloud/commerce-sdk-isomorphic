@@ -141,3 +141,41 @@ it.each([
 ])('Normalize %s path', (url, base, parameters, expected) => {
   expect(new TemplateURL(url, base, parameters).toString()).toBe(expected);
 });
+
+it.each([
+  [
+    'path/with spaces',
+    'https://example.com',
+    {},
+    'https://example.com/path/with%20spaces',
+  ],
+  [
+    'path/with/special&chars',
+    'https://example.com',
+    {},
+    'https://example.com/path/with/special%26chars',
+  ],
+  [
+    'path/with/unicode/测试',
+    'https://example.com',
+    {},
+    'https://example.com/path/with/unicode/%E6%B5%8B%E8%AF%95',
+  ],
+  [
+    'path/with/multiple/special/chars!@#$%^&*()',
+    'https://example.com',
+    {},
+    'https://example.com/path/with/multiple/special/chars!%40%23%24%25%5E%26*()',
+  ],
+  [
+    'path/with/{special}/chars',
+    'https://example.com',
+    {pathParams: {special: 'test!@#$%'}},
+    'https://example.com/path/with/test!%40%23%24%25/chars',
+  ],
+])(
+  'Handles special characters in path: %s',
+  (url, base, parameters, expected) => {
+    expect(new TemplateURL(url, base, parameters).toString()).toBe(expected);
+  }
+);
