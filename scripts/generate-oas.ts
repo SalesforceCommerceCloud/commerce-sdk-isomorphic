@@ -45,18 +45,29 @@ function appendVersionIfV2(name: string, version: string): string {
 }
 
 export function resolveApiName(name: string, version: string): string {
-  if (name === 'Shopper Baskets OAS') {
-    return version === 'v2' ? 'ShopperBasketsV2' : 'ShopperBasketsV1';
+  let apiName;
+
+  // Special handling for ShopperBasketV1 because we want to append V1 in this case
+  if (name === 'Shopper Baskets OAS' && version === 'v1') {
+    return 'ShopperBasketsV1';
   }
+
   if (name === 'Shopper Seo OAS') {
-    return 'ShopperSEO';
+    apiName = 'ShopperSEO';
+  } else if (name === 'Shopper Context OAS') {
+    apiName = 'ShopperContexts';
+  } else {
+    apiName = name.replace(/\s+/g, '').replace('OAS', '');
   }
-  if (name === 'Shopper Context OAS') {
-    return 'ShopperContexts';
-  }
-  return name.replace(/\s+/g, '').replace('OAS', '');
+
+  return version !== 'v1' ? apiName + version.toUpperCase() : apiName;
 }
 
+/**
+ * Extracts details needed for API generation from the exchange.json file contained within the given directory
+ * @param directory - The directory containing the exchange.json file
+ * @returns ApiSpecDetail - An object containing the details needed for API generation
+ */
 export function getAPIDetailsFromExchange(directory: string): ApiSpecDetail {
   const exchangePath = path.join(directory, 'exchange.json');
   if (fs.existsSync(exchangePath)) {
@@ -99,6 +110,7 @@ export function generateSDKs(apiSpecDetail: ApiSpecDetail): void {
         inputSpec: `${filepath}`,
         outputDir: `${outputDir}`,
         templateDir: `${TEMPLATE_DIRECTORY}`,
+        // We use this flag so that the generator can handle delete methods without prepending a '_'
         flags: `--reserved-words-mappings delete=delete`,
       });
     } catch (error) {
@@ -125,7 +137,13 @@ export function generateVersionFile(): void {
   fs.writeFileSync(`${TARGET_DIRECTORY}/version.ts`, generatedVersion);
 }
 
-export function getAllDirectoriesWithExchangeFiles(
+/**
+ * Recursively finds and returns all subdirectories within the given base path with an exchange.json file
+ * @param basePath - The base path to search for exchange.json files
+ * @param relativePath - The relative path to the base path
+ * @returns An array of subdirectories with an exchange.json file
+ */
+export function getAllAPIDirectories(
   basePath: string,
   relativePath = ''
 ): string[] {
@@ -141,13 +159,12 @@ export function getAllDirectoriesWithExchangeFiles(
         ? path.join(relativePath, item)
         : item;
 
+      // We only want to return directories with an exchange.json file as only directories with exchange.json are considered valid APIs
       if (fs.lstatSync(itemPath).isDirectory()) {
         if (fs.existsSync(path.join(itemPath, 'exchange.json'))) {
           directories.push(relativeItemPath);
         }
-        directories.push(
-          ...getAllDirectoriesWithExchangeFiles(basePath, relativeItemPath)
-        );
+        directories.push(...getAllAPIDirectories(basePath, relativeItemPath));
       }
     });
   } catch (error) {
@@ -177,8 +194,7 @@ export function main(): void {
     copyStaticFiles();
 
     const apiSpecDetails: ApiSpecDetail[] = [];
-    const subDirectories: string[] =
-      getAllDirectoriesWithExchangeFiles(apiDirectory);
+    const subDirectories: string[] = getAllAPIDirectories(apiDirectory);
 
     subDirectories.forEach((directory: string) => {
       try {
