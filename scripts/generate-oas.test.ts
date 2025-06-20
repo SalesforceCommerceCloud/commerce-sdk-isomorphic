@@ -15,7 +15,7 @@ import {
   generateIndex,
   main,
   generateVersionFile,
-  getAllDirectoriesWithExchangeFiles,
+  getAllAPIDirectories,
 } from './generate-oas';
 
 // Mock dependencies
@@ -221,7 +221,7 @@ describe('generate-oas', () => {
         isDirectory: () => !itemPath.includes('.'),
       }));
 
-      const result = getAllDirectoriesWithExchangeFiles(mockApiDirectory);
+      const result = getAllAPIDirectories(mockApiDirectory);
 
       expect(result).toEqual([
         'shopper-orders',
@@ -239,7 +239,7 @@ describe('generate-oas', () => {
       });
 
       const consoleSpy = jest.spyOn(console, 'warn').mockImplementation();
-      const result = getAllDirectoriesWithExchangeFiles('/invalid/path');
+      const result = getAllAPIDirectories('/invalid/path');
 
       expect(result).toEqual([]);
       expect(consoleSpy).toHaveBeenCalledWith(
