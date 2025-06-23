@@ -1,3 +1,5 @@
+{{! This partial expects to be wrapped in operations/operation }}
+{{! and renders the parameter types for a given operation - query, path, and form body parameters }}
 export type {{nickname}}QueryParameters = {
     {{#queryParams}}
     {{paramName}}{{^required}}?{{/required}}: {{#isEnum}}{{{dataType}}}{{/isEnum}}{{^isEnum}}{{#hasReadOnly}}Omit<{{{dataType}}}, {{#readOnlyVars}}'{{baseName}}'{{^-last}}|{{/-last}}{{/readOnlyVars}}>{{/hasReadOnly}}{{^hasReadOnly}}{{{dataType}}}{{/hasReadOnly}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}};
