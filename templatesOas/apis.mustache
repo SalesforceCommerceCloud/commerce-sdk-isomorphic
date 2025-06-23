@@ -24,91 +24,27 @@ import type {
 {{#operation}}
 {{#vendorExtensions}}
 {{^x-scapi-internal}}
-{{#allParams}}
-{{#isEnum}}
-{{#stringEnums}}
-export enum {{operationIdCamelCase}}{{enumName}} {
-{{#allowableValues}}
-    {{#enumVars}}
-    {{{name}}} = {{{value}}}{{^-last}},{{/-last}}
-    {{/enumVars}}
-{{/allowableValues}}
-}
-{{/stringEnums}}
-{{^stringEnums}}
-
-export type {{operationIdCamelCase}}{{enumName}} =
-{{#allowableValues}}
-    {{#enumVars}}
-    {{{value}}}{{^-last}} |{{/-last}}{{#-last}};{{/-last}}
-    {{/enumVars}}
-{{/allowableValues}}
-{{/stringEnums}}
-{{/isEnum}}
-{{/allParams}}
+{{> apis.enum }}
 {{/x-scapi-internal}}
 {{/vendorExtensions}}
 {{^vendorExtensions}}
-{{#allParams}}
-{{#isEnum}}
-{{#stringEnums}}
-export enum {{operationIdCamelCase}}{{enumName}} {
-{{#allowableValues}}
-    {{#enumVars}}
-    {{{name}}} = {{{value}}}{{^-last}},{{/-last}}
-    {{/enumVars}}
-{{/allowableValues}}
-}
-{{/stringEnums}}
-{{^stringEnums}}
-
-export type {{operationIdCamelCase}}{{enumName}} =
-{{#allowableValues}}
-    {{#enumVars}}
-    {{{value}}}{{^-last}} |{{/-last}}{{#-last}};{{/-last}}
-    {{/enumVars}}
-{{/allowableValues}}
-{{/stringEnums}}
-{{/isEnum}}
-{{/allParams}}
+{{> apis.enum }}
 {{/vendorExtensions}}
 {{/operation}}
 {{/operations}}
 {{/hasEnums}}
-
 {{#operations}}
 {{#operation}}
 {{#vendorExtensions}}
 {{^x-scapi-internal}}
-export type {{nickname}}QueryParameters = {
-    {{#queryParams}}
-    {{paramName}}{{^required}}?{{/required}}: {{#isEnum}}{{{dataType}}}{{/isEnum}}{{^isEnum}}{{#hasReadOnly}}Omit<{{{dataType}}}, {{#readOnlyVars}}'{{baseName}}'{{^-last}}|{{/-last}}{{/readOnlyVars}}>{{/hasReadOnly}}{{^hasReadOnly}}{{{dataType}}}{{/hasReadOnly}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}};
-    {{/queryParams}}
-}
-
-export type {{nickname}}PathParameters = {
-    {{#pathParams}}
-    {{paramName}}{{^required}}?{{/required}}: {{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{#hasReadOnly}}Omit<{{{dataType}}}, {{#readOnlyVars}}'{{baseName}}'{{^-last}}|{{/-last}}{{/readOnlyVars}}>{{/hasReadOnly}}{{^hasReadOnly}}{{{dataType}}}{{/hasReadOnly}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}};
-    {{/pathParams}}
-}
+{{> apis.parameters }}
 {{/x-scapi-internal}}
 {{/vendorExtensions}}
 {{^vendorExtensions}}
-export type {{nickname}}QueryParameters = {
-    {{#queryParams}}
-    {{paramName}}{{^required}}?{{/required}}: {{#isEnum}}{{{dataType}}}{{/isEnum}}{{^isEnum}}{{#hasReadOnly}}Omit<{{{dataType}}}, {{#readOnlyVars}}'{{baseName}}'{{^-last}}|{{/-last}}{{/readOnlyVars}}>{{/hasReadOnly}}{{^hasReadOnly}}{{{dataType}}}{{/hasReadOnly}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}};
-    {{/queryParams}}
-}
-
-export type {{nickname}}PathParameters = {
-    {{#pathParams}}
-    {{paramName}}{{^required}}?{{/required}}: {{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{#hasReadOnly}}Omit<{{{dataType}}}, {{#readOnlyVars}}'{{baseName}}'{{^-last}}|{{/-last}}{{/readOnlyVars}}>{{/hasReadOnly}}{{^hasReadOnly}}{{{dataType}}}{{/hasReadOnly}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}};
-    {{/pathParams}}
-}
+{{> apis.parameters }}
 {{/vendorExtensions}}
 {{/operation}}
 {{/operations}}
-
 /**
  * All path parameters that are used by at least one {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}} method.
  */
@@ -152,36 +88,6 @@ export type {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camel
  */
 export type {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}Parameters = {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}PathParameters & BaseUriParameters & {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}QueryParameters;
 
-{{#operations}}
-{{#operation}}
-{{#vendorExtensions}}
-{{^x-scapi-internal}}
-{{#hasFormParams}}
-export type {{nickname}}BodyType = {
-    {{#formParams}}
-    {{#isFormParam}}
-    {{paramName}}{{^required}}?{{/required}}: {{#isEnum}}{{{dataType}}}{{/isEnum}}{{^isEnum}}{{^isDateTime}}{{^isDate}}{{{dataType}}}{{/isDate}}{{/isDateTime}}{{#isDateTime}}string{{/isDateTime}}{{#isDate}}string{{/isDate}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}};
-    {{/isFormParam}}
-    {{/formParams}}
-}
-
-{{/hasFormParams}}
-{{/x-scapi-internal}}
-{{/vendorExtensions}}
-{{^vendorExtensions}}
-{{#hasFormParams}}
-export type {{nickname}}BodyType = {
-    {{#formParams}}
-    {{#isFormParam}}
-    {{paramName}}{{^required}}?{{/required}}: {{#isEnum}}{{{dataType}}}{{/isEnum}}{{^isEnum}}{{^isDateTime}}{{^isDate}}{{{dataType}}}{{/isDate}}{{/isDateTime}}{{#isDateTime}}string{{/isDateTime}}{{#isDate}}string{{/isDate}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}};
-    {{/isFormParam}}
-    {{/formParams}}
-}
-
-{{/hasFormParams}}
-{{/vendorExtensions}}
-{{/operation}}
-{{/operations}}
 /**
 * [{{appName}}](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta={{#lambda.kebabcase}}{{appName}}{{/lambda.kebabcase}}:Summary)
 * ==================================
