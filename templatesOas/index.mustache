@@ -19,6 +19,8 @@ export namespace {{#apiInfo}}{{#apis.0}}{{#vendorExtensions}}{{#x-sdk-classname}
     {{#apis}}
     {{#operations}}
     {{#operation}}
+    {{#vendorExtensions}}
+    {{^x-scapi-internal}}
     {{#allParams}}
     {{#isEnum}}
     {{^stringEnums}}
@@ -31,6 +33,22 @@ export namespace {{#apiInfo}}{{#apis.0}}{{#vendorExtensions}}{{#x-sdk-classname}
     {{/hasFormParams}}
     export type {{nickname}}QueryParameters = {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}ApiTypes.{{nickname}}QueryParameters
     export type {{nickname}}PathParameters = {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}ApiTypes.{{nickname}}PathParameters
+    {{/x-scapi-internal}}
+    {{/vendorExtensions}}
+    {{^vendorExtensions}}
+        {{#allParams}}
+    {{#isEnum}}
+    {{^stringEnums}}
+    export type {{operationIdCamelCase}}{{enumName}} = {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}ApiTypes.{{operationIdCamelCase}}{{enumName}}
+    {{/stringEnums}}
+    {{/isEnum}}
+    {{/allParams}}
+    {{#hasFormParams}}
+    export type {{nickname}}BodyType = {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}ApiTypes.{{nickname}}BodyType
+    {{/hasFormParams}}
+    export type {{nickname}}QueryParameters = {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}ApiTypes.{{nickname}}QueryParameters
+    export type {{nickname}}PathParameters = {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}ApiTypes.{{nickname}}PathParameters
+    {{/vendorExtensions}}
     {{/operation}}
     {{/operations}}
     {{/apis}}
