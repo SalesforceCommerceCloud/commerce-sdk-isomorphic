@@ -144,27 +144,27 @@ it.each([
 
 it.each([
   [
-    'path/with spaces',
+    'path/{special}',
     'https://example.com',
-    {},
+    {pathParams: {special: 'with spaces'}},
     'https://example.com/path/with%20spaces',
   ],
   [
-    'path/with/special&chars',
+    'path/with/{special}',
     'https://example.com',
-    {},
+    {pathParams: {special: 'special&chars'}},
     'https://example.com/path/with/special%26chars',
   ],
   [
-    'path/with/unicode/测试',
+    'path/with/unicode/{special}',
     'https://example.com',
-    {},
+    {pathParams: {special: '测试'}},
     'https://example.com/path/with/unicode/%E6%B5%8B%E8%AF%95',
   ],
   [
-    'path/with/multiple/special/chars!@#$%^&*()',
+    'path/with/multiple/special/{special}',
     'https://example.com',
-    {},
+    {pathParams: {special: 'chars!@#$%^&*()'}},
     'https://example.com/path/with/multiple/special/chars!%40%23%24%25%5E%26*()',
   ],
   [
