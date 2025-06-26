@@ -93,6 +93,11 @@ describe('generate-oas', () => {
       const result = resolveApiName('Shopper Orders OAS', 'v1');
       expect(result).toBe('ShopperOrders');
     });
+
+    it('should handle special case for Shopper Context OAS', () => {
+      const result = resolveApiName('Shopper Context OAS', 'v1');
+      expect(result).toBe('ShopperContexts');
+    });
   });
 
   describe('getAPIDetailsFromExchange', () => {
@@ -114,6 +119,28 @@ describe('generate-oas', () => {
       expect(() => getAPIDetailsFromExchange('nonexistent')).toThrow(
         'Exchange file does not exist'
       );
+    });
+
+    it('Appends V2 to the name if the apiVersion is v2', () => {
+      // Set up the mock before calling the function
+      (fs.readJSONSync as jest.Mock).mockReturnValue({
+        main: 'api.yaml',
+        assetId: 'shopper-baskets-oas',
+        name: 'Shopper Baskets OAS',
+        apiVersion: 'V2',
+      });
+
+      const result = getAPIDetailsFromExchange(
+        path.join(mockApiDirectory, 'shopperBaskets')
+      );
+
+      expect(result).toEqual({
+        filepath: path.join(mockApiDirectory, 'shopperBaskets', 'api.yaml'),
+        filename: 'api.yaml',
+        directoryName: 'shopperBasketsV2',
+        name: 'Shopper Baskets OAS',
+        apiName: 'ShopperBasketsV2',
+      });
     });
   });
 
