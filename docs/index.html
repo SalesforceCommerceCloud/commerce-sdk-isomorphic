@@ -290,9 +290,9 @@
 <span class="hljs-comment">// &lt;base-url&gt;/product/shopper-products/v1/organizations/{organizationId}/categories/{id}</span>
 <span class="hljs-keyword">const</span> categoryResult = <span class="hljs-keyword">await</span> shopperProducts.getCategory({
   <span class="hljs-attr">parameters</span>: {
-    <span class="hljs-comment">// Path parameters are NOT encoded by the SDK, so we have to single encode special characters</span>
-    <span class="hljs-comment">// and the SCAPI special characters will end up double encoded</span>
-    <span class="hljs-attr">id</span>: <span class="hljs-built_in">encodeURIComponent</span>(scapiSpecialEncodedId),
+    <span class="hljs-comment">// No need to use `encodeURIComponent` as query parameters are single encoded by the SDK</span>
+    <span class="hljs-comment">// So the SCAPI special characters will end up double encoded as well</span>
+    <span class="hljs-attr">id</span>: scapiSpecialEncodedId,
   }
 });
 
@@ -338,13 +338,13 @@
 						<a href="modules/shopperbaskets.html">shopper<wbr>Baskets</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/shoppercontexts.html">shopper<wbr>Contexts</a>
+						<a href="modules/shopperbasketsv2.html">shopper<wbr>Basketsv2</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/shoppercontext.html">shopper<wbr>Context</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/shoppercustomers.html">shopper<wbr>Customers</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/shopperdiscoverysearch.html">shopper<wbr>Discovery<wbr>Search</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/shopperexperience.html">shopper<wbr>Experience</a>
@@ -393,6 +393,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-namespace"><span class="tsd-kind-icon">Namespace</span></li>
 				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
