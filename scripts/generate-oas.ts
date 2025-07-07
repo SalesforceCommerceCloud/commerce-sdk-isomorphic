@@ -47,11 +47,6 @@ function appendVersionIfV2(name: string, version: string): string {
 export function resolveApiName(name: string, version: string): string {
   let apiName;
 
-  // Special handling for ShopperBasketV1 because we want to append V1 in this case
-  if (name === 'Shopper Baskets OAS' && version === 'v1') {
-    return 'ShopperBasketsV1';
-  }
-
   if (name === 'Shopper Seo OAS') {
     apiName = 'ShopperSEO';
   } else if (name === 'Shopper Context OAS') {

@@ -14,7 +14,7 @@ import {
   ClientConfig,
   ClientConfigInit,
   ShopperLogin,
-  ShopperBasketsV1,
+  ShopperBaskets,
 } from '../lib';
 
 const config: ClientConfigInit<
@@ -78,7 +78,7 @@ describe('Requests with body', () => {
       .matchHeader('Content-Type', 'application/json')
       .reply(200);
 
-    const client = new ShopperBasketsV1(config);
+    const client = new ShopperBaskets(config);
     await client.createBasket({parameters: {siteId: 'SITE_ID'}, body});
     expect(scope.isDone()).toBe(true);
   });

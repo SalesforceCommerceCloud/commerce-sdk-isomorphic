@@ -6588,4 +6588,3 @@ components:
                 rate: 0.01
               - id: US_5
                 rate: 0.05
-x-sdk-classname: ShopperBasketsV1
