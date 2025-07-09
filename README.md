@@ -262,6 +262,21 @@ console.log("categoriesResult: ", categoriesResult);
 
 **NOTE: In the next major version release, path parameters will be single encoded by default**
 
+## Documentation
+
+An auto-generated [documentation site](https://salesforcecommercecloud.github.io/commerce-sdk-isomorphic/) provides comprehensive reference for all available endpoints and types across API classes. Following the v4.0.0 release, the underlying SDK file structure has been reorganized, introducing additional layers of imports/exports that may affect navigation.
+
+### Navigating the Documentation
+
+**For API Classes:**
+
+1. **Accessing Endpoints:** Click on the API class name (e.g., `shopperProducts`)
+2. **Viewing Methods:** Scroll to the `Classes` section and click the corresponding API class link (e.g., `ShopperProducts`) to see available endpoints and their parameters
+3. **Type Definitions:** Scroll to the `Type aliases` section for available types
+4. **Alternative Type Access:** The `References` section exports underlying types and provides additional navigation options
+
+**Utility Classes:** Utility classes and methods such as `clientConfig` and `helpers` maintain the same structure as previous versions.
+
 ## License Information
 
 The Commerce SDK Isomorphic is licensed under BSD-3-Clause license. See the [license](./LICENSE.txt) for details.
