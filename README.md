@@ -18,6 +18,12 @@ An auto-generated [documentation site](https://salesforcecommercecloud.github.io
 
 **Utility Classes:** Utility classes and methods such as `clientConfig` and `helpers` maintain the same structure as previous versions.
 
+**NOTES:** 
+
+1. **Type Access**: API class types are accessible through the `<api_class>Types` namespace (e.g., `ShopperProductsTypes`). Individual types can be accessed as `ShopperProductsTypes.Product`.
+
+2. **Type References**: The `References` section under API classes in the generated documentation may show duplicate entries. This occurs because types are exported both at their original definition and under the API class namespace. Both references point to the same underlying type definition.
+
 ## :warning: Planned API Changes :warning:
 
 ### Shopper Context
