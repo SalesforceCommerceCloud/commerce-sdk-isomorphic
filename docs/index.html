@@ -83,6 +83,13 @@
 					<li><strong>Type Definitions:</strong> Scroll to the <code>Type aliases</code> section for available types</li>
 				</ol>
 				<p><strong>Utility Classes:</strong> Utility classes and methods such as <code>clientConfig</code> and <code>helpers</code> maintain the same structure as previous versions.</p>
+				<p><strong>NOTES:</strong> </p>
+				<ol>
+					<li><p><strong>Type Access</strong>: API class types are accessible through the <code>&lt;api_class&gt;Types</code> namespace (e.g., <code>ShopperProductsTypes</code>). Individual types can be accessed as <code>ShopperProductsTypes.Product</code>.</p>
+					</li>
+					<li><p><strong>Type References</strong>: The <code>References</code> section under API classes in the generated documentation may show duplicate entries. This occurs because types are exported both at their original definition and under the API class namespace. Both references point to the same underlying type definition.</p>
+					</li>
+				</ol>
 				<a href="#warning-planned-api-changes-warning" id="warning-planned-api-changes-warning" style="color: inherit; text-decoration: none;">
 					<h2>:warning: Planned API Changes :warning:</h2>
 				</a>
