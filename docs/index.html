@@ -69,6 +69,27 @@
 				</a>
 				<p>This SDK provides a Browser &amp; Node.js JavaScript client for calling <a href="https://developer.salesforce.com/docs/commerce/commerce-api/overview">B2C Commerce Shopper APIs</a>.</p>
 				<p><em>For a Node.js only SDK that can also access Admin APIs checkout <a href="https://github.com/SalesforceCommerceCloud/commerce-sdk">Commerce SDK</a>.</em></p>
+				<a href="#documentation" id="documentation" style="color: inherit; text-decoration: none;">
+					<h2>Documentation</h2>
+				</a>
+				<p>An auto-generated <a href="https://salesforcecommercecloud.github.io/commerce-sdk-isomorphic/">documentation site</a> provides comprehensive reference for all available endpoints and types across API classes. Following the v4.0.0 release, the underlying SDK file structure has been reorganized, introducing additional layers of imports/exports that may affect navigation.</p>
+				<a href="#navigating-the-documentation" id="navigating-the-documentation" style="color: inherit; text-decoration: none;">
+					<h3>Navigating the Documentation</h3>
+				</a>
+				<p><strong>For API Classes:</strong></p>
+				<ol>
+					<li><strong>Accessing API Classes:</strong> Click on the API class name (e.g., <code>shopperProducts</code>) on the right hand side</li>
+					<li><strong>Viewing Endpoints:</strong> Scroll to the <code>Classes</code> section and click the corresponding API class link (e.g., <code>ShopperProducts</code>) to see available endpoints and their parameters</li>
+					<li><strong>Type Definitions:</strong> Scroll to the <code>Type aliases</code> section for available types</li>
+				</ol>
+				<p><strong>Utility Classes:</strong> Utility classes and methods such as <code>clientConfig</code> and <code>helpers</code> maintain the same structure as previous versions.</p>
+				<p><strong>NOTES:</strong> </p>
+				<ol>
+					<li><p><strong>Type Access</strong>: API class types are accessible through the <code>&lt;api_class&gt;Types</code> namespace (e.g., <code>ShopperProductsTypes</code>). Individual types can be accessed as <code>ShopperProductsTypes.Product</code>.</p>
+					</li>
+					<li><p><strong>Type References</strong>: The <code>References</code> section under API classes in the generated documentation may show duplicate entries. This occurs because types are exported both at their original definition and under the API class namespace. Both references point to the same underlying type definition.</p>
+					</li>
+				</ol>
 				<a href="#warning-planned-api-changes-warning" id="warning-planned-api-changes-warning" style="color: inherit; text-decoration: none;">
 					<h2>:warning: Planned API Changes :warning:</h2>
 				</a>
@@ -290,9 +311,9 @@
 <span class="hljs-comment">// &lt;base-url&gt;/product/shopper-products/v1/organizations/{organizationId}/categories/{id}</span>
 <span class="hljs-keyword">const</span> categoryResult = <span class="hljs-keyword">await</span> shopperProducts.getCategory({
   <span class="hljs-attr">parameters</span>: {
-    <span class="hljs-comment">// Path parameters are NOT encoded by the SDK, so we have to single encode special characters</span>
-    <span class="hljs-comment">// and the SCAPI special characters will end up double encoded</span>
-    <span class="hljs-attr">id</span>: <span class="hljs-built_in">encodeURIComponent</span>(scapiSpecialEncodedId),
+    <span class="hljs-comment">// No need to use `encodeURIComponent` as query parameters are single encoded by the SDK</span>
+    <span class="hljs-comment">// So the SCAPI special characters will end up double encoded as well</span>
+    <span class="hljs-attr">id</span>: scapiSpecialEncodedId,
   }
 });
 
@@ -338,13 +359,13 @@
 						<a href="modules/shopperbaskets.html">shopper<wbr>Baskets</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/shoppercontexts.html">shopper<wbr>Contexts</a>
+						<a href="modules/shopperbasketsv2.html">shopper<wbr>Basketsv2</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/shoppercontext.html">shopper<wbr>Context</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/shoppercustomers.html">shopper<wbr>Customers</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="modules/shopperdiscoverysearch.html">shopper<wbr>Discovery<wbr>Search</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/shopperexperience.html">shopper<wbr>Experience</a>
@@ -393,6 +414,7 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-namespace"><span class="tsd-kind-icon">Namespace</span></li>
 				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
