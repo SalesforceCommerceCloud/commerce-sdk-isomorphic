@@ -108,6 +108,11 @@ description: !include shopper-search-description.md
           type: boolean
           required: false
           example: false
+        includedCustomVariationProperties:
+          description: A comma-separated list of custom property ids to be returned for variant products. The `variants` expand parameter and `allVariationProperties` query parameter are required for these properties to be returned.
+          type: string
+          required: false
+          example: c_batteryLife
   /search-suggestions:
     type: CommerceCloudStandards.Organization
     get:
@@ -158,3 +163,17 @@ description: !include shopper-search-description.md
         locale:
           type: CommerceCloudStandards.LocaleCode
           required: false
+        expand:
+          description: A comma-separated list that allows values `images`, `prices`, `custom_product_properties`. By default, the expand parameter includes `prices`.
+          maxLength: 50
+          minLength: 1
+          type: string
+          required: false
+          example: images
+        includedCustomProductProperties:
+          description: A comma-separated list of custom property ids to be returned for product suggestions. The `custom_product_properties` expand parameter is required for these properties to be returned.
+          maxLength: 100
+          minLength: 1
+          type: string
+          required: false
+          example: c_badges,c_mediaFormat,c_musicStorage
