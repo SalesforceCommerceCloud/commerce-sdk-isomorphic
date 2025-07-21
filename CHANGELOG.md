@@ -3,7 +3,7 @@
 ## v3.4.0
 
 ### API Changes
-- **Shopper Search API**: Add `includedCustomVariationProperties` query parameter to the `productSearch`/`getSearchSuggestions` operations and `expand` query parameter to the `getSearchSuggestions` operation
+- **Shopper Search API**: Add `includedCustomVariationProperties` query parameter to the `productSearch` operation and `expand`/`includedCustomProductProperties` query parameters to the `getSearchSuggestions` operation
 
 ## v3.3.0
 - Allow custom params for 'loginGuestUser', 'authorizeIDP' and custom body for 'loginRegisteredUserB2C' functions [#186](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/186)
