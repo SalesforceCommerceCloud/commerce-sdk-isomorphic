@@ -21,13 +21,47 @@ if (!process.env.ANYPOINT_USERNAME || !process.env.ANYPOINT_PASSWORD) {
 const OLD_APIS_PATH = path.join(__dirname, '../temp/oldApis');
 const PRODUCTION_API_PATH = path.join(__dirname, '../apis');
 
-// DOWNLOAD PRODUCTION DATA
-fs.moveSync(PRODUCTION_API_PATH, OLD_APIS_PATH, {overwrite: true});
-fs.ensureDirSync(PRODUCTION_API_PATH);
+// TODO: clean up this function
+/**
+ * Recursively removes all files ending in '-internal.yaml' from a directory and its subdirectories
+ * @param directoryPath - The path to the directory to process
+ */
+function removeInternalOas(directoryPath: string): void {
+  if (!fs.existsSync(directoryPath)) {
+    console.warn(`Directory does not exist: ${directoryPath}`);
+    return;
+  }
 
-// eslint-disable-next-line no-console
+  const items = fs.readdirSync(directoryPath);
+
+  items.forEach(item => {
+    const fullPath = path.join(directoryPath, item);
+    const stat = fs.statSync(fullPath);
+
+    if (stat.isDirectory()) {
+      // Recursively process subdirectories
+      removeInternalOas(fullPath);
+    } else if (stat.isFile() && item.endsWith('-internal.yaml')) {
+      // Remove internal files
+      fs.removeSync(fullPath);
+      console.log(`Removed internal file: ${fullPath}`);
+    }
+  });
+}
+
+// DOWNLOAD PRODUCTION DATA
+// TODO: uncomment this when we're ready to update the apis
+// fs.moveSync(PRODUCTION_API_PATH, OLD_APIS_PATH, {overwrite: true});
+fs.ensureDirSync(PRODUCTION_API_PATH);
 
 downloadLatestApis(
   'category:Visibility = "External" category:"SDK Type" = "Commerce" category:"SDK Type" = "Isomorphic"',
   PRODUCTION_API_PATH
-).catch(console.error);
+)
+  .then(() => {
+    console.log('API download completed successfully');
+    // Remove internal files after download is complete
+    removeInternalOas(OLD_APIS_PATH);
+    removeInternalOas(PRODUCTION_API_PATH);
+  })
+
