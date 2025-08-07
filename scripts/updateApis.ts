@@ -59,9 +59,8 @@ downloadLatestApis(
   PRODUCTION_API_PATH
 )
   .then(() => {
-    console.log('API download completed successfully');
     // Remove internal files after download is complete
     removeInternalOas(OLD_APIS_PATH);
     removeInternalOas(PRODUCTION_API_PATH);
   })
-
+  .catch(error => console.log(error));
