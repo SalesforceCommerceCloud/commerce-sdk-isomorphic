@@ -50,8 +50,7 @@ function removeInternalOas(directoryPath: string): void {
 }
 
 // DOWNLOAD PRODUCTION DATA
-// TODO: uncomment this when we're ready to update the apis
-// fs.moveSync(PRODUCTION_API_PATH, OLD_APIS_PATH, {overwrite: true});
+fs.moveSync(PRODUCTION_API_PATH, OLD_APIS_PATH, {overwrite: true});
 fs.ensureDirSync(PRODUCTION_API_PATH);
 
 downloadLatestApis(
@@ -63,4 +62,4 @@ downloadLatestApis(
     removeInternalOas(OLD_APIS_PATH);
     removeInternalOas(PRODUCTION_API_PATH);
   })
-  .catch(error => console.log(error));
+  .catch(error => console.log('Error downloading APIs' ,error));
