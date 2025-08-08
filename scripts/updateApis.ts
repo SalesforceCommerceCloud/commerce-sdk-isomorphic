@@ -21,7 +21,6 @@ if (!process.env.ANYPOINT_USERNAME || !process.env.ANYPOINT_PASSWORD) {
 const OLD_APIS_PATH = path.join(__dirname, '../temp/oldApis');
 const PRODUCTION_API_PATH = path.join(__dirname, '../apis');
 
-// TODO: clean up this function
 /**
  * Recursively removes all files ending in '-internal.yaml' from a directory and its subdirectories
  * @param directoryPath - The path to the directory to process
