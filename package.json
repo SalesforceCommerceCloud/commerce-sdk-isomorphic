@@ -27,7 +27,7 @@
     "ci": "rm -rf node_modules && yarn install",
     "clean": "rm -rf build lib src/lib commerce-sdk-isomorphic-with-deps.tgz",
     "depcheck": "depcheck",
-    "diffApis": "raml-toolkit diff --dir ./temp/oldApis ./apis -f console -o temp/diffApis.txt -s oas --normalize-directory-names",
+    "diffApis": "raml-toolkit diff --dir ./temp/oldApis ./apis -f console -o temp/diffApis.txt -s oas",
     "doc": "yarn run doc:generate",
     "doc:generate": "typedoc --mode modules src/lib/** --external-modulemap \".*/src/lib/([\\w]+)\" --exclude \"src/lib/index.ts\"",
     "eject": "react-scripts eject",
