@@ -12,7 +12,7 @@ import {isBrowser} from './environment';
 import {
   ShopperLogin,
   ShopperLoginPathParameters,
-  ShopperLoginQueryParameters,
+  authorizeCustomerQueryParameters,
 } from '../../lib/shopperLogin/apis';
 import {TokenResponse} from '../../lib/shopperLogin/models';
 import ResponseError from '../responseError';
@@ -226,7 +226,7 @@ export async function authorizeIDP(options: {
     organizationId: slasClient.clientConfig.parameters.organizationId,
     shortCode: slasClient.clientConfig.parameters.shortCode,
   };
-  const queryParams: ShopperLoginQueryParameters = {
+  const queryParams: authorizeCustomerQueryParameters = {
     // put it at the top to avoid overriding the rest of params
     ...restOfParams,
     client_id: slasClient.clientConfig.parameters.clientId,
