@@ -51,16 +51,16 @@ info:
 
     ### Channels
     Channels define the communication methods available for a subscription:
-    - `EMAIL`: Email communications
-    - `SMS`: SMS/text messages
-    - `WHATSAPP`: WhatsApp
+    - `email`: Email communications
+    - `sms`: SMS/text messages
+    - `whatsapp`: WhatsApp
 
     ### Tags
     Tags indicate where subscription options are displayed in your shopper experience. Tags are also accepted as optional filtering parameters in the retrieval of shopper consent subscriptions. For example:
-    - `HOMEPAGE_BANNER`: Main website homepage
-    - `REGISTRATION`: Shopper registration process
-    - `CHECKOUT_PAGE`: Checkout process
-    - `USER_PROFILE`: User profile management area
+    - `homepage_banner`: Main website homepage
+    - `registration`: Shopper registration process
+    - `checkout`: Checkout process
+    - `user_profile`: User profile management area
 
     ## Best Practices
 
@@ -228,7 +228,7 @@ components:
       description: Filter criteria for consent subscriptions
       minLength: 1
       maxLength: 256
-      example: HOMEPAGE_BANNER
+      example: homepage_banner
     SubscriptionId:
       type: string
       description: Identifier for the communication subscription
@@ -251,36 +251,36 @@ components:
       maxLength: 320
       description: |
         The customer's contact point value, polymorphic based on the channel type as below:
-        - `SMS` - Subject's phone number in E.164 format, ex: `+1 424 535 3546`
-        - `Email` - Subject's email address in RFC 5321 & RFC 5322 format, ex: `jack.sparrow@salesforce.com`
+        - `sms` - Subject's phone number in E.164 format, ex: `+1 424 535 3546`
+        - `email` - Subject's email address in RFC 5321 & RFC 5322 format, ex: `jack.sparrow@salesforce.com`
       example:
         - jack.sparrow@salesforce.com
         - +1 424 535 3546
     SubscriptionChannel:
       type: string
       enum:
-        - EMAIL
-        - SMS
-        - PUSH_NOTIFICATION
-        - IN_APP
-        - POSTAL_MAIL
-        - WHATSAPP
+        - email
+        - sms
+        - push_notification
+        - in_app
+        - postal_mail
+        - whatsapp
       example:
-        - EMAIL
-        - SMS
-        - PUSH_NOTIFICATION
-        - IN_APP
-        - POSTAL_MAIL
-        - WHATSAPP
+        - email
+        - sms
+        - push_notification
+        - in_app
+        - postal_mail
+        - whatsapp
     ConsentStatus:
       type: string
       description: The consent status of the subscription as supplied or recorded by this system
       enum:
-        - OPT_IN
-        - OPT_OUT
+        - opt_in
+        - opt_out
       example:
-        - OPT_IN
-        - OPT_OUT
+        - opt_in
+        - opt_out
     SubscriptionTitle:
       type: string
       minLength: 1
@@ -318,8 +318,8 @@ components:
           minItems: 0
           maxItems: 10
           example:
-            - HOMEPAGE_BANNER
-            - USER_PROFILE
+            - homepage_banner
+            - user_profile
     ConsentSubscriptionResponse:
       type: object
       description: Collection wrapper of consent subscriptions
@@ -436,14 +436,14 @@ components:
         one:
           summary: One tag filter
           value:
-            - HOMEPAGE_BANNER
+            - homepage_banner
         multiple:
           summary: Multiple tag filters (ORs)
           value:
-            - HOMEPAGE_BANNER
-            - USER_PROFILE
-            - CHECKOUT_PAGE
-            - REGISTRATION
+            - homepage_banner
+            - user_profile
+            - checkout
+            - registration
   examples:
     ConsentSubscriptionResponseAuthenticated:
       summary: AUTHENTICATED shopper's available consent subscriptions
@@ -451,52 +451,52 @@ components:
         data:
           - subscriptionId: weekly-newsletter
             contactPointValue: test@test.com
-            channel: EMAIL
-            status: OPT_IN
+            channel: email
+            status: opt_in
             title: Weekly Newsletter
             subtitle: Get our weekly newsletter with the latest updates.
             tags:
-              - HOMEPAGE_BANNER
-              - USER_PROFILE
+              - homepage_banner
+              - user_profile
           - subscriptionId: weekly-newsletter
             contactPointValue: +1 555 321 7654
-            channel: WHATSAPP
-            status: OPT_IN
+            channel: whatsapp
+            status: opt_in
             title: Weekly Newsletter
             subtitle: Get our weekly newsletter with the latest updates.
             tags:
-              - USER_PROFILE
+              - user_profile
           - subscriptionId: promotional-offers
             contactPointValue: +1 555 123 4567
-            channel: SMS
-            status: OPT_OUT
+            channel: sms
+            status: opt_out
             title: Promotional Offers
             subtitle: Receive special promotional offers.
             tags:
-              - CHECKOUT_PAGE
+              - checkout
     ConsentSubscriptionResponseGuest:
       summary: GUEST shopper's available consent subscriptions
       value:
         data:
           - subscriptionId: weekly-newsletter
-            channel: EMAIL
+            channel: email
             title: Weekly Newsletter
             subtitle: Get our weekly newsletter with the latest updates.
             tags:
-              - HOMEPAGE_BANNER
-              - USER_PROFILE
+              - homepage_banner
+              - user_profile
           - subscriptionId: weekly-newsletter
-            channel: WHATSAPP
+            channel: whatsapp
             title: Weekly Newsletter
             subtitle: Get our weekly newsletter with the latest updates.
             tags:
-              - USER_PROFILE
+              - user_profile
           - subscriptionId: promotional-offers
-            channel: SMS
+            channel: sms
             title: Promotional Offers
             subtitle: Receive special promotional offers.
             tags:
-              - CHECKOUT_PAGE
+              - checkout
     ConsentSubscriptionError:
       value:
         title: Error Retrieving Consent Subscription
@@ -507,20 +507,20 @@ components:
       value:
         subscriptionId: weekly-newsletter
         contactPointValue: test@test.com
-        channel: EMAIL
-        status: OPT_IN
+        channel: email
+        status: opt_in
     ConsentSubscriptionUpdateResponse:
       summary: Shopper's consent subscription update response
       value:
         subscriptionId: weekly-newsletter
         contactPointValue: test@test.com
-        channel: EMAIL
-        status: OPT_IN
+        channel: email
+        status: opt_in
         title: Weekly Newsletter
         subtitle: Get our weekly newsletter with the latest updates.
         tags:
-          - HOMEPAGE_BANNER
-          - USER_PROFILE
+          - homepage_banner
+          - user_profile
     ConsentSubscriptionUpdateError:
       value:
         title: Error Updating Consent Subscription

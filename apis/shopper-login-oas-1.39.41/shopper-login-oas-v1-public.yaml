@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Shopper Login
-  version: v1
+  version: 1.39.41
   description: |-
     # API Overview
 
@@ -33,9 +33,6 @@ paths:
         The SLAS `/login` endpoint redirects back to the redirect URI and returns an authorization code.
         Calls to `/login` made with the same loginId and tenantId within 1 second result in a conflict.
       operationId: authenticateCustomer
-      x-slas-rate-limit:
-        excludedStatusCodes:
-          - '409'
       parameters:
         - $ref: '#/components/parameters/organizationId'
         - name: Authorization
@@ -61,6 +58,31 @@ paths:
               examples:
                 authenticateCustomerSuccess:
                   $ref: '#/components/examples/authenticateCustomerSuccess'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '400':
           description: Bad request
           content:
@@ -70,6 +92,31 @@ paths:
               examples:
                 BadOrMissingClientId400:
                   $ref: '#/components/examples/BadOrMissingClientId400'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '401':
           description: Unauthorized
           content:
@@ -79,6 +126,31 @@ paths:
               examples:
                 InvalidBasicAuth401:
                   $ref: '#/components/examples/InvalidBasicAuth401'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '409':
           description: Conflict
           content:
@@ -97,13 +169,36 @@ paths:
               examples:
                 InternalServerError500:
                   $ref: '#/components/examples/InternalServerError500'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
   /organizations/{organizationId}/oauth2/passwordless/login:
     post:
       summary: Allow the customer to authenticate when their identity provider is down.
       description: This endpoint allows customers to authenticate when their configured identity provider is inaccessible. It provides an alternative authentication path through passwordless login methods like email or SMS verification.
       operationId: authorizePasswordlessCustomer
-      x-slas-rate-limit:
-        excludedStatusCodes: []
       parameters:
         - $ref: '#/components/parameters/organizationId'
         - name: Authorization
@@ -126,6 +221,31 @@ paths:
             application/json:
               schema:
                 type: string
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '400':
           description: Bad request
           content:
@@ -135,6 +255,31 @@ paths:
               examples:
                 BadOrMissingAccessToken400:
                   $ref: '#/components/examples/BadOrMissingAccessToken400'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '401':
           description: Unauthorized
           content:
@@ -144,6 +289,31 @@ paths:
               examples:
                 Unauthorized401:
                   $ref: '#/components/examples/InvalidClient401'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '412':
           description: Precondition failure
           content:
@@ -153,6 +323,31 @@ paths:
               examples:
                 DependentServiceUnavailable412:
                   $ref: '#/components/examples/DependentServiceUnavailable412'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
   /organizations/{organizationId}/oauth2/logout:
     get:
       summary: Log out a shopper.
@@ -163,8 +358,6 @@ paths:
 
         Required parameters: `refresh token`, `channel_id`, and `client`.
       operationId: logoutCustomer
-      x-slas-rate-limit:
-        excludedStatusCodes: []
       parameters:
         - $ref: '#/components/parameters/organizationId'
         - $ref: '#/components/parameters/client_id'
@@ -178,7 +371,7 @@ paths:
             example: RefArch
             maxLength: 100
             type: string
-        - $ref: '#/components/parameters/hint'
+        - $ref: '#/components/parameters/logout_hint'
         - name: Authorization
           in: header
           description: Shopper access token to be revoked
@@ -196,8 +389,58 @@ paths:
               examples:
                 logoutCustomerSuccess:
                   $ref: '#/components/examples/logoutCustomerSuccess'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '303':
           description: The user has sent too many requests in a given amount of time, and rate limiting is in effect.
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '400':
           description: Bad request
           content:
@@ -207,6 +450,31 @@ paths:
               examples:
                 BadOrMissingClientId400:
                   $ref: '#/components/examples/BadOrMissingClientId400'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '401':
           description: Unauthorized
           content:
@@ -216,6 +484,31 @@ paths:
               examples:
                 BadOrMissingClientId400:
                   $ref: '#/components/examples/BadOrMissingClientId400'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '500':
           description: Internal server error
           content:
@@ -225,6 +518,31 @@ paths:
               examples:
                 InternalServerError500:
                   $ref: '#/components/examples/InternalServerError500'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
   /organizations/{organizationId}/oauth2/authorize:
     get:
       summary: Get an authorization code after authenticating a user against an identity provider (IDP).
@@ -233,8 +551,6 @@ paths:
 
         You can call this endpoint from the front channel (the browser).
       operationId: authorizeCustomer
-      x-slas-rate-limit:
-        excludedStatusCodes: []
       parameters:
         - $ref: '#/components/parameters/organizationId'
         - $ref: '#/components/parameters/redirect_uri'
@@ -265,6 +581,31 @@ paths:
               examples:
                 authorizeCustomerSuccess:
                   $ref: '#/components/examples/authorizeCustomerSuccess'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '400':
           description: Bad request
           content:
@@ -274,6 +615,31 @@ paths:
               examples:
                 BadOrMissingClientId400:
                   $ref: '#/components/examples/BadOrMissingClientId400'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '401':
           description: Unauthorized
           content:
@@ -283,6 +649,31 @@ paths:
               examples:
                 InvalidBasicAuth401:
                   $ref: '#/components/examples/InvalidBasicAuth401'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '500':
           description: Internal Server Error
           content:
@@ -292,6 +683,31 @@ paths:
               examples:
                 InternalServerError500:
                   $ref: '#/components/examples/InternalServerError500'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
   /organizations/{organizationId}/oauth2/token:
     post:
       summary: Get the shopper or guest JWT access token and a refresh token.
@@ -310,8 +726,6 @@ paths:
 
         **Important**: As of July 31, 2024**, SLAS requires the `channel_id` query parameter in token requests.
       operationId: getAccessToken
-      x-slas-rate-limit:
-        excludedStatusCodes: []
       parameters:
         - $ref: '#/components/parameters/organizationId'
         - name: Authorization
@@ -337,6 +751,31 @@ paths:
               examples:
                 getAccessTokenSuccess:
                   $ref: '#/components/examples/getAccessTokenSuccess'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '400':
           description: Bad request
           content:
@@ -346,6 +785,31 @@ paths:
               examples:
                 BadOrMissingAccessToken400:
                   $ref: '#/components/examples/BadOrMissingAccessToken400'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '401':
           description: Unauthorized
           content:
@@ -355,6 +819,31 @@ paths:
               examples:
                 InvalidBasicAuth401:
                   $ref: '#/components/examples/InvalidBasicAuth401'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '500':
           description: Internal server error
           content:
@@ -364,6 +853,31 @@ paths:
               examples:
                 InternalServerError500:
                   $ref: '#/components/examples/InternalServerError500'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
   /organizations/{organizationId}/oauth2/session-bridge/token:
     post:
       summary: Get a shopper JWT access token for a registered customer using session bridging.
@@ -378,8 +892,6 @@ paths:
 
         **NOTE:** The registered customer Json Web Token (JWT) is available in B2C Commerce versions 25.4 and later.
       operationId: getSessionBridgeAccessToken
-      x-slas-rate-limit:
-        excludedStatusCodes: []
       parameters:
         - $ref: '#/components/parameters/organizationId'
       requestBody:
@@ -398,6 +910,31 @@ paths:
               examples:
                 getSessionBridgeAccessTokenSuccess:
                   $ref: '#/components/examples/getSessionBridgeAccessTokenSuccess'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '400':
           description: Bad request
           content:
@@ -407,6 +944,31 @@ paths:
               examples:
                 BadOrMissingAccessToken400:
                   $ref: '#/components/examples/BadOrMissingAccessToken400'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '401':
           description: Unauthorized
           content:
@@ -416,6 +978,31 @@ paths:
               examples:
                 Unauthorized401:
                   $ref: '#/components/examples/InvalidClient401'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '503':
           description: Gateway error
           content:
@@ -425,6 +1012,31 @@ paths:
               examples:
                 GatewayError503:
                   $ref: '#/components/examples/GatewayError503'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
   /organizations/{organizationId}/oauth2/trusted-system/token:
     post:
       summary: Get a shopper JWT access token for a registered customer whose credentials are stored using a third party.
@@ -437,9 +1049,6 @@ paths:
 
         For trusted-system requests, you cannot use SLAS public client_ids.
       operationId: getTrustedSystemAccessToken
-      x-slas-rate-limit:
-        excludedStatusCodes:
-          - '409'
       parameters:
         - $ref: '#/components/parameters/organizationId'
         - name: Authorization
@@ -465,6 +1074,31 @@ paths:
               examples:
                 getTrustedSystemAccessTokenSuccess:
                   $ref: '#/components/examples/getTrustedSystemAccessTokenSuccess'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '400':
           description: Bad request
           content:
@@ -474,6 +1108,31 @@ paths:
               examples:
                 BadOrMissingClientId400:
                   $ref: '#/components/examples/BadOrMissingClientId400'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '401':
           description: Unauthorized
           content:
@@ -483,6 +1142,31 @@ paths:
               examples:
                 Unauthorized401:
                   $ref: '#/components/examples/InvalidClient401'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '409':
           description: Conflict
           content:
@@ -501,13 +1185,36 @@ paths:
               examples:
                 GatewayError503:
                   $ref: '#/components/examples/GatewayError503'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
   /organizations/{organizationId}/oauth2/trusted-agent/authorize:
     get:
       summary: Obtain a new agent on behalf of an authorization token for a registered customer.
       description: This endpoint enables trusted agents (such as customer service representatives or merchants) to obtain authorization tokens that allow them to act on behalf of registered customers. This facilitates customer support scenarios where agents need secure access to customer accounts.
       operationId: getTrustedAgentAuthorizationToken
-      x-slas-rate-limit:
-        excludedStatusCodes: []
       parameters:
         - $ref: '#/components/parameters/organizationId'
         - $ref: '#/components/parameters/client_id'
@@ -528,6 +1235,30 @@ paths:
                 description: URL with redirect
                 example: https://account.demandware.com:443/dwsso/UI/Login?realm=/&goto=https://account.demandware.com:443/dwsso/oauth2/authorize?client_id=6739cb07-2f5f-4e16-a88a-8113a3cb5512&redirect_uri=https://stg.us1.shopper.cc.salesforce.com/api/v1/trusted-agent/callback"
                 type: string
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
           content:
             application/json:
               schema:
@@ -543,6 +1274,31 @@ paths:
               examples:
                 BadOrMissingClientId400:
                   $ref: '#/components/examples/BadOrMissingClientId400'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '401':
           description: Unauthorized
           content:
@@ -552,6 +1308,31 @@ paths:
               examples:
                 Unauthorized401:
                   $ref: '#/components/examples/InvalidClient401'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '500':
           description: Internal server error
           content:
@@ -561,6 +1342,31 @@ paths:
               examples:
                 InternalServerError500:
                   $ref: '#/components/examples/InternalServerError500'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
   /organizations/{organizationId}/oauth2/trusted-agent/token:
     post:
       summary: Get a shopper JWT access token for a registered customer using a trusted agent (merchant).
@@ -569,8 +1375,6 @@ paths:
 
         The value of the `_sfdc_client_auth` header must be a Base64-encoded string. The string is composed of a SLAS private client ID and client secret, separated by a colon (`:`). For example, `privateClientId:privateClientsecret` becomes `cHJpdmF0ZUNsaWVudElkOnByaXZhdGVDbGllbnRzZWNyZXQ=` after Base64 encoding.
       operationId: getTrustedAgentAccessToken
-      x-slas-rate-limit:
-        excludedStatusCodes: []
       parameters:
         - $ref: '#/components/parameters/organizationId'
         - $ref: '#/components/parameters/_sfdc_client_auth'
@@ -597,6 +1401,31 @@ paths:
               examples:
                 getTrustedAgentAccessTokenSuccess:
                   $ref: '#/components/examples/getTrustedAgentAccessTokenSuccess'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '400':
           description: Bad request
           content:
@@ -606,6 +1435,31 @@ paths:
               examples:
                 BadOrMissingAccessToken400:
                   $ref: '#/components/examples/BadOrMissingAccessToken400'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '401':
           description: Unauthorized
           content:
@@ -615,6 +1469,31 @@ paths:
               examples:
                 Unauthorized401:
                   $ref: '#/components/examples/InvalidClient401'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '503':
           description: Gateway error
           content:
@@ -624,13 +1503,36 @@ paths:
               examples:
                 GatewayError503:
                   $ref: '#/components/examples/GatewayError503'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
   /organizations/{organizationId}/oauth2/password/reset:
     post:
       summary: Request a reset password token.
       description: This endpoint initiates the password reset process for a customer by requesting a password reset token. The token is delivered through the configured delivery mode (email, SMS, etc.) and can be used with the password/action endpoint to set a new password.
       operationId: getPasswordResetToken
-      x-slas-rate-limit:
-        excludedStatusCodes: []
       parameters:
         - $ref: '#/components/parameters/organizationId'
       requestBody:
@@ -642,6 +1544,31 @@ paths:
       responses:
         '200':
           description: The reset password token was requested successfully.
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '400':
           description: Bad request
           content:
@@ -651,6 +1578,31 @@ paths:
               examples:
                 BadMissingAccessOrRefreshToken400:
                   $ref: '#/components/examples/BadMissingAccessOrRefreshToken400'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '401':
           description: Unauthorized
           content:
@@ -660,6 +1612,31 @@ paths:
               examples:
                 Unauthorized401:
                   $ref: '#/components/examples/InvalidClient401'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '412':
           description: Precondition failure
           content:
@@ -669,13 +1646,36 @@ paths:
               examples:
                 DependentServiceUnavailable412:
                   $ref: '#/components/examples/DependentServiceUnavailable412'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
   /organizations/{organizationId}/oauth2/password/action:
     post:
       summary: Create a new password.
       description: This endpoint allows a customer to set a new password using a valid password reset token. The customer must provide the token received from the password/reset endpoint along with the desired new password.
       operationId: resetPassword
-      x-slas-rate-limit:
-        excludedStatusCodes: []
       parameters:
         - $ref: '#/components/parameters/organizationId'
         - name: Authorization
@@ -694,6 +1694,31 @@ paths:
       responses:
         '200':
           description: The password was created successfully.
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '400':
           description: Bad request
           content:
@@ -703,6 +1728,31 @@ paths:
               examples:
                 BadParameters400:
                   $ref: '#/components/examples/BadParameters400'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '401':
           description: Unauthorized
           content:
@@ -712,6 +1762,31 @@ paths:
               examples:
                 Unauthorized401:
                   $ref: '#/components/examples/InvalidClient401'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '503':
           description: Gateway error
           content:
@@ -721,13 +1796,36 @@ paths:
               examples:
                 GatewayError503:
                   $ref: '#/components/examples/GatewayError503'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
   /organizations/{organizationId}/oauth2/passwordless/token:
     post:
       summary: Issue a shopper token (JWT).
       description: This endpoint issues a shopper JWT access token using a passwordless login token. It enables authentication flows where traditional username/password combinations are not required, supporting alternative authentication methods.
       operationId: getPasswordLessAccessToken
-      x-slas-rate-limit:
-        excludedStatusCodes: []
       parameters:
         - $ref: '#/components/parameters/organizationId'
         - name: Authorization
@@ -753,6 +1851,31 @@ paths:
               examples:
                 getPasswordLessAccessTokenSuccess:
                   $ref: '#/components/examples/getPasswordLessAccessTokenSuccess'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '400':
           description: Bad request
           content:
@@ -762,6 +1885,31 @@ paths:
               examples:
                 BadOrMissingAccessToken400:
                   $ref: '#/components/examples/BadOrMissingAccessToken400'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '401':
           description: Unauthorized
           content:
@@ -771,6 +1919,31 @@ paths:
               examples:
                 Unauthorized401:
                   $ref: '#/components/examples/InvalidClient401'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
         '503':
           description: Gateway error
           content:
@@ -780,6 +1953,31 @@ paths:
               examples:
                 GatewayError503:
                   $ref: '#/components/examples/GatewayError503'
+          headers:
+            X-RateLimit-1M-Limit:
+              description: The 1 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-1M-Remaining:
+              description: The 1 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-1M-Reset:
+              description: The 1 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
+            X-RateLimit-5M-Limit:
+              description: The 5 minute maximum number of requests permitted per hour.
+              schema:
+                type: string
+            X-RateLimit-5M-Remaining:
+              description: The 5 minute number of requests remaining in the current rate limit window.
+              schema:
+                type: string
+            X-RateLimit-5M-Reset:
+              description: The 5 minute time at which the current rate limit window resets in UTC epoch seconds.
+              schema:
+                type: string
   /organizations/{organizationId}/oauth2/revoke:
     post:
       summary: Invalidate a refresh token.
@@ -1681,19 +2879,20 @@ components:
       required: true
       schema:
         type: string
-    hint:
+    logout_hint:
       name: hint
       in: query
       description: |-
-        Name of an identity provider (IDP) to optionally redirect to, thereby skipping the IDP selection step.
+        `hint=all-sessions` logs out all sessions of the shopper and invalidates all active refresh tokens for the shopper.
 
-        To use a public client, set `hint` to `guest` and use a public client ID to get an authorization code. If no `hint` is provided, the preferred IDP of the tenant is used by default.
+        If this query parameter is not provided, the default behavior is to log out only the current session that matches the refresh token in the request.
 
-        For session bridge authorization the `hint` should be set to `sb-user` for a registered customer and to `sb-guest` for a guest. For session bridge authorization the SLAS Client `sfcc.session_bridge` scope.
+        If an incorrect value is provided for the hint other than `all-sessions`, the request fails.
       required: false
       schema:
-        maxLength: 256
         type: string
+        enum:
+          - all-sessions
     redirect_uri:
       name: redirect_uri
       in: query
@@ -1740,6 +2939,19 @@ components:
       name: usid
       in: query
       description: A unique shopper identifier (USID). If not provided, a new USID is generated.
+      required: false
+      schema:
+        maxLength: 256
+        type: string
+    hint:
+      name: hint
+      in: query
+      description: |-
+        Name of an identity provider (IDP) to optionally redirect to, thereby skipping the IDP selection step.
+
+        To use a public client, set `hint` to `guest` and use a public client ID to get an authorization code. If no `hint` is provided, the preferred IDP of the tenant is used by default.
+
+        For session bridge authorization the `hint` should be set to `sb-user` for a registered customer and to `sb-guest` for a guest. For session bridge authorization the SLAS Client `sfcc.session_bridge` scope.
       required: false
       schema:
         maxLength: 256

@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Shopper Search
   version: v1
-  description: "# API Overview\n\nUse the Shopper Search API for search functionality that lets shoppers search for products using keywords and refinement. The search results can be products or suggestions based on the endpoint you choose in the API.\n\nCaching is provided for the Shopper Search API. For details, see [Server-Side Web-Tier Caching.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/server-side-web-tier-caching.html)\n\n## Authentication & Authorization\n\nThe client requesting the API must have access to the product search and search suggestion resources. \n\nThe Shopper Search API requires a JWT acquired via the Shopper Customers endpoint:\n\n```\nhttps://{shortCode}.api.commercecloud.salesforce.com/customer/shopper-customers/v1/organizations/{organizationId}/customers/actions/login\n```\n\n## Use Cases\n\n### Provide Search Suggestions\n\nUse the Shopper Search API to provide search suggestions as a shopper searches.\n\nFor example, a developer who is building a shopping app using the Salesforce Commerce API would like to provide product, brand, and category suggestions. When a shopper types in a search phrase that exceeds a definable minimum length and the GET Search Suggestion endpoint is requested, the platform delivers a set of suggestions with products (name, ID), brands (name), and categories (name, ID). Shoppers can reach their desired search results more quickly using the suggested completion and correction.\n\n### Provide Search Results\n\nUse the Shopper Search API to gather product results for a shoppers search query.\n\nFor example, a developer who is building a shopping app using the Salesforce Commerce API would like to implement a product search functionality. When a shopper enters a search phrase and the GET Product Search endpoint is requested, the platform performs a keyword search and a sorted search result is returned. The sorted search result can be refined according to given values (for example, a price range).\nThe product search result contains a definable number of product search hits. A product search hit describes a matching product with its ID and name. Furthermore, the search hit contains product images, prices, represented products, and variations. In addition to the search hits, the search results also deliver refinement and sorting options.\n\n### Retrieve Promotion Information\n\nNote: This only applies if `promotions` expand is provided in the query parameter.\n\nPromotions provide discounts to shoppers when they meet certain purchase requirements.\n\nPromotion information is described in detail in [Promotion Details](https://developer.salesforce.com/docs/commerce/commerce-api/guide/promotion-details.html), but the following list provides several key points:\n\n- Pricing discounts for basket and shipping promotions are NEVER returned by the 'getProduct' or 'getProducts' endpoint.\n- Promotional pricing is ONLY returned for products that are included with non-conditional promotions.\n- Callout messages are ALWAYS returned by the 'getProduct' and 'getProducts' endpoints.\n\nBy default, 'getProduct' and 'getProducts' return promotion information for a queried product. Promotion information includes both pricing and callout message information. However, the specific pricing and callout information that is fetched is determined by:\n\n- Promotion Type\n- Product Type\n- Product Purchase Requirements\n\nSome promotions can be displayed on a Product Data Page (PDP) or Product Listing page (PLP), while other promotions are displayed in the context of a basket, such as an order level promotion: \"add the product to your basket to view price information\". It is important to understand what is included in the response when designing a PDP or PLP on top of SCAPI to ensure your design aligns with implementable features.\n\nNote: When you search for a variant product, the Product Search API returns the master or main product as the primary search hit. When promotion data (productPromotion) is returned, it does not contain pricing information because the returned product is the main product. To retrieve pricing information, pass the query string `allVariationProperties=true` with the `promotions` expand parameter, which returns pricing data for variant products if the promotion is unconditional. The `allVariationProperties` flag specifies the variation properties to be included in the result.\n\n#### Shopper Personalization\nThe SCAPI response can be personalized using the Shopper Context API or hooks. By setting specific values in the Shopper Context API, you can modify the response of the 'getProduct' or 'getProducts' endpoint based on the shopper's context. For instance, you can offer a 5% discount or free shipping to shoppers using mobile devices.\n\n#### JWA Caching\nThe response is cached in JWA, which means promotion data contained in the response is also cached based on the TTL (Time to Live) specified in the Business Manager [Feature Switches](https://help.salesforce.com/s/articleView?id=cc.b2c_feature_switches.htm&type=5) configuration.\nWhen the shopper context value is updated, a check is conducted to see if the updated shopper context affects the retrieval of product-promotion data. If it does, then the response is fetched from the source and cached in the JWA.\n\nFor details, see [Server-Side Web-Tier Caching.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/server-side-web-tier-caching.html)\n\n\n### Use Hooks\n\nFor details working with hooks, see [Extensibility with Hooks.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/extensibility_via_hooks.html)\n\n## Best Practices\n\nThese best practices refer to features that are generally available with B2C Commerce 24.3.\n\nFor better performance, when you call the GET Product Search endpoint, we recommend that you:\n\n- Use the `select` query parameter to filter the response of a specified field or set of fields, and remove default outputs that you don't need. For example, filter the response to return only the relevant product names, ids, variants, and product IDs of the variants.\n- Limit API requests to the GET Product Search endpoint instead of calling both the GET Product Search and GET Products endpoints to show information on a product listing page (PLP). Use these features to provide the additional product information needed to render product tiles:\n    - **Allowable value:** `promotions` value in the `expand` query parameter\n    - **Query parameters:** `perPricebook`, `allImages`, and `allVariationProperties`\n    - **Responses:** `productPromotions`, `imageGroups`, `priceRanges`, `tieredPrices`, `variants`, and `variationGroups`\n- Pass in only the `expand` values and query parameters that you consider necessary to meet your PLP requirements. Requesting large amounts of information can increase the latency, especially if there's a lot of data to be returned (for example, many imageGroups and variants)."
+  description: "# API Overview\n\nUse the Shopper Search API for search functionality that lets shoppers search for products using keywords and refinement. The search results can be products or suggestions based on the endpoint you choose in the API.\n\nCaching is provided for the Shopper Search API. For details, see [Server-Side Web-Tier Caching.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/server-side-web-tier-caching.html)\n\n## Authentication & Authorization\n\nThe client requesting the API must have access to the product search and search suggestion resources. \n\nThe Shopper Search API requires a JWT acquired via the Shopper Customers endpoint:\n\n```\nhttps://{shortCode}.api.commercecloud.salesforce.com/customer/shopper-customers/v1/organizations/{organizationId}/customers/actions/login\n```\n\n## Use Cases\n\n### Provide Search Suggestions\n\nUse the Shopper Search API to provide search suggestions as a shopper searches.\n\nFor example, a developer who is building a shopping app using the Salesforce Commerce API would like to provide product, brand, and category suggestions. When a shopper types in a search phrase that exceeds a definable minimum length and the GET Search Suggestion endpoint is requested, the platform delivers a set of suggestions with products (name, ID), brands (name), and categories (name, ID). Shoppers can reach their desired search results more quickly using the suggested completion and correction.\n\n### Provide Search Results\n\nUse the Shopper Search API to gather product results for a shoppers search query.\n\nFor example, a developer who is building a shopping app using the Salesforce Commerce API would like to implement a product search functionality. When a shopper enters a search phrase and the GET Product Search endpoint is requested, the platform performs a keyword search and a sorted search result is returned. The sorted search result can be refined according to given values (for example, a price range).\nThe product search result contains a definable number of product search hits. A product search hit describes a matching product with its ID and name. Furthermore, the search hit contains product images, prices, represented products, and variations. In addition to the search hits, the search results also deliver refinement and sorting options.\n\n### Retrieve Promotion Information\n\nNote: This only applies if `promotions` expand is provided in the query parameter.\n\nPromotions provide discounts to shoppers when they meet certain purchase requirements.\n\nPromotion information is described in detail in [Promotion Details](https://developer.salesforce.com/docs/commerce/commerce-api/guide/promotion-details.html), but the following list provides several key points:\n\n- Pricing discounts for basket and shipping promotions are NEVER returned by the 'getProduct' or 'getProducts' endpoint.\n- Promotional pricing is ONLY returned for products that are included with non-conditional promotions.\n- Callout messages are ALWAYS returned by the 'getProduct' and 'getProducts' endpoints.\n\nBy default, 'getProduct' and 'getProducts' return promotion information for a queried product. Promotion information includes both pricing and callout message information. However, the specific pricing and callout information that is fetched is determined by:\n\n- Promotion Type\n- Product Type\n- Product Purchase Requirements\n\nSome promotions can be displayed on a Product Data Page (PDP) or Product Listing page (PLP), while other promotions are displayed in the context of a basket, such as an order level promotion: \"add the product to your basket to view price information\". It is important to understand what is included in the response when designing a PDP or PLP on top of SCAPI to ensure your design aligns with implementable features.\n\nNote: When you search for a variant product, the Product Search API returns the master or main product as the primary search hit. When promotion data (productPromotion) is returned, it does not contain pricing information because the returned product is the main product. To retrieve pricing information, pass the query string `allVariationProperties=true` with the `promotions` expand parameter, which returns pricing data for variant products if the promotion is unconditional. The `allVariationProperties` flag specifies the variation properties to be included in the result.\n\n### Filter Products by Promotion Role\n\nYou can filter products by their role in a promotion using the `pmid` (promotion ID) and `pmpt` (promotion product type) refinement parameters together. This allows you to find specific types of products within a promotion:\n\n- **`pmid`**: Specifies the promotion ID to filter by\n- **`pmpt`**: Specifies the type of products to return within that promotion:\n  - `all`: Returns all products related to the promotion (default behavior)\n  - `qualifying`: Returns only products that qualify for the promotion but don't receive the discount/bonus\n  - `discounted`: Returns only products that receive a discount in the promotion  \n  - `bonus`: Returns only products that are given as bonuses in the promotion\n\n**Example Usage:**\n```\nGET /organizations/{organizationId}/product-search?refine=pmid=summer-sale&refine=pmpt=discounted\n```\n\nThis would return only the products that receive discounts in the \"summer-sale\" promotion.\n\n**Note:** The `pmpt` parameter only has an effect when used with `pmid`. If `pmpt` is specified without `pmid`, it will be ignored and all products will be returned.\n\n#### Shopper Personalization\nThe SCAPI response can be personalized using the Shopper Context API or hooks. By setting specific values in the Shopper Context API, you can modify the response of the 'getProduct' or 'getProducts' endpoint based on the shopper's context. For instance, you can offer a 5% discount or free shipping to shoppers using mobile devices.\n\n#### JWA Caching\nThe response is cached in JWA, which means promotion data contained in the response is also cached based on the TTL (Time to Live) specified in the Business Manager [Feature Switches](https://help.salesforce.com/s/articleView?id=cc.b2c_feature_switches.htm&type=5) configuration.\nWhen the shopper context value is updated, a check is conducted to see if the updated shopper context affects the retrieval of product-promotion data. If it does, then the response is fetched from the source and cached in the JWA.\n\nFor details, see [Server-Side Web-Tier Caching.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/server-side-web-tier-caching.html)\n\n\n### Use Hooks\n\nFor details working with hooks, see [Extensibility with Hooks.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/extensibility_via_hooks.html)\n\n## Best Practices\n\nThese best practices refer to features that are generally available with B2C Commerce 24.3.\n\nFor better performance, when you call the GET Product Search endpoint, we recommend that you:\n\n- Use the `select` query parameter to filter the response of a specified field or set of fields, and remove default outputs that you don't need. For example, filter the response to return only the relevant product names, ids, variants, and product IDs of the variants.\n- Limit API requests to the GET Product Search endpoint instead of calling both the GET Product Search and GET Products endpoints to show information on a product listing page (PLP). Use these features to provide the additional product information needed to render product tiles:\n    - **Allowable value:** `promotions` value in the `expand` query parameter\n    - **Query parameters:** `perPricebook`, `allImages`, and `allVariationProperties`\n    - **Responses:** `productPromotions`, `imageGroups`, `priceRanges`, `tieredPrices`, `variants`, and `variationGroups`\n- Pass in only the `expand` values and query parameters that you consider necessary to meet your PLP requirements. Requesting large amounts of information can increase the latency, especially if there's a lot of data to be returned (for example, many imageGroups and variants)."
 servers:
   - url: https://{shortCode}.api.commercecloud.salesforce.com/search/shopper-search/v1
     variables:
@@ -56,6 +56,8 @@ paths:
               examples:
                 ProductSearchResultExample:
                   $ref: '#/components/examples/ProductSearchResultExample'
+                ProductSearchWithPromotionFilterExample:
+                  $ref: '#/components/examples/ProductSearchWithPromotionFilterExample'
         '400':
           description: Bad Request.
           content:
@@ -1091,7 +1093,7 @@ components:
     refine:
       name: refine
       in: query
-      description: "Parameter that represents a refinement attribute or values pair. Refinement attribute ID and values are separated by '='. Multiple values are supported by a subset of refinement attributes and can be provided by separating them using a pipe (URL encoded = \\\"|\\\") i.e. refine=c_refinementColor=red|green|blue. Value ranges can be specified like this: refine=price=(100..500) . \nMultiple refine parameters can be provided by using the refine as the key i.e refine=price=(0..10)&refine=c_refinementColor=green. The refinements can be a collection of custom defined attributes IDs \nand the system defined attributes IDs but the search can only accept a total of 9 refinements at a time.            \n\nThe following system refinement attribute ids are supported:<br>\n`cgid`: Allows refinement per single category ID. Multiple category ids are not supported.            \n`price`: Allows refinement per single price range. Multiple price ranges are not supported.            \n`pmid`: Allows refinement per promotion ID.            \n`htype`: Allow refinement by including only the provided hit types. Accepted types are 'product', 'master', 'set', 'bundle', 'slicing_group' (deprecated), 'variation_group'.<br>\n`orderable_only`: Unavailable products are excluded from the search results if true is set. Multiple refinement values are not supported.<br>\n`ilids`: Allows refinement per inventory list IDs.<br>\n\n**Note:** To refine a search using multiple promotion filters—for example, to find products in both the spring and summer campaigns—see [Refining by Multiple Promotions](https://developer.salesforce.com/docs/commerce/b2c-commerce/guide/b2c-promotions-for-developers.html#refining-by-multiple-promotions)."
+      description: "Parameter that represents a refinement attribute or values pair. Refinement attribute ID and values are separated by '='. Multiple values are supported by a subset of refinement attributes and can be provided by separating them using a pipe (URL encoded = \\\"|\\\") i.e. refine=c_refinementColor=red|green|blue. Value ranges can be specified like this: refine=price=(100..500) . \nMultiple refine parameters can be provided by using the refine as the key i.e refine=price=(0..10)&refine=c_refinementColor=green. The refinements can be a collection of custom defined attributes IDs \nand the system defined attributes IDs but the search can only accept a total of 9 refinements at a time.            \n\nThe following system refinement attribute ids are supported:<br>\n`cgid`: Allows refinement per single category ID. Multiple category ids are not supported.            \n`price`: Allows refinement per single price range. Multiple price ranges are not supported.            \n`htype`: Allow refinement by including only the provided hit types. Accepted types are 'product', 'master', 'set', 'bundle', 'slicing_group' (deprecated), 'variation_group'.<br>\n`orderable_only`: Unavailable products are excluded from the search results if true is set. Multiple refinement values are not supported.<br>\n`ilids`: Allows refining by inventory list IDs. Supports up to 10 inventory list IDs per request.<br>\n`pmid`: Allows refinement on the supplied promotion ID(s). When used with `pmpt`, filters products by their role in the promotion.<br>\n`pmpt`: Allows refinement per promotion product type. Must be used with `pmid` to filter products by their role in the promotion. Valid values are:\n  - `all`: Returns all products related to the promotion (default)\n  - `qualifying`: Returns only products that qualify for the promotion but don't receive the discount/bonus\n  - `discounted`: Returns only products that receive a discount in the promotion\n  - `bonus`: Returns only products that are given as bonuses in the promotion\n\n**Note:** To refine a search using multiple promotion filters—for example, to find products in both the spring and summer campaigns—see [Refining by Multiple Promotions](https://developer.salesforce.com/docs/commerce/b2c-commerce/guide/b2c-promotions-for-developers.html#refining-by-multiple-promotions)."
       required: false
       style: form
       explode: true
@@ -1427,6 +1429,125 @@ components:
             label: Price Low To High
         offset: 0
         total: 46
+    ProductSearchWithPromotionFilterExample:
+      summary: Product search with promotion filtering using pmid and pmpt
+      description: Example showing how to filter products by their role in a promotion using pmid and pmpt parameters
+      value:
+        limit: 1
+        hits:
+          - currency: USD
+            hitType: master
+            image:
+              alt: Platinum Red Stripes Easy Care Fitted Shirt, , large
+              disBaseLink: https://image.demandware.com/dw/image/v2/zzzz_s01/on/demandware.static/-/Sites-apparel-catalog/default/dw8c838411/images/large/PG.10123426.JJ8WXXX.PZ.jpg
+              link: https://localhost/on/demandware.static/-/Sites-apparel-catalog/default/dw8c838411/images/large/PG.10123426.JJ8WXXX.PZ.jpg
+              title: 'Platinum Red Stripes Easy Care Fitted Shirt, '
+            orderable: true
+            price: 75
+            pricePerUnit: 75
+            productId: '25050730'
+            productName: Platinum Red Stripes Easy Care Fitted Shirt
+            productType:
+              master: true
+            representedProduct:
+              id: '008884304108'
+            representedProducts:
+              - id: '008884304108'
+            variationAttributes:
+              - id: color
+                name: Color
+                values:
+                  - name: White
+                    orderable: true
+                    value: JJ8WXXX
+              - id: size
+                name: Size
+                values:
+                  - name: '6'
+                    orderable: true
+                    value: '006'
+        query: shirts
+        refinements:
+          - attributeId: cgid
+            label: Category
+            values:
+              - hitCount: 1
+                label: Womens
+                value: womens
+                values:
+                  - hitCount: 1
+                    label: Clothing
+                    value: womens-clothing
+                    values:
+                      - hitCount: 1
+                        label: Tops
+                        value: womens-clothing-tops
+          - attributeId: c_refinementColor
+            label: Color
+            values:
+              - hitCount: 0
+                label: Beige
+                presentationId: beige
+                value: Beige
+              - hitCount: 0
+                label: White
+                presentationId: white
+                value: White
+          - attributeId: c_isNew
+            label: New Arrival
+          - attributeId: c_topType
+            label: Type | Use
+          - attributeId: c_size
+            label: Size
+            values:
+              - hitCount: 0
+                label: '4'
+                value: '4'
+              - hitCount: 1
+                label: '6'
+                value: '6'
+              - hitCount: 0
+                label: '8'
+                value: '8'
+          - attributeId: price
+            label: Price
+            values:
+              - hitCount: 1
+                label: $50 - $99.99
+                value: (50..100)
+        searchPhraseSuggestions:
+          suggestedPhrases:
+            - exactMatch: true
+              phrase: shirts
+          suggestedTerms:
+            - originalTerm: shirts
+              terms:
+                - completed: false
+                  corrected: false
+                  exactMatch: true
+                  value: shirts
+        selectedRefinements:
+          pmid: BonusProductOnOrderOfAmountABove250
+          pmpt: bonus
+        sortingOptions:
+          - id: best-matches
+            label: Best Matches
+          - id: price-low-to-high
+            label: Price Low To High
+          - id: price-high-to-low
+            label: Price High to Low
+          - id: product-name-ascending
+            label: Product Name A - Z
+          - id: product-name-descending
+            label: Product Name Z - A
+          - id: brand
+            label: Brand
+          - id: most-popular
+            label: Most Popular
+          - id: top-sellers
+            label: Top Sellers
+        offset: 0
+        total: 1
     MalformedSelectorGetProductsSearchForSelect:
       value:
         title: Malformed Selector
