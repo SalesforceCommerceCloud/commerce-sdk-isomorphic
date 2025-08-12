@@ -121,7 +121,7 @@ function main() {
     path.join(__dirname, '../apis')
   );
   const versionTable = generateVersionTable(apiVersions);
-  console.log('📝 Generated version table:');
+  console.log('Generated version table:');
   console.log(versionTable);
   updateChangelog(path.join(__dirname, '../CHANGELOG.md'), versionTable);
 }
