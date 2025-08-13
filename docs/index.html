@@ -144,10 +144,10 @@
   },
 };
 
-<span class="hljs-keyword">const</span> {access_token} = <span class="hljs-keyword">await</span> helpers.loginGuestUser(
-  <span class="hljs-keyword">new</span> ShopperLogin(config),
-  {<span class="hljs-attr">redirectURI</span>: <span class="hljs-string">`<span class="hljs-subst">${config.proxy}</span>/callback`</span>}
-);
+<span class="hljs-keyword">const</span> {access_token} = <span class="hljs-keyword">await</span> helpers.loginGuestUser({
+  <span class="hljs-attr">slasClient</span>: <span class="hljs-keyword">new</span> ShopperLogin(config),
+  <span class="hljs-attr">parameters</span>: {<span class="hljs-attr">redirectURI</span>: <span class="hljs-string">`<span class="hljs-subst">${config.proxy}</span>/callback`</span>}
+});
 
 <span class="hljs-keyword">const</span> shopperSearch = <span class="hljs-keyword">new</span> ShopperSearch({
   ...config,
@@ -360,6 +360,9 @@
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/shopperbasketsv2.html">shopper<wbr>Basketsv2</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/shopperconsents.html">shopper<wbr>Consents</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/shoppercontext.html">shopper<wbr>Context</a>
