@@ -76,10 +76,10 @@ const config = {
   },
 };
 
-const {access_token} = await helpers.loginGuestUser(
-  new ShopperLogin(config),
-  {redirectURI: `${config.proxy}/callback`}
-);
+const {access_token} = await helpers.loginGuestUser({
+  slasClient: new ShopperLogin(config),
+  parameters: {redirectURI: `${config.proxy}/callback`}
+});
 
 const shopperSearch = new ShopperSearch({
   ...config,

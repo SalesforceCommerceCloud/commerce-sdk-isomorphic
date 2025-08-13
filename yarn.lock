@@ -1129,10 +1129,10 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@commerce-apps/raml-toolkit@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@commerce-apps/raml-toolkit/-/raml-toolkit-0.7.0.tgz#60e78a560df2f03cab1c420f5635a9d9fe2abbc0"
-  integrity sha512-mz/Vf0wXV9dh4MLPJK3FZfAaxpyhuOHI3cF39zByX1dgCAUi8wGhzc29xqWfKTg5G/8LE2bnLOG4xDbcikOyEA==
+"@commerce-apps/raml-toolkit@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@commerce-apps/raml-toolkit/-/raml-toolkit-0.8.0.tgz#ccf5238ff1243afe89dbd4e3d63958fd8ef63dff"
+  integrity sha512-n4ivteJjnOlPR70djOwlUSX2AuhJZtAGW2aZ3XwN5aMYWJueN5SHAr/OatXrW9I1QZWqVnSPrQpkGzfr2a5UPw==
   dependencies:
     "@oclif/command" "1.8.4"
     "@oclif/config" "1.18.1"
