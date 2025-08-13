@@ -1,6 +1,25 @@
 # CHANGELOG
 
-## 4.0.0-dev
+## v4.0.0-dev
+
+### API Versions
+
+| API Name | API Version |
+|----------|-------------|
+| shopper-baskets | 1.9.0 |
+| shopper-baskets | 2.1.0 |
+| shopper-consents | 1.1.0 |
+| shopper-context | 1.1.1 |
+| shopper-customers | 1.1.1 |
+| shopper-experience | 1.0.7 |
+| shopper-gift-certificates | 1.0.26 |
+| shopper-login | 1.39.41 |
+| shopper-orders | 1.5.0 |
+| shopper-products | 1.0.37 |
+| shopper-promotions | 1.0.36 |
+| shopper-search | 1.2.4 |
+| shopper-seo | 1.0.13 |
+| shopper-stores | 1.0.17 |
 
 ### Enchancements
 

@@ -12,7 +12,7 @@ import {isBrowser} from './environment';
 import {
   ShopperLogin,
   ShopperLoginPathParameters,
-  ShopperLoginQueryParameters,
+  authorizeCustomerQueryParameters,
 } from '../../lib/shopperLogin/apis';
 import {TokenResponse} from '../../lib/shopperLogin/models';
 import ResponseError from '../responseError';
@@ -101,13 +101,14 @@ export const generateCodeChallenge = async (
 
 /**
  * Wrapper for the authorization endpoint. For federated login (3rd party IDP non-guest), the caller should redirect the user to the url in the url field of the returned object. The url will be the login page for the 3rd party IDP and the user will be sent to the redirectURI on success. Guest sessions return the code and usid directly with no need to redirect.
- * @param slasClient a configured instance of the ShopperLogin SDK client
- * @param codeVerifier - random string created by client app to use as a secret in the request
- * @param parameters - Request parameters used by the `authorizeCustomer` endpoint. Custom parameters can be passed on by adding a property on the `parameters` object starting with `c_`
- * @param parameters.redirectURI - the location the client will be returned to after successful login with 3rd party IDP. Must be registered in SLAS.
- * @param parameters.hint? - optional string to hint at a particular IDP. Guest sessions are created by setting this to 'guest'
- * @param parameters.usid? - optional saved SLAS user id to link the new session to a previous session
- * @param privateClient? - flag to indicate if the client is private or not. Defaults to false.
+ * @param options - an object containing the options for this method
+ * @param options.slasClient - a configured instance of the ShopperLogin SDK client
+ * @param options.codeVerifier - random string created by client app to use as a secret in the request
+ * @param options.parameters - Request parameters used by the `authorizeCustomer` endpoint. Custom parameters can be passed on by adding a property on the `parameters` object starting with `c_`
+ * @param options.parameters.redirectURI - the location the client will be returned to after successful login with 3rd party IDP. Must be registered in SLAS.
+ * @param options.parameters.hint? - optional string to hint at a particular IDP. Guest sessions are created by setting this to 'guest'
+ * @param options.parameters.usid? - optional saved SLAS user id to link the new session to a previous session
+ * @param options.privateClient? - flag to indicate if the client is private or not. Defaults to false.
  * @returns login url, user id and authorization code if available
  */
 export async function authorize(options: {
@@ -187,12 +188,13 @@ export async function authorize(options: {
 
 /**
  * Function to return the URL of the authorization endpoint. The url will redirect to the login page for the 3rd party IDP and the user will be sent to the redirectURI on success. Guest sessions return the code and usid directly with no need to redirect.
- * @param slasClient a configured instance of the ShopperLogin SDK client
- * @param parameters - Request parameters used by the `authorizeCustomer` endpoint. Custom parameters can be passed on by adding a property on the `parameters` object starting with `c_`
- * @param parameters.redirectURI - the location the client will be returned to after successful login with 3rd party IDP. Must be registered in SLAS.
- * @param parameters.hint - string to hint at a particular IDP. Required for 3rd party IDP login.
- * @param parameters.usid? - optional saved SLAS user id to link the new session to a previous session
- * @param privateClient - boolean indicating whether the client is private or not. Defaults to false.
+ * @param options - an object containing the options for this method
+ * @param options.slasClient - a configured instance of the ShopperLogin SDK client
+ * @param options.parameters - Request parameters used by the `authorizeCustomer` endpoint. Custom parameters can be passed on by adding a property on the `parameters` object starting with `c_`
+ * @param options.parameters.redirectURI - the location the client will be returned to after successful login with 3rd party IDP. Must be registered in SLAS.
+ * @param options.parameters.hint - string to hint at a particular IDP. Required for 3rd party IDP login.
+ * @param options.parameters.usid? - optional saved SLAS user id to link the new session to a previous session
+ * @param options.privateClient - boolean indicating whether the client is private or not. Defaults to false.
  * @returns authorization url and code verifier
  */
 export async function authorizeIDP(options: {
@@ -226,7 +228,7 @@ export async function authorizeIDP(options: {
     organizationId: slasClient.clientConfig.parameters.organizationId,
     shortCode: slasClient.clientConfig.parameters.shortCode,
   };
-  const queryParams: ShopperLoginQueryParameters = {
+  const queryParams: authorizeCustomerQueryParameters = {
     // put it at the top to avoid overriding the rest of params
     ...restOfParams,
     client_id: slasClient.clientConfig.parameters.clientId,
@@ -252,14 +254,15 @@ export async function authorizeIDP(options: {
 /**
  * Function to execute the ShopperLogin External IDP Login with proof key for code exchange flow as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary).
  * **Note**: this func can run on client side. Only use private slas when the slas client secret is secured.
- * @param slasClient a configured instance of the ShopperLogin SDK client.
- * @param credentials - the id and password and clientSecret (if applicable) to login with.
- * @param credentials.clientSecret? - secret associated with client ID
- * @param credentials.codeVerifier? - random string created by client app to use as a secret in the request
- * @param parameters - parameters to pass in the API calls.
- * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
- * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
- * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
+ * @param options - an object containing the options for this method
+ * @param options.slasClient - a configured instance of the ShopperLogin SDK client.
+ * @param options.credentials - the id and password and clientSecret (if applicable) to login with.
+ * @param options.credentials.clientSecret? - secret associated with client ID
+ * @param options.credentials.codeVerifier? - random string created by client app to use as a secret in the request
+ * @param options.parameters - parameters to pass in the API calls.
+ * @param options.parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
+ * @param options.parameters.usid? - Unique Shopper Identifier to enable personalization.
+ * @param options.parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
  * @returns TokenResponse
  */
 export async function loginIDPUser(options: {
@@ -318,12 +321,13 @@ export async function loginIDPUser(options: {
 /**
  * A single function to execute the ShopperLogin Private Client Guest Login as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-private-client.html).
  * **Note**: this func can run on client side. Only use this one when the slas client secret is secured.
- * @param slasClient - a configured instance of the ShopperLogin SDK client
- * @param credentials - client secret used for authentication
- * @param credentials.clientSecret - secret associated with client ID
- * @param parameters - parameters to pass in the API calls.
- * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
- * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
+ * @param options - an object containing the options for this method
+ * @param options.slasClient - a configured instance of the ShopperLogin SDK client
+ * @param options.parameters - parameters to pass in the API calls.
+ * @param options.parameters.usid? - Unique Shopper Identifier to enable personalization.
+ * @param options.parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
+ * @param options.credentials - client secret used for authentication
+ * @param options.credentials.clientSecret - secret associated with client ID
  * @returns TokenResponse
  */
 export async function loginGuestUserPrivate(options: {
@@ -369,11 +373,12 @@ export async function loginGuestUserPrivate(options: {
 
 /**
  * A single function to execute the ShopperLogin Public Client Guest Login with proof key for code exchange flow as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary).
- * @param slasClient a configured instance of the ShopperLogin SDK client.
- * @param parameters - parameters to pass in the API calls. Custom parameters can be passed on by adding a property on the `parameters` object starting with `c_`, and they will be passed on the `authorizeCustomer` call.
- * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
- * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
- * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
+ * @param options - an object containing the options for this method
+ * @param options.slasClient - a configured instance of the ShopperLogin SDK client.
+ * @param options.parameters - parameters to pass in the API calls. Custom parameters can be passed on by adding a property on the `parameters` object starting with `c_`, and they will be passed on the `authorizeCustomer` call.
+ * @param options.parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
+ * @param options.parameters.usid? - Unique Shopper Identifier to enable personalization.
+ * @param options.parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
  * @returns TokenResponse
  */
 export async function loginGuestUser(options: {
@@ -423,17 +428,17 @@ export async function loginGuestUser(options: {
 /**
  * A single function to execute the ShopperLogin Public Client Registered User B2C Login with proof key for code exchange flow as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary).
  * **Note**: this func can run on client side. Only use private slas when the slas client secret is secured.
- * @param slasClient a configured instance of the ShopperLogin SDK client.
- * @param credentials - the id and password and clientSecret (if applicable) to login with.
- * @param credentials.username - the id of the user to login with.
- * @param credentials.password - the password of the user to login with.
- * @param credentials.clientSecret? - secret associated with client ID
- * @param parameters - parameters to pass in the API calls.
- * @param parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
- * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
- * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
- * @para options? - options to pass in the ShopperLogin 'authenticateCustomer' method
- * @param options.body - optional body parameters to pass in the ShopperLogin 'authenticateCustomer' method.
+ * @param options - an object containing the options for this method
+ * @param options.slasClient - a configured instance of the ShopperLogin SDK client.
+ * @param options.credentials - the id and password and clientSecret (if applicable) to login with.
+ * @param options.credentials.username - the id of the user to login with.
+ * @param options.credentials.password - the password of the user to login with.
+ * @param options.credentials.clientSecret? - secret associated with client ID
+ * @param options.parameters - parameters to pass in the API calls.
+ * @param options.parameters.redirectURI - Per OAuth standard, a valid app route. Must be listed in your SLAS configuration. On server, this will not be actually called. On browser, this will be called, but ignored.
+ * @param options.parameters.usid? - Unique Shopper Identifier to enable personalization.
+ * @param options.parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
+ * @param options.body? - optional body parameters to pass in the ShopperLogin 'authenticateCustomer' method.
  * @returns TokenResponse
  */
 export async function loginRegisteredUserB2C(options: {
@@ -531,17 +536,18 @@ export async function loginRegisteredUserB2C(options: {
   return slasClient.getAccessToken({body: tokenBody});
 }
 
-/* Function to send passwordless login token
+/** Function to send passwordless login token
  * **Note** At the moment, passwordless is only supported on private client
- * @param slasClient a configured instance of the ShopperLogin SDK client.
- * @param credentials - the id and password and clientSecret (if applicable) to login with.
- * @param credentials.clientSecret? - secret associated with client ID
- * @param parameters - parameters to pass in the API calls.
- * @param parameters.callbackURI? - URI to send the passwordless login token to. Must be listed in your SLAS configuration. Required when mode is callback
- * @param parameters.usid? - Unique Shopper Identifier to enable personalization.
- * @param parameters.userid - User Id for login
- * @param parameters.locale - The locale of the template. Not needed for the callback mode
- * @param parameters.mode - Medium of sending login token
+ * @param options - an object containing the options for this method
+ * @param options.slasClient - a configured instance of the ShopperLogin SDK client.
+ * @param options.credentials - the id and password and clientSecret (if applicable) to login with.
+ * @param options.credentials.clientSecret? - secret associated with client ID
+ * @param options.parameters - parameters to pass in the API calls.
+ * @param options.parameters.callbackURI? - URI to send the passwordless login token to. Must be listed in your SLAS configuration. Required when mode is callback
+ * @param options.parameters.usid? - Unique Shopper Identifier to enable personalization.
+ * @param options.parameters.userid - User Id for login
+ * @param options.parameters.locale - The locale of the template. Not needed for the callback mode
+ * @param options.parameters.mode - Medium of sending login token
  * @returns Promise of Response
  */
 export async function authorizePasswordless(options: {
@@ -610,13 +616,14 @@ export async function authorizePasswordless(options: {
 /**
  * Function to login user with passwordless login token
  * **Note** At the moment, passwordless is only supported on private client
- * @param slasClient a configured instance of the ShopperLogin SDK client.
- * @param credentials - the id and password and clientSecret (if applicable) to login with.
- * @param credentials.clientSecret? - secret associated with client ID
- * @param parameters - parameters to pass in the API calls.
- * @param parameters.callbackURI? - URI to send the passwordless login token to. Must be listed in your SLAS configuration. Required when mode is callback
- * @param parameters.pwdlessLoginToken - Passwordless login token
- * @param parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
+ * @param options - an object containing the options for this method
+ * @param options.slasClient - a configured instance of the ShopperLogin SDK client.
+ * @param options.credentials - the id and password and clientSecret (if applicable) to login with.
+ * @param options.credentials.clientSecret? - secret associated with client ID
+ * @param options.parameters - parameters to pass in the API calls.
+ * @param options.parameters.callbackURI? - URI to send the passwordless login token to. Must be listed in your SLAS configuration. Required when mode is callback
+ * @param options.parameters.pwdlessLoginToken - Passwordless login token
+ * @param options.parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
  * @returns Promise of Response or Object
  */
 export async function getPasswordLessAccessToken(options: {
@@ -674,11 +681,12 @@ export async function getPasswordLessAccessToken(options: {
 /**
  * Exchange a refresh token for a new access token.
  * **Note**: this func can run on client side. Only use private slas when the slas client secret is secured.
- * @param slasClient a configured instance of the ShopperLogin SDK client.
- * @param parameters - parameters to pass in the API calls.
- * @param parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
- * @param credentials - the clientSecret (if applicable) to login with.
- * @param credentials.clientSecret - secret associated with client ID
+ * @param options - an object containing the options for this method
+ * @param options.slasClient - a configured instance of the ShopperLogin SDK client.
+ * @param options.parameters - parameters to pass in the API calls.
+ * @param options.parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
+ * @param options.credentials? - the clientSecret (if applicable) to login with.
+ * @param options.credentials.clientSecret? - secret associated with client ID
  * @returns TokenResponse
  */
 export function refreshAccessToken(options: {
@@ -721,10 +729,11 @@ export function refreshAccessToken(options: {
 
 /**
  * Logout a shopper. The shoppers access token and refresh token will be revoked and if the shopper authenticated with ECOM the OCAPI JWT will also be revoked.
- * @param slasClient a configured instance of the ShopperLogin SDK client.
- * @param parameters - parameters to pass in the API calls.
- * @param parameters.accessToken - a valid access token to exchange for a new access token (and refresh token).
- * @param parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
+ * @param options - an object containing the options for this method
+ * @param options.slasClient - a configured instance of the ShopperLogin SDK client.
+ * @param options.parameters - parameters to pass in the API calls.
+ * @param options.parameters.accessToken - a valid access token to exchange for a new access token (and refresh token).
+ * @param options.parameters.refreshToken - a valid refresh token to exchange for a new access token (and refresh token).
  * @returns TokenResponse
  */
 export function logout(options: {
