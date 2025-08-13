@@ -31,6 +31,11 @@
 - Remove API version from client config
   - Use `ShopperBasketsV2` API class to use V2 of Shopper Baskets
 
+## v3.4.0
+
+### API Changes
+- **Shopper Search API**: Add `includedCustomVariationProperties` query parameter to the `productSearch` operation and `expand`/`includedCustomProductProperties` query parameters to the `getSearchSuggestions` operation
+
 ## v3.3.0
 - Allow custom params for 'loginGuestUser', 'authorizeIDP' and custom body for 'loginRegisteredUserB2C' functions [#186](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/186)
 - Add helper to encode special SCAPI characters [#189](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/189)
