@@ -366,6 +366,70 @@ export async function loginGuestUserPrivate(
 }
 
 /**
+ * Wrapper for the /token endpoint. Depending on the parameters provided, will set up different grant types.
+ * @param slasClient a configured instance of the ShopperLogin SDK client
+ */
+export async function getAccessToken(
+  slasClient: ShopperLogin<{
+  shortCode: string;
+  organizationId: string;
+  clientId: string;
+  siteId: string;
+}>,
+parameters: {
+  redirectURI: string;
+  refreshToken?: string;
+  codeVerifier?: string;
+  code?: string;
+  usid?: string;
+},
+credentials?: {
+  client_id: string;
+  client_secret: string;
+}
+): Promise<TokenResponse> {
+
+  let tokenHeader = {}
+  if (credentials) {
+    const authorization = `Basic ${stringToBase64(
+      `${credentials.client_id}:${credentials.client_secret}`
+    )}`;
+
+    tokenHeader = {
+        Authorization: authorization
+    }
+  }
+
+  const grantType = parameters.refreshToken ? 'refresh_token'
+    : parameters.codeVerifier ? 'authorization_code_pkce'
+    : parameters.code ? 'authorization_code'
+    : 'client_credentials'
+
+  const tokenBody: TokenRequest = {
+    client_id: slasClient.clientConfig.parameters.clientId,
+    channel_id: slasClient.clientConfig.parameters.siteId,
+    grant_type: grantType,
+    redirect_uri: parameters.redirectURI
+  };
+
+  if (parameters.refreshToken) {
+    tokenBody.refresh_token = parameters.refreshToken
+  } else if (parameters.codeVerifier) {
+    tokenBody.code = parameters.code,
+    tokenBody.code_verifier = parameters.codeVerifier
+  } else if (parameters.code) {
+    tokenBody.code = parameters.code
+  }
+
+  if (parameters.usid) {
+    tokenBody.usid = parameters.usid
+  }
+
+  return slasClient.getAccessToken({headers: tokenHeader, body: tokenBody});
+}
+
+
+/**
  * A single function to execute the ShopperLogin Public Client Guest Login with proof key for code exchange flow as described in the [API documentation](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary).
  * @param slasClient a configured instance of the ShopperLogin SDK client.
  * @param parameters - parameters to pass in the API calls. Custom parameters can be passed on by adding a property on the `parameters` object starting with `c_`, and they will be passed on the `authorizeCustomer` call.
@@ -415,6 +479,29 @@ export async function loginGuestUser(
   };
 
   return slasClient.getAccessToken({body: tokenBody});
+}
+
+export async function loginGuestUserPrivateClient(
+  slasClient: ShopperLogin<{
+    shortCode: string;
+    organizationId: string;
+    clientId: string;
+    siteId: string;
+  }>,
+  parameters: {
+    redirectURI: string;
+    refreshToken?: string;
+    codeVerifier?: string;
+    code?: string;
+    usid?: string;
+  },
+  credentials?: {
+    client_id: string;
+    client_secret: string;
+  }
+  ): Promise<TokenResponse> {
+
+  return await getAccessToken(slasClient, parameters, credentials);
 }
 
 /**
