@@ -1,9 +1,13 @@
 {{#each children}}
-export { {{name.upperCamelCase}} } from "./{{name.lowerCamelCase}}";
-import type * as {{name.upperCamelCase}}Types from "./{{name.lowerCamelCase}}";
-export type { {{name.upperCamelCase}}Types };
+export { {{apiName}} } from "./{{directoryName}}";
+import { {{apiName}}Types } from "./{{directoryName}}";
+export type { {{apiName}}Types };
 {{/each}}
-export type { ClientConfigInit } from "./clientConfig";
+export type {
+    ClientConfigInit,
+    FetchFunction,
+    FetchOptions
+} from "./clientConfig";
 // Can't currently use `export from` with default exports
 import ClientConfig from "./clientConfig";
 import TemplateURL from "./templateUrl";

@@ -1,0 +1,213 @@
+import ClientConfig, { ClientConfigInit } from "../../clientConfig";
+// Must not import from ./helpers/index to avoid circular dependency via ShopperLogin
+import { isBrowser } from "../../helpers/environment";
+import { defaultBaseUri as currentBaseUri } from "../runtime";
+import { doFetch } from "../../helpers/fetchHelper";
+import type {
+    BaseUriParameters,
+    CompositeParameters,
+    CustomRequestBody,
+    QueryParameters,
+    RequireParametersUnlessAllAreOptional,
+} from "../../helpers/types";
+import TemplateURL from "../../templateUrl";
+import { USER_AGENT_HEADER, USER_AGENT_VALUE } from "../../version";
+
+import type {
+    {{#imports}}
+    {{className}},
+    {{/imports}}
+} from '../models/index{{importFileExtension}}';
+
+{{#hasEnums}}
+{{#operations}}
+{{#operation}}
+{{#vendorExtensions}}
+{{^x-scapi-internal}}
+{{> apis.enum }}
+{{/x-scapi-internal}}
+{{/vendorExtensions}}
+{{^vendorExtensions}}
+{{> apis.enum }}
+{{/vendorExtensions}}
+{{/operation}}
+{{/operations}}
+{{/hasEnums}}
+{{#operations}}
+{{#operation}}
+{{#vendorExtensions}}
+{{^x-scapi-internal}}
+{{> apis.parameters }}
+{{/x-scapi-internal}}
+{{/vendorExtensions}}
+{{^vendorExtensions}}
+{{> apis.parameters }}
+{{/vendorExtensions}}
+{{/operation}}
+{{/operations}}
+/**
+ * All path parameters that are used by at least one {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}} method.
+ */
+export type {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}PathParameters = Partial<
+    {{#operations}}
+    {{#operation}}
+    {{#vendorExtensions}}
+    {{^x-scapi-internal}}
+    {{nickname}}PathParameters &
+    {{/x-scapi-internal}}
+    {{/vendorExtensions}}
+    {{^vendorExtensions}}
+    {{nickname}}PathParameters &
+    {{/vendorExtensions}}
+    {{/operation}}
+    {{/operations}}
+    {} {{! We have this to avoid trailing a `&`, due to x-scapi-internal we can't use the `last` keyword}}
+>;
+
+/**
+ * All query parameters that are used by at least one {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}} method.
+ */
+export type {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}QueryParameters = Partial<
+    {{#operations}}
+    {{#operation}}
+    {{#vendorExtensions}}
+    {{^x-scapi-internal}}
+    {{nickname}}QueryParameters &
+    {{/x-scapi-internal}}
+    {{/vendorExtensions}}
+    {{^vendorExtensions}}
+    {{nickname}}QueryParameters &
+    {{/vendorExtensions}}
+    {{/operation}}
+    {{/operations}}
+    {} {{! We have this to avoid trailing a `&`, due to x-scapi-internal we can't use the `last` keyword}}
+>;
+
+/**
+ * All parameters that are used by {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}.
+ */
+export type {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}Parameters = {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}PathParameters & BaseUriParameters & {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}QueryParameters;
+
+/**
+* [{{appName}}](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta={{#lambda.kebabcase}}{{appName}}{{/lambda.kebabcase}}:Summary)
+* ==================================
+*
+* *{{{unescapedAppDescription}}}*<br />
+*
+* Simple example:
+*
+* ```typescript
+*   import { {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}} } from "commerce-sdk-isomorphic";
+*
+*   const clientConfig = {
+*     parameters: {
+*       clientId: "XXXXXX",
+*       organizationId: "XXXX",
+*       shortCode: "XXX",
+*       siteId: "XX"
+*     }
+*   };
+*   const {{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}Client = new {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}(clientConfig);
+* ```
+*
+* <span style="font-size:.7em; display:block; text-align: right">
+* API Version: 0.0.33<br />
+* Last Updated: <br />
+* </span>
+* 
+*
+*/
+export class {{#vendorExtensions}}{{#x-sdk-classname}}{{{ . }}}{{/x-sdk-classname}}{{^x-sdk-classname}}{{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}{{/x-sdk-classname}}{{/vendorExtensions}}{{^vendorExtensions}}{{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}{{/vendorExtensions}}<ConfigParameters extends {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}Parameters & Record<string, unknown>> {
+    // baseUri is not required on ClientConfig, but we know that we provide one in the class constructor
+    public clientConfig: ClientConfig<ConfigParameters> & { baseUri: string };
+
+    static readonly defaultBaseUri = currentBaseUri;
+
+    static readonly apiPaths = {
+        {{#operations}}
+        {{#operation}}
+        {{#vendorExtensions}}
+        {{^x-scapi-internal}}
+        {{nickname}}: "{{path}}",
+        {{/x-scapi-internal}}
+        {{/vendorExtensions}}
+        {{^vendorExtensions}}
+        {{nickname}}: "{{path}}",
+        {{/vendorExtensions}}
+        {{/operation}}
+        {{/operations}}
+    }
+
+    constructor(config: ClientConfigInit<ConfigParameters>) {
+        const cfg = {...config}
+        if (!cfg.baseUri) cfg.baseUri = new.target.defaultBaseUri;
+        // Type assertion is safe because ^^^
+        this.clientConfig = new ClientConfig(cfg) as ClientConfig<ConfigParameters> & { baseUri: string };
+    }
+
+    static readonly paramKeys = {
+    {{#operations}}
+    {{#operation}}
+    {{#vendorExtensions}}
+    {{^x-scapi-internal}}
+        {{nickname}}: [
+            {{#allParams}}
+            {{^isBodyParam}}
+            {{^isHeaderParam}}
+            '{{paramName}}',
+            {{/isHeaderParam}}
+            {{/isBodyParam}}
+            {{/allParams}}
+        ],
+        {{nickname}}Required: [
+            {{#allParams}}
+            {{^isBodyParam}}
+            {{^isHeaderParam}}
+            {{#required}}
+            '{{paramName}}',
+            {{/required}}
+            {{/isHeaderParam}}
+            {{/isBodyParam}}
+            {{/allParams}}
+        ],
+    {{/x-scapi-internal}}
+    {{/vendorExtensions}}
+    {{^vendorExtensions}}
+        {{nickname}}: [
+            {{#allParams}}
+            {{^isBodyParam}}
+            {{^isHeaderParam}}
+            '{{paramName}}',
+            {{/isHeaderParam}}
+            {{/isBodyParam}}
+            {{/allParams}}
+        ],
+        {{nickname}}Required: [
+            {{#allParams}}
+            {{^isBodyParam}}
+            {{^isHeaderParam}}
+            {{#required}}
+            '{{paramName}}',
+            {{/required}}
+            {{/isHeaderParam}}
+            {{/isBodyParam}}
+            {{/allParams}}
+        ],
+    {{/vendorExtensions}}
+    {{/operation}}
+    {{/operations}}
+    } as const;
+
+{{#operations}}
+{{#operation}}
+{{#vendorExtensions}}
+{{^x-scapi-internal}}
+{{> apis.endpoint }}
+{{/x-scapi-internal}}
+{{/vendorExtensions}}
+{{^vendorExtensions}}
+{{> apis.endpoint }}
+{{/vendorExtensions}}
+{{/operation}}
+{{/operations}}
+}

@@ -24,18 +24,20 @@
     "build:lib": "rollup -c",
     "check:size": "npm-pack-all --output commerce-sdk-isomorphic-with-deps.tgz && bundlesize",
     "check:types": "tsc --noEmit",
+    "ci": "rm -rf node_modules && yarn install",
     "clean": "rm -rf build lib src/lib commerce-sdk-isomorphic-with-deps.tgz",
     "depcheck": "depcheck",
-    "diffApis": "raml-toolkit diff --dir temp/oldApis apis -f console -o temp/diffApis.txt",
-    "doc": "yarn run doc:generate",
+    "diffApis": "raml-toolkit diff --dir ./temp/oldApis ./apis -f console -o temp/diffApis.txt -s oas",
+    "doc": "yarn run generateVersionTable && yarn run doc:generate",
     "doc:generate": "typedoc --mode modules src/lib/** --external-modulemap \".*/src/lib/([\\w]+)\" --exclude \"src/lib/index.ts\"",
     "eject": "react-scripts eject",
     "fix": "yarn run lint -- --fix",
     "fix:style": "yarn run lint:style -- --fix",
+    "generateVersionTable": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/generateVersionTable.ts",
     "lint": "eslint --ext js,jsx,ts,tsx .",
     "lint:style": "stylelint ./src/",
     "prepare": "snyk protect",
-    "renderTemplates": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/generate.ts",
+    "renderTemplates": "PACKAGE_VERSION=$(node -p \"require('./package.json').version\") ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/generate-oas.ts",
     "start": "HTTPS=true react-scripts start",
     "pretest": "yarn run lint && yarn run lint:style && depcheck && yarn run check:size",
     "test": "yarn run check:types && yarn run test:unit && CI=true yarn run test:react",
@@ -73,6 +75,7 @@
       "scripts/**/*.{js,jsx,ts,tsx}",
       "!scripts/generate.ts",
       "!scripts/updateApis.ts",
+      "!scripts/generateVersionTable.ts",
       "!<rootDir>/node_modules/"
     ],
     "coverageReporters": [
@@ -108,14 +111,13 @@
     "@babel/preset-env": "7.18.6",
     "@babel/preset-react": "7.18.6",
     "@babel/preset-typescript": "^7.18.6",
-    "@commerce-apps/raml-toolkit": "0.5.12",
+    "@commerce-apps/raml-toolkit": "^0.8.0",
     "@rollup/plugin-babel": "5.3.1",
     "@rollup/plugin-commonjs": "13.0.2",
     "@rollup/plugin-node-resolve": "8.4.0",
     "@testing-library/jest-dom": "5.16.4",
     "@testing-library/react": "10.4.9",
     "@types/fs-extra": "^9.0.13",
-    "@types/handlebars-helpers": "^0.5.3",
     "@types/node-fetch": "^2.6.2",
     "@types/react-dom": "^16.9.16",
     "@types/seedrandom": "^3.0.8",
@@ -136,7 +138,7 @@
     "eslint-plugin-react": "7.30.1",
     "eslint-plugin-react-hooks": "4.6.0",
     "fs-extra": "^9.1.0",
-    "handlebars-helpers": "^0.10.0",
+    "handlebars": "4.7.7",
     "husky": "4.3.8",
     "jest-environment-jsdom-sixteen": "1.0.3",
     "lint-staged": "10.5.4",
@@ -177,11 +179,11 @@
   "bundlesize": [
     {
       "path": "lib/**/*.js",
-      "maxSize": "50 kB"
+      "maxSize": "53 kB"
     },
     {
       "path": "commerce-sdk-isomorphic-with-deps.tgz",
-      "maxSize": "565 kB"
+      "maxSize": "1096 kB"
     }
   ],
   "proxy": "https://SHORTCODE.api.commercecloud.salesforce.com"

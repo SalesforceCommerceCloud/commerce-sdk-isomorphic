@@ -38,8 +38,9 @@ export type RequireParametersUnlessAllAreOptional<
  */
 export interface BaseUriParameters {
   shortCode: string;
-  version?: string; // Optional, will default to "v1" if not provided.
 }
+
+export type LocaleCode = {[key: string]: any};
 
 /**
  * Generic interface for path parameters.
@@ -52,7 +53,7 @@ export interface PathParameters {
  * Generic interface for query parameters.
  */
 export interface QueryParameters {
-  [key: string]: string | number | boolean | string[] | number[];
+  [key: string]: string | number | boolean | string[] | number[] | LocaleCode;
 }
 
 /**

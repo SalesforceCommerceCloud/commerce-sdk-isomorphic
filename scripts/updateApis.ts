@@ -9,7 +9,6 @@ import path from 'path';
 import fs from 'fs-extra';
 import dotenv from 'dotenv';
 import {downloadLatestApis} from './utils';
-import {API_LIST} from './config';
 
 dotenv.config();
 
@@ -22,11 +21,52 @@ if (!process.env.ANYPOINT_USERNAME || !process.env.ANYPOINT_PASSWORD) {
 const OLD_APIS_PATH = path.join(__dirname, '../temp/oldApis');
 const PRODUCTION_API_PATH = path.join(__dirname, '../apis');
 
+/**
+ * Recursively removes all files ending in '-internal.yaml' from a directory and its subdirectories
+ * @param directoryPath - The path to the directory to process
+ * @param depth - The depth of the directory to process, we limit the depth to 3 to avoid infinite recursion
+ */
+function removeInternalOas(directoryPath: string, depth = 0): void {
+  if (depth > 3) {
+    console.warn(
+      `Reached maximum depth (${depth}) for directory: ${directoryPath}`
+    );
+    return;
+  }
+
+  if (!fs.existsSync(directoryPath)) {
+    console.warn(`Directory does not exist: ${directoryPath}`);
+    return;
+  }
+
+  const items = fs.readdirSync(directoryPath);
+
+  items.forEach(item => {
+    const fullPath = path.join(directoryPath, item);
+    const stat = fs.statSync(fullPath);
+
+    if (stat.isDirectory()) {
+      // Recursively process subdirectories
+      removeInternalOas(fullPath, depth + 1);
+    } else if (stat.isFile() && item.endsWith('-internal.yaml')) {
+      // Remove internal files
+      fs.removeSync(fullPath);
+      console.log(`Removed internal file: ${fullPath}`);
+    }
+  });
+}
+
 // DOWNLOAD PRODUCTION DATA
 fs.moveSync(PRODUCTION_API_PATH, OLD_APIS_PATH, {overwrite: true});
 fs.ensureDirSync(PRODUCTION_API_PATH);
 
-API_LIST.forEach(name => {
-  // eslint-disable-next-line no-console
-  downloadLatestApis(name, PRODUCTION_API_PATH).catch(console.error);
-});
+downloadLatestApis(
+  'category:Visibility = "External" category:"SDK Type" = "Commerce" category:"SDK Type" = "Isomorphic"',
+  PRODUCTION_API_PATH
+)
+  .then(() => {
+    // Remove internal files after download is complete
+    removeInternalOas(OLD_APIS_PATH);
+    removeInternalOas(PRODUCTION_API_PATH);
+  })
+  .catch(error => console.log('Error downloading APIs', error));

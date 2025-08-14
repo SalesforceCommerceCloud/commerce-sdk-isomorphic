@@ -4,14 +4,18 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+import nock from 'nock';
 import {BaseUriParameters} from 'lib/helpers';
 import {
   ShopperLoginPathParameters,
   ShopperLoginQueryParameters,
-} from 'lib/shopperLogin';
-import nock from 'nock';
-import {ClientConfigInit, ShopperBaskets, ShopperLogin} from '../lib';
-import ClientConfig from '../static/clientConfig';
+} from '../lib/shopperLogin';
+import {
+  ClientConfig,
+  ClientConfigInit,
+  ShopperLogin,
+  ShopperBaskets,
+} from '../lib';
 
 const config: ClientConfigInit<
   ShopperLoginPathParameters &
