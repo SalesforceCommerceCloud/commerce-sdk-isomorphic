@@ -17,7 +17,7 @@
 | shopper-orders | 1.5.0 |
 | shopper-products | 1.0.37 |
 | shopper-promotions | 1.0.36 |
-| shopper-search | 1.2.4 |
+| shopper-search | 1.3.0 |
 | shopper-seo | 1.0.13 |
 | shopper-stores | 1.0.17 |
 
