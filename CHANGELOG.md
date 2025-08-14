@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v4.0.0-dev
+## v4.0.0
 
 ### API Versions
 
