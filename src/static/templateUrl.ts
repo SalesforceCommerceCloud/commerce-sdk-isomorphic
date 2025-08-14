@@ -20,10 +20,19 @@ export default class TemplateURL extends URL {
       origin?: string;
     }
   ) {
+    const encodedPathParams: PathParameters = {};
+
+    Object.keys(parameters?.pathParams || {}).forEach(key => {
+      const value = parameters?.pathParams?.[key];
+      if (value) {
+        encodedPathParams[key] = encodeURIComponent(value);
+      }
+    });
+
     super(
       TemplateURL.renderTemplateUri(
         `${base}/${url}`.replace(/\/\/+/g, '/'),
-        parameters?.pathParams
+        encodedPathParams
       )
     );
     this.addQueryParams(parameters?.queryParams);

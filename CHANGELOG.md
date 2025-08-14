@@ -1,5 +1,36 @@
 # CHANGELOG
 
+## v4.0.0-dev
+
+### API Versions
+
+| API Name | API Version |
+|----------|-------------|
+| shopper-baskets | 1.9.0 |
+| shopper-baskets | 2.1.0 |
+| shopper-consents | 1.1.0 |
+| shopper-context | 1.1.1 |
+| shopper-customers | 1.1.1 |
+| shopper-experience | 1.0.7 |
+| shopper-gift-certificates | 1.0.26 |
+| shopper-login | 1.39.41 |
+| shopper-orders | 1.5.0 |
+| shopper-products | 1.0.37 |
+| shopper-promotions | 1.0.36 |
+| shopper-search | 1.3.0 |
+| shopper-seo | 1.0.13 |
+| shopper-stores | 1.0.17 |
+
+### Enchancements
+
+- Enum types have been added for certain operations and types
+- Certain operations have had types updated for query parameters
+- SLAS helpers have been refactored to accept a single `options` object argument, where the properties are the old arguments
+- Path parameter special characters are encoded by default
+- Allow custom properties on request bodies to be passed
+- Remove API version from client config
+  - Use `ShopperBasketsV2` API class to use V2 of Shopper Baskets
+
 ## v3.4.0
 
 ### API Changes

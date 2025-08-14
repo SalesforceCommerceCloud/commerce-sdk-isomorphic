@@ -4,6 +4,26 @@ This SDK provides a Browser & Node.js JavaScript client for calling [B2C Commerc
 
 _For a Node.js only SDK that can also access Admin APIs checkout [Commerce SDK](https://github.com/SalesforceCommerceCloud/commerce-sdk)._
 
+## Documentation
+
+An auto-generated [documentation site](https://salesforcecommercecloud.github.io/commerce-sdk-isomorphic/) provides comprehensive reference for all available endpoints and types across API classes. Following the v4.0.0 release, the underlying SDK file structure has been reorganized, introducing additional layers of imports/exports that may affect navigation.
+
+### Navigating the Documentation
+
+**For API Classes:**
+
+1. **Accessing API Classes:** Click on the API class name (e.g., `shopperProducts`) on the right hand side
+2. **Viewing Endpoints:** Scroll to the `Classes` section and click the corresponding API class link (e.g., `ShopperProducts`) to see available endpoints and their parameters
+3. **Type Definitions:** Scroll to the `Type aliases` section for available types
+
+**Utility Classes:** Utility classes and methods such as `clientConfig` and `helpers` maintain the same structure as previous versions.
+
+**NOTES:** 
+
+1. **Type Access**: API class types are accessible through the `<api_class>Types` namespace (e.g., `ShopperProductsTypes`). Individual types can be accessed as `ShopperProductsTypes.Product`.
+
+2. **Type References**: The `References` section under API classes in the generated documentation may show duplicate entries. This occurs because types are exported both at their original definition and under the API class namespace. Both references point to the same underlying type definition.
+
 ## :warning: Planned API Changes :warning:
 
 ### Shopper Context
@@ -56,10 +76,10 @@ const config = {
   },
 };
 
-const {access_token} = await helpers.loginGuestUser(
-  new ShopperLogin(config),
-  {redirectURI: `${config.proxy}/callback`}
-);
+const {access_token} = await helpers.loginGuestUser({
+  slasClient: new ShopperLogin(config),
+  parameters: {redirectURI: `${config.proxy}/callback`}
+});
 
 const shopperSearch = new ShopperSearch({
   ...config,
@@ -239,9 +259,9 @@ const scapiSpecialEncodedId = helpers.encodeSCAPISpecialCharacters(categoryId);
 // <base-url>/product/shopper-products/v1/organizations/{organizationId}/categories/{id}
 const categoryResult = await shopperProducts.getCategory({
   parameters: {
-    // Path parameters are NOT encoded by the SDK, so we have to single encode special characters
-    // and the SCAPI special characters will end up double encoded
-    id: encodeURIComponent(scapiSpecialEncodedId),
+    // No need to use `encodeURIComponent` as query parameters are single encoded by the SDK
+    // So the SCAPI special characters will end up double encoded as well
+    id: scapiSpecialEncodedId,
   }
 });
 

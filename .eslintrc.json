@@ -93,9 +93,10 @@
         }
       },
       {
-        "files": ["./src/static/helpers/slasHelper.ts"],
+        "files": ["./src/static/helpers/slasHelper.ts", "./src/static/helpers/types.ts"],
         "rules": {
-          "max-lines": "off"
+          "max-lines": "off",
+          "camelcase": "off"
         }
       }
     ],
