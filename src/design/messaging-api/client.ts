@@ -9,8 +9,9 @@ import type {
   ClientConfiguration,
   ClientEventNameMapping,
   HostEventNameMapping,
-} from './api-types';
-import {Messenger} from './messenger';
+  WithMeta,
+} from './api-types.js';
+import {Messenger} from './messenger.js';
 
 /**
  * Factory function to create a ClientApi instance.
@@ -88,10 +89,16 @@ export function createClientApi({
 
         checkInitialization();
       }),
-    on: (event, handler) => messenger.on(event, handler),
-    destroy: () => {
+    on: <TEvent extends keyof ClientEventNameMapping>(
+      event: TEvent,
+      handler: (
+        handlerEvent: Readonly<WithMeta & ClientEventNameMapping[TEvent]>
+      ) => void
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ) => messenger.on(event as any, handler as any),
+    disconnect: () => {
       clearConnectionTimeout();
-      messenger.destroy();
+      messenger.disconnect();
     },
     getRemoteId: () => messenger.getRemoteId(),
   };

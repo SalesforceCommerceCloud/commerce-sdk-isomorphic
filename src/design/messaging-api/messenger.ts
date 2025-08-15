@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import {EventHandler, MessageEmitter, Source} from './api-types';
+import type {EventHandler, MessageEmitter, Source} from './api-types.js';
 
 /**
  * Handles the basic logic for event emitting and receiving between a client and a host.
@@ -58,11 +58,13 @@ export class Messenger<TInMapping, TOutMapping> {
 
     this.unsubscribe = this.emitter.addEventListener(event => {
       if (event.meta?.pdMessagingApi && event.meta.source !== this.source) {
-        this.handlers
-          .get(event.eventType as keyof TInMapping)
-          ?.forEach(handler =>
-            handler(event as Parameters<EventHandler<TInMapping>>[0])
-          );
+        [event.eventType, 'Event'].forEach(eventType => {
+          this.handlers
+            .get(eventType as keyof TInMapping)
+            ?.forEach(handler =>
+              handler(event as Parameters<EventHandler<TInMapping>>[0])
+            );
+        });
       }
     });
   }
@@ -156,9 +158,9 @@ export class Messenger<TInMapping, TOutMapping> {
   }
 
   /**
-   * Destroys the messenger.
+   * Disconnects the messenger.
    */
-  destroy(): void {
+  disconnect(): void {
     this.unsubscribe?.();
   }
 }

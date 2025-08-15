@@ -4,13 +4,14 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import {
+import type {
   HostApi,
   HostConfiguration,
   ClientEventNameMapping,
   HostEventNameMapping,
-} from './api-types';
-import {Messenger} from './messenger';
+  WithMeta,
+} from './api-types.js';
+import {Messenger} from './messenger.js';
 /**
  * Factory function to create a HostApi instance.
  *
@@ -61,8 +62,14 @@ export function createHostApi({emitter, id}: HostConfiguration): HostApi {
           resolve();
         });
       }),
-    on: (event, handler) => messenger.on(event, handler),
-    destroy: () => messenger.destroy(),
+    on: <TEvent extends keyof HostEventNameMapping>(
+      event: TEvent,
+      handler: (
+        handlerEvent: Readonly<WithMeta & HostEventNameMapping[TEvent]>
+      ) => void
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ) => messenger.on(event as any, handler as any),
+    disconnect: () => messenger.disconnect(),
     getRemoteId: () => messenger.getRemoteId(),
   };
 }

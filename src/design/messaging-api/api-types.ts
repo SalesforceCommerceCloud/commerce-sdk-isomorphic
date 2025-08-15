@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 /* eslint-disable max-lines */
-import * as Domain from './domain-types';
+import type * as Domain from './domain-types.js';
 
 export type Source = 'host' | 'client';
 
@@ -193,7 +193,7 @@ export interface HostConfiguration extends IsomorphicConfiguration {
  */
 export interface IsomorphicApi {
   /**
-   * Destroys the client or host instance.
+   * Disconnects the client or host instance.
    * This should be called when the client or host is no longer needed.
    * This will remove all event listeners and clean up any resources.
    *
@@ -201,10 +201,10 @@ export interface IsomorphicApi {
    *
    * @example
    * ```typescript
-   * api.destroy();
+   * api.disconnect();
    * ```
    */
-  destroy(): void;
+  disconnect(): void;
 
   /**
    * Starts a component drag operation.
@@ -228,7 +228,9 @@ export interface IsomorphicApi {
    *
    * @see {Domain.ComponentDragStartedEvent}
    */
-  startComponentDrag(event: Domain.ComponentDragStartedEvent): void;
+  startComponentDrag(
+    event: Omit<Domain.ComponentDragStartedEvent, 'eventType'>
+  ): void;
 
   /**
    * Moves a component to a different region of a component.
@@ -251,7 +253,9 @@ export interface IsomorphicApi {
    * ```
    * @see {Domain.ComponentMovedToRegionEvent}
    */
-  moveComponentToRegion(event: Domain.ComponentMovedToRegionEvent): void;
+  moveComponentToRegion(
+    event: Omit<Domain.ComponentMovedToRegionEvent, 'eventType'>
+  ): void;
   /**
    * Notifies the host that a component is being hovered over.
    *
@@ -266,7 +270,9 @@ export interface IsomorphicApi {
    * });
    * ```
    */
-  hoverInToComponent(event: Domain.ComponentHoveredInEvent): void;
+  hoverInToComponent(
+    event: Omit<Domain.ComponentHoveredInEvent, 'eventType'>
+  ): void;
 
   /**
    * Notifies the host that a component is no longer being hovered over.
@@ -282,7 +288,9 @@ export interface IsomorphicApi {
    * });
    * ```
    */
-  hoverOutOfComponent(event: Domain.ComponentHoveredOutEvent): void;
+  hoverOutOfComponent(
+    event: Omit<Domain.ComponentHoveredOutEvent, 'eventType'>
+  ): void;
 
   /**
    * Notifies the host that a component has been selected.
@@ -298,7 +306,9 @@ export interface IsomorphicApi {
    * });
    * ```
    */
-  selectComponent(event: Domain.ComponentSelectedEvent): void;
+  selectComponent(
+    event: Omit<Domain.ComponentSelectedEvent, 'eventType'>
+  ): void;
 
   /**
    * Notifies the host that a component has been deselected.
@@ -314,7 +324,9 @@ export interface IsomorphicApi {
    * });
    * ```
    */
-  deselectComponent(event: Domain.ComponentDeselectedEvent): void;
+  deselectComponent(
+    event: Omit<Domain.ComponentDeselectedEvent, 'eventType'>
+  ): void;
 
   /**
    * Notifies the host that a component has been added to a specific region of another component.
@@ -334,7 +346,9 @@ export interface IsomorphicApi {
    * });
    * ```
    */
-  addComponentToRegion(event: Domain.ComponentAddedToRegionEvent): void;
+  addComponentToRegion(
+    event: Omit<Domain.ComponentAddedToRegionEvent, 'eventType'>
+  ): void;
 
   /**
    * Notifies the host that a component has been deleted.
@@ -354,7 +368,7 @@ export interface IsomorphicApi {
    * });
    * ```
    */
-  deleteComponent(event: Domain.ComponentDeletedEvent): void;
+  deleteComponent(event: Omit<Domain.ComponentDeletedEvent, 'eventType'>): void;
 
   /**
    * Notifies that an error has occurred.
@@ -372,7 +386,7 @@ export interface IsomorphicApi {
    * });
    * ```
    */
-  notifyError(event: Domain.ErrorEvent): void;
+  notifyError(event: Omit<Domain.ErrorEvent, 'eventType'>): void;
   /**
    * Gets the id of the remote side of the connection.
    * @returns The id of the remote side of the connection.
@@ -417,12 +431,12 @@ export interface ClientApi extends IsomorphicApi {
   on<TEvent extends keyof ClientEventNameMapping>(
     event: TEvent,
     handler: (
-      handlerEvent: Readonly<
-        WithMeta &
-          WithEventType<ClientEventNameMapping, TEvent> &
-          ClientEventNameMapping[TEvent]
-      >
+      handlerEvent: Readonly<WithMeta & ClientEventNameMapping[TEvent]>
     ) => void
+  ): () => void;
+  on(
+    event: 'Event',
+    handler: (handlerEvent: Readonly<WithMeta & ClientMessage>) => void
   ): () => void;
 
   /**
@@ -441,7 +455,9 @@ export interface ClientApi extends IsomorphicApi {
    * });
    * ```
    */
-  notifyWindowScrollChanged(event: Domain.WindowScrollChangedEvent): void;
+  notifyWindowScrollChanged(
+    event: Omit<Domain.WindowScrollChangedEvent, 'eventType'>
+  ): void;
 }
 
 export interface HostApi extends IsomorphicApi {
@@ -477,12 +493,12 @@ export interface HostApi extends IsomorphicApi {
   on<TEvent extends keyof HostEventNameMapping>(
     event: TEvent,
     handler: (
-      handlerEvent: Readonly<
-        WithMeta &
-          WithEventType<HostEventNameMapping, TEvent> &
-          HostEventNameMapping[TEvent]
-      >
+      handlerEvent: Readonly<WithMeta & HostEventNameMapping[TEvent]>
     ) => void
+  ): () => void;
+  on(
+    event: 'Event',
+    handler: (handlerEvent: Readonly<WithMeta & HostMessage>) => void
   ): () => void;
 
   /**
@@ -499,7 +515,9 @@ export interface HostApi extends IsomorphicApi {
    *
    * @see {Domain.PageSettingsChangedEvent}
    */
-  notifyPageSettingsChanged(event: Domain.PageSettingsChangedEvent): void;
+  notifyPageSettingsChanged(
+    event: Omit<Domain.PageSettingsChangedEvent, 'eventType'>
+  ): void;
 
   /**
    * Forwards a key press event from the host environment to the client.
@@ -522,7 +540,7 @@ export interface HostApi extends IsomorphicApi {
    * @see {Domain.HostKeyPressedEvent}
    * @see {Domain.DefaultForwardedKeys}
    */
-  forwardKeyPress(event: Domain.HostKeyPressedEvent): void;
+  forwardKeyPress(event: Omit<Domain.HostKeyPressedEvent, 'eventType'>): void;
 
   /**
    * Notifies the host that a client window drag operation has entered a component.
@@ -546,7 +564,7 @@ export interface HostApi extends IsomorphicApi {
    * @see {Domain.ClientWindowDragEnteredEvent}
    */
   notifyClientWindowDragEntered(
-    event: Domain.ClientWindowDragEnteredEvent
+    event: Omit<Domain.ClientWindowDragEnteredEvent, 'eventType'>
   ): void;
 
   /**
@@ -570,7 +588,9 @@ export interface HostApi extends IsomorphicApi {
    *
    * @see {Domain.ClientWindowDragMovedEvent}
    */
-  notifyClientWindowDragMoved(event: Domain.ClientWindowDragMovedEvent): void;
+  notifyClientWindowDragMoved(
+    event: Omit<Domain.ClientWindowDragMovedEvent, 'eventType'>
+  ): void;
 
   /**
    * Notifies the host that a client window drag operation has exited a component.
@@ -593,7 +613,9 @@ export interface HostApi extends IsomorphicApi {
    *
    * @see {Domain.ClientWindowDragExitedEvent}
    */
-  notifyClientWindowDragExited(event: Domain.ClientWindowDragExitedEvent): void;
+  notifyClientWindowDragExited(
+    event: Omit<Domain.ClientWindowDragExitedEvent, 'eventType'>
+  ): void;
 
   /**
    * Notifies the host that a client window drag operation has been dropped on a component.
@@ -617,7 +639,7 @@ export interface HostApi extends IsomorphicApi {
    * @see {Domain.ClientWindowDragDroppedEvent}
    */
   notifyClientWindowDragDropped(
-    event: Domain.ClientWindowDragDroppedEvent
+    event: Omit<Domain.ClientWindowDragDroppedEvent, 'eventType'>
   ): void;
 
   /**

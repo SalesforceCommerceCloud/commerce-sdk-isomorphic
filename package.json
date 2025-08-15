@@ -13,14 +13,24 @@
   "license": "BSD-3-Clause",
   "exports": {
     "./design": {
-      "import": "./lib/design/esm/index.js",
-      "require": "./lib/design/cjs/index.js",
-      "types": "./lib/design/esm/index.d.ts"
+      "import": {
+        "default": "./lib/design/esm/index.js",
+        "types": "./lib/design/esm/index.d.ts"
+      },
+      "require": {
+        "default": "./lib/design/cjs/index.js",
+        "types": "./lib/design/cjs/index.d.ts"
+      }
     },
     "./design/react": {
-      "import": "./lib/design/esm/react/index.js",
-      "require": "./lib/design/cjs/react/index.js",
-      "types": "./lib/design/esm/react/index.d.ts"
+      "import": {
+        "default": "./lib/design/esm/react/index.js",
+        "types": "./lib/design/esm/react/index.d.ts"
+      },
+      "require": {
+        "default": "./lib/design/cjs/react/index.js",
+        "types": "./lib/design/cjs/react/index.d.ts"
+      }
     }
   },
   "main": "lib/index.cjs.js",
@@ -36,7 +46,7 @@
     "build:design": "tsc -p tsconfig.design.json && tsc -p tsconfig.design.json --module commonjs --outDir lib/design/cjs",
     "build:lib": "rollup -c",
     "check:size": "npm-pack-all --output commerce-sdk-isomorphic-with-deps.tgz && bundlesize",
-    "check:types": "tsc --noEmit",
+    "check:types": "tsc -p tsconfig.sdk.json --noEmit",
     "ci": "rm -rf node_modules && yarn install",
     "clean": "rm -rf build lib src/lib commerce-sdk-isomorphic-with-deps.tgz",
     "depcheck": "depcheck",
@@ -180,7 +190,7 @@
     "typedoc": "^0.17.7",
     "typedoc-plugin-external-module-map": "1.2.1",
     "typedoc-plugin-nojekyll": "^1.0.1",
-    "typescript": "^4.4.4"
+    "typescript": "^4.9.5"
   },
   "peerDependencies": {
     "react": ">=16.8.0",

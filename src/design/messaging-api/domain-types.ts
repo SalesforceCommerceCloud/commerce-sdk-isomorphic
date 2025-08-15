@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-/* eslint-disable @typescript-eslint/no-empty-interface */
 interface WithBaseEvent {
+  eventType: string;
   // Add any properties that apply to all events
 }
 /**
@@ -89,6 +89,7 @@ export type DefaultForwardedKeys =
  * @group Events
  */
 export interface ClientInitializedEvent extends WithBaseEvent {
+  eventType: 'ClientInitialized';
   /**
    * The id to use for the client.
    */
@@ -108,6 +109,7 @@ export interface ClientInitializedEvent extends WithBaseEvent {
  * @group Events
  */
 export interface ClientDisconnectedEvent extends WithBaseEvent {
+  eventType: 'ClientDisconnected';
   /**
    * The id of the client that disconnected.
    */
@@ -120,6 +122,7 @@ export interface ClientDisconnectedEvent extends WithBaseEvent {
  * @group Events
  */
 export interface WindowScrollChangedEvent extends WithBaseEvent {
+  eventType: 'WindowScrollChanged';
   /**
    * The horizontal scroll position of the window.
    */
@@ -141,6 +144,7 @@ export interface WindowScrollChangedEvent extends WithBaseEvent {
  * @group Events
  */
 export interface ClientAcknowledgedEvent extends WithBaseEvent {
+  eventType: 'ClientAcknowledged';
   // Any specifics we want the client to know upon initialization should live here.
 }
 /**
@@ -151,7 +155,9 @@ export interface ClientAcknowledgedEvent extends WithBaseEvent {
 export interface ClientWindowDragEnteredEvent
   extends WithBaseEvent,
     WithClientVector,
-    WithComponentId {}
+    WithComponentId {
+  eventType: 'ClientWindowDragEntered';
+}
 /**
  * Emits when dragging from the host moves over the client window.
  * @target client
@@ -160,7 +166,9 @@ export interface ClientWindowDragEnteredEvent
 export interface ClientWindowDragMovedEvent
   extends WithBaseEvent,
     WithClientVector,
-    WithComponentId {}
+    WithComponentId {
+  eventType: 'ClientWindowDragMoved';
+}
 /**
  * Emits when dragging from the host exits the client window.
  * @target client
@@ -169,7 +177,9 @@ export interface ClientWindowDragMovedEvent
 export interface ClientWindowDragExitedEvent
   extends WithBaseEvent,
     WithClientVector,
-    WithComponentId {}
+    WithComponentId {
+  eventType: 'ClientWindowDragExited';
+}
 /**
  * Emits when dragging from the host is released over the client window.
  * @target client
@@ -178,7 +188,9 @@ export interface ClientWindowDragExitedEvent
 export interface ClientWindowDragDroppedEvent
   extends WithBaseEvent,
     WithClientVector,
-    WithComponentId {}
+    WithComponentId {
+  eventType: 'ClientWindowDragDropped';
+}
 /**
  * Emits when a component's properties change.
  * @target client
@@ -188,6 +200,7 @@ export interface ComponentPropertiesChangedEvent<
   TProps extends Record<string, unknown> = Record<string, unknown>
 > extends WithBaseEvent,
     WithComponentId {
+  eventType: 'ComponentPropertiesChanged';
   /**
    * The new properties of the component.
    */
@@ -203,6 +216,7 @@ export interface ComponentPropertiesChangedEvent<
  */
 export interface HostKeyPressedEvent<TKey extends string = DefaultForwardedKeys>
   extends WithBaseEvent {
+  eventType: 'HostKeyPressed';
   key: TKey;
 }
 /**
@@ -213,6 +227,7 @@ export interface HostKeyPressedEvent<TKey extends string = DefaultForwardedKeys>
 export interface PageSettingsChangedEvent<
   TSettings extends Record<string, unknown> = Record<string, unknown>
 > extends WithBaseEvent {
+  eventType: 'PageSettingsChanged';
   settings: TSettings;
 }
 /**
@@ -221,7 +236,9 @@ export interface PageSettingsChangedEvent<
  * @target client
  * @group Events
  */
-export interface MediaChangedEvent extends WithBaseEvent {}
+export interface MediaChangedEvent extends WithBaseEvent {
+  eventType: 'MediaChanged';
+}
 
 /// ////////////////////////////////////////////////////////////////////////////
 // Isomorphic Events - Events that are subscribed to on both client and host side. //
@@ -235,6 +252,7 @@ export interface MediaChangedEvent extends WithBaseEvent {}
 export interface ComponentMovedToRegionEvent
   extends WithBaseEvent,
     WithComponentId {
+  eventType: 'ComponentMovedToRegion';
   /**
    * The id of the component where this component is being moved to.
    */
@@ -259,7 +277,9 @@ export interface ComponentMovedToRegionEvent
  */
 export interface ComponentHoveredInEvent
   extends WithBaseEvent,
-    WithComponentId {}
+    WithComponentId {
+  eventType: 'ComponentHoveredIn';
+}
 /**
  * Emits when a component is hovered out of.
  * @target isomorphic
@@ -267,15 +287,17 @@ export interface ComponentHoveredInEvent
  */
 export interface ComponentHoveredOutEvent
   extends WithBaseEvent,
-    WithComponentId {}
+    WithComponentId {
+  eventType: 'ComponentHoveredOut';
+}
 /**
  * Emits when a component is selected.
  * @target isomorphic
  * @group Events
  */
-export interface ComponentSelectedEvent
-  extends WithBaseEvent,
-    WithComponentId {}
+export interface ComponentSelectedEvent extends WithBaseEvent, WithComponentId {
+  eventType: 'ComponentSelected';
+}
 /**
  * Emits when a component is deselected.
  * @target isomorphic
@@ -283,13 +305,16 @@ export interface ComponentSelectedEvent
  */
 export interface ComponentDeselectedEvent
   extends WithBaseEvent,
-    WithComponentId {}
+    WithComponentId {
+  eventType: 'ComponentDeselected';
+}
 /**
  * Emits when a component is deleted.
  * @target isomorphic
  * @group Events
  */
 export interface ComponentDeletedEvent extends WithBaseEvent, WithComponentId {
+  eventType: 'ComponentDeleted';
   /**
    * The id of the component that the component was deleted from.
    */
@@ -309,6 +334,7 @@ export interface ComponentAddedToRegionEvent<
   TProps extends Record<string, unknown> = Record<string, unknown>
 > extends WithBaseEvent,
     WithComponentId {
+  eventType: 'ComponentAddedToRegion';
   /**
    * The specifier of the component to add.
    * This will be used to lookup the component in the registry.
@@ -336,13 +362,16 @@ export interface ComponentAddedToRegionEvent<
 export interface ComponentDragStartedEvent
   extends WithBaseEvent,
     WithComponentId,
-    WithClientVector {}
+    WithClientVector {
+  eventType: 'ComponentDragStarted';
+}
 /**
  * Emits when an error occurs.
  * @target isomorphic
  * @group Events
  */
 export interface ErrorEvent extends WithBaseEvent {
+  eventType: 'Error';
   /**
    * The error message.
    */

@@ -7,15 +7,15 @@
 /* eslint-disable @typescript-eslint/await-thenable */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/unbound-method */
-import {
+import type {
   ClientApi,
   ClientEventNameMapping,
   HostApi,
   HostEventNameMapping,
   MessageEmitter,
-} from './api-types';
-import {createClientApi} from './client';
-import {createHostApi} from './host';
+} from './api-types.js';
+import {createClientApi} from './client.js';
+import {createHostApi} from './host.js';
 
 type AnyFunction = (...args: unknown[]) => unknown;
 describe('Messaging API', () => {
@@ -84,8 +84,8 @@ describe('Messaging API', () => {
   });
 
   afterEach(() => {
-    host.destroy();
-    client.destroy();
+    host.disconnect();
+    client.disconnect();
     jest.useRealTimers();
     jest.resetAllMocks();
   });
