@@ -6,10 +6,14 @@
  */
 import React from 'react';
 
-export type ComponentDecoratorProps = React.PropsWithChildren<{
-  id: string;
-  name?: string;
-  isFragment?: boolean;
-  children?: React.ReactNode;
-  [key: string]: unknown;
-}>;
+export type ComponentDecoratorProps<TProps> = React.PropsWithChildren<
+  {
+    designMetadata: {
+      id: string;
+      name?: string;
+      parentId?: string;
+      regionId?: string;
+      isFragment?: boolean;
+    };
+  } & TProps
+>;

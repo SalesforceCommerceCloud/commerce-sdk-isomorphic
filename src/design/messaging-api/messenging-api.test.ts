@@ -5,7 +5,6 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 /* eslint-disable @typescript-eslint/await-thenable */
-/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/unbound-method */
 import type {
   ClientApi,
@@ -13,11 +12,30 @@ import type {
   HostApi,
   HostEventNameMapping,
   MessageEmitter,
-} from './api-types.js';
-import {createClientApi} from './client.js';
-import {createHostApi} from './host.js';
+} from './api-types';
+import {createClientApi} from './client';
+import {createHostApi} from './host';
 
 type AnyFunction = (...args: unknown[]) => unknown;
+
+function makeHostConnectionPromise(host: HostApi): Promise<void> {
+  return new Promise<void>(resolve =>
+    host.connect({
+      configFactory: () =>
+        Promise.resolve({components: {}, componentTypes: {}, labels: {}}),
+      onClientConnected: () => resolve(),
+    })
+  );
+}
+
+function makeClientConnectionPromise(client: ClientApi): Promise<void> {
+  return new Promise<void>(resolve =>
+    client.connect({
+      onHostConnected: () => resolve(),
+    })
+  );
+}
+
 describe('Messaging API', () => {
   let hostWindow: Element;
   let clientWindow: Element;
@@ -93,11 +111,11 @@ describe('Messaging API', () => {
   describe('initialization', () => {
     describe('when the client is initialized before the host', () => {
       it('should create a connection between the host and the client', async () => {
-        const clientConnectionPromise = client.connect();
+        const clientConnectionPromise = makeClientConnectionPromise(client);
 
         jest.advanceTimersByTime(1500);
 
-        const hostConnectionPromise = host.connect();
+        const hostConnectionPromise = makeHostConnectionPromise(host);
 
         jest.advanceTimersByTime(1500);
 
@@ -127,12 +145,12 @@ describe('Messaging API', () => {
 
     describe('when the host is initialized before the client', () => {
       it('should create a connection between the host and the client', async () => {
-        const hostConnectionPromise = host.connect();
-        const clientConnectionPromise = client.connect();
+        jest.useRealTimers();
 
-        await expect(
-          Promise.all([clientConnectionPromise, hostConnectionPromise])
-        ).resolves;
+        await Promise.all([
+          makeClientConnectionPromise(client),
+          makeHostConnectionPromise(host),
+        ]);
         expect(client.getRemoteId()).toBe('test-host');
         expect(host.getRemoteId()).toBe('test-client');
       });
@@ -157,9 +175,20 @@ describe('Messaging API', () => {
 
     describe('when connecting multiple times', () => {
       it('should only maintain a single connection', async () => {
-        await expect(Promise.all([client.connect(), host.connect()])).resolves;
-        await expect(Promise.all([client.connect(), host.connect()])).resolves;
-        await expect(Promise.all([client.connect(), host.connect()])).resolves;
+        jest.useRealTimers();
+
+        await Promise.all([
+          makeClientConnectionPromise(client),
+          makeHostConnectionPromise(host),
+        ]);
+        await Promise.all([
+          makeClientConnectionPromise(client),
+          makeHostConnectionPromise(host),
+        ]);
+        await Promise.all([
+          makeClientConnectionPromise(client),
+          makeHostConnectionPromise(host),
+        ]);
 
         const spy = jest.fn();
 
@@ -172,7 +201,10 @@ describe('Messaging API', () => {
 
   describe('when connected', () => {
     beforeEach(async () => {
-      await Promise.all([host.connect(), client.connect()]);
+      await Promise.all([
+        makeHostConnectionPromise(host),
+        makeClientConnectionPromise(client),
+      ]);
     });
 
     describe('when events are received from a different source', () => {
@@ -326,7 +358,7 @@ describe('Messaging API', () => {
       method                         | eventName                   | payload
       ${'addComponentToRegion'}      | ${'ComponentAddedToRegion'} | ${{componentId: 'test-component', componentSpecifier: 'test-specifier', componentProperties: {test: 'value'}, targetComponentId: 'target-component', targetRegionId: 'test-region'}}
       ${'moveComponentToRegion'}     | ${'ComponentMovedToRegion'} | ${{componentId: 'test-component', targetComponentId: 'target-component', targetRegionId: 'target-region', sourceRegionId: 'source-region', sourceComponentId: 'source-component'}}
-      ${'clientReady'}               | ${'ClientReady'}            | ${{clientId: 'test-client'}}
+      ${'notifyClientReady'}         | ${'ClientReady'}            | ${{clientId: 'test-client'}}
       ${'startComponentDrag'}        | ${'ComponentDragStarted'}   | ${{componentId: 'test-component', x: 100, y: 200}}
       ${'hoverInToComponent'}        | ${'ComponentHoveredIn'}     | ${{componentId: 'test-component'}}
       ${'hoverOutOfComponent'}       | ${'ComponentHoveredOut'}    | ${{componentId: 'test-component'}}

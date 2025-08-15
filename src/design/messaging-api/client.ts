@@ -10,10 +10,9 @@ import type {
   ClientEventNameMapping,
   HostEventNameMapping,
   WithMeta,
-} from './api-types.js';
-import type {ClientAcknowledgedEvent} from './domain-types.js';
-import {Messenger} from './messenger.js';
-import {Deferred} from './deferred.js';
+} from './api-types';
+import type {ClientAcknowledgedEvent} from './domain-types';
+import {Messenger} from './messenger';
 
 /**
  * Factory function to create a ClientApi instance.
@@ -28,7 +27,6 @@ export function createClientApi({
   forwardedKeys = [],
   logger,
 }: ClientConfiguration): ClientApi {
-  let connectDeferred: Deferred<ClientAcknowledgedEvent | null>;
   const messenger = new Messenger<ClientEventNameMapping, HostEventNameMapping>(
     {
       source: 'client',
@@ -37,9 +35,12 @@ export function createClientApi({
       logger,
     }
   );
+  const subscriptions: (() => void)[] = [];
 
   let isReady = false;
+  let isConnected = false;
   let connectionTimeoutId: number | null = null;
+  let hostConfig: ClientAcknowledgedEvent | null = null;
 
   const clearConnectionTimeout = () => {
     if (connectionTimeoutId) {
@@ -64,30 +65,45 @@ export function createClientApi({
       interval = 1_000,
       timeout = 60_000,
       prepareClient = () => Promise.resolve(),
+      onHostConnected,
+      onError,
     }: {
       interval?: number;
       timeout?: number;
       prepareClient?: () => Promise<void>;
+      onHostConnected?: (event: ClientAcknowledgedEvent) => void;
+      onError?: (error: Error) => void;
     } = {}) => {
+      if (isConnected) {
+        onHostConnected?.(hostConfig as ClientAcknowledgedEvent);
+
+        return;
+      }
+
       const expirationTime = Date.now() + timeout;
 
-      connectDeferred?.resolve(null);
-      connectDeferred = new Deferred<ClientAcknowledgedEvent | null>();
       messenger.connect();
 
-      const unsubscribe = messenger.on('ClientAcknowledged', event => {
-        messenger.setRemoteId(event.meta.hostId as string);
-        unsubscribe();
-        clearConnectionTimeout();
+      subscriptions.push(
+        messenger.on('ClientAcknowledged', event => {
+          if (event.meta.hostId === messenger.getRemoteId()) {
+            // We've already been acknowledged by the host in this case.
+            return;
+          }
 
-        prepareClient()
-          .then(() => {
-            isReady = true;
-            messenger.emit('ClientReady', {clientId: id});
-            connectDeferred.resolve(event);
-          })
-          .catch(error => connectDeferred.reject(error));
-      });
+          hostConfig = event;
+          messenger.setRemoteId(event.meta.hostId as string);
+          clearConnectionTimeout();
+
+          prepareClient()
+            .then(() => {
+              isReady = true;
+              messenger.emit('ClientReady', {clientId: id});
+              onHostConnected?.(hostConfig as ClientAcknowledgedEvent);
+            })
+            .catch(error => onError?.(error));
+        })
+      );
 
       const checkInitialization = () => {
         if (Date.now() > expirationTime) {
@@ -107,9 +123,8 @@ export function createClientApi({
         ) as unknown as number;
       };
 
+      isConnected = true;
       checkInitialization();
-
-      return connectDeferred.promise;
     },
     on: <TEvent extends keyof ClientEventNameMapping>(
       eventName: TEvent,
@@ -125,8 +140,10 @@ export function createClientApi({
       }),
     disconnect: () => {
       clearConnectionTimeout();
+      messenger.emit('ClientDisconnected', {clientId: id});
+      isConnected = false;
+      subscriptions.forEach(unsubscribe => unsubscribe());
       messenger.disconnect();
-      connectDeferred?.resolve(null);
     },
     getRemoteId: () => messenger.getRemoteId(),
   };

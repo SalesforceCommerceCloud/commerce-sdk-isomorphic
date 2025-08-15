@@ -171,9 +171,24 @@ export interface ClientDisconnectedEvent extends WithBaseEvent {
 export interface ClientAcknowledgedEvent extends WithBaseEvent {
   eventType: 'ClientAcknowledged';
   // Any specifics we want the client to know upon initialization should live here.
+  /**
+   * The components by id that are in the component tree.
+   */
   components: Record<string, ComponentInfo>;
+  /**
+   * A map of component types by id.
+   */
   componentTypes: Record<string, ComponentType>;
+  /**
+   * A map of labels by translation key. These labels will be in the locale of the user.
+   */
+  labels: Record<string, string>;
+  /**
+   * The locale to use on the client.
+   */
+  locale?: string;
 }
+
 /**
  * Emits when dragging from the host enters the client window.
  * @target client
@@ -232,6 +247,14 @@ export interface ComponentPropertiesChangedEvent<
    * The new properties of the component.
    */
   properties: TProps;
+}
+/**
+ * Emits when a component is focused.
+ * @target client
+ * @group Events
+ */
+export interface ComponentFocusedEvent extends WithBaseEvent, WithComponentId {
+  eventType: 'ComponentFocused';
 }
 /**
  * Event emitted from the host to the client when a key is pressed.

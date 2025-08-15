@@ -6,6 +6,7 @@
  */
 import React, {Suspense, lazy, useMemo, createContext, useContext} from 'react';
 import {isDesignModeActive, isPreviewModeActive} from '../../modeDetection';
+import type {IsomorphicConfiguration} from '../../messaging-api';
 
 // Lazy load the context providers so that they are only loaded when needed and don't impact runtime performance
 const LazyDesignProvider = lazy(() =>
@@ -40,12 +41,20 @@ export const usePageDesignerMode = (): PageDesignerContextType =>
 
 type PageDesignerProviderProps = {
   children: React.ReactNode;
+  clientId: string;
   targetOrigin: string;
+  clientLogger?: IsomorphicConfiguration['logger'];
+  clientConnectionTimeout?: number;
+  clientConnectionInterval?: number;
 };
 
 export const PageDesignerProvider = ({
   children,
   targetOrigin,
+  clientId,
+  clientLogger,
+  clientConnectionTimeout,
+  clientConnectionInterval,
 }: PageDesignerProviderProps): JSX.Element => {
   const contextValue = useMemo(
     () => ({
@@ -81,7 +90,12 @@ export const PageDesignerProvider = ({
   if (isDesignMode) {
     content = (
       <Suspense fallback={<LoadingFallback />}>
-        <LazyDesignProvider targetOrigin={targetOrigin}>
+        <LazyDesignProvider
+          targetOrigin={targetOrigin}
+          clientId={clientId}
+          clientLogger={clientLogger}
+          clientConnectionTimeout={clientConnectionTimeout}
+          clientConnectionInterval={clientConnectionInterval}>
           {content}
         </LazyDesignProvider>
       </Suspense>
@@ -93,4 +107,12 @@ export const PageDesignerProvider = ({
       {content}
     </PageDesignerContext.Provider>
   );
+};
+
+PageDesignerProvider.defaultProps = {
+  clientConnectionTimeout: 60_000,
+  clientConnectionInterval: 1_000,
+  clientLogger: () => {
+    // noop
+  },
 };
