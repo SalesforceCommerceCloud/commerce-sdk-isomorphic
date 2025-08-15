@@ -162,5 +162,8 @@ export class Messenger<TInMapping, TOutMapping> {
    */
   disconnect(): void {
     this.unsubscribe?.();
+    this.handlers.clear();
+    this.remoteId = undefined;
+    this.unsubscribe = undefined;
   }
 }
