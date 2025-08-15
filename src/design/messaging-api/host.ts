@@ -50,6 +50,12 @@ export function createHostApi({emitter, id}: HostConfiguration): HostApi {
     notifyWindowScrollChanged: messenger.toEmitter('WindowScrollChanged'),
     notifyPageSettingsChanged: messenger.toEmitter('PageSettingsChanged'),
     notifyMediaChanged: () => messenger.emit('MediaChangedEvent', {}),
+    notifyClientWindowBoundsHoverOver: messenger.toEmitter(
+      'ClientWindowBoundsHoverOver'
+    ),
+    notifyClientWindowBoundsHoverOut: messenger.toEmitter(
+      'ClientWindowBoundsHoverOut'
+    ),
     notifyError: messenger.toEmitter('Error'),
     connect: () =>
       new Promise<void>(resolve => {

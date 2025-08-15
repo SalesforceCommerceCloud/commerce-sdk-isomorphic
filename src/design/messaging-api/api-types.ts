@@ -80,6 +80,8 @@ export interface ClientEventNameMapping extends IsomorphicEventNameMapping {
   ClientWindowDragDropped: Domain.ClientWindowDragDroppedEvent;
   ComponentPropertiesChanged: Domain.ComponentPropertiesChangedEvent;
   MediaChangedEvent: Domain.MediaChangedEvent;
+  ClientWindowBoundsHoverOver: Domain.ClientWindowBoundsHoverOverEvent;
+  ClientWindowBoundsHoverOut: Domain.ClientWindowBoundsHoverOutEvent;
 }
 
 /**
@@ -677,6 +679,26 @@ export interface HostApi extends IsomorphicApi {
   setComponentProperties<
     TProps extends Record<string, unknown> = Record<string, unknown>
   >(
-    event: Domain.ComponentPropertiesChangedEvent<TProps>
+    event: Omit<Domain.ComponentPropertiesChangedEvent<TProps>, 'eventType'>
+  ): void;
+
+  /**
+   * Notifies the host that the client window bounds have been hovered over.
+   *
+   * @param event - The client window bounds hover over event
+   * @stability development
+   */
+  notifyClientWindowBoundsHoverOver(
+    event: Omit<Domain.ClientWindowBoundsHoverOverEvent, 'eventType'>
+  ): void;
+
+  /**
+   * Notifies the host that the client window bounds have been hovered out.
+   *
+   * @param event - The client window bounds hover out event
+   * @stability development
+   */
+  notifyClientWindowBoundsHoverOut(
+    event: Omit<Domain.ClientWindowBoundsHoverOutEvent, 'eventType'>
   ): void;
 }
