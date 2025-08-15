@@ -326,6 +326,7 @@ describe('Messaging API', () => {
       method                         | eventName                   | payload
       ${'addComponentToRegion'}      | ${'ComponentAddedToRegion'} | ${{componentId: 'test-component', componentSpecifier: 'test-specifier', componentProperties: {test: 'value'}, targetComponentId: 'target-component', targetRegionId: 'test-region'}}
       ${'moveComponentToRegion'}     | ${'ComponentMovedToRegion'} | ${{componentId: 'test-component', targetComponentId: 'target-component', targetRegionId: 'target-region', sourceRegionId: 'source-region', sourceComponentId: 'source-component'}}
+      ${'clientReady'}               | ${'ClientReady'}            | ${{clientId: 'test-client'}}
       ${'startComponentDrag'}        | ${'ComponentDragStarted'}   | ${{componentId: 'test-component', x: 100, y: 200}}
       ${'hoverInToComponent'}        | ${'ComponentHoveredIn'}     | ${{componentId: 'test-component'}}
       ${'hoverOutOfComponent'}       | ${'ComponentHoveredOut'}    | ${{componentId: 'test-component'}}
@@ -366,24 +367,26 @@ describe('Messaging API', () => {
     );
 
     describe.each`
-      method                             | eventName                       | payload
-      ${'addComponentToRegion'}          | ${'ComponentAddedToRegion'}     | ${{componentId: 'test-component', componentSpecifier: 'test-specifier', componentProperties: {test: 'value'}, targetComponentId: 'target-component', targetRegionId: 'test-region'}}
-      ${'moveComponentToRegion'}         | ${'ComponentMovedToRegion'}     | ${{componentId: 'test-component', targetComponentId: 'target-component', targetRegionId: 'target-region', sourceRegionId: 'source-region', sourceComponentId: 'source-component'}}
-      ${'startComponentDrag'}            | ${'ComponentDragStarted'}       | ${{componentId: 'test-component', x: 100, y: 200}}
-      ${'hoverInToComponent'}            | ${'ComponentHoveredIn'}         | ${{componentId: 'test-component'}}
-      ${'hoverOutOfComponent'}           | ${'ComponentHoveredOut'}        | ${{componentId: 'test-component'}}
-      ${'selectComponent'}               | ${'ComponentSelected'}          | ${{componentId: 'test-component'}}
-      ${'deselectComponent'}             | ${'ComponentDeselected'}        | ${{componentId: 'test-component'}}
-      ${'deleteComponent'}               | ${'ComponentDeleted'}           | ${{componentId: 'test-component', sourceComponentId: 'source-component', sourceRegionId: 'source-region'}}
-      ${'forwardKeyPress'}               | ${'HostKeyPressed'}             | ${{key: 'ArrowUp'}}
-      ${'notifyClientWindowDragDropped'} | ${'ClientWindowDragDropped'}    | ${{componentId: 'test-component', x: 100, y: 200}}
-      ${'notifyClientWindowDragEntered'} | ${'ClientWindowDragEntered'}    | ${{componentId: 'test-component', x: 100, y: 200}}
-      ${'notifyClientWindowDragMoved'}   | ${'ClientWindowDragMoved'}      | ${{componentId: 'test-component', x: 100, y: 200}}
-      ${'notifyClientWindowDragExited'}  | ${'ClientWindowDragExited'}     | ${{componentId: 'test-component', x: 100, y: 200}}
-      ${'setComponentProperties'}        | ${'ComponentPropertiesChanged'} | ${{componentId: 'test-component', properties: {test: 'value'}}}
-      ${'notifyPageSettingsChanged'}     | ${'PageSettingsChanged'}        | ${{settings: {theme: 'dark'}}}
-      ${'notifyMediaChanged'}            | ${'MediaChangedEvent'}          | ${{}}
-      ${'notifyError'}                   | ${'Error'}                      | ${{message: 'Test error message', code: 'TEST_ERROR'}}
+      method                                 | eventName                        | payload
+      ${'addComponentToRegion'}              | ${'ComponentAddedToRegion'}      | ${{componentId: 'test-component', componentSpecifier: 'test-specifier', componentProperties: {test: 'value'}, targetComponentId: 'target-component', targetRegionId: 'test-region'}}
+      ${'moveComponentToRegion'}             | ${'ComponentMovedToRegion'}      | ${{componentId: 'test-component', targetComponentId: 'target-component', targetRegionId: 'target-region', sourceRegionId: 'source-region', sourceComponentId: 'source-component'}}
+      ${'startComponentDrag'}                | ${'ComponentDragStarted'}        | ${{componentId: 'test-component', x: 100, y: 200}}
+      ${'hoverInToComponent'}                | ${'ComponentHoveredIn'}          | ${{componentId: 'test-component'}}
+      ${'hoverOutOfComponent'}               | ${'ComponentHoveredOut'}         | ${{componentId: 'test-component'}}
+      ${'selectComponent'}                   | ${'ComponentSelected'}           | ${{componentId: 'test-component'}}
+      ${'deselectComponent'}                 | ${'ComponentDeselected'}         | ${{componentId: 'test-component'}}
+      ${'deleteComponent'}                   | ${'ComponentDeleted'}            | ${{componentId: 'test-component', sourceComponentId: 'source-component', sourceRegionId: 'source-region'}}
+      ${'forwardKeyPress'}                   | ${'HostKeyPressed'}              | ${{key: 'ArrowUp'}}
+      ${'notifyClientWindowDragDropped'}     | ${'ClientWindowDragDropped'}     | ${{componentId: 'test-component', x: 100, y: 200}}
+      ${'notifyClientWindowDragEntered'}     | ${'ClientWindowDragEntered'}     | ${{componentId: 'test-component', x: 100, y: 200}}
+      ${'notifyClientWindowDragMoved'}       | ${'ClientWindowDragMoved'}       | ${{componentId: 'test-component', x: 100, y: 200}}
+      ${'notifyClientWindowDragExited'}      | ${'ClientWindowDragExited'}      | ${{componentId: 'test-component', x: 100, y: 200}}
+      ${'setComponentProperties'}            | ${'ComponentPropertiesChanged'}  | ${{componentId: 'test-component', properties: {test: 'value'}}}
+      ${'notifyClientWindowBoundsHoverOver'} | ${'ClientWindowBoundsHoverOver'} | ${{x: 100, y: 200}}
+      ${'notifyClientWindowBoundsHoverOut'}  | ${'ClientWindowBoundsHoverOut'}  | ${{x: 100, y: 200}}
+      ${'notifyPageSettingsChanged'}         | ${'PageSettingsChanged'}         | ${{settings: {theme: 'dark'}}}
+      ${'notifyMediaChanged'}                | ${'MediaChangedEvent'}           | ${{}}
+      ${'notifyError'}                       | ${'Error'}                       | ${{message: 'Test error message', code: 'TEST_ERROR'}}
     `(
       'when $method is called on the host',
       ({

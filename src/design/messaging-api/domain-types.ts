@@ -47,6 +47,38 @@ export type DefaultForwardedKeys =
   | 'ArrowRight'
   | 'Delete';
 
+/**
+ * Information about a component on the page.
+ */
+export interface ComponentInfo {
+  /**
+   *  The unique id of the component.
+   */
+  id: string;
+  /**
+   * The component type.
+   */
+  type: string;
+}
+
+/**
+ * Information about a component type.
+ */
+export interface ComponentType {
+  /**
+   * The unique id of the component type.
+   */
+  id: string;
+  /**
+   * The name of the component type.
+   */
+  name: string;
+  /**
+   * The image of the component type.
+   */
+  image: string;
+}
+
 /// ////////////////////////////////////////////////////////////////
 /// Host Events - Events that are subscribed to on the host side. //
 /// ////////////////////////////////////////////////////////////////
@@ -66,6 +98,7 @@ export type DefaultForwardedKeys =
  * sequenceDiagram
  *     Client->>Host: ClientInitializedEvent
  *     Host->>Client: ClientAcknowledgedEvent
+ *     Client->>Host: ClientReadyEvent
  *     activate Client
  *     Client->>Host: ComponentSelectedEvent
  *     Host->>Client: ComponentPropertiesChangedEvent
@@ -79,6 +112,7 @@ export type DefaultForwardedKeys =
  *     Client-->>Host: ClientInitializedEvent
  *     Client->>Host: ClientInitializedEvent
  *     Host->>Client: ClientAcknowledgedEvent
+ *     Client->>Host: ClientReadyEvent
  *     activate Client
  *     Client->>Host: ComponentSelectedEvent
  *     Host->>Client: ComponentPropertiesChangedEvent
@@ -99,6 +133,14 @@ export interface ClientInitializedEvent extends WithBaseEvent {
    */
   forwardedKeys?: string[];
   // Put any client-specific config here
+}
+
+export interface ClientReady extends WithBaseEvent {
+  eventType: 'ClientReady';
+  /**
+   * The id to use for the client.
+   */
+  clientId: string;
 }
 
 /**
@@ -129,6 +171,8 @@ export interface ClientDisconnectedEvent extends WithBaseEvent {
 export interface ClientAcknowledgedEvent extends WithBaseEvent {
   eventType: 'ClientAcknowledged';
   // Any specifics we want the client to know upon initialization should live here.
+  components: Record<string, ComponentInfo>;
+  componentTypes: Record<string, ComponentType>;
 }
 /**
  * Emits when dragging from the host enters the client window.

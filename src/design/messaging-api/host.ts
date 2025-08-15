@@ -10,8 +10,13 @@ import type {
   ClientEventNameMapping,
   HostEventNameMapping,
   WithMeta,
+  ConfigFactory,
 } from './api-types.js';
 import {Messenger} from './messenger.js';
+import {Deferred} from './deferred.js';
+
+const defaultConfigFactory: ConfigFactory = () =>
+  Promise.resolve({components: {}, componentTypes: {}});
 /**
  * Factory function to create a HostApi instance.
  *
@@ -19,12 +24,18 @@ import {Messenger} from './messenger.js';
  * @param {HostConfiguration} config - Configuration object for the host API.
  * @returns {HostApi} An instance of the HostApi interface.
  */
-export function createHostApi({emitter, id}: HostConfiguration): HostApi {
+export function createHostApi({
+  emitter,
+  id,
+  logger,
+}: HostConfiguration): HostApi {
+  let connectDeferred: Deferred<boolean>;
   const messenger = new Messenger<HostEventNameMapping, ClientEventNameMapping>(
     {
       source: 'host',
       id,
       emitter,
+      logger,
     }
   );
 
@@ -57,18 +68,36 @@ export function createHostApi({emitter, id}: HostConfiguration): HostApi {
       'ClientWindowBoundsHoverOut'
     ),
     notifyError: messenger.toEmitter('Error'),
-    connect: () =>
-      new Promise<void>(resolve => {
-        messenger.connect();
-        messenger.on('ClientInitialized', event => {
-          if (event.meta.clientId !== messenger.getRemoteId()) {
-            messenger.setRemoteId(event.meta.clientId as string);
-            messenger.emit('ClientAcknowledged', {});
-          }
+    connect: ({
+      configFactory = defaultConfigFactory,
+    }: {
+      configFactory: ConfigFactory;
+    }) => {
+      connectDeferred?.resolve(false);
+      connectDeferred = new Deferred<boolean>();
+      messenger.connect();
+      messenger.on('ClientInitialized', event => {
+        if (event.meta.clientId !== messenger.getRemoteId()) {
+          messenger.setRemoteId(event.meta.clientId as string);
 
-          resolve();
-        });
-      }),
+          configFactory()
+            .then(config => {
+              messenger.emit('ClientAcknowledged', config);
+
+              return messenger.toPromise('ClientReady');
+            })
+            .then(({clientId}) => {
+              if (clientId !== messenger.getRemoteId()) {
+                throw new Error('Client id mismatch');
+              }
+            })
+            .then(() => connectDeferred.resolve(true))
+            .catch(error => connectDeferred.reject(error));
+        }
+      });
+
+      return connectDeferred.promise;
+    },
     on: <TEvent extends keyof HostEventNameMapping>(
       event: TEvent,
       handler: (
@@ -76,7 +105,10 @@ export function createHostApi({emitter, id}: HostConfiguration): HostApi {
       ) => void
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => messenger.on(event as any, handler as any),
-    disconnect: () => messenger.disconnect(),
+    disconnect: () => {
+      messenger.disconnect();
+      connectDeferred?.resolve(false);
+    },
     getRemoteId: () => messenger.getRemoteId(),
   };
 }
