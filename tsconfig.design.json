@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
+    "allowJs": true,
     "outDir": "lib/design/esm",
     "rootDir": "src/design",
     "target": "esnext",
     "module": "esnext",
     "declaration": true,
-    "moduleResolution": "node16",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "strict": true,

@@ -9,8 +9,11 @@
 export {
   PageDesignerProvider,
   usePageDesignerMode,
-} from './context/PageDesignerProvider.js';
+} from './context/PageDesignerProvider';
+
+export {useDesignContext} from './context/DesignContext';
+export type {DesignContextType} from './context/DesignContext';
 
 // Components
-export {createReactComponentDesignDecorator} from './components/ComponentDecorator.js';
-export {createReactRegionDesignDecorator} from './components/RegionDecorator.js';
+export {createReactComponentDesignDecorator} from './components/ComponentDecorator';
+export {createReactRegionDesignDecorator} from './components/RegionDecorator';

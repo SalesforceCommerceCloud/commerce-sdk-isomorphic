@@ -8,15 +8,12 @@ import React from 'react';
 import {useDesignContext} from '../context/DesignContext';
 import {ComponentDecoratorProps} from './component.types';
 
-export const createReactRegionDesignDecorator =
-  <TProps extends ComponentDecoratorProps>(
-    Region: React.ComponentType<TProps>
-  ): ((props: TProps) => JSX.Element) =>
-  (props: TProps) => {
-    const {id, name, children, ...componentProps} = props;
-
-    const designContext = useDesignContext();
-    const isDesignMode = designContext?.isDesignMode;
+export function createReactRegionDesignDecorator<TProps>(
+  Region: React.ComponentType<TProps>
+): (props: ComponentDecoratorProps<TProps>) => JSX.Element {
+  return (props: ComponentDecoratorProps<TProps>) => {
+    const {children, ...componentProps} = props;
+    const {isDesignMode} = useDesignContext();
 
     if (!isDesignMode) {
       // eslint-disable-next-line react/jsx-props-no-spreading
@@ -26,7 +23,8 @@ export const createReactRegionDesignDecorator =
     return (
       <div className="pd-region">
         {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-        <Region {...componentProps}>{children}</Region>
+        <Region {...(componentProps as TProps)}>{children}</Region>
       </div>
     );
   };
+}
