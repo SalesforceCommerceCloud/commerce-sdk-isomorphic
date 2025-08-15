@@ -116,23 +116,6 @@ export interface ClientDisconnectedEvent extends WithBaseEvent {
   clientId: string;
 }
 
-/**
- * Emits when the clients window is scrolled.
- * @target host
- * @group Events
- */
-export interface WindowScrollChangedEvent extends WithBaseEvent {
-  eventType: 'WindowScrollChanged';
-  /**
-   * The horizontal scroll position of the window.
-   */
-  scrollX: number;
-  /**
-   * The vertical scroll position of the window.
-   */
-  scrollY: number;
-}
-
 /// /////////////////////////////////////////////////////////////////
 // Client Events - Events that are subscribed on the client side. //
 /// /////////////////////////////////////////////////////////////////
@@ -243,6 +226,23 @@ export interface MediaChangedEvent extends WithBaseEvent {
 /// ////////////////////////////////////////////////////////////////////////////
 // Isomorphic Events - Events that are subscribed to on both client and host side. //
 /// ////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Emits when the clients window is scrolled.
+ * @target host
+ * @group Events
+ */
+export interface WindowScrollChangedEvent extends WithBaseEvent {
+  eventType: 'WindowScrollChanged';
+  /**
+   * The horizontal scroll position of the window.
+   */
+  scrollX?: number;
+  /**
+   * The vertical scroll position of the window.
+   */
+  scrollY?: number;
+}
 
 /**
  * Emits when a component is moved to a different region of a component.
@@ -362,7 +362,7 @@ export interface ComponentAddedToRegionEvent<
 export interface ComponentDragStartedEvent
   extends WithBaseEvent,
     WithComponentId,
-    WithClientVector {
+    Partial<WithClientVector> {
   eventType: 'ComponentDragStarted';
 }
 /**

@@ -54,6 +54,7 @@ export interface IsomorphicEventNameMapping {
   ComponentAddedToRegion: Domain.ComponentAddedToRegionEvent;
   ComponentDeleted: Domain.ComponentDeletedEvent;
   ComponentMovedToRegion: Domain.ComponentMovedToRegionEvent;
+  WindowScrollChanged: Domain.WindowScrollChangedEvent;
   Error: Domain.ErrorEvent;
 }
 
@@ -63,7 +64,6 @@ export interface IsomorphicEventNameMapping {
  */
 export interface HostEventNameMapping extends IsomorphicEventNameMapping {
   ClientInitialized: Domain.ClientInitializedEvent;
-  WindowScrollChanged: Domain.WindowScrollChangedEvent;
 }
 
 /**
@@ -387,6 +387,26 @@ export interface IsomorphicApi {
    * ```
    */
   notifyError(event: Omit<Domain.ErrorEvent, 'eventType'>): void;
+
+  /**
+   * Notifies the host that the client window scroll position has changed.
+   *
+   * @param event - The window scroll change event containing the new scroll positions
+   * @param event.scrollX - The horizontal scroll position of the window
+   * @param event.scrollY - The vertical scroll position of the window
+   * @stability development
+   *
+   * @example
+   * ```typescript
+   * api.notifyWindowScrollChanged({
+   *   scrollX: 100,
+   *   scrollY: 200
+   * });
+   * ```
+   */
+  notifyWindowScrollChanged(
+    event: Partial<Omit<Domain.WindowScrollChangedEvent, 'eventType'>>
+  ): void;
   /**
    * Gets the id of the remote side of the connection.
    * @returns The id of the remote side of the connection.
@@ -438,26 +458,6 @@ export interface ClientApi extends IsomorphicApi {
     event: 'Event',
     handler: (handlerEvent: Readonly<WithMeta & ClientMessage>) => void
   ): () => void;
-
-  /**
-   * Notifies the host that the client window scroll position has changed.
-   *
-   * @param event - The window scroll change event containing the new scroll positions
-   * @param event.scrollX - The horizontal scroll position of the window
-   * @param event.scrollY - The vertical scroll position of the window
-   * @stability development
-   *
-   * @example
-   * ```typescript
-   * api.notifyWindowScrollChanged({
-   *   scrollX: 100,
-   *   scrollY: 200
-   * });
-   * ```
-   */
-  notifyWindowScrollChanged(
-    event: Omit<Domain.WindowScrollChangedEvent, 'eventType'>
-  ): void;
 }
 
 export interface HostApi extends IsomorphicApi {

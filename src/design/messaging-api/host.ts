@@ -47,6 +47,7 @@ export function createHostApi({emitter, id}: HostConfiguration): HostApi {
     notifyClientWindowDragMoved: messenger.toEmitter('ClientWindowDragMoved'),
     notifyClientWindowDragExited: messenger.toEmitter('ClientWindowDragExited'),
     setComponentProperties: messenger.toEmitter('ComponentPropertiesChanged'),
+    notifyWindowScrollChanged: messenger.toEmitter('WindowScrollChanged'),
     notifyPageSettingsChanged: messenger.toEmitter('PageSettingsChanged'),
     notifyMediaChanged: () => messenger.emit('MediaChangedEvent', {}),
     notifyError: messenger.toEmitter('Error'),
