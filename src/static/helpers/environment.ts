@@ -24,6 +24,7 @@ export const globalObject = isBrowser ? window : globalThis;
 
 export const hasFetchAvailable = typeof globalObject.fetch === 'function';
 
+// TODO: Remove this function in the next major version
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 export const fetch: FetchFunction = (() => {
   // Difficult to test in node environment
