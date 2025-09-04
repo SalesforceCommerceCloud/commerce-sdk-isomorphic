@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v4.1.0
+
+### Fixes
+- Use native node fetch available in node 18+ instead of `node-fetch` polyfill [#214](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/214)
+
 ## v4.0.0
 
 ### API Versions
