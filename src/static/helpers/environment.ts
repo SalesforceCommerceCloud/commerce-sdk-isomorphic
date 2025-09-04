@@ -20,7 +20,7 @@ export const isNode =
   typeof process.versions === 'object' &&
   typeof process.versions.node === 'string';
 
-export const globalObject = isBrowser ? window : globalThis || global;
+export const globalObject = isBrowser ? window : globalThis;
 
 export const hasFetchAvailable = typeof globalObject.fetch === 'function';
 
