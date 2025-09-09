@@ -41,7 +41,7 @@
     "start": "HTTPS=true react-scripts start",
     "pretest": "yarn run lint && yarn run lint:style && depcheck && yarn run check:size",
     "test": "yarn run check:types && yarn run test:unit && CI=true yarn run test:react",
-    "test:react": "react-scripts test --env=jest-environment-jsdom-sixteen src/environment",
+    "test:react": "react-scripts test --env=jest-environment-jsdom-sixteen src/environment --setupFilesAfterEnv ./src/test/setupTests.ts",
     "test:unit": "jest --coverage --testPathIgnorePatterns node_modules src/environment --silent",
     "updateApis": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/updateApis.ts && yarn diffApis"
   },
@@ -69,27 +69,6 @@
       "last 1 safari version"
     ]
   },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/static/**/*.{js,jsx,ts,tsx}",
-      "scripts/**/*.{js,jsx,ts,tsx}",
-      "!scripts/generate.ts",
-      "!scripts/updateApis.ts",
-      "!scripts/generateVersionTable.ts",
-      "!<rootDir>/node_modules/"
-    ],
-    "coverageReporters": [
-      "text"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 90,
-        "functions": 90,
-        "lines": 90,
-        "statements": 90
-      }
-    }
-  },
   "resolutions": {
     "**/@npmcli/fs": "<1.1.0",
     "**/@oclif/command": "<=1.8.3",
@@ -100,7 +79,6 @@
   },
   "dependencies": {
     "nanoid": "^3.3.8",
-    "node-fetch": "2.6.13",
     "seedrandom": "^3.0.5"
   },
   "devDependencies": {
@@ -143,6 +121,7 @@
     "jest-environment-jsdom-sixteen": "1.0.3",
     "lint-staged": "10.5.4",
     "nock": "^13.2.8",
+    "node-fetch": "2.6.13",
     "npm-pack-all": "^1.12.7",
     "postcss-preset-env": "6.7.1",
     "prettier": "^2.7.1",
