@@ -2,6 +2,7 @@
   "name": "commerce-sdk-isomorphic",
   "version": "4.0.0",
   "private": false,
+  "sideEffects": false,
   "description": "Salesforce Commerce SDK Isomorphic",
   "bugs": {
     "url": "https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/issues"
@@ -12,7 +13,7 @@
   },
   "license": "BSD-3-Clause",
   "main": "lib/index.cjs.js",
-  "module": "lib/index.esm.js",
+  "module": "lib/index.js",
   "style": "lib/default.css",
   "files": [
     "lib",

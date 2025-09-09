@@ -407,6 +407,7 @@ const outputs = [
   //   format: 'umd',
   // },
   {
+    dir: 'lib',
     file: process.env.REACT_APP_PKG_MODULE || pkg.module,
     format: 'es',
   },
