@@ -11,6 +11,18 @@
     "url": "git+https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic.git"
   },
   "license": "BSD-3-Clause",
+  "exports": {
+    "./design": {
+      "import": "./lib/design/esm/index.js",
+      "require": "./lib/design/cjs/index.js",
+      "types": "./lib/design/esm/index.d.ts"
+    },
+    "./design/react": {
+      "import": "./lib/design/esm/react/index.js",
+      "require": "./lib/design/cjs/react/index.js",
+      "types": "./lib/design/esm/react/index.d.ts"
+    }
+  },
   "main": "lib/index.cjs.js",
   "module": "lib/index.esm.js",
   "style": "lib/default.css",
@@ -21,6 +33,7 @@
   ],
   "scripts": {
     "build": "react-scripts build",
+    "build:design": "tsc -p tsconfig.design.json && tsc -p tsconfig.design.json --module commonjs --outDir lib/design/cjs",
     "build:lib": "rollup -c",
     "check:size": "npm-pack-all --output commerce-sdk-isomorphic-with-deps.tgz && bundlesize",
     "check:types": "tsc --noEmit",
