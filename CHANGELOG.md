@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v4.1.0
+
+### Enchancements
+
+- Support Tree Shaking [#217](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/217) 
+
 ## v4.0.0
 
 ### API Versions
