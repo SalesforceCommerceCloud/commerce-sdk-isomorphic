@@ -2,7 +2,6 @@
   "name": "commerce-sdk-isomorphic",
   "version": "4.0.0",
   "private": false,
-  "sideEffects": false,
   "description": "Salesforce Commerce SDK Isomorphic",
   "bugs": {
     "url": "https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/issues"
@@ -12,6 +11,7 @@
     "url": "git+https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic.git"
   },
   "license": "BSD-3-Clause",
+  "sideEffects": false,
   "main": "lib/index.cjs.js",
   "module": "lib/index.js",
   "style": "lib/default.css",
@@ -22,7 +22,7 @@
   ],
   "scripts": {
     "build": "react-scripts build",
-    "build:lib": "rollup -c",
+    "build:lib": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/generateFileList.ts && rollup -c",
     "check:size": "npm-pack-all --output commerce-sdk-isomorphic-with-deps.tgz && bundlesize",
     "check:types": "tsc --noEmit",
     "ci": "rm -rf node_modules && yarn install",
