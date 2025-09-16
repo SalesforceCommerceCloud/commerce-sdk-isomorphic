@@ -86,9 +86,10 @@ const cjsConfig = {
 };
 
 const esmConfig = {
-  input: esmInputs,
+  input: 'src/lib/index.ts',
   output: {
-    dir: 'lib',
+    file: process.env.REACT_APP_PKG_MODULE || pkg.module,
+    // dir: 'lib',
     format: 'es',
     name: 'CommerceSdk',
     globals: {
@@ -100,4 +101,70 @@ const esmConfig = {
   plugins: sharedPlugins,
 };
 
-export default [cjsConfig, esmConfig];
+// TODO: make this dynamic
+// API configurations for individual bundles
+const apiNames = [
+  'shopperBaskets',
+  'shopperBasketsv2', 
+  'shopperConsents',
+  'shopperContext',
+  'shopperCustomers',
+  'shopperExperience',
+  'shopperGiftCertificates',
+  'shopperLogin',
+  'shopperOrders',
+  'shopperProducts',
+  'shopperPromotions',
+  'shopperSearch',
+  'shopperSeo',
+  'shopperStores'
+];
+
+// TODO: make this dynamic
+// TODO: see if we can share dependencies between API bundles
+// Common dependencies for all APIs
+const commonDependencies = [
+  {input: 'src/lib/clientConfig.ts', file: 'lib/clientConfig.js'},
+  {input: 'src/lib/config.ts', file: 'lib/config.js'},
+  {input: 'src/lib/responseError.ts', file: 'lib/responseError.js'},
+  {input: 'src/lib/templateUrl.ts', file: 'lib/templateUrl.js'},
+  {input: 'src/lib/version.ts', file: 'lib/version.js'},
+  {input: 'src/lib/helpers/index.ts', file: 'lib/helpers.js'},
+];
+
+// Helpers configuration - bundle all common dependencies into a single file
+const commonDependenciesConfig = commonDependencies.map(dependency => ({
+  input: dependency.input,
+  output: {
+    file: dependency.file,
+    format: 'es',
+    name: 'CommerceSdkCommonDependencies',
+    globals: {
+      react: 'React',
+      'react-dom': 'ReactDOM',
+    },
+    exports: 'named',
+  },
+  plugins: sharedPlugins,
+  external: [], // Don't externalize any dependencies for common dependencies bundle - TODO: check if this is needed
+}));
+
+// Generate individual API configurations
+const apiConfigs = apiNames.map(apiName => ({
+  input: `src/lib/${apiName}/index.ts`,
+  output: {
+    file: `lib/${apiName}.js`,
+    format: 'es',
+    name: `CommerceSdk${apiName.charAt(0).toUpperCase() + apiName.slice(1)}`,
+    globals: {
+      react: 'React',
+      'react-dom': 'ReactDOM',
+    },
+    exports: 'named',
+  },
+  plugins: sharedPlugins,
+  external: [], // Don't externalize any dependencies for individual API bundles - TODO: check if we can share dependencies with API bundles
+}));
+
+export default [cjsConfig, esmConfig, ...commonDependenciesConfig, ...apiConfigs];
+

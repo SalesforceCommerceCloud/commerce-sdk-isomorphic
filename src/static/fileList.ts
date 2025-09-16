@@ -16,6 +16,7 @@
 const esmInputs = [
   'src/lib/clientConfig.ts',
   'src/lib/config.ts',
+  'src/lib/fileList.ts',
   'src/lib/helpers/customApi.ts',
   'src/lib/helpers/environment.ts',
   'src/lib/helpers/fetchHelper.ts',
@@ -394,6 +395,6 @@ const esmInputs = [
   'src/lib/version.ts',
 ];
 
-// Total files: 378
+// Total files: 379
 
 export default esmInputs;

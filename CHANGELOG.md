@@ -6,6 +6,15 @@
 
 - Use native node fetch available in node 18+ instead of `node-fetch` polyfill [#214](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/214)
 - Support Tree Shaking [#217](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/217) 
+- Support Multiple entry points []
+
+TODO:
+- See if you can reduce duplicated code in generated lib between APIs
+- Go through rollup documentation and see if there's any further optimizations that can be done
+- See if you can remove any unnecessary polyfills for ESM
+- Reduce if/else statements in API classes by removing assignments of non required parameters
+  - test before and after
+- Potentially add named imports
 
 ## v4.0.0
 
