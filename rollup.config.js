@@ -19,7 +19,7 @@ import ts from 'rollup-plugin-ts';
 import pkg from './package.json';
 // this file is generated when the `yarn build:lib` script is run
 // eslint-disable-next-line import/extensions
-import esmInputs from './src/static/fileList.ts';
+import { apiNames, commonDependencies } from './scripts/fileList.ts';
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
@@ -101,44 +101,13 @@ const esmConfig = {
   plugins: sharedPlugins,
 };
 
-// TODO: make this dynamic
-// API configurations for individual bundles
-const apiNames = [
-  'shopperBaskets',
-  'shopperBasketsv2', 
-  'shopperConsents',
-  'shopperContext',
-  'shopperCustomers',
-  'shopperExperience',
-  'shopperGiftCertificates',
-  'shopperLogin',
-  'shopperOrders',
-  'shopperProducts',
-  'shopperPromotions',
-  'shopperSearch',
-  'shopperSeo',
-  'shopperStores'
-];
 
-// TODO: make this dynamic
-// TODO: see if we can share dependencies between API bundles
-// Common dependencies for all APIs
-const commonDependencies = [
-  {input: 'src/lib/clientConfig.ts', file: 'lib/clientConfig.js'},
-  {input: 'src/lib/config.ts', file: 'lib/config.js'},
-  {input: 'src/lib/responseError.ts', file: 'lib/responseError.js'},
-  {input: 'src/lib/templateUrl.ts', file: 'lib/templateUrl.js'},
-  {input: 'src/lib/version.ts', file: 'lib/version.js'},
-  {input: 'src/lib/helpers/index.ts', file: 'lib/helpers.js'},
-];
-
-// Helpers configuration - bundle all common dependencies into a single file
 const commonDependenciesConfig = commonDependencies.map(dependency => ({
   input: dependency.input,
   output: {
     file: dependency.file,
     format: 'es',
-    name: 'CommerceSdkCommonDependencies',
+    name: 'CommerceSdkCommonDependencies', // TODO: potentially make this dynamic
     globals: {
       react: 'React',
       'react-dom': 'ReactDOM',
@@ -146,7 +115,7 @@ const commonDependenciesConfig = commonDependencies.map(dependency => ({
     exports: 'named',
   },
   plugins: sharedPlugins,
-  external: [], // Don't externalize any dependencies for common dependencies bundle - TODO: check if this is needed
+  external: [], // Don't externalize any dependencies for common dependencies bundle, ensures logic is self contained
 }));
 
 // Generate individual API configurations
@@ -163,7 +132,9 @@ const apiConfigs = apiNames.map(apiName => ({
     exports: 'named',
   },
   plugins: sharedPlugins,
-  external: [], // Don't externalize any dependencies for individual API bundles - TODO: check if we can share dependencies with API bundles
+  // Don't externalize any dependencies for individual API bundles, 
+  // ensures all logic is self contained within the API bundle and can run without any external dependencies
+  external: [],
 }));
 
 export default [cjsConfig, esmConfig, ...commonDependenciesConfig, ...apiConfigs];

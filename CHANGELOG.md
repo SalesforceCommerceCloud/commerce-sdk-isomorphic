@@ -14,7 +14,14 @@ TODO:
 - See if you can remove any unnecessary polyfills for ESM
 - Reduce if/else statements in API classes by removing assignments of non required parameters
   - test before and after
-- Potentially add named imports
+- See if you can import helpers via subpath like so:
+
+```typescript
+// ideal
+import { helpers } from 'commerce-sdk-isomorphic/helpers';
+// current, not as ideal
+import * as helpers from 'commerce-sdk-isomorphic/helpers';
+```
 
 ## v4.0.0
 

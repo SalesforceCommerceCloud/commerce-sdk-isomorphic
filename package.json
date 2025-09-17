@@ -12,9 +12,6 @@
   },
   "license": "BSD-3-Clause",
   "sideEffects": false,
-  "main": "lib/index.cjs.js",
-  "module": "lib/index.esm.js",
-  "style": "lib/default.css",
   "exports": {
     ".": {
       "import": "./lib/index.esm.js",
@@ -42,6 +39,9 @@
     "./version": "./lib/version.js",
     "./package.json": "./package.json"
   },
+  "main": "lib/index.cjs.js",
+  "module": "lib/index.esm.js",
+  "style": "lib/default.css",
   "files": [
     "lib",
     "LICENSE.txt",
@@ -190,7 +190,7 @@
     },
     {
       "path": "commerce-sdk-isomorphic-with-deps.tgz",
-      "maxSize": "1150 kB"
+      "maxSize": "1110 kB"
     }
   ],
   "proxy": "https://SHORTCODE.api.commercecloud.salesforce.com"
