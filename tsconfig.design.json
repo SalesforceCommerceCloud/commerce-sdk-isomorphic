@@ -5,7 +5,7 @@
     "target": "esnext",
     "module": "esnext",
     "declaration": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "strict": true,

@@ -93,7 +93,8 @@
           "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
           "no-use-before-define": "off",
           "import/prefer-default-export": "off",
-          "@typescript-eslint/no-use-before-define": "error"
+          "@typescript-eslint/no-use-before-define": "error",
+          "import/no-unresolved": "off"
         }
       },
       {

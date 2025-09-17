@@ -4,5 +4,8 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-export * from './componentRegistry.js';
-export * from './messaging-api/index.js';
+export {createClientApi} from './client.js';
+export {createHostApi} from './host.js';
+
+export * from './api-types.js';
+export * from './domain-types.js';
