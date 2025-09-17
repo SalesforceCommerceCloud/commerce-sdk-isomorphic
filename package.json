@@ -11,8 +11,9 @@
     "url": "git+https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic.git"
   },
   "license": "BSD-3-Clause",
+  "sideEffects": false,
   "main": "lib/index.cjs.js",
-  "module": "lib/index.esm.js",
+  "module": "lib/index.js",
   "style": "lib/default.css",
   "files": [
     "lib",
@@ -21,7 +22,7 @@
   ],
   "scripts": {
     "build": "react-scripts build",
-    "build:lib": "rollup -c",
+    "build:lib": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/generateFileList.ts && rollup -c",
     "check:size": "npm-pack-all --output commerce-sdk-isomorphic-with-deps.tgz && bundlesize",
     "check:types": "tsc --noEmit",
     "ci": "rm -rf node_modules && yarn install",
@@ -162,7 +163,7 @@
     },
     {
       "path": "commerce-sdk-isomorphic-with-deps.tgz",
-      "maxSize": "1096 kB"
+      "maxSize": "1150 kB"
     }
   ],
   "proxy": "https://SHORTCODE.api.commercecloud.salesforce.com"

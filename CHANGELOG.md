@@ -2,8 +2,10 @@
 
 ## v4.1.0
 
-### Fixes
+### Enchancements
+
 - Use native node fetch available in node 18+ instead of `node-fetch` polyfill [#214](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/214)
+- Support Tree Shaking [#217](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/217) 
 
 ## v4.0.0
 

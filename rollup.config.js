@@ -17,19 +17,11 @@ import postcssPresetEnv from 'postcss-preset-env';
 import {terser} from 'rollup-plugin-terser';
 import ts from 'rollup-plugin-ts';
 import pkg from './package.json';
+// this file is generated when the `yarn build:lib` script is run
+// eslint-disable-next-line import/extensions
+import esmInputs from './src/static/fileList.ts';
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
-
-const outputs = [
-  {
-    file: process.env.REACT_APP_PKG_MAIN || pkg.main,
-    format: 'umd',
-  },
-  {
-    file: process.env.REACT_APP_PKG_MODULE || pkg.module,
-    format: 'es',
-  },
-];
 
 const postcssPlugins = [
   postcssPresetEnv({
@@ -39,11 +31,50 @@ const postcssPlugins = [
   autoprefixer(),
 ];
 
-const config = outputs.map(({file, format}) => ({
+// TODO: reduce bundle size by modifying shared plugins to remove unecessary polyfills
+// W-19605045
+const sharedPlugins = [
+  peerDepsExternal(),
+  includePaths({
+    include: {},
+    paths: ['src'],
+    // crypto is a node built-in, but rollup doesn't seem to know that?
+    external: ['crypto', ...Object.keys(pkg.dependencies)],
+    extensions: ['.js', '.json', '.html'],
+  }),
+  stylelint({
+    throwOnError: true,
+  }),
+  postcss({
+    extract: process.env.REACT_APP_PKG_STYLE || pkg.style,
+    inline: false,
+    plugins: postcssPlugins,
+  }),
+  ts({
+    transpiler: 'babel',
+    // Setting noEmit directly in the tsconfig triggers a react testing bug so we override it here
+    tsconfig: resolvedConfig => ({...resolvedConfig, noEmit: false}),
+    exclude: 'node_modules/**',
+  }),
+  babel({
+    extensions,
+    babelHelpers: 'bundled',
+    exclude: 'node_modules/**',
+  }),
+  resolve({
+    extensions,
+    browser: true,
+  }),
+  commonjs(),
+  terser(),
+  filesize(),
+];
+
+const cjsConfig = {
   input: 'src/lib/index.ts',
   output: {
-    file,
-    format,
+    file: process.env.REACT_APP_PKG_MAIN || pkg.main,
+    format: 'umd',
     name: 'CommerceSdk',
     globals: {
       react: 'React',
@@ -51,42 +82,22 @@ const config = outputs.map(({file, format}) => ({
     },
     exports: 'named',
   },
-  plugins: [
-    peerDepsExternal(),
-    includePaths({
-      include: {},
-      paths: ['src'],
-      // crypto is a node built-in, but rollup doesn't seem to know that?
-      external: ['crypto', ...Object.keys(pkg.dependencies)],
-      extensions: ['.js', '.json', '.html'],
-    }),
-    stylelint({
-      throwOnError: true,
-    }),
-    postcss({
-      extract: process.env.REACT_APP_PKG_STYLE || pkg.style,
-      inline: false,
-      plugins: postcssPlugins,
-    }),
-    ts({
-      transpiler: 'babel',
-      // Setting noEmit directly in the tsconfig triggers a react testing bug so we override it here
-      tsconfig: resolvedConfig => ({...resolvedConfig, noEmit: false}),
-      exclude: 'node_modules/**',
-    }),
-    babel({
-      extensions,
-      babelHelpers: 'bundled',
-      exclude: 'node_modules/**',
-    }),
-    resolve({
-      extensions,
-      browser: true,
-    }),
-    commonjs(),
-    terser(),
-    filesize(),
-  ],
-}));
+  plugins: sharedPlugins,
+};
 
-export default config;
+const esmConfig = {
+  input: esmInputs,
+  output: {
+    dir: 'lib',
+    format: 'es',
+    name: 'CommerceSdk',
+    globals: {
+      react: 'React',
+      'react-dom': 'ReactDOM',
+    },
+    exports: 'named',
+  },
+  plugins: sharedPlugins,
+};
+
+export default [cjsConfig, esmConfig];
