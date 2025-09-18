@@ -151,8 +151,8 @@ export class Messenger<TInMapping, TOutMapping> {
    */
   toEmitter<TEvent extends keyof TOutMapping>(
     eventName: TEvent
-  ): (event: TOutMapping[TEvent]) => void {
-    return (event: TOutMapping[TEvent]) => {
+  ): (event: Omit<TOutMapping[TEvent], 'eventType'>) => void {
+    return (event: Omit<TOutMapping[TEvent], 'eventType'>) => {
       this.emit(eventName, event as unknown as Record<string, unknown>);
     };
   }
