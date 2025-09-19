@@ -42,5 +42,5 @@ const commonDependencies = [
 // Total APIs: 15
 // Total common dependencies: 5
 
-export { apiNames, commonDependencies };
-export default { apiNames, commonDependencies };
+export {apiNames, commonDependencies};
+export default {apiNames, commonDependencies};

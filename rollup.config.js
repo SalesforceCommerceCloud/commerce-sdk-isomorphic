@@ -19,7 +19,7 @@ import ts from 'rollup-plugin-ts';
 import pkg from './package.json';
 // this file is generated when the `yarn build:lib` script is run
 // eslint-disable-next-line import/extensions
-import { apiNames, commonDependencies } from './scripts/fileList.ts';
+import {apiNames, commonDependencies} from './scripts/fileList.ts';
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
@@ -101,7 +101,6 @@ const esmConfig = {
   plugins: sharedPlugins,
 };
 
-
 const commonDependenciesConfig = commonDependencies.map(dependency => ({
   input: dependency.input,
   output: {
@@ -132,10 +131,14 @@ const apiConfigs = apiNames.map(apiName => ({
     exports: 'named',
   },
   plugins: sharedPlugins,
-  // Don't externalize any dependencies for individual API bundles, 
+  // Don't externalize any dependencies for individual API bundles,
   // ensures all logic is self contained within the API bundle and can run without any external dependencies
   external: [],
 }));
 
-export default [cjsConfig, esmConfig, ...commonDependenciesConfig, ...apiConfigs];
-
+export default [
+  cjsConfig,
+  esmConfig,
+  ...commonDependenciesConfig,
+  ...apiConfigs,
+];

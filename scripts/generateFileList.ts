@@ -17,15 +17,15 @@ function generateFileList(): void {
 
   // Find all directories in src/lib (these are the API names)
   const apiNames: string[] = [];
-  const commonDependencies: Array<{input: string, file: string}> = [];
+  const commonDependencies: Array<{input: string; file: string}> = [];
 
   try {
     const items = fs.readdirSync(srcLibPath);
-    
+
     items.forEach((item: string) => {
       const fullPath = path.join(srcLibPath, item);
       const fileStats = fs.statSync(fullPath);
-      
+
       if (fileStats.isDirectory()) {
         // Check if this directory has an index.ts file (API directories)
         const indexPath = path.join(fullPath, 'index.ts');
@@ -36,7 +36,7 @@ function generateFileList(): void {
         // These are common dependency files (exclude index.ts)
         commonDependencies.push({
           input: `src/lib/${item}`,
-          file: `lib/${item.replace('.ts', '.js')}`
+          file: `lib/${item.replace('.ts', '.js')}`,
         });
       }
     });
@@ -71,7 +71,9 @@ ${apiNames.map(name => `  '${name}'`).join(',\n')},
 ];
 
 const commonDependencies = [
-${commonDependencies.map(dep => `  {input: '${dep.input}', file: '${dep.file}'}`).join(',\n')},
+${commonDependencies
+  .map(dep => `  {input: '${dep.input}', file: '${dep.file}'}`)
+  .join(',\n')},
 ];
 
 // Total APIs: ${apiNames.length}
