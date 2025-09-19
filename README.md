@@ -65,9 +65,14 @@ yarn install commerce-sdk-isomorphic
 ### Usage
 
 ```javascript
-import {helpers, ShopperLogin, ShopperSearch} from 'commerce-sdk-isomorphic';
+import ocapi from 'commerce-sdk-isomorphic';
+const { helpers, ShopperLogin, ShopperSearch } = ocapi;
+
+// Named imports also work
+// import {helpers, ShopperLogin, ShopperSearch} from 'commerce-sdk-isomorphic';
 
 // Alternatively, you can use subpath imports to import a single API at a time instead of the entire SDK
+// Useful for when you want a slimmer bundle size and only need a single API
 // import * as helpers from 'commerce-sdk-isomorphic/helpers'
 // import { ShopperProducts } from 'commerce-sdk-isomorphic/shopperProducts';
 // import { ShopperSearch } from 'commerce-sdk-isomorphic/shoppeSearch';
