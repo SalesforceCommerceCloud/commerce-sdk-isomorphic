@@ -67,6 +67,11 @@ yarn install commerce-sdk-isomorphic
 ```javascript
 import {helpers, ShopperLogin, ShopperSearch} from 'commerce-sdk-isomorphic';
 
+// Alternatively, you can use subpath imports to import a single API at a time instead of the entire SDK
+// import * as helpers from 'commerce-sdk-isomorphic/helpers'
+// import { ShopperProducts } from 'commerce-sdk-isomorphic/shopperProducts';
+// import { ShopperSearch } from 'commerce-sdk-isomorphic/shoppeSearch';
+
 const config = {
   // SCAPI does not support CORS, so client side requests must use a reverse proxy.
   proxy: 'https://localhost:3000',

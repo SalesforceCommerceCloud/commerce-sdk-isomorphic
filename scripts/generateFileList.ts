@@ -79,16 +79,11 @@ ${commonDependencies
 // Total APIs: ${apiNames.length}
 // Total common dependencies: ${commonDependencies.length}
 
-export { apiNames, commonDependencies };
-export default { apiNames, commonDependencies };
+export {apiNames, commonDependencies};
 `;
 
   // Write the file
   fs.writeFileSync(outputPath, fileContent, 'utf8');
-
-  console.log(`Generated file list written to: ${outputPath}`);
-  console.log(`Total APIs: ${apiNames.length}`);
-  console.log(`Total common dependencies: ${commonDependencies.length}`);
 }
 
 // Run the script

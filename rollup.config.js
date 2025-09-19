@@ -89,7 +89,6 @@ const esmConfig = {
   input: 'src/lib/index.ts',
   output: {
     file: process.env.REACT_APP_PKG_MODULE || pkg.module,
-    // dir: 'lib',
     format: 'es',
     name: 'CommerceSdk',
     globals: {
@@ -101,12 +100,13 @@ const esmConfig = {
   plugins: sharedPlugins,
 };
 
+// Generate common dependencies minified files
 const commonDependenciesConfig = commonDependencies.map(dependency => ({
   input: dependency.input,
   output: {
     file: dependency.file,
     format: 'es',
-    name: 'CommerceSdkCommonDependencies', // TODO: potentially make this dynamic
+    name: 'CommerceSdkCommonDependencies',
     globals: {
       react: 'React',
       'react-dom': 'ReactDOM',
@@ -117,7 +117,7 @@ const commonDependenciesConfig = commonDependencies.map(dependency => ({
   external: [], // Don't externalize any dependencies for common dependencies bundle, ensures logic is self contained
 }));
 
-// Generate individual API configurations
+// Generate individual API files so developers can import them individually
 const apiConfigs = apiNames.map(apiName => ({
   input: `src/lib/${apiName}/index.ts`,
   output: {
