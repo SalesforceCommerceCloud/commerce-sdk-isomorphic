@@ -70,71 +70,81 @@ const sharedPlugins = [
   filesize(),
 ];
 
+// Helper function to create output config for both ESM and CJS formats
+const createOutputConfig = ({file, name, format}) => ({
+  file,
+  format,
+  name,
+  globals: {
+    react: 'React',
+    'react-dom': 'ReactDOM',
+  },
+  exports: 'named',
+});
+
+// Helper function to create base config for subpath exports
+const createSubpathConfig = ({input, outputFile, name, format}) => ({
+  input,
+  output: createOutputConfig({file: outputFile, name, format}),
+  plugins: sharedPlugins,
+  external: [], // Don't externalize any dependencies for subpath bundles, ensures logic is self contained
+});
+
 const cjsConfig = {
   input: 'src/lib/index.ts',
-  output: {
+  output: createOutputConfig({
     file: process.env.REACT_APP_PKG_MAIN || pkg.main,
-    format: 'umd',
     name: 'CommerceSdk',
-    globals: {
-      react: 'React',
-      'react-dom': 'ReactDOM',
-    },
-    exports: 'named',
-  },
+    format: 'umd',
+  }),
   plugins: sharedPlugins,
 };
 
 const esmConfig = {
   input: 'src/lib/index.ts',
-  output: {
+  output: createOutputConfig({
     file: process.env.REACT_APP_PKG_MODULE || pkg.module,
-    format: 'es',
     name: 'CommerceSdk',
-    globals: {
-      react: 'React',
-      'react-dom': 'ReactDOM',
-    },
-    exports: 'named',
-  },
+    format: 'es',
+  }),
   plugins: sharedPlugins,
 };
 
-// Generate common dependencies minified files
-const commonDependenciesConfig = commonDependencies.map(dependency => ({
-  input: dependency.input,
-  output: {
-    file: dependency.file,
-    format: 'es',
+// Generate common dependencies files (both ESM and CJS)
+const commonDependenciesConfig = commonDependencies.flatMap(dependency => [
+  // ESM version
+  createSubpathConfig({
+    input: dependency.input,
+    outputFile: dependency.file,
     name: 'CommerceSdkCommonDependencies',
-    globals: {
-      react: 'React',
-      'react-dom': 'ReactDOM',
-    },
-    exports: 'named',
-  },
-  plugins: sharedPlugins,
-  external: [], // Don't externalize any dependencies for common dependencies bundle, ensures logic is self contained
-}));
-
-// Generate individual API files so developers can import them individually
-const apiConfigs = apiNames.map(apiName => ({
-  input: `src/lib/${apiName}/index.ts`,
-  output: {
-    file: `lib/${apiName}.js`,
     format: 'es',
-    name: `CommerceSdk${apiName.charAt(0).toUpperCase() + apiName.slice(1)}`,
-    globals: {
-      react: 'React',
-      'react-dom': 'ReactDOM',
-    },
-    exports: 'named',
-  },
-  plugins: sharedPlugins,
-  // Don't externalize any dependencies for individual API bundles,
-  // ensures all logic is self contained within the API bundle and can run without any external dependencies
-  external: [],
-}));
+  }),
+  // CJS version
+  createSubpathConfig({
+    input: dependency.input,
+    outputFile: dependency.file.replace('.js', '.cjs.js'),
+    name: 'CommerceSdkCommonDependencies',
+    format: 'cjs',
+  }),
+]);
+
+// Generate individual API files (both ESM and CJS) so developers can import them individually
+const apiConfigs = apiNames.flatMap(apiName => [
+  // ESM version
+  createSubpathConfig({
+    input: `src/lib/${apiName}/index.ts`,
+    outputFile: `lib/${apiName}.js`,
+    name: `CommerceSdk${apiName}`,
+    format: 'es',
+  }),
+  // CJS version
+  createSubpathConfig({
+    input: `src/lib/${apiName}/index.ts`,
+    outputFile: `lib/${apiName}.cjs.js`,
+    name: `CommerceSdk${apiName}`,
+    format: 'cjs',
+  }),
+]);
 
 export default [
   cjsConfig,

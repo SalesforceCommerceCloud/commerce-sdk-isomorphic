@@ -119,9 +119,17 @@ import { helpers, ShopperLogin, ShopperSearch } from 'commerce-sdk-isomorphic';
 ```
 
 **Subpath Imports (Individual APIs and Common dependencies)**
+
+*ESM (ES Modules):*
 ```javascript
 import { ShopperLogin } from 'commerce-sdk-isomorphic/shopperLogin';
-import * as helpers from 'commerce-sdk-isomorphic/helpers'
+import * as helpers from 'commerce-sdk-isomorphic/helpers';
+```
+
+*CommonJS:*
+```javascript
+const { ShopperLogin } = require('commerce-sdk-isomorphic/shopperLogin');
+const helpers = require('commerce-sdk-isomorphic/helpers');
 ```
 
 #### Choosing the Right Import Strategy

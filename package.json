@@ -17,26 +17,86 @@
       "import": "./lib/index.esm.js",
       "require": "./lib/index.cjs.js"
     },
-    "./shopperBaskets": "./lib/shopperBaskets.js",
-    "./shopperBasketsv2": "./lib/shopperBasketsv2.js",
-    "./shopperConsents": "./lib/shopperConsents.js",
-    "./shopperContext": "./lib/shopperContext.js",
-    "./shopperCustomers": "./lib/shopperCustomers.js",
-    "./shopperExperience": "./lib/shopperExperience.js",
-    "./shopperGiftCertificates": "./lib/shopperGiftCertificates.js",
-    "./shopperLogin": "./lib/shopperLogin.js",
-    "./shopperOrders": "./lib/shopperOrders.js",
-    "./shopperProducts": "./lib/shopperProducts.js",
-    "./shopperPromotions": "./lib/shopperPromotions.js",
-    "./shopperSearch": "./lib/shopperSearch.js",
-    "./shopperSeo": "./lib/shopperSeo.js",
-    "./shopperStores": "./lib/shopperStores.js",
-    "./helpers": "./lib/helpers.js",
-    "./clientConfig": "./lib/clientConfig.js",
-    "./config": "./lib/config.js",
-    "./responseError": "./lib/responseError.js",
-    "./templateUrl": "./lib/templateUrl.js",
-    "./version": "./lib/version.js",
+    "./shopperBaskets": {
+      "import": "./lib/shopperBaskets.js",
+      "require": "./lib/shopperBaskets.cjs.js"
+    },
+    "./shopperBasketsv2": {
+      "import": "./lib/shopperBasketsv2.js",
+      "require": "./lib/shopperBasketsv2.cjs.js"
+    },
+    "./shopperConsents": {
+      "import": "./lib/shopperConsents.js",
+      "require": "./lib/shopperConsents.cjs.js"
+    },
+    "./shopperContext": {
+      "import": "./lib/shopperContext.js",
+      "require": "./lib/shopperContext.cjs.js"
+    },
+    "./shopperCustomers": {
+      "import": "./lib/shopperCustomers.js",
+      "require": "./lib/shopperCustomers.cjs.js"
+    },
+    "./shopperExperience": {
+      "import": "./lib/shopperExperience.js",
+      "require": "./lib/shopperExperience.cjs.js"
+    },
+    "./shopperGiftCertificates": {
+      "import": "./lib/shopperGiftCertificates.js",
+      "require": "./lib/shopperGiftCertificates.cjs.js"
+    },
+    "./shopperLogin": {
+      "import": "./lib/shopperLogin.js",
+      "require": "./lib/shopperLogin.cjs.js"
+    },
+    "./shopperOrders": {
+      "import": "./lib/shopperOrders.js",
+      "require": "./lib/shopperOrders.cjs.js"
+    },
+    "./shopperProducts": {
+      "import": "./lib/shopperProducts.js",
+      "require": "./lib/shopperProducts.cjs.js"
+    },
+    "./shopperPromotions": {
+      "import": "./lib/shopperPromotions.js",
+      "require": "./lib/shopperPromotions.cjs.js"
+    },
+    "./shopperSearch": {
+      "import": "./lib/shopperSearch.js",
+      "require": "./lib/shopperSearch.cjs.js"
+    },
+    "./shopperSeo": {
+      "import": "./lib/shopperSeo.js",
+      "require": "./lib/shopperSeo.cjs.js"
+    },
+    "./shopperStores": {
+      "import": "./lib/shopperStores.js",
+      "require": "./lib/shopperStores.cjs.js"
+    },
+    "./helpers": {
+      "import": "./lib/helpers.js",
+      "require": "./lib/helpers.cjs.js"
+    },
+    "./clientConfig": {
+      "import": "./lib/clientConfig.js",
+      "require": "./lib/clientConfig.cjs.js"
+    },
+    "./config": {
+      "import": "./lib/config.js",
+      "require": "./lib/config.cjs.js"
+    },
+    "./responseError": {
+      "import": "./lib/responseError.js",
+      "require": "./lib/responseError.cjs.js"
+    },
+    "./templateUrl": {
+      "import": "./lib/templateUrl.js",
+      "require": "./lib/templateUrl.cjs.js"
+    },
+    "./version": {
+      "import": "./lib/version.js",
+      "require": "./lib/version.cjs.js"
+    },
     "./package.json": "./package.json"
   },
   "main": "lib/index.cjs.js",
@@ -190,7 +250,7 @@
     },
     {
       "path": "commerce-sdk-isomorphic-with-deps.tgz",
-      "maxSize": "1700 kB"
+      "maxSize": "2.4 MB"
     }
   ],
   "proxy": "https://SHORTCODE.api.commercecloud.salesforce.com"
