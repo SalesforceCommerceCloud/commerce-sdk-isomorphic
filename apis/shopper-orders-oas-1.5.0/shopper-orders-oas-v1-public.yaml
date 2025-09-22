@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Shopper Orders
-  version: v1
+  version: 1.6.0-PR-56-b4
   description: |-
     # API Overview
 
@@ -319,7 +319,7 @@ paths:
               $ref: '#/components/schemas/OrderPaymentInstrumentRequest'
       responses:
         '200':
-          description: Success, the response body contains the order with the updated payment instrument.
+          description: Success, the response body contains the order with the updated payment instrument. When Salesforce Payments is enabled, the paymentReference object will be included in the paymentInstruments.
           content:
             application/json:
               schema:
@@ -327,6 +327,8 @@ paths:
               examples:
                 Order:
                   $ref: '#/components/examples/examples-PaymentInstrumentPatch'
+                OrderWhenSalesforcePaymentsEnabled:
+                  $ref: '#/components/examples/PaymentInstrumentPatchWhenSalesforcePaymentsEnabled'
         '400':
           description: |-
             Possible reasons:
@@ -1073,6 +1075,26 @@ components:
           description: The payment method ID. It is read only.
           example: CREDIT_CARD
           type: string
+        paymentReference:
+          description: Payment reference information for various payment service providers, only when Salesforce Payments is enabled.
+          type: object
+          properties:
+            paymentReferenceId:
+              description: Payment reference identifier. Can be payment intent ID for Stripe, PSP reference for Adyen, PayPal order ID for PayPal, or similar identifier for other payment providers.
+              type: string
+              maxLength: 256
+              example: pi_3N4B2vF0wDjebNCp1234567
+            clientSecret:
+              description: Client secret for payment confirmation. Used primarily by Stripe for client-side payment confirmation.
+              type: string
+              maxLength: 255
+              example: pi_3N4B2vF0wDjebNCp1234567_secret_abc123
+            redirectUrl:
+              description: Redirect URL for payment methods that require user redirection to complete payment.
+              type: string
+              format: uri
+              maxLength: 2048
+              example: https://checkout.stripe.com/pay/cs_test_abc123
       type: object
     ProductItem:
       description: Document representing a product item.
@@ -3145,6 +3167,181 @@ components:
             tax: 0.8
             taxBasis: 15.99
             taxClassId: standard
+            taxRate: 0.05
+        shippingStatus: not_shipped
+        shippingTotal: 15.99
+        shippingTotalTax: 0.8
+        status: new
+        taxation: net
+        taxTotal: 30.8
+    PaymentInstrumentPatchWhenSalesforcePaymentsEnabled:
+      value:
+        adjustedMerchandizeTotalTax: 30
+        adjustedShippingTotalTax: 0.8
+        billingAddress:
+          address1: 104 Presidential Way
+          city: Woburn
+          countryCode: US
+          firstName: Stephanie
+          fullName: Stephanie Miller
+          id: 5f695b6f4bb63cb686483d65a0
+          lastName: Miller
+          postalCode: '01801'
+          stateCode: MA
+        channelType: storefront
+        confirmationStatus: not_confirmed
+        couponItems:
+          - code: 5ties
+            couponItemId: d3f7ae47e5897a6b5d2fd541f0
+            statusCode: applied
+            valid: true
+        createdBy: Customer
+        creationDate: '2019-10-22T12:17:28.341Z'
+        currency: USD
+        customerInfo:
+          customerId: beQeANXJNsd0xcINsB6cSrobQa
+          customerName: Stephanie Miller
+          email: shopper@salesforce-test.com
+        customerName: Stephanie Miller
+        exportStatus: not_exported
+        groupedTaxItems:
+          - taxRate: 0.05
+            taxValue: 30.8
+        guest: true
+        giftCertificateItems:
+          - amount: 1
+            giftCertificateItemId: 540db3ffe58bfb04ab673757d7
+            recipientEmail: miller@salesforce-test.com
+            shipmentId: me
+        lastModified: '2019-10-22T12:17:28.376Z'
+        merchandizeTotalTax: 30
+        orderNo: '00000410'
+        orderPriceAdjustments:
+          - appliedDiscount:
+              amount: 10
+              type: amount
+            reasonCode: customer service
+            createdBy: support
+            creationDate: '2019-10-22T12:17:28.347Z'
+            custom: true
+            lastModified: '2019-10-22T12:17:28.349Z'
+            manual: true
+            price: -10
+            priceAdjustmentId: 63b9eb9b4a92bd3e5c6ee804c2
+            promotionId: 5ties
+        orderToken: 7gJDIFlnho_mXrxfxVB9Neic3J7szzR9glvgU5Ath-I
+        orderTotal: 586.76
+        orderViewCode: YGXrGbZWlr29tIsGnYgR5o_8OxBMXWigevx1WD0X1Hc
+        paymentInstruments:
+          - amount: 20
+            paymentInstrumentId: ca47e0da3d49b067b630db624a
+            paymentMethodId: PAYPAL
+            paymentReference:
+              paymentReferenceId: PAY-1AB23456CD789012EF34GHIJ
+              redirectUrl: https://www.paypal.com/checkoutnow?token=EC-1AB23456CD789012EF
+          - amount: 566.76
+            paymentCard:
+              cardType: Visa
+              creditCardExpired: false
+            paymentInstrumentId: 6b970a04ca8a468a64b9936764
+            paymentMethodId: CREDIT_CARD
+            paymentReference:
+              paymentReferenceId: 8815749596351791C
+              redirectUrl: https://test.adyen.com/hpp/pay.shtml?merchantReference=12345
+          - amount: 2
+            paymentCard:
+              expirationYear: 1990
+              expirationMonth: 7
+              validFromMonth: 8
+              validFromYear: 2007
+              issueNumber: i117
+              maskedNumber: '******4567'
+              holder: Miller
+              cardType: Visa
+            paymentInstrumentId: 9f21f0b51f206fbde2ff5789e5
+            paymentMethodId: CREDIT_CARD
+            paymentReference:
+              paymentReferenceId: pi_1J4K5L2eZvKYlo2CyZ8K5L6M
+              clientSecret: pi_1J4K5L2eZvKYlo2CyZ8K5L6M_secret_abcdef123456
+        paymentStatus: not_paid
+        productItems:
+          - adjustedTax: 30
+            basePrice: 199.99
+            bonusProductLineItem: false
+            gift: false
+            itemId: d9516eecc64bd90b0022714d26
+            itemText: Green Umbrella - Sustained Edition
+            optionItems:
+              - adjustedTax: 0
+                basePrice: 0
+                bonusProductLineItem: false
+                gift: false
+                itemId: 8991e8d7adf0f46ffbc584e175
+                itemText: 'Monogramming: Letter "A"'
+                optionId: textMonogramLetters
+                optionValueId: A
+                price: 0
+                priceAfterItemDiscount: 0
+                priceAfterOrderDiscount: 0
+                productId: '701643632930'
+                productName: Flat Front Pant
+                shipmentId: me
+                tax: 0
+                taxBasis: 0
+                taxRate: 0.05
+            priceAfterItemDiscount: 199.99
+            priceAfterOrderDiscount: 199.99
+            productId: '701643632930'
+            productName: Green Umbrella - Sustained Edition
+            quantity: 1
+            shipmentId: me
+            tax: 30
+            taxBasis: 199.99
+            taxRate: 0.05
+        productSubTotal: 199.99
+        productTotal: 199.99
+        shipments:
+          - adjustedMerchandizeTotalTax: 30
+            adjustedShippingTotalTax: 0.8
+            gift: false
+            merchandizeTotalTax: 199.99
+            productSubTotal: 199.99
+            productTotal: 199.99
+            shipmentId: me
+            shipmentNo: '00000001'
+            shipmentTotal: 386.75
+            shippingAddress:
+              address1: 104 Presidential Way
+              city: Woburn
+              countryCode: US
+              firstName: Stephanie
+              fullName: Stephanie Miller
+              id: 5f695b6f4bb63cb686483d65a0
+              lastName: Miller
+              postalCode: '01801'
+              stateCode: MA
+            shippingMethod:
+              description: Order within the next 3 hours to get it tomorrow morning
+              id: EXPRESS
+              name: Express
+              price: 15.99
+              shippingPromotions:
+                - calloutMsg: Free shipping amount has been reduced!
+                  promotionId: freeshipping_level1
+                  promotionName: Free shipping Level 1
+            shippingStatus: not_shipped
+            shippingTotal: 15.99
+            shippingTotalTax: 0.8
+            taxTotal: 30.8
+        shippingItems:
+          - adjustedTax: 0.8
+            basePrice: 15.99
+            itemId: 768abee75aa8015239a9696c7e
+            itemText: Shipping
+            priceAfterItemDiscount: 15.99
+            shipmentId: me
+            tax: 0.8
+            taxBasis: 15.99
             taxRate: 0.05
         shippingStatus: not_shipped
         shippingTotal: 15.99

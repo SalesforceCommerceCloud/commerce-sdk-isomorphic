@@ -38,6 +38,7 @@ export type RequireParametersUnlessAllAreOptional<
  */
 export interface BaseUriParameters {
   shortCode: string;
+  version?: string;
 }
 
 export type LocaleCode = {[key: string]: any};

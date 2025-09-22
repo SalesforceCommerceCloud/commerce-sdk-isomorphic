@@ -185,6 +185,7 @@
         
         const pathParams: {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}PathParameters & Required<BaseUriParameters> = {
           shortCode: configParams.shortCode,
+          version: "v1"
         };
 
         {{#pathParams}}
