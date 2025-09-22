@@ -64,6 +64,7 @@ export interface IsomorphicEventNameMapping {
  */
 export interface HostEventNameMapping extends IsomorphicEventNameMapping {
   ClientInitialized: Domain.ClientInitializedEvent;
+  ClientReady: Domain.ClientReady;
 }
 
 /**
@@ -169,6 +170,10 @@ export interface IsomorphicConfiguration {
    * The id of the client.
    */
   id: string;
+  /**
+   * A logger for logging all messages.
+   */
+  logger?: (message: unknown, source: 'host' | 'client') => void;
 }
 
 export interface ClientConfiguration extends IsomorphicConfiguration {
@@ -425,15 +430,40 @@ export interface ClientApi extends IsomorphicApi {
    * @param options - Optional configuration for the connection process
    * @param options.interval - Optional interval in milliseconds for retrying initialization
    * @param options.timeout - Optional timeout in milliseconds for the connection process
+   * @param options.prepareClient - Optional function to prepare the client for the connection process
+   * @returns The client acknowledged event
    * @stability development
    *
    * @example
    * ```typescript
    * await api.connect({ interval: 1_000 });
    * // Connected to host.
+   *
+   * // With prepare logic
+   * await api.connect({ prepareClient: async () => await doSomethingAsync() });
    * ```
    */
-  connect(options?: {interval?: number; timeout?: number}): Promise<void>;
+  connect(options?: {
+    interval?: number;
+    prepareClient?: () => Promise<void>;
+    timeout?: number;
+  }): Promise<Domain.ClientAcknowledgedEvent | null>;
+
+  /**
+   * Notifies the host that the client is ready.
+   *
+   * @param event - The client ready event
+   * @stability development
+   *
+   * @example
+   * ```typescript
+   * api.notifyClientReady({});
+   * ```
+   *
+   * @see {Domain.ClientReady}
+   */
+  notifyClientReady(event: Omit<Domain.ClientReady, 'eventType'>): void;
+
   /**
    * Registers an event handler for client-side events.
    *
@@ -462,10 +492,23 @@ export interface ClientApi extends IsomorphicApi {
   ): () => void;
 }
 
+/**
+ * A function that returns a promise that resolves to the client acknowledged event.
+ * This is used to configure the client when it is initialized.
+ */
+export type ConfigFactory = () => Promise<
+  Omit<Domain.ClientAcknowledgedEvent, 'eventType'>
+>;
+
 export interface HostApi extends IsomorphicApi {
   /**
    * Connects the client or host to the messaging api.
    * This should be called when the client or host is initialized.
+   *
+   * @param params - The parameters for the connection process
+   * @param params.configFactory - A function for providing configuration to the client.
+   * This can be async if configuration needs to be fetched.
+   * @returns The boolean value that indicates if the connection process was successful
    *
    * @stability development
    *
@@ -475,7 +518,7 @@ export interface HostApi extends IsomorphicApi {
    * // Start listening for client events.
    * ```
    */
-  connect(): Promise<void>;
+  connect(params: {configFactory: ConfigFactory}): Promise<boolean>;
   /**
    * Registers an event handler for host-side events.
    *

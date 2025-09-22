@@ -6,6 +6,8 @@
  */
 import type {EventHandler, MessageEmitter, Source} from './api-types.js';
 
+export type Logger = (message: unknown, source: 'host' | 'client') => void;
+
 /**
  * Handles the basic logic for event emitting and receiving between a client and a host.
  *
@@ -30,20 +32,27 @@ export class Messenger<TInMapping, TOutMapping> {
 
   private remoteId?: string;
 
+  private readonly logger: Logger;
+
   private unsubscribe?: () => void;
 
   constructor({
     source,
     id,
     emitter,
+    logger = () => {
+      // Noop
+    },
   }: {
     source: Source;
     id: string;
     emitter: MessageEmitter<TInMapping, TOutMapping>;
+    logger?: Logger;
   }) {
     this.source = source;
     this.id = id;
     this.emitter = emitter;
+    this.logger = logger;
   }
 
   /**
@@ -58,6 +67,8 @@ export class Messenger<TInMapping, TOutMapping> {
 
     this.unsubscribe = this.emitter.addEventListener(event => {
       if (event.meta?.pdMessagingApi && event.meta.source !== this.source) {
+        this.logger(event, this.source === 'host' ? 'client' : 'host');
+
         [event.eventType, 'Event'].forEach(eventType => {
           this.handlers
             .get(eventType as keyof TInMapping)
@@ -87,30 +98,34 @@ export class Messenger<TInMapping, TOutMapping> {
    * Emits an event to the connected remote.
    * This attaches metadata to each event that is emitted.
    *
-   * @param event - The event to emit.
+   * @param eventName - The event to emit.
    * @param data - The data to emit.
    * @param options - The options for the event.
    * @param options.requireRemoteId - Whether to require a remote id to be set before emitting the event.
    */
-  emit(
-    event: keyof TOutMapping,
-    data: Record<string, unknown>,
+  emit<TEvent extends keyof TOutMapping>(
+    eventType: TEvent,
+    data: Omit<TOutMapping[TEvent], 'eventType'>,
     {requireRemoteId = true}: {requireRemoteId?: boolean} = {}
   ): void {
     if (requireRemoteId && !this.remoteId) {
       return;
     }
 
-    this.emitter.postMessage({
+    const event = {
       ...data,
-      eventType: event,
+      eventType,
       meta: {
         hostId: this.source === 'host' ? this.id : this.remoteId,
         clientId: this.source === 'client' ? this.id : this.remoteId,
         source: this.source,
-        pdMessagingApi: true,
+        pdMessagingApi: true as const,
       },
-    });
+    };
+
+    this.logger(event, this.source);
+
+    this.emitter.postMessage(event);
   }
 
   /**
@@ -153,8 +168,19 @@ export class Messenger<TInMapping, TOutMapping> {
     eventName: TEvent
   ): (event: Omit<TOutMapping[TEvent], 'eventType'>) => void {
     return (event: Omit<TOutMapping[TEvent], 'eventType'>) => {
-      this.emit(eventName, event as unknown as Record<string, unknown>);
+      this.emit(eventName, event);
     };
+  }
+
+  toPromise<TEvent extends keyof TInMapping>(
+    eventName: TEvent
+  ): Promise<TInMapping[TEvent]> {
+    return new Promise<TInMapping[TEvent]>(resolve => {
+      const unsub = this.on(eventName, event => {
+        unsub();
+        resolve(event as TInMapping[TEvent]);
+      });
+    });
   }
 
   /**

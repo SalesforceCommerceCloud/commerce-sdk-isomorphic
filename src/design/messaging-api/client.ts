@@ -11,7 +11,9 @@ import type {
   HostEventNameMapping,
   WithMeta,
 } from './api-types.js';
+import type {ClientAcknowledgedEvent} from './domain-types.js';
 import {Messenger} from './messenger.js';
+import {Deferred} from './deferred.js';
 
 /**
  * Factory function to create a ClientApi instance.
@@ -24,15 +26,19 @@ export function createClientApi({
   emitter,
   id,
   forwardedKeys = [],
+  logger,
 }: ClientConfiguration): ClientApi {
+  let connectDeferred: Deferred<ClientAcknowledgedEvent | null>;
   const messenger = new Messenger<ClientEventNameMapping, HostEventNameMapping>(
     {
       source: 'client',
       id,
       emitter,
+      logger,
     }
   );
 
+  let isReady = false;
   let connectionTimeoutId: number | null = null;
 
   const clearConnectionTimeout = () => {
@@ -52,53 +58,75 @@ export function createClientApi({
     deselectComponent: messenger.toEmitter('ComponentDeselected'),
     deleteComponent: messenger.toEmitter('ComponentDeleted'),
     notifyWindowScrollChanged: messenger.toEmitter('WindowScrollChanged'),
+    notifyClientReady: messenger.toEmitter('ClientReady'),
     notifyError: messenger.toEmitter('Error'),
     connect: ({
       interval = 1_000,
       timeout = 60_000,
-    }: {interval?: number; timeout?: number} = {}) =>
-      new Promise<void>(resolve => {
-        const expirationTime = Date.now() + timeout;
+      prepareClient = () => Promise.resolve(),
+    }: {
+      interval?: number;
+      timeout?: number;
+      prepareClient?: () => Promise<void>;
+    } = {}) => {
+      const expirationTime = Date.now() + timeout;
 
-        messenger.connect();
+      connectDeferred?.resolve(null);
+      connectDeferred = new Deferred<ClientAcknowledgedEvent | null>();
+      messenger.connect();
 
-        const unsubscribe = messenger.on('ClientAcknowledged', event => {
-          messenger.setRemoteId(event.meta.hostId as string);
-          unsubscribe();
-          clearConnectionTimeout();
-          resolve();
-        });
+      const unsubscribe = messenger.on('ClientAcknowledged', event => {
+        messenger.setRemoteId(event.meta.hostId as string);
+        unsubscribe();
+        clearConnectionTimeout();
 
-        const checkInitialization = () => {
-          if (Date.now() > expirationTime) {
-            throw new Error(
-              `Timed out after waiting ${timeout}ms for host connection`
-            );
-          }
+        prepareClient()
+          .then(() => {
+            isReady = true;
+            messenger.emit('ClientReady', {clientId: id});
+            connectDeferred.resolve(event);
+          })
+          .catch(error => connectDeferred.reject(error));
+      });
 
-          messenger.emit(
-            'ClientInitialized',
-            {clientId: id, forwardedKeys},
-            {requireRemoteId: false}
+      const checkInitialization = () => {
+        if (Date.now() > expirationTime) {
+          throw new Error(
+            `Timed out after waiting ${timeout}ms for host connection`
           );
-          connectionTimeoutId = setTimeout(
-            () => checkInitialization(),
-            interval
-          ) as unknown as number;
-        };
+        }
 
-        checkInitialization();
-      }),
+        messenger.emit(
+          'ClientInitialized',
+          {clientId: id, forwardedKeys},
+          {requireRemoteId: false}
+        );
+        connectionTimeoutId = setTimeout(
+          () => checkInitialization(),
+          interval
+        ) as unknown as number;
+      };
+
+      checkInitialization();
+
+      return connectDeferred.promise;
+    },
     on: <TEvent extends keyof ClientEventNameMapping>(
-      event: TEvent,
+      eventName: TEvent,
       handler: (
         handlerEvent: Readonly<WithMeta & ClientEventNameMapping[TEvent]>
       ) => void
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ) => messenger.on(event as any, handler as any),
+    ) =>
+      messenger.on(eventName, event => {
+        // Don't receive any events besides the acknowledged event until the client is ready
+        if (eventName === 'ClientAcknowledged' || isReady) {
+          handler(event);
+        }
+      }),
     disconnect: () => {
       clearConnectionTimeout();
       messenger.disconnect();
+      connectDeferred?.resolve(null);
     },
     getRemoteId: () => messenger.getRemoteId(),
   };
