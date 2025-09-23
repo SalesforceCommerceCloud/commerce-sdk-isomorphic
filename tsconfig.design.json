@@ -11,5 +11,5 @@
     "strict": true,
     "jsx": "react-jsx"
   },
-  "include": ["src/design/index.ts", "src/design/react/index.ts"]
+  "include": ["src/design/index.ts", "src/design/react/index.ts", "src/design/types/style-modules.d.ts"]
 }
