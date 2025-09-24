@@ -1,19 +1,19 @@
 /*
- * Copyright (c) 2023, Salesforce, Inc.
+ * Copyright (c) 2025, Salesforce, Inc.
  * All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import React from 'react';
-import { useDesignContext } from '../context/DesignContext';
-import { ComponentDecoratorProps } from './component.types';
+import {useDesignContext} from '../context/DesignContext';
+import {ComponentDecoratorProps} from './component.types';
 
 export const createReactRegionDesignDecorator =
   <TProps extends ComponentDecoratorProps>(
     Region: React.ComponentType<TProps>
   ): ((props: TProps) => JSX.Element) =>
   (props: TProps) => {
-    const { id, name, children, ...componentProps } = props;
+    const {id, name, children, ...componentProps} = props;
 
     const designContext = useDesignContext();
     const isDesignMode = designContext?.isDesignMode;

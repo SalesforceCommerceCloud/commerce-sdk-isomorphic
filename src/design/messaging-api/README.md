@@ -7,7 +7,7 @@ A TypeScript-based messaging system for real-time communication between client (
 ### Client Setup
 
 ```typescript
-import { createClientApi, ClientApi } from '@commerce-sdk-isomorphic/design';
+import {createClientApi, ClientApi} from '@commerce-sdk-isomorphic/design';
 
 // Create client API instance
 const clientApi: ClientApi = createClientApi({
@@ -17,8 +17,8 @@ const clientApi: ClientApi = createClientApi({
       window.addEventListener('message', handler);
 
       return () => window.removeEventListener('message', handler);
-    }
-  }
+    },
+  },
 });
 
 // Initialize connection with host
@@ -32,7 +32,11 @@ clientApi.on('ComponentSelected', event => {
 
 // Listen for property changes
 clientApi.on('ComponentPropertiesChanged', event => {
-  console.log('Properties updated for component:', event.componentId, event.properties);
+  console.log(
+    'Properties updated for component:',
+    event.componentId,
+    event.properties
+  );
 });
 ```
 
@@ -82,7 +86,7 @@ You can customize this list during client construction:
 ```typescript
 const clientApi = createClientApi({
   clientId: 'custom-editor',
-  forwardedKeys: ['ArrowUp', 'ArrowDown', 'Enter', 'Escape', 'Tab']
+  forwardedKeys: ['ArrowUp', 'ArrowDown', 'Enter', 'Escape', 'Tab'],
 });
 await clientApi.connect();
 ```
@@ -94,7 +98,7 @@ The client automatically retries connection until acknowledged:
 ```typescript
 await clientApi.connect({
   interval: 2_000, // Retry every 2 seconds
-  timeout: 60_000 // Throw an error after a minute
+  timeout: 60_000, // Throw an error after a minute
 });
 ```
 

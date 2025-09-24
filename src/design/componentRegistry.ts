@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { isDesignModeActive } from './modeDetection';
+import {isDesignModeActive} from './modeDetection';
 /**
  * A generic registry for managing components with support for design-time decoration.
  * This registry allows components to be registered and retrieved in different modes,
@@ -66,9 +66,7 @@ export class ComponentRegistry<TComponent> {
    * @param options.mode - The mode in which to retrieve the component. Defaults to 'runtime'.
    * @returns The component if found, null otherwise. In design mode, the component will be decorated.
    */
-  getComponent(
-    id: string,
-  ): TComponent | null {
+  getComponent(id: string): TComponent | null {
     const component = this.registry.get(id) ?? null;
 
     return component && isDesignModeActive()

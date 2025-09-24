@@ -1,19 +1,19 @@
 /*
- * Copyright (c) 2023, Salesforce, Inc.
+ * Copyright (c) 2025, Salesforce, Inc.
  * All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import React, { createContext, useMemo } from 'react';
-import { isPreviewModeActive } from '../../modeDetection';
+import React, {createContext, useMemo} from 'react';
+import {isPreviewModeActive} from '../../modeDetection';
 
 type PreviewContextType = {
   isPreviewMode: boolean;
 };
 
-export const PreviewContext = createContext<PreviewContextType | undefined>(
-  undefined
-);
+export const PreviewContext = createContext<PreviewContextType>({
+  isPreviewMode: false,
+});
 
 export const PreviewProvider = ({
   children,

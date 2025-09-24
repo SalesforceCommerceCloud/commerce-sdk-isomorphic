@@ -1,13 +1,13 @@
 /*
- * Copyright (c) 2023, Salesforce, Inc.
+ * Copyright (c) 2025, Salesforce, Inc.
  * All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import React, { createContext, useMemo } from 'react';
-import { createClientApi, ClientApi } from '../../messaging-api';
-import { isDesignModeActive } from '../../modeDetection';
-import { useDesignState, DesignState } from '../hooks/useDesignState';
+import React, {createContext, useMemo} from 'react';
+import {createClientApi, ClientApi} from '../../messaging-api';
+import {isDesignModeActive} from '../../modeDetection';
+import {useDesignState, DesignState} from '../hooks/useDesignState';
 
 /**
  * Type definition for the Design Context
@@ -27,26 +27,28 @@ export const DesignContext = createContext<DesignContextType | undefined>(
 /**
  * Provider component that enables design-time functionality for child components.
  * Sets up client-host communication and manages component selection state.
- * 
+ *
  * @param children - Child components to wrap with design functionality
- * @param targetOrigin - Target origin for postMessage communication (defaults to '*')
+ * @param targetOrigin - Target origin for postMessage communication
+ * @param clientId - Id for the client API
  * @returns JSX element wrapping children with design context
  */
 export const DesignProvider = ({
   children,
-  targetOrigin = '*',
-}: {
-  children: React.ReactNode;
-  // eslint-disable-next-line react/require-default-props
-  targetOrigin?: string;
-}): JSX.Element => {
+  targetOrigin,
+  clientId,
+}: React.PropsWithChildren<{
+  targetOrigin: string;
+  clientId: string;
+}>): JSX.Element => {
   const isDesignMode = isDesignModeActive();
 
   const clientApi = React.useMemo(
     () =>
       createClientApi({
         emitter: {
-          postMessage: message => window.postMessage(message, targetOrigin),
+          postMessage: message =>
+            window.parent.postMessage(message, targetOrigin),
           addEventListener: handler => {
             window.addEventListener(
               'message',
@@ -60,7 +62,7 @@ export const DesignProvider = ({
               );
           },
         },
-        id: 'client-app',
+        id: clientId,
       }),
     [targetOrigin]
   );
@@ -77,14 +79,7 @@ export const DesignProvider = ({
       setSelectedComponent: designState.setSelectedComponent,
       setHoveredComponent: designState.setHoveredComponent,
     }),
-    [
-      isDesignMode,
-      clientApi,
-      designState.selectedComponentId,
-      designState.hoveredComponentId,
-      designState.setSelectedComponent,
-      designState.setHoveredComponent,
-    ]
+    [isDesignMode, clientApi, designState]
   );
 
   return (
@@ -97,7 +92,7 @@ export const DesignProvider = ({
 /**
  * Custom hook to access the design context
  * Provides access to design mode state and component selection functionality
- * 
+ *
  * @returns The current design context
  * @throws Error if used outside of a DesignProvider
  */

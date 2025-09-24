@@ -6,4 +6,4 @@
  */
 export * from './componentRegistry.js';
 export * from './messaging-api/index.js';
-export { isDesignModeActive, isPreviewModeActive } from './modeDetection.js';
+export {isDesignModeActive, isPreviewModeActive} from './modeDetection.js';

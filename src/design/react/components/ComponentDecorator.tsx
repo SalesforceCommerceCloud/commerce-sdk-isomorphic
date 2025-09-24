@@ -1,13 +1,13 @@
 /*
- * Copyright (c) 2025, salesforce.com, inc.
+ * Copyright (c) 2025, Salesforce, Inc.
  * All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import React, { useCallback, useRef, useMemo } from 'react';
-import styles from '../../css/design.module.css';
-import { useDesignContext } from '../context/DesignContext';
-import { ComponentDecoratorProps } from './component.types';
+import React, {useCallback, useRef} from 'react';
+import './ComponentDecorator.css';
+import {useDesignContext} from '../context/DesignContext';
+import {ComponentDecoratorProps} from './component.types';
 
 /**
  * Creates a higher-order component that wraps React components with design-time functionality.
@@ -23,22 +23,16 @@ export const createReactComponentDesignDecorator =
     Component: React.ComponentType<TProps>
   ): ((props: TProps) => JSX.Element) =>
   (props: TProps) => {
-    const { id, name, children, ...componentProps } = props;
+    const {id, name, isFragment, children, ...componentProps} = props;
     const componentId = id;
     const componentName = name || 'Component';
     const dragRef = useRef<HTMLDivElement>(null);
 
-    // Memoize component props to avoid unnecessary re-renders
-    const memoizedComponentProps = useMemo(
-      () => componentProps,
-      [componentProps]
-    );
-
     // Only use design context if in design mode
     const designContext = useDesignContext();
-    const isDesignMode = designContext?.isDesignMode;
+    const isDesignMode = Boolean(designContext?.isDesignMode);
 
-    if (!isDesignMode) {
+    if (!isDesignMode || !designContext) {
       // eslint-disable-next-line react/jsx-props-no-spreading
       return <Component {...props} />;
     }
@@ -75,15 +69,24 @@ export const createReactComponentDesignDecorator =
     const isSelected = selectedComponentId === componentId;
     const isHovered = hoveredComponentId === componentId;
     const showFrame = isSelected || isHovered;
+    const classNames = [];
 
-    // Memoize class names to avoid string concatenation on every render
-    const classes = useMemo(() => {
-      const classNames = [styles.pdDesignComponent];
-      if (showFrame) classNames.push(styles.showFrame);
-      if (isSelected) classNames.push(styles.selected);
-      if (isHovered) classNames.push(styles.hovered);
-      return classNames.join(' ');
-    }, [showFrame, isSelected, isHovered]);
+    if (isFragment) {
+      classNames.push('pd-design-fragment');
+    } else {
+      classNames.push('pd-design-component');
+    }
+
+    if (showFrame) {
+      classNames.push('show-frame');
+    }
+    if (isSelected) {
+      classNames.push('selected');
+    }
+    if (isHovered) {
+      classNames.push('hovered');
+    }
+    const classes = classNames.join(' ');
 
     return (
       <div
@@ -95,19 +98,14 @@ export const createReactComponentDesignDecorator =
         data-component-id={componentId}
         data-component-name={componentName}>
         {showFrame && (
-          <div
-            className={`${styles.componentLabel} ${
-              showFrame ? styles.showFrame : ''
-            }`}>
-            <span className={styles.componentName}>
+          <div className="component-label">
+            <span className="component-name">
               {componentName} ({componentId})
             </span>
-            <div className={styles.toolbox}>
-              <button
-                className={styles.toolboxButton}
-                title="Delete component">
+            <div className="toolbox">
+              <button className="toolbox-button" title="Delete component">
                 <svg
-                  className={styles.deleteIcon}
+                  className="delete-icon"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg">
@@ -123,7 +121,7 @@ export const createReactComponentDesignDecorator =
             </div>
           </div>
         )}
-        <Component {...memoizedComponentProps}>{children}</Component>
+        <Component {...componentProps}>{children}</Component>
       </div>
     );
   };

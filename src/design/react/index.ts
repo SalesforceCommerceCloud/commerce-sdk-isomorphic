@@ -12,5 +12,5 @@ export {
 } from './context/PageDesignerProvider.js';
 
 // Components
-export { createReactComponentDesignDecorator } from './components/ComponentDecorator.js';
-export { createReactRegionDesignDecorator } from './components/RegionDecorator.js';
+export {createReactComponentDesignDecorator} from './components/ComponentDecorator.js';
+export {createReactRegionDesignDecorator} from './components/RegionDecorator.js';
