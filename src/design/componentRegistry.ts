@@ -5,13 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-/**
- * The mode in which a component should be retrieved from the registry.
- * - 'design': Returns the component decorated for design-time usage
- * - 'runtime': Returns the component as-is for runtime usage
- */
-export type ComponentRegistryMode = 'design' | 'runtime';
-
+import {isDesignModeActive} from './modeDetection';
 /**
  * A generic registry for managing components with support for design-time decoration.
  * This registry allows components to be registered and retrieved in different modes,
@@ -31,8 +25,8 @@ export type ComponentRegistryMode = 'design' | 'runtime';
  *
  * const ProductList = registry.getComponent('commerce/productList');
  *
- * // Get the component in design mode
- * const ProductList = registry.getComponent('commerce/productList', { mode: 'design' });
+ * // Get the component in design mode - the component will be decorated
+ * const ProductList = registry.getComponent('commerce/productList');
  */
 export class ComponentRegistry<TComponent> {
   private readonly registry = new Map<string, TComponent>();
@@ -72,13 +66,10 @@ export class ComponentRegistry<TComponent> {
    * @param options.mode - The mode in which to retrieve the component. Defaults to 'runtime'.
    * @returns The component if found, null otherwise. In design mode, the component will be decorated.
    */
-  getComponent(
-    id: string,
-    {mode = 'runtime'}: {mode?: ComponentRegistryMode} = {}
-  ): TComponent | null {
+  getComponent(id: string): TComponent | null {
     const component = this.registry.get(id) ?? null;
 
-    return component && mode === 'design'
+    return component && isDesignModeActive()
       ? this.designDecorator(component)
       : component;
   }
