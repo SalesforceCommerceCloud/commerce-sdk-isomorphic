@@ -1,5 +1,6 @@
 {{#each children}}
-export { {{apiName}} } from "./{{directoryName}}";
+import { {{apiName}} } from "./{{directoryName}}";
+export { {{apiName}} };
 import { {{apiName}}Types } from "./{{directoryName}}";
 export type { {{apiName}}Types };
 {{/each}}
@@ -15,3 +16,11 @@ export { ClientConfig, TemplateURL };
 
 import * as helpers from "./helpers";
 export { helpers };
+
+// Default export for backward compatibility
+const pkg = {
+{{#each children}}
+    {{apiName}},
+{{/each}}
+};
+export default pkg;

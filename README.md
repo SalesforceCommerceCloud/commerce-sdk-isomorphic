@@ -65,7 +65,17 @@ yarn install commerce-sdk-isomorphic
 ### Usage
 
 ```javascript
-import {helpers, ShopperLogin, ShopperSearch} from 'commerce-sdk-isomorphic';
+import ocapi from 'commerce-sdk-isomorphic';
+const { helpers, ShopperLogin, ShopperSearch } = ocapi;
+
+// Named imports also work
+// import {helpers, ShopperLogin, ShopperSearch} from 'commerce-sdk-isomorphic';
+
+// Alternatively, you can use subpath imports to import a single API at a time instead of the entire SDK
+// Useful for when you want a slimmer bundle size and only need a single API
+// import * as helpers from 'commerce-sdk-isomorphic/helpers'
+// import { ShopperProducts } from 'commerce-sdk-isomorphic/shopperProducts';
+// import { ShopperSearch } from 'commerce-sdk-isomorphic/shopperSearch';
 
 const config = {
   // SCAPI does not support CORS, so client side requests must use a reverse proxy.
@@ -92,6 +102,52 @@ const searchResult = await shopperSearch.productSearch({
   parameters: {q: 'shirt'},
 });
 ```
+
+#### Import Strategies
+
+The SDK supports multiple import patterns to accommodate different use cases:
+
+**Default Import (Full SDK)**
+```javascript
+import ocapi from 'commerce-sdk-isomorphic';
+const { helpers, ShopperLogin, ShopperSearch } = ocapi;
+```
+
+**Named Imports (Full SDK)**
+```javascript
+import { helpers, ShopperLogin, ShopperSearch } from 'commerce-sdk-isomorphic';
+```
+
+**Subpath Imports (Individual APIs and Common dependencies)**
+
+*ESM (ES Modules):*
+```javascript
+import { ShopperLogin } from 'commerce-sdk-isomorphic/shopperLogin';
+import * as helpers from 'commerce-sdk-isomorphic/helpers';
+```
+
+*CommonJS:*
+```javascript
+const { ShopperLogin } = require('commerce-sdk-isomorphic/shopperLogin');
+const helpers = require('commerce-sdk-isomorphic/helpers');
+```
+
+#### Choosing the Right Import Strategy
+
+**Use Default/Named Imports when:**
+- You need multiple APIs from the SDK
+- You want the smallest overall bundle size for comprehensive usage
+- The entire SDK is optimized and maximally compressed as a single bundle
+
+**Note:** Default and named imports load the entire SDK, including all APIs, helpers, and dependencies.
+
+**Use Subpath Imports when:**
+- You only need specific APIs
+- You want to minimize initial bundle size
+- You're implementing dynamic loading for better page performance
+- You need granular control over which APIs are loaded
+
+**Note:** While subpath imports reduce initial bundle size, using them for all APIs will result in a larger total bundle size due to duplicated dependencies required for standalone operation.
 
 #### Fetch Options
 
