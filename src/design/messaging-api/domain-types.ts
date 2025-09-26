@@ -174,6 +174,7 @@ export interface ClientAcknowledgedEvent extends WithBaseEvent {
   components: Record<string, ComponentInfo>;
   componentTypes: Record<string, ComponentType>;
 }
+
 /**
  * Emits when dragging from the host enters the client window.
  * @target client
@@ -232,6 +233,14 @@ export interface ComponentPropertiesChangedEvent<
    * The new properties of the component.
    */
   properties: TProps;
+}
+/**
+ * Emits when a component is focused.
+ * @target client
+ * @group Events
+ */
+export interface ComponentFocusedEvent extends WithBaseEvent, WithComponentId {
+  eventType: 'ComponentFocused';
 }
 /**
  * Event emitted from the host to the client when a key is pressed.

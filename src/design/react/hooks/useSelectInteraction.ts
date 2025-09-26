@@ -4,12 +4,10 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import {useCallback} from 'react';
-import {ClientApi} from '../../messaging-api';
 import {useInteraction} from './useInteraction';
 
 export interface SelectInteraction {
-  selectedComponentId: string | null;
+  selectedComponentId: string;
   setSelectedComponent: (componentId: string) => void;
 }
 
@@ -21,42 +19,28 @@ export interface SelectInteraction {
  * @param clientApi - Client API for host communication
  * @returns Selection state and interaction methods
  */
-export function useSelectInteraction(
-  isDesignMode: boolean,
-  clientApi: ClientApi
-): SelectInteraction {
-  const {state: selectedComponentId, setSelectedComponent} = useInteraction(
-    isDesignMode,
-    clientApi,
-    {
-      initialState: null,
-      eventHandlers: [
-        {
-          eventName: 'ComponentSelected',
-          handler: (event: {componentId: string}, setState) => {
-            setState(event.componentId);
-          },
+export function useSelectInteraction(): SelectInteraction {
+  const {state: selectedComponentId, setSelectedComponent} = useInteraction({
+    initialState: '',
+    eventHandlers: {
+      ComponentSelected: {
+        handler: (event, setState) => {
+          setState(event.componentId);
         },
-        {
-          eventName: 'ComponentDeselected',
-          handler: (event, setState) => {
-            setState(null);
-          },
+      },
+      ComponentDeselected: {
+        handler: (_, setState) => {
+          setState('');
         },
-      ],
-      actions: (state, setState, actionClientApi) => ({
-        setSelectedComponent: useCallback(
-          (componentId: string) => {
-            setState(componentId);
-            if (actionClientApi) {
-              actionClientApi.selectComponent({componentId});
-            }
-          },
-          [actionClientApi, setState]
-        ),
-      }),
-    }
-  );
+      },
+    },
+    actions: (_state, setState, clientApi) => ({
+      setSelectedComponent: (componentId: string) => {
+        setState(componentId);
+        clientApi?.selectComponent({componentId});
+      },
+    }),
+  });
 
   return {
     selectedComponentId,

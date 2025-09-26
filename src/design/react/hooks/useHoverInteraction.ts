@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import {useCallback} from 'react';
-import {ClientApi} from '../../messaging-api';
 import {useInteraction} from './useInteraction';
 
 export interface HoverInteraction {
@@ -17,53 +15,34 @@ export interface HoverInteraction {
  * Custom hook that manages component hover state and handles
  * client-host communication for hover events.
  *
- * @param isDesignMode - Whether design mode is active
- * @param clientApi - Client API for host communication
  * @returns Hover state and interaction methods
  */
-export function useHoverInteraction(
-  isDesignMode: boolean,
-  clientApi: ClientApi
-): HoverInteraction {
-  const {state: hoveredComponentId, setHoveredComponent} = useInteraction(
-    isDesignMode,
-    clientApi,
-    {
-      initialState: null,
-      eventHandlers: [
-        {
-          eventName: 'ComponentHoveredIn',
-          handler: (event: {componentId: string}, setState) => {
-            setState(event.componentId);
-          },
-        },
-        {
-          eventName: 'ComponentHoveredOut',
-          handler: (event, setState) => {
-            setState(null);
-          },
-        },
-      ],
-      actions: (state, setState, actionClientApi) => ({
-        setHoveredComponent: useCallback(
-          (componentId: string | null) => {
-            setState(componentId);
-            if (actionClientApi) {
-              if (componentId) {
-                actionClientApi.hoverInToComponent({componentId});
-              } else if (state) {
-                // Use the current hovered component for hover out
-                actionClientApi.hoverOutOfComponent({
-                  componentId: state,
-                });
-              }
-            }
-          },
-          [actionClientApi, setState, state]
-        ),
-      }),
-    }
-  );
+export function useHoverInteraction(): HoverInteraction {
+  const {state: hoveredComponentId, setHoveredComponent} = useInteraction({
+    initialState: null as string | null,
+    eventHandlers: {
+      ComponentHoveredIn: {
+        handler: (event, setState) => setState(event.componentId),
+      },
+      ComponentHoveredOut: {
+        handler: (_, setState) => setState(null),
+      },
+    },
+    actions: (state, setState, clientApi) => ({
+      setHoveredComponent: (componentId: string | null) => {
+        setState(componentId);
+
+        if (componentId) {
+          clientApi?.hoverInToComponent({componentId});
+        } else if (state) {
+          // Use the current hovered component for hover out
+          clientApi?.hoverOutOfComponent({
+            componentId: state,
+          });
+        }
+      },
+    }),
+  });
 
   return {
     hoveredComponentId,

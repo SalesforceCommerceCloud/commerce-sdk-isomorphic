@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 /* eslint-disable max-lines */
-import type * as Domain from './domain-types.js';
+import type * as Domain from './domain-types';
 
 export type Source = 'host' | 'client';
 
@@ -41,6 +41,8 @@ export interface WithMeta {
   };
 }
 
+export type EventPayload<TEvent> = Omit<TEvent, 'eventType' | 'meta'>;
+
 /**
  * The mapping of events, emitted on the host and client, to their corresponding event and API name.
  * @hidden
@@ -65,6 +67,7 @@ export interface IsomorphicEventNameMapping {
 export interface HostEventNameMapping extends IsomorphicEventNameMapping {
   ClientInitialized: Domain.ClientInitializedEvent;
   ClientReady: Domain.ClientReady;
+  ClientDisconnected: Domain.ClientDisconnectedEvent;
 }
 
 /**
@@ -83,6 +86,7 @@ export interface ClientEventNameMapping extends IsomorphicEventNameMapping {
   MediaChangedEvent: Domain.MediaChangedEvent;
   ClientWindowBoundsHoverOver: Domain.ClientWindowBoundsHoverOverEvent;
   ClientWindowBoundsHoverOut: Domain.ClientWindowBoundsHoverOutEvent;
+  ComponentFocused: Domain.ComponentFocusedEvent;
 }
 
 /**
@@ -236,7 +240,7 @@ export interface IsomorphicApi {
    * @see {Domain.ComponentDragStartedEvent}
    */
   startComponentDrag(
-    event: Omit<Domain.ComponentDragStartedEvent, 'eventType'>
+    event: EventPayload<Domain.ComponentDragStartedEvent>
   ): void;
 
   /**
@@ -261,7 +265,7 @@ export interface IsomorphicApi {
    * @see {Domain.ComponentMovedToRegionEvent}
    */
   moveComponentToRegion(
-    event: Omit<Domain.ComponentMovedToRegionEvent, 'eventType'>
+    event: EventPayload<Domain.ComponentMovedToRegionEvent>
   ): void;
   /**
    * Notifies the host that a component is being hovered over.
@@ -277,9 +281,7 @@ export interface IsomorphicApi {
    * });
    * ```
    */
-  hoverInToComponent(
-    event: Omit<Domain.ComponentHoveredInEvent, 'eventType'>
-  ): void;
+  hoverInToComponent(event: EventPayload<Domain.ComponentHoveredInEvent>): void;
 
   /**
    * Notifies the host that a component is no longer being hovered over.
@@ -296,7 +298,7 @@ export interface IsomorphicApi {
    * ```
    */
   hoverOutOfComponent(
-    event: Omit<Domain.ComponentHoveredOutEvent, 'eventType'>
+    event: EventPayload<Domain.ComponentHoveredOutEvent>
   ): void;
 
   /**
@@ -313,9 +315,7 @@ export interface IsomorphicApi {
    * });
    * ```
    */
-  selectComponent(
-    event: Omit<Domain.ComponentSelectedEvent, 'eventType'>
-  ): void;
+  selectComponent(event: EventPayload<Domain.ComponentSelectedEvent>): void;
 
   /**
    * Notifies the host that a component has been deselected.
@@ -331,9 +331,7 @@ export interface IsomorphicApi {
    * });
    * ```
    */
-  deselectComponent(
-    event: Omit<Domain.ComponentDeselectedEvent, 'eventType'>
-  ): void;
+  deselectComponent(event: EventPayload<Domain.ComponentDeselectedEvent>): void;
 
   /**
    * Notifies the host that a component has been added to a specific region of another component.
@@ -354,7 +352,7 @@ export interface IsomorphicApi {
    * ```
    */
   addComponentToRegion(
-    event: Omit<Domain.ComponentAddedToRegionEvent, 'eventType'>
+    event: EventPayload<Domain.ComponentAddedToRegionEvent>
   ): void;
 
   /**
@@ -375,7 +373,7 @@ export interface IsomorphicApi {
    * });
    * ```
    */
-  deleteComponent(event: Omit<Domain.ComponentDeletedEvent, 'eventType'>): void;
+  deleteComponent(event: EventPayload<Domain.ComponentDeletedEvent>): void;
 
   /**
    * Notifies that an error has occurred.
@@ -393,7 +391,7 @@ export interface IsomorphicApi {
    * });
    * ```
    */
-  notifyError(event: Omit<Domain.ErrorEvent, 'eventType'>): void;
+  notifyError(event: EventPayload<Domain.ErrorEvent>): void;
 
   /**
    * Notifies the host that the client window scroll position has changed.
@@ -412,7 +410,7 @@ export interface IsomorphicApi {
    * ```
    */
   notifyWindowScrollChanged(
-    event: Partial<Omit<Domain.WindowScrollChangedEvent, 'eventType'>>
+    event: Partial<EventPayload<Domain.WindowScrollChangedEvent>>
   ): void;
   /**
    * Gets the id of the remote side of the connection.
@@ -447,7 +445,9 @@ export interface ClientApi extends IsomorphicApi {
     interval?: number;
     prepareClient?: () => Promise<void>;
     timeout?: number;
-  }): Promise<Domain.ClientAcknowledgedEvent | null>;
+    onHostConnected?: (event: Domain.ClientAcknowledgedEvent) => void;
+    onError?: (error: Error) => void;
+  }): void;
 
   /**
    * Notifies the host that the client is ready.
@@ -462,7 +462,7 @@ export interface ClientApi extends IsomorphicApi {
    *
    * @see {Domain.ClientReady}
    */
-  notifyClientReady(event: Omit<Domain.ClientReady, 'eventType'>): void;
+  notifyClientReady(event: EventPayload<Domain.ClientReady>): void;
 
   /**
    * Registers an event handler for client-side events.
@@ -497,7 +497,7 @@ export interface ClientApi extends IsomorphicApi {
  * This is used to configure the client when it is initialized.
  */
 export type ConfigFactory = () => Promise<
-  Omit<Domain.ClientAcknowledgedEvent, 'eventType'>
+  EventPayload<Domain.ClientAcknowledgedEvent>
 >;
 
 export interface HostApi extends IsomorphicApi {
@@ -514,11 +514,16 @@ export interface HostApi extends IsomorphicApi {
    *
    * @example
    * ```typescript
-   * await api.connect();
+   * api.connect();
    * // Start listening for client events.
    * ```
    */
-  connect(params: {configFactory: ConfigFactory}): Promise<boolean>;
+  connect(params: {
+    configFactory: ConfigFactory;
+    onClientConnected?: (clientId: string) => void;
+    onClientDisconnected?: (clientId: string) => void;
+    onError?: (error: Error) => void;
+  }): void;
   /**
    * Registers an event handler for host-side events.
    *
@@ -561,7 +566,7 @@ export interface HostApi extends IsomorphicApi {
    * @see {Domain.PageSettingsChangedEvent}
    */
   notifyPageSettingsChanged(
-    event: Omit<Domain.PageSettingsChangedEvent, 'eventType'>
+    event: EventPayload<Domain.PageSettingsChangedEvent>
   ): void;
 
   /**
@@ -585,7 +590,7 @@ export interface HostApi extends IsomorphicApi {
    * @see {Domain.HostKeyPressedEvent}
    * @see {Domain.DefaultForwardedKeys}
    */
-  forwardKeyPress(event: Omit<Domain.HostKeyPressedEvent, 'eventType'>): void;
+  forwardKeyPress(event: EventPayload<Domain.HostKeyPressedEvent>): void;
 
   /**
    * Notifies the host that a client window drag operation has entered a component.
@@ -609,7 +614,7 @@ export interface HostApi extends IsomorphicApi {
    * @see {Domain.ClientWindowDragEnteredEvent}
    */
   notifyClientWindowDragEntered(
-    event: Omit<Domain.ClientWindowDragEnteredEvent, 'eventType'>
+    event: EventPayload<Domain.ClientWindowDragEnteredEvent>
   ): void;
 
   /**
@@ -634,7 +639,7 @@ export interface HostApi extends IsomorphicApi {
    * @see {Domain.ClientWindowDragMovedEvent}
    */
   notifyClientWindowDragMoved(
-    event: Omit<Domain.ClientWindowDragMovedEvent, 'eventType'>
+    event: EventPayload<Domain.ClientWindowDragMovedEvent>
   ): void;
 
   /**
@@ -659,7 +664,7 @@ export interface HostApi extends IsomorphicApi {
    * @see {Domain.ClientWindowDragExitedEvent}
    */
   notifyClientWindowDragExited(
-    event: Omit<Domain.ClientWindowDragExitedEvent, 'eventType'>
+    event: EventPayload<Domain.ClientWindowDragExitedEvent>
   ): void;
 
   /**
@@ -684,7 +689,7 @@ export interface HostApi extends IsomorphicApi {
    * @see {Domain.ClientWindowDragDroppedEvent}
    */
   notifyClientWindowDragDropped(
-    event: Omit<Domain.ClientWindowDragDroppedEvent, 'eventType'>
+    event: EventPayload<Domain.ClientWindowDragDroppedEvent>
   ): void;
 
   /**
@@ -722,7 +727,7 @@ export interface HostApi extends IsomorphicApi {
   setComponentProperties<
     TProps extends Record<string, unknown> = Record<string, unknown>
   >(
-    event: Omit<Domain.ComponentPropertiesChangedEvent<TProps>, 'eventType'>
+    event: EventPayload<Domain.ComponentPropertiesChangedEvent<TProps>>
   ): void;
 
   /**
@@ -732,7 +737,7 @@ export interface HostApi extends IsomorphicApi {
    * @stability development
    */
   notifyClientWindowBoundsHoverOver(
-    event: Omit<Domain.ClientWindowBoundsHoverOverEvent, 'eventType'>
+    event: EventPayload<Domain.ClientWindowBoundsHoverOverEvent>
   ): void;
 
   /**
@@ -742,6 +747,14 @@ export interface HostApi extends IsomorphicApi {
    * @stability development
    */
   notifyClientWindowBoundsHoverOut(
-    event: Omit<Domain.ClientWindowBoundsHoverOutEvent, 'eventType'>
+    event: EventPayload<Domain.ClientWindowBoundsHoverOutEvent>
   ): void;
+  /**
+   * Notifies the host that a component has been focused.
+   *
+   * @param event - The component focus event containing the component ID
+   * @param event.componentId - The ID of the component that was focused
+   * @stability development
+   */
+  focusComponent(event: EventPayload<Domain.ComponentFocusedEvent>): void;
 }
