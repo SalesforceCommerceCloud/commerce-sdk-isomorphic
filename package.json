@@ -11,7 +11,93 @@
     "url": "git+https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic.git"
   },
   "license": "BSD-3-Clause",
+  "sideEffects": false,
   "exports": {
+    ".": {
+      "import": "./lib/index.esm.js",
+      "require": "./lib/index.cjs.js"
+    },
+    "./shopperBaskets": {
+      "import": "./lib/shopperBaskets.js",
+      "require": "./lib/shopperBaskets.cjs.js"
+    },
+    "./shopperBasketsv2": {
+      "import": "./lib/shopperBasketsv2.js",
+      "require": "./lib/shopperBasketsv2.cjs.js"
+    },
+    "./shopperConsents": {
+      "import": "./lib/shopperConsents.js",
+      "require": "./lib/shopperConsents.cjs.js"
+    },
+    "./shopperContext": {
+      "import": "./lib/shopperContext.js",
+      "require": "./lib/shopperContext.cjs.js"
+    },
+    "./shopperCustomers": {
+      "import": "./lib/shopperCustomers.js",
+      "require": "./lib/shopperCustomers.cjs.js"
+    },
+    "./shopperExperience": {
+      "import": "./lib/shopperExperience.js",
+      "require": "./lib/shopperExperience.cjs.js"
+    },
+    "./shopperGiftCertificates": {
+      "import": "./lib/shopperGiftCertificates.js",
+      "require": "./lib/shopperGiftCertificates.cjs.js"
+    },
+    "./shopperLogin": {
+      "import": "./lib/shopperLogin.js",
+      "require": "./lib/shopperLogin.cjs.js"
+    },
+    "./shopperOrders": {
+      "import": "./lib/shopperOrders.js",
+      "require": "./lib/shopperOrders.cjs.js"
+    },
+    "./shopperProducts": {
+      "import": "./lib/shopperProducts.js",
+      "require": "./lib/shopperProducts.cjs.js"
+    },
+    "./shopperPromotions": {
+      "import": "./lib/shopperPromotions.js",
+      "require": "./lib/shopperPromotions.cjs.js"
+    },
+    "./shopperSearch": {
+      "import": "./lib/shopperSearch.js",
+      "require": "./lib/shopperSearch.cjs.js"
+    },
+    "./shopperSeo": {
+      "import": "./lib/shopperSeo.js",
+      "require": "./lib/shopperSeo.cjs.js"
+    },
+    "./shopperStores": {
+      "import": "./lib/shopperStores.js",
+      "require": "./lib/shopperStores.cjs.js"
+    },
+    "./helpers": {
+      "import": "./lib/helpers.js",
+      "require": "./lib/helpers.cjs.js"
+    },
+    "./clientConfig": {
+      "import": "./lib/clientConfig.js",
+      "require": "./lib/clientConfig.cjs.js"
+    },
+    "./config": {
+      "import": "./lib/config.js",
+      "require": "./lib/config.cjs.js"
+    },
+    "./responseError": {
+      "import": "./lib/responseError.js",
+      "require": "./lib/responseError.cjs.js"
+    },
+    "./templateUrl": {
+      "import": "./lib/templateUrl.js",
+      "require": "./lib/templateUrl.cjs.js"
+    },
+    "./version": {
+      "import": "./lib/version.js",
+      "require": "./lib/version.cjs.js"
+    },
+    "./package.json": "./package.json",
     "./design": {
       "import": {
         "default": "./lib/design/esm/index.js",
@@ -44,7 +130,7 @@
   "scripts": {
     "build": "react-scripts build",
     "build:design": "tsc -p tsconfig.design.json && tsc -p tsconfig.design.json --module commonjs --outDir lib/design/cjs",
-    "build:lib": "rollup -c",
+    "build:lib": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/generateFileList.ts && rollup -c",
     "check:size": "npm-pack-all --output commerce-sdk-isomorphic-with-deps.tgz && bundlesize",
     "check:types": "tsc -p tsconfig.sdk.json --noEmit",
     "ci": "rm -rf node_modules && yarn install",
@@ -64,7 +150,7 @@
     "start": "HTTPS=true react-scripts start",
     "pretest": "yarn run lint && yarn run lint:style && depcheck && yarn run check:size",
     "test": "yarn run check:types && yarn run test:unit && CI=true yarn run test:react",
-    "test:react": "react-scripts test --env=jest-environment-jsdom-sixteen src/environment",
+    "test:react": "react-scripts test --env=jest-environment-jsdom-sixteen src/environment --setupFilesAfterEnv ./src/test/setupTests.ts",
     "test:unit": "jest --coverage --testPathIgnorePatterns node_modules src/environment --silent",
     "updateApis": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/updateApis.ts && yarn diffApis"
   },
@@ -92,27 +178,6 @@
       "last 1 safari version"
     ]
   },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/static/**/*.{js,jsx,ts,tsx}",
-      "scripts/**/*.{js,jsx,ts,tsx}",
-      "!scripts/generate.ts",
-      "!scripts/updateApis.ts",
-      "!scripts/generateVersionTable.ts",
-      "!<rootDir>/node_modules/"
-    ],
-    "coverageReporters": [
-      "text"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 90,
-        "functions": 90,
-        "lines": 90,
-        "statements": 90
-      }
-    }
-  },
   "resolutions": {
     "**/@npmcli/fs": "<1.1.0",
     "**/@oclif/command": "<=1.8.3",
@@ -123,7 +188,6 @@
   },
   "dependencies": {
     "nanoid": "^3.3.8",
-    "node-fetch": "2.6.13",
     "seedrandom": "^3.0.5"
   },
   "devDependencies": {
@@ -166,6 +230,7 @@
     "jest-environment-jsdom-sixteen": "1.0.3",
     "lint-staged": "10.5.4",
     "nock": "^13.2.8",
+    "node-fetch": "2.6.13",
     "npm-pack-all": "^1.12.7",
     "postcss-preset-env": "6.7.1",
     "prettier": "^2.7.1",
@@ -206,7 +271,7 @@
     },
     {
       "path": "commerce-sdk-isomorphic-with-deps.tgz",
-      "maxSize": "1096 kB"
+      "maxSize": "2.4 MB"
     }
   ],
   "proxy": "https://SHORTCODE.api.commercecloud.salesforce.com"
