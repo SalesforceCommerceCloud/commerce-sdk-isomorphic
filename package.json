@@ -129,8 +129,9 @@
   ],
   "scripts": {
     "build": "react-scripts build",
-    "build:design": "tsc -p tsconfig.design.json && tsc -p tsconfig.design.json --module commonjs --outDir lib/design/cjs",
     "build:lib": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/generateFileList.ts && rollup -c",
+    "build:design": "tsc -p tsconfig.design.json && tsc -p tsconfig.design.json --module commonjs --outDir lib/design/cjs && yarn build:design:copy",
+    "build:design:copy": "cpx 'src/design/**/*.css' lib/design/cjs && cpx 'src/design/**/*.css' lib/design/esm",
     "check:size": "npm-pack-all --output commerce-sdk-isomorphic-with-deps.tgz && bundlesize",
     "check:types": "tsc -p tsconfig.sdk.json --noEmit",
     "ci": "rm -rf node_modules && yarn install",
@@ -212,6 +213,7 @@
     "@typescript-eslint/parser": "^4.33.0",
     "autoprefixer": "9.8.8",
     "bundlesize2": "^0.0.31",
+    "cpx": "^1.5.0",
     "depcheck": "^1.4.3",
     "dotenv": "^16.0.3",
     "eslint": "^7.32.0",
@@ -251,11 +253,12 @@
     "stylelint": "13.13.1",
     "stylelint-config-standard": "20.0.0",
     "stylelint-order": "4.1.0",
+    "ts-jest": "26.x.x",
     "ts-node": "9.1.1",
     "typedoc": "^0.17.7",
     "typedoc-plugin-external-module-map": "1.2.1",
     "typedoc-plugin-nojekyll": "^1.0.1",
-    "typescript": "^4.9.5"
+    "typescript": "^4.4.4"
   },
   "peerDependencies": {
     "react": ">=16.8.0",

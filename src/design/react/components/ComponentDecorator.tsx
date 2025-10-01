@@ -4,10 +4,16 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import React, {useCallback, useRef} from 'react';
-import './ComponentDecorator.css';
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+import React, {useRef, useCallback} from 'react';
 import {useDesignContext} from '../context/DesignContext';
 import {ComponentDecoratorProps} from './component.types';
+import {useComponentDecoratorClasses} from '../hooks/useComponentDecoratorClasses';
+import {useDesignCallback} from '../hooks/useDesignCallback';
+import {useDesignState} from '../hooks/useDesignState';
+import {useFocusedComponentHandler} from '../hooks/useFocusedComponentHandler';
+import {useComponentType} from '../hooks/useComponentType';
 
 /**
  * Creates a higher-order component that wraps React components with design-time functionality.
@@ -18,75 +24,71 @@ import {ComponentDecoratorProps} from './component.types';
  * @param Component - The React component to wrap with design functionality
  * @returns A new component with design-time capabilities
  */
-export const createReactComponentDesignDecorator =
-  <TProps extends ComponentDecoratorProps>(
-    Component: React.ComponentType<TProps>
-  ): ((props: TProps) => JSX.Element) =>
-  (props: TProps) => {
-    const {id, name, isFragment, children, ...componentProps} = props;
+export function createReactComponentDesignDecorator<TProps>(
+  Component: React.ComponentType<TProps>
+): (props: ComponentDecoratorProps<TProps>) => JSX.Element {
+  return (props: ComponentDecoratorProps<TProps>) => {
+    const {designMetadata, children, ...componentProps} = props;
+    const {id, name, isFragment, parentId, regionId} = designMetadata;
     const componentId = id;
     const componentName = name || 'Component';
     const dragRef = useRef<HTMLDivElement>(null);
 
     // Only use design context if in design mode
-    const designContext = useDesignContext();
-    const isDesignMode = Boolean(designContext?.isDesignMode);
+    const {isDesignMode} = useDesignContext();
+    const {
+      selectedComponentId,
+      hoveredComponentId,
+      setSelectedComponent,
+      setHoveredComponent,
+      deleteComponent,
+    } = useDesignState();
+    const componentType = useComponentType(componentId);
 
-    if (!isDesignMode || !designContext) {
+    useFocusedComponentHandler(componentId, dragRef);
+
+    const handleMouseEnter = useDesignCallback(
+      () => setHoveredComponent(componentId),
+      [setHoveredComponent, componentId]
+    );
+
+    const handleMouseLeave = useDesignCallback(
+      () => setHoveredComponent(null),
+      [setHoveredComponent]
+    );
+
+    const handleClick = useDesignCallback(
+      (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setSelectedComponent(componentId);
+      },
+      [setSelectedComponent, componentId]
+    );
+
+    const handleDelete = useCallback(() => {
+      deleteComponent({
+        componentId,
+        sourceComponentId: parentId ?? '',
+        sourceRegionId: regionId ?? '',
+      });
+    }, [deleteComponent, componentId]);
+
+    const showFrame = [selectedComponentId, hoveredComponentId].includes(
+      componentId
+    );
+
+    const classes = useComponentDecoratorClasses({
+      componentId,
+      isFragment: Boolean(isFragment),
+    });
+
+    if (!isDesignMode) {
       // eslint-disable-next-line react/jsx-props-no-spreading
       return <Component {...props} />;
     }
 
-    const {
-      selectedComponentId,
-      setSelectedComponent,
-      hoveredComponentId,
-      setHoveredComponent,
-    } = designContext;
-
-    const handleMouseEnter = useCallback(() => {
-      if (isDesignMode) {
-        setHoveredComponent(componentId);
-      }
-    }, [isDesignMode, setHoveredComponent, componentId]);
-
-    const handleMouseLeave = useCallback(() => {
-      if (isDesignMode) {
-        setHoveredComponent(null);
-      }
-    }, [isDesignMode, setHoveredComponent]);
-
-    const handleClick = useCallback(
-      (e: React.MouseEvent) => {
-        if (isDesignMode) {
-          e.stopPropagation();
-          setSelectedComponent(componentId);
-        }
-      },
-      [isDesignMode, setSelectedComponent, componentId]
-    );
-
-    const isSelected = selectedComponentId === componentId;
-    const isHovered = hoveredComponentId === componentId;
-    const showFrame = isSelected || isHovered;
-    const classNames = [];
-
-    if (isFragment) {
-      classNames.push('pd-design-fragment');
-    } else {
-      classNames.push('pd-design-component');
-    }
-
-    if (showFrame) {
-      classNames.push('show-frame');
-    }
-    if (isSelected) {
-      classNames.push('selected');
-    }
-    if (isHovered) {
-      classNames.push('hovered');
-    }
-    const classes = classNames.join(' ');
+    // TODO: For the frame label, when there is not enough space above the component to display it, we
+    // need to display it inside the container instead.
 
     return (
       <div
@@ -98,14 +100,23 @@ export const createReactComponentDesignDecorator =
         data-component-id={componentId}
         data-component-name={componentName}>
         {showFrame && (
-          <div className="component-label">
-            <span className="component-name">
+          <div className="pd-design__label">
+            {componentType?.image && (
+              <span className="pd-design__icon">
+                <img src={componentType.image} alt="" />
+              </span>
+            )}
+            <span className="pd-design__name">
               {componentName} ({componentId})
             </span>
-            <div className="toolbox">
-              <button className="toolbox-button" title="Delete component">
+            <div className="pd-design__toolbox">
+              <button
+                className="pd-design__toolbox-button"
+                onClick={handleDelete}
+                title="Delete component"
+                type="button">
                 <svg
-                  className="delete-icon"
+                  className="pd-design__delete-icon"
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg">
@@ -121,7 +132,11 @@ export const createReactComponentDesignDecorator =
             </div>
           </div>
         )}
-        <Component {...componentProps}>{children}</Component>
+        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+        <Component {...(componentProps as unknown as TProps)}>
+          {children}
+        </Component>
       </div>
     );
   };
+}

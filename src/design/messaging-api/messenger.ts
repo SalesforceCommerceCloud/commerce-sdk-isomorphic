@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import type {EventHandler, MessageEmitter, Source} from './api-types.js';
+import type {EventHandler, MessageEmitter, Source} from './api-types';
 
 export type Logger = (message: unknown, source: 'host' | 'client') => void;
 
@@ -90,7 +90,7 @@ export class Messenger<TInMapping, TOutMapping> {
   /**
    * Sets the id of the connected remote.
    */
-  setRemoteId(remoteId: string): void {
+  setRemoteId(remoteId: string | undefined): void {
     this.remoteId = remoteId;
   }
 
@@ -178,7 +178,7 @@ export class Messenger<TInMapping, TOutMapping> {
     return new Promise<TInMapping[TEvent]>(resolve => {
       const unsub = this.on(eventName, event => {
         unsub();
-        resolve(event as TInMapping[TEvent]);
+        resolve(event as unknown as TInMapping[TEvent]);
       });
     });
   }

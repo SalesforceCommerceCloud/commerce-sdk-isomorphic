@@ -4,21 +4,29 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import {useState, useEffect} from 'react';
-import {ClientApi} from '../../messaging-api';
+import {useEffect, useState} from 'react';
+import {ClientApi, ClientEventNameMapping} from '../../messaging-api';
+import {useDesignContext} from '../context/DesignContext';
 
-export interface EventHandler<T = any> {
-  eventName: string;
-  handler: (event: T, setState: (newState: unknown) => void) => void;
+export interface EventHandler<
+  TState,
+  TName extends keyof ClientEventNameMapping
+> {
+  handler: (
+    event: ClientEventNameMapping[TName],
+    setState: (newState: TState) => void
+  ) => void;
 }
 
 export interface InteractionConfig<TState, TActions> {
   /** Initial state value */
-  initialState: TState;
+  initialState: TState | (() => TState);
   /** Event handlers to register with the client API */
-  eventHandlers: EventHandler[];
+  eventHandlers?: {
+    [TKey in keyof ClientEventNameMapping]?: EventHandler<TState, TKey>;
+  };
   /** Action creators that return functions to interact with the client API */
-  actions: (
+  actions?: (
     state: TState,
     setState: (newState: TState) => void,
     clientApi: ClientApi | null
@@ -29,31 +37,29 @@ export interface InteractionConfig<TState, TActions> {
  * Base hook that provides common interaction patterns for design-time functionality.
  * Reduces boilerplate by handling state management, event listeners, and cleanup.
  *
- * @param isDesignMode - Whether design mode is active
- * @param clientApi - Client API for host communication
  * @param config - Configuration object defining the interaction behavior
  * @returns Object containing state and action methods
  */
 export function useInteraction<
   TState,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TActions extends Record<string, (...args: any[]) => any>
->(
-  isDesignMode: boolean,
-  clientApi: ClientApi,
-  config: InteractionConfig<TState, TActions>
-): {state: TState} & TActions {
+>(config: InteractionConfig<TState, TActions>): {state: TState} & TActions {
   const [state, setState] = useState<TState>(config.initialState);
+  const {isDesignMode, clientApi} = useDesignContext();
 
   useEffect(() => {
     if (!isDesignMode || !clientApi) {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      return () => {}; // Return empty cleanup function for consistency
+      return () => {
+        // Return empty cleanup function for consistency
+      };
     }
 
-    const unsubscribeFunctions = config.eventHandlers.map(
-      ({eventName, handler}) =>
-        clientApi.on(eventName as unknown, (event: unknown) =>
-          handler(event, setState)
+    const unsubscribeFunctions = Object.entries(config.eventHandlers ?? {}).map(
+      ([eventName, entry]) =>
+        clientApi.on(eventName as keyof ClientEventNameMapping, event =>
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          entry.handler(event as any, setState)
         )
     );
 
@@ -62,7 +68,8 @@ export function useInteraction<
     };
   }, [isDesignMode, clientApi]);
 
-  const actions = config.actions(state, setState, clientApi);
+  const actions =
+    config.actions?.(state, setState, clientApi ?? null) ?? ({} as TActions);
 
-  return {state, ...actions} as {state: TState} & TActions;
+  return {state, ...actions};
 }

@@ -11,12 +11,11 @@ import type {
   HostEventNameMapping,
   WithMeta,
   ConfigFactory,
-} from './api-types.js';
-import {Messenger} from './messenger.js';
-import {Deferred} from './deferred.js';
+} from './api-types';
+import {Messenger} from './messenger';
 
 const defaultConfigFactory: ConfigFactory = () =>
-  Promise.resolve({components: {}, componentTypes: {}});
+  Promise.resolve({components: {}, componentTypes: {}, labels: {}});
 /**
  * Factory function to create a HostApi instance.
  *
@@ -29,7 +28,6 @@ export function createHostApi({
   id,
   logger,
 }: HostConfiguration): HostApi {
-  let connectDeferred: Deferred<boolean>;
   const messenger = new Messenger<HostEventNameMapping, ClientEventNameMapping>(
     {
       source: 'host',
@@ -38,6 +36,8 @@ export function createHostApi({
       logger,
     }
   );
+  const subscriptions: (() => void)[] = [];
+  let isConnected = false;
 
   return {
     addComponentToRegion: messenger.toEmitter('ComponentAddedToRegion'),
@@ -68,35 +68,65 @@ export function createHostApi({
       'ClientWindowBoundsHoverOut'
     ),
     notifyError: messenger.toEmitter('Error'),
+    focusComponent: messenger.toEmitter('ComponentFocused'),
     connect: ({
       configFactory = defaultConfigFactory,
+      onClientConnected,
+      onClientDisconnected,
+      onError,
     }: {
       configFactory: ConfigFactory;
+      onClientConnected?: (clientId: string) => void;
+      onClientDisconnected?: (clientId: string) => void;
+      onError?: (error: Error) => void;
     }) => {
-      connectDeferred?.resolve(false);
-      connectDeferred = new Deferred<boolean>();
+      if (isConnected) {
+        onClientConnected?.(messenger.getRemoteId() as string);
+
+        return;
+      }
+
       messenger.connect();
-      messenger.on('ClientInitialized', event => {
-        if (event.meta.clientId !== messenger.getRemoteId()) {
-          messenger.setRemoteId(event.meta.clientId as string);
 
-          configFactory()
-            .then(config => {
-              messenger.emit('ClientAcknowledged', config);
+      subscriptions.push(
+        messenger.on('ClientDisconnected', event => {
+          if (event.meta.clientId === messenger.getRemoteId()) {
+            messenger.setRemoteId(undefined);
+          }
 
-              return messenger.toPromise('ClientReady');
-            })
-            .then(({clientId}) => {
-              if (clientId !== messenger.getRemoteId()) {
-                throw new Error('Client id mismatch');
-              }
-            })
-            .then(() => connectDeferred.resolve(true))
-            .catch(error => connectDeferred.reject(error));
-        }
-      });
+          onClientDisconnected?.(event.meta.clientId as string);
+        })
+      );
 
-      return connectDeferred.promise;
+      subscriptions.push(
+        messenger.on('ClientInitialized', event => {
+          const remoteId = messenger.getRemoteId();
+
+          // If the same client tries reconnecting, we should allow it.
+          // If there is no remote id, we should allow any client to connect.
+          if ((remoteId && event.meta.clientId === remoteId) || !remoteId) {
+            messenger.setRemoteId(event.meta.clientId as string);
+
+            configFactory()
+              .then(config => {
+                messenger.emit('ClientAcknowledged', config);
+
+                return messenger.toPromise('ClientReady');
+              })
+              .then(({clientId}) => {
+                if (clientId !== messenger.getRemoteId()) {
+                  throw new Error('Client id mismatch');
+                }
+
+                return clientId;
+              })
+              .then(clientId => onClientConnected?.(clientId))
+              .catch(error => onError?.(error));
+          }
+        })
+      );
+
+      isConnected = true;
     },
     on: <TEvent extends keyof HostEventNameMapping>(
       event: TEvent,
@@ -106,8 +136,9 @@ export function createHostApi({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ) => messenger.on(event as any, handler as any),
     disconnect: () => {
+      isConnected = false;
       messenger.disconnect();
-      connectDeferred?.resolve(false);
+      subscriptions.forEach(unsubscribe => unsubscribe());
     },
     getRemoteId: () => messenger.getRemoteId(),
   };

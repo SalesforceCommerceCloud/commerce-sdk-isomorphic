@@ -4,25 +4,42 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import React, {createContext, useMemo} from 'react';
-import {createClientApi, ClientApi} from '../../messaging-api';
+import React from 'react';
+import '../../styles/base.css';
+import {
+  createClientApi,
+  ClientApi,
+  IsomorphicConfiguration,
+  ClientAcknowledgedEvent,
+  EventPayload,
+} from '../../messaging-api';
 import {isDesignModeActive} from '../../modeDetection';
-import {useDesignState, DesignState} from '../hooks/useDesignState';
+import {DesignStateProvider} from './DesignStateContext';
+
+const noop = () => {
+  /* noop */
+};
 
 /**
  * Type definition for the Design Context
  * Extends DesignState with additional design-time properties
  */
-export interface DesignContextType extends DesignState {
+export interface DesignContextType {
   /** Whether design mode is currently active */
   isDesignMode: boolean;
   /** Client API for host communication */
-  clientApi: ClientApi;
+  clientApi?: ClientApi;
+  /** Whether the client is connected to the host */
+  isConnected: boolean;
+  /** The page designer config */
+  pageDesignerConfig: EventPayload<ClientAcknowledgedEvent> | null;
 }
 
-export const DesignContext = createContext<DesignContextType | undefined>(
-  undefined
-);
+export const DesignContext = React.createContext<DesignContextType>({
+  isDesignMode: false,
+  isConnected: false,
+  pageDesignerConfig: null,
+});
 
 /**
  * Provider component that enables design-time functionality for child components.
@@ -37,56 +54,84 @@ export const DesignProvider = ({
   children,
   targetOrigin,
   clientId,
+  clientConnectionTimeout,
+  clientConnectionInterval,
+  clientLogger = noop,
 }: React.PropsWithChildren<{
   targetOrigin: string;
   clientId: string;
+  clientConnectionTimeout?: number;
+  clientConnectionInterval?: number;
+  clientLogger?: IsomorphicConfiguration['logger'];
 }>): JSX.Element => {
   const isDesignMode = isDesignModeActive();
+  const [isConnected, setIsConnected] = React.useState(false);
+  const [pageDesignerConfig, setPageDesignerConfig] =
+    React.useState<ClientAcknowledgedEvent | null>(null);
 
   const clientApi = React.useMemo(
     () =>
       createClientApi({
+        logger: clientLogger,
         emitter: {
           postMessage: message =>
             window.parent.postMessage(message, targetOrigin),
           addEventListener: handler => {
-            window.addEventListener(
-              'message',
-              handler as unknown as EventListener
-            );
+            const listener = (event: MessageEvent) => handler(event.data);
 
-            return () =>
-              window.removeEventListener(
-                'message',
-                handler as unknown as EventListener
-              );
+            window.addEventListener('message', listener);
+
+            return () => window.removeEventListener('message', listener);
           },
         },
         id: clientId,
       }),
-    [targetOrigin]
+    [targetOrigin, clientId]
   );
 
-  // Use the extracted state management hook
-  const designState = useDesignState(isDesignMode, clientApi);
+  React.useEffect(() => {
+    // This will poll the host for a connection until the client is acknowledged.
+    clientApi.connect({
+      timeout: clientConnectionTimeout,
+      interval: clientConnectionInterval,
+      onHostConnected: event => {
+        setPageDesignerConfig(event);
+        setIsConnected(true);
+      },
+      onError: () => {
+        // TODO: Figure out how to handle this.
+      },
+    });
 
-  const contextValue = useMemo<DesignContextType>(
+    return () => {
+      clientApi.disconnect();
+      setPageDesignerConfig(null);
+      setIsConnected(false);
+    };
+  }, [clientApi]);
+
+  // Use the extracted state management hook
+  const contextValue = React.useMemo<DesignContextType>(
     () => ({
       isDesignMode,
       clientApi,
-      selectedComponentId: designState.selectedComponentId,
-      hoveredComponentId: designState.hoveredComponentId,
-      setSelectedComponent: designState.setSelectedComponent,
-      setHoveredComponent: designState.setHoveredComponent,
+      isConnected,
+      pageDesignerConfig,
     }),
-    [isDesignMode, clientApi, designState]
+    [isDesignMode, clientApi, isConnected, pageDesignerConfig]
   );
 
   return (
     <DesignContext.Provider value={contextValue}>
-      {children}
+      <DesignStateProvider>{children}</DesignStateProvider>
     </DesignContext.Provider>
   );
+};
+
+DesignProvider.defaultProps = {
+  clientLogger: noop,
+  clientConnectionTimeout: 60_000,
+  clientConnectionInterval: 1_000,
 };
 
 /**
@@ -94,12 +139,6 @@ export const DesignProvider = ({
  * Provides access to design mode state and component selection functionality
  *
  * @returns The current design context
- * @throws Error if used outside of a DesignProvider
  */
-export const useDesignContext = (): DesignContextType => {
-  const context = React.useContext(DesignContext);
-  if (context === undefined) {
-    throw new Error('useDesignContext must be used within a DesignProvider');
-  }
-  return context;
-};
+export const useDesignContext = (): DesignContextType =>
+  React.useContext(DesignContext);

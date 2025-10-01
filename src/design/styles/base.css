@@ -6,46 +6,46 @@
  */
 
 /* Base styles shared by both component and fragment */
-.pd-design-component,
-.pd-design-fragment {
+.pd-design--component,
+.pd-design--fragment {
   position: relative;
-  transition: border 0.2s ease-in-out;
-  border: 1px solid transparent;
+  transition: outline 0.2s ease-in-out;
+  outline: 1px solid transparent;
 }
 
-.pd-design-component {
-  --design-color: #0070d2;
+.pd-design--component {
+  --pd-design-color: #0070d2;
 }
 
-.pd-design-fragment {
-  --design-color: #8402ad;
+.pd-design--fragment {
+  --pd-design-color: #8402ad;
 }
 
 /* Shared state styles */
-.pd-design-component.show-frame,
-.pd-design-fragment.show-frame {
-  border: 1px solid var(--design-color);
+.pd-design--show-frame,
+.pd-design--fragment.pd-design--show-frame {
+  outline: 1px solid var(--pd-design-color);
 }
 
-.pd-design-component.selected,
-.pd-design-fragment.selected {
-  border-color: var(--design-color);
-  border-width: 2px;
+.pd-design--selected,
+.pd-design--fragment.pd-design--selected {
+  outline-color: var(--pd-design-color);
+  outline-width: 2px;
 }
 
-.pd-design-component.hovered,
-.pd-design-fragment.hovered {
-  border-color: var(--design-color);
-  border-style: dashed;
+.pd-design--hovered,
+.pd-design--fragment.pd-design--hovered {
+  outline-color: var(--pd-design-color);
+  outline-style: dashed;
 }
 
-.component-label {
+.pd-design__label {
   position: absolute;
   top: -32px;
   left: 50%;
   transform: translateX(-50%);
   height: 32px;
-  background: var(--design-color);
+  background: var(--pd-design-color);
   color: white;
   display: inline-flex;
   align-items: center;
@@ -60,26 +60,26 @@
   white-space: nowrap;
 }
 
-.pd-design-component.show-frame .component-label,
-.pd-design-fragment.show-frame .component-label {
+.pd-design--show-frame .pd-design__label,
+.pd-design--fragment.pd-design--show-frame .pd-design__label {
   opacity: 1;
   visibility: visible;
 }
 
-.component-name {
+.pd-design__name {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin-right: 8px;
 }
 
-.toolbox {
+.pd-design__toolbox {
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-.toolbox-button {
+.pd-design__toolbox-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,16 +93,16 @@
   padding: 0;
 }
 
-.toolbox-button:hover {
+.pd-design__toolbox-button:hover {
   background: rgba(255, 255, 255, 0.2);
 }
 
-.toolbox-button:focus {
+.pd-design__toolbox-button:focus {
   outline: 1px solid rgba(255, 255, 255, 0.5);
   outline-offset: 1px;
 }
 
-.delete-icon {
+.pd-design__delete-icon {
   width: 12px;
   height: 12px;
   color: white;
