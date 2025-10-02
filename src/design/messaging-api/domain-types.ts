@@ -421,14 +421,13 @@ export interface ComponentDeletedEvent extends WithBaseEvent, WithComponentId {
  */
 export interface ComponentAddedToRegionEvent<
   TProps extends Record<string, unknown> = Record<string, unknown>
-> extends WithBaseEvent,
-    WithComponentId {
+> extends WithBaseEvent {
   eventType: 'ComponentAddedToRegion';
   /**
    * The specifier of the component to add.
    * This will be used to lookup the component in the registry.
    */
-  componentSpecifier: string;
+  componentType: string;
   /**
    * The properties of the component to add.
    * These will be used to initialize the component.
@@ -450,9 +449,12 @@ export interface ComponentAddedToRegionEvent<
  */
 export interface ComponentDragStartedEvent
   extends WithBaseEvent,
-    WithComponentId,
     Partial<WithClientVector> {
   eventType: 'ComponentDragStarted';
+  /**
+   * The type of the component that is being dragged.
+   */
+  componentType: string;
 }
 /**
  * Emits when an error occurs.

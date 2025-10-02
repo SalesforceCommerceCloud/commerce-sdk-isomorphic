@@ -7,13 +7,23 @@
 import React from 'react';
 import {useDesignContext} from '../context/DesignContext';
 import {ComponentDecoratorProps} from './component.types';
+import {useExternalDragHandler} from '../hooks/useExternalDragHandler';
+import {useRegionDecoratorClasses} from '../hooks/useRegionDecoratorClasses';
 
 export function createReactRegionDesignDecorator<TProps>(
   Region: React.ComponentType<TProps>
 ): (props: ComponentDecoratorProps<TProps>) => JSX.Element {
   return (props: ComponentDecoratorProps<TProps>) => {
-    const {children, ...componentProps} = props;
+    const {designMetadata, children, ...componentProps} = props;
     const {isDesignMode} = useDesignContext();
+    const nodeRef = React.useRef<HTMLDivElement>(null);
+    const classes = useRegionDecoratorClasses({regionId: designMetadata.id});
+
+    useExternalDragHandler(
+      designMetadata.id,
+      designMetadata.parentId ?? '',
+      nodeRef
+    );
 
     if (!isDesignMode) {
       // eslint-disable-next-line react/jsx-props-no-spreading
@@ -21,7 +31,7 @@ export function createReactRegionDesignDecorator<TProps>(
     }
 
     return (
-      <div className="pd-region">
+      <div className={classes} ref={nodeRef}>
         {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         <Region {...(componentProps as TProps)}>{children}</Region>
       </div>

@@ -9,13 +9,17 @@ import {useSelectInteraction} from '../hooks/useSelectInteraction';
 import {useHoverInteraction} from '../hooks/useHoverInteraction';
 import {useDeleteInteraction} from '../hooks/useDeleteInteraction';
 import {useFocusInteraction} from '../hooks/useFocusInteraction';
+import {
+  ExternalDragInteraction,
+  useExternalDragInteraction,
+} from '../hooks/useExternalDragInteraction';
 import {ComponentDeletedEvent, EventPayload} from '../../messaging-api';
 
 const noop = () => {
   /* noop */
 };
 
-export interface DesignState {
+export interface DesignState extends ExternalDragInteraction {
   selectedComponentId: string | null;
   hoveredComponentId: string | null;
   setSelectedComponent: (componentId: string) => void;
@@ -33,6 +37,15 @@ export const DesignStateContext = React.createContext<DesignState>({
   deleteComponent: noop,
   focusComponent: noop,
   focusedComponentId: null,
+  externalDragState: {
+    isDragging: false,
+    componentType: '',
+    x: 0,
+    y: 0,
+    currentDropTarget: null,
+  },
+  setCurrentDropTarget: noop,
+  commitCurrentDropTarget: noop,
 });
 
 export const DesignStateProvider = ({
@@ -42,6 +55,7 @@ export const DesignStateProvider = ({
 }): JSX.Element => {
   const selectInteraction = useSelectInteraction();
   const hoverInteraction = useHoverInteraction();
+  const externalDragInteraction = useExternalDragInteraction();
   const deleteInteraction = useDeleteInteraction({
     selectedComponentId: selectInteraction.selectedComponentId,
     setSelectedComponent: selectInteraction.setSelectedComponent,
@@ -56,8 +70,15 @@ export const DesignStateProvider = ({
       ...selectInteraction,
       ...hoverInteraction,
       ...focusInteraction,
+      ...externalDragInteraction,
     }),
-    [deleteInteraction, selectInteraction, hoverInteraction, focusInteraction]
+    [
+      deleteInteraction,
+      selectInteraction,
+      hoverInteraction,
+      focusInteraction,
+      externalDragInteraction,
+    ]
   );
 
   return (

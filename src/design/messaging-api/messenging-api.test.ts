@@ -356,7 +356,7 @@ describe('Messaging API', () => {
 
     describe.each`
       method                         | eventName                   | payload
-      ${'addComponentToRegion'}      | ${'ComponentAddedToRegion'} | ${{componentId: 'test-component', componentSpecifier: 'test-specifier', componentProperties: {test: 'value'}, targetComponentId: 'target-component', targetRegionId: 'test-region'}}
+      ${'addComponentToRegion'}      | ${'ComponentAddedToRegion'} | ${{componentId: 'test-component', componentType: 'test-specifier', componentProperties: {test: 'value'}, targetComponentId: 'target-component', targetRegionId: 'test-region'}}
       ${'moveComponentToRegion'}     | ${'ComponentMovedToRegion'} | ${{componentId: 'test-component', targetComponentId: 'target-component', targetRegionId: 'target-region', sourceRegionId: 'source-region', sourceComponentId: 'source-component'}}
       ${'notifyClientReady'}         | ${'ClientReady'}            | ${{clientId: 'test-client'}}
       ${'startComponentDrag'}        | ${'ComponentDragStarted'}   | ${{componentId: 'test-component', x: 100, y: 200}}
@@ -400,7 +400,7 @@ describe('Messaging API', () => {
 
     describe.each`
       method                                 | eventName                        | payload
-      ${'addComponentToRegion'}              | ${'ComponentAddedToRegion'}      | ${{componentId: 'test-component', componentSpecifier: 'test-specifier', componentProperties: {test: 'value'}, targetComponentId: 'target-component', targetRegionId: 'test-region'}}
+      ${'addComponentToRegion'}              | ${'ComponentAddedToRegion'}      | ${{componentId: 'test-component', componentType: 'test-specifier', componentProperties: {test: 'value'}, targetComponentId: 'target-component', targetRegionId: 'test-region'}}
       ${'moveComponentToRegion'}             | ${'ComponentMovedToRegion'}      | ${{componentId: 'test-component', targetComponentId: 'target-component', targetRegionId: 'target-region', sourceRegionId: 'source-region', sourceComponentId: 'source-component'}}
       ${'startComponentDrag'}                | ${'ComponentDragStarted'}        | ${{componentId: 'test-component', x: 100, y: 200}}
       ${'hoverInToComponent'}                | ${'ComponentHoveredIn'}          | ${{componentId: 'test-component'}}
