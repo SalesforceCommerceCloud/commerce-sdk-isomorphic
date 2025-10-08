@@ -1,0 +1,32 @@
+name: Nightly Preview Publish
+
+on:
+  schedule:
+    - cron: '0 8 * * *' # Midnight PST (08:00 UTC)
+  workflow_dispatch:
+
+jobs:
+  publish-preview-to-npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: preview
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '22.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: yarn install
+      - name: Bump to nightly preview version
+        run: |
+          BASE_VERSION=$(node -p "require('./package.json').version.split('-')[0]")
+          DATE=$(date -u +%Y%m%d%H%M%S)
+          NEW_VERSION="$BASE_VERSION-nightly-$DATE"
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          npm version --no-git-tag-version "$NEW_VERSION"
+      - run: yarn run renderTemplates
+      - run: yarn build:lib
+      - run: npm publish --tag preview
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
