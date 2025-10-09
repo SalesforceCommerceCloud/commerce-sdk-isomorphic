@@ -34,10 +34,10 @@ export interface TestBedConfig<
  *   const testBed = createTestBed({
  * .   renderer: (props) => render(<MyComponent {...props} />)
  *   });
- *   
+ *
  *   it('should render the component', async () => {
  *     const { findByText } = await testBed.render({ name: 'test' });
- *     
+ *
  *     expect(findByText('test')).toBeDefined();
  *   }
  * });
