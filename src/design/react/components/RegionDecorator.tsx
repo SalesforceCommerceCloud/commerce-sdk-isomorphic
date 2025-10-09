@@ -33,7 +33,7 @@ export function createReactRegionDesignDecorator<TProps>(
     return (
       <div className={classes} ref={nodeRef}>
         {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-        <Region {...(componentProps as TProps)}>{children}</Region>
+        <Region {...(componentProps as unknown as TProps)}>{children}</Region>
       </div>
     );
   };

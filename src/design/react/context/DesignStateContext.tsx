@@ -43,6 +43,7 @@ export const DesignStateContext = React.createContext<DesignState>({
     x: 0,
     y: 0,
     currentDropTarget: null,
+    pendingTargetCommit: false,
   },
   setCurrentDropTarget: noop,
   commitCurrentDropTarget: noop,
