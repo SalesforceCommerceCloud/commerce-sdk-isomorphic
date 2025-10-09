@@ -12,7 +12,6 @@ import {
   RenderResult,
   cleanup as tlCleanup,
   act,
-  fireEvent,
   waitFor,
 } from '@testing-library/react';
 import {HostApi} from '../../messaging-api/api-types';
@@ -164,7 +163,9 @@ describe('design/react/RegionDecorator', () => {
         });
 
         // Initially, the hovered class should NOT be present
-        expect(element.classList.contains('pd-design__region--hovered')).toBe(false);
+        expect(element.classList.contains('pd-design__region--hovered')).toBe(
+          false
+        );
 
         // Mock getBoundingClientRect to simulate region position
         const mockRect = {
@@ -193,20 +194,24 @@ describe('design/react/RegionDecorator', () => {
         });
 
         // After drag starts, hovered class should still NOT be present
-        expect(element.classList.contains('pd-design__region--hovered')).toBe(false);
+        expect(element.classList.contains('pd-design__region--hovered')).toBe(
+          false
+        );
 
         // Simulate drag moved to coordinates within the region bounds
         act(() => {
           host.notifyClientWindowDragMoved({
             componentId: 'dragged-component',
             x: 100, // Within region bounds
-            y: 75,  // Within region bounds
+            y: 75, // Within region bounds
           });
         });
 
         // Now the hovered class should be present
         await waitFor(() => {
-          expect(element.classList.contains('pd-design__region--hovered')).toBe(true);
+          expect(element.classList.contains('pd-design__region--hovered')).toBe(
+            true
+          );
         });
       });
 
@@ -249,13 +254,15 @@ describe('design/react/RegionDecorator', () => {
           host.notifyClientWindowDragMoved({
             componentId: 'dragged-component',
             x: 100, // Within region bounds
-            y: 75,  // Within region bounds
+            y: 75, // Within region bounds
           });
         });
 
         // Verify hovered class is present
         await waitFor(() => {
-          expect(element.classList.contains('pd-design__region--hovered')).toBe(true);
+          expect(element.classList.contains('pd-design__region--hovered')).toBe(
+            true
+          );
         });
 
         // Move drag outside region bounds
@@ -269,11 +276,12 @@ describe('design/react/RegionDecorator', () => {
 
         // Hovered class should be removed
         await waitFor(() => {
-          expect(element.classList.contains('pd-design__region--hovered')).toBe(false);
+          expect(element.classList.contains('pd-design__region--hovered')).toBe(
+            false
+          );
         });
       });
     });
-
 
     describe('region decorator classes', () => {
       /*
@@ -286,8 +294,6 @@ describe('design/react/RegionDecorator', () => {
         expect(element.classList.contains('pd-design--decorator')).toBe(true);
         expect(element.classList.contains('pd-design__region')).toBe(true);
       });
-
     });
   });
 });
-
