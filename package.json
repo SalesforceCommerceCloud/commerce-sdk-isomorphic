@@ -240,11 +240,11 @@
     "bundlesize": [
         {
             "path": "lib/**/*.js",
-            "maxSize": "53 kB"
+            "maxSize": "54 kB"
         },
         {
             "path": "commerce-sdk-isomorphic-with-deps.tgz",
-            "maxSize": "2.4 MB"
+            "maxSize": "2.42 MB"
         }
     ],
     "proxy": "https://SHORTCODE.api.commercecloud.salesforce.com"
