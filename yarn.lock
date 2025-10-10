@@ -8475,6 +8475,7 @@ __metadata:
     ts-node: "npm:9.1.1"
     typedoc: "npm:^0.17.7"
     typedoc-plugin-external-module-map: "npm:1.2.1"
+    typedoc-plugin-nojekyll: "npm:^1.0.1"
     typescript: "npm:^4.4.4"
   peerDependencies:
     react: ">=16.8.0"
@@ -11497,6 +11498,17 @@ __metadata:
     jsonfile: "npm:^4.0.0"
     universalify: "npm:^0.1.0"
   checksum: 10c0/259f7b814d9e50d686899550c4f9ded85c46c643f7fe19be69504888e007fcbc08f306fae8ec495b8b998635e997c9e3e175ff2eeed230524ef1c1684cc96423
+  languageName: node
+  linkType: hard
+
+"fs-extra@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "fs-extra@npm:6.0.1"
+  dependencies:
+    graceful-fs: "npm:^4.1.2"
+    jsonfile: "npm:^4.0.0"
+    universalify: "npm:^0.1.0"
+  checksum: 10c0/553145c864b620f6d421104203231fe25adfbeaf6dfb44bd494fbb73cafa7efaa90393aa020ee94ee300a2a17f01c6cd75903ef4be342f43090dfa5082c9309e
   languageName: node
   linkType: hard
 
@@ -22140,6 +22152,17 @@ __metadata:
   peerDependencies:
     typedoc: ">=0.14 <1.0"
   checksum: 10c0/ebbd09bd6db165e5ff3d009b75ac5babe722553ceee8bf2764d5e4123a3be5d4aefec6fa4c0a7243fa03b65563b2c1009f8f44836464f45b230d0121f9f92f89
+  languageName: node
+  linkType: hard
+
+"typedoc-plugin-nojekyll@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "typedoc-plugin-nojekyll@npm:1.0.1"
+  dependencies:
+    fs-extra: "npm:^6.0.1"
+  peerDependencies:
+    typedoc: ^0.11.1
+  checksum: 10c0/35c20748c20dd01e78b45e986a435444f415b6b74bf70cd44a763f20cc61813a1cb435774c00c921b64334dda61641770585cd6fcc9bf4adb4a3fb5b2dc62667
   languageName: node
   linkType: hard
 

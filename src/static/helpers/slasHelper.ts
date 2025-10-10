@@ -226,8 +226,7 @@ export async function authorizeIDP(options: {
   const apiPath = ShopperLogin.apiPaths.authorizeCustomer;
   const pathParams: ShopperLoginPathParameters & Required<BaseUriParameters> = {
     organizationId: slasClient.clientConfig.parameters.organizationId,
-    shortCode: slasClient.clientConfig.parameters.shortCode,
-    version: "v1"
+    shortCode: slasClient.clientConfig.parameters.shortCode
   };
   const queryParams: authorizeCustomerQueryParameters = {
     // put it at the top to avoid overriding the rest of params
