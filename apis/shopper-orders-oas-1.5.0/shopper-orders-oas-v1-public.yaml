@@ -319,7 +319,7 @@ paths:
               $ref: '#/components/schemas/OrderPaymentInstrumentRequest'
       responses:
         '200':
-          description: Success, the response body contains the order with the updated payment instrument.
+          description: Success, the response body contains the order with the updated payment instrument. When Salesforce Payments is enabled, the paymentReference object will be included in the paymentInstruments.
           content:
             application/json:
               schema:

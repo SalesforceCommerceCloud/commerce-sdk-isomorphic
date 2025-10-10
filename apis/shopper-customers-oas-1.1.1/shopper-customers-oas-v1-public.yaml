@@ -817,6 +817,58 @@ paths:
       security:
         - ShopperToken:
             - sfcc.shopper-myaccount.paymentinstruments.rw
+    patch:
+      summary: Update a customer's payment instrument. This endpoint only accepts a registered customer ShopperToken (JWT).
+      operationId: updateCustomerPaymentInstrument
+      parameters:
+        - $ref: "#/components/parameters/paymentInstrumentId"
+        - $ref: "#/components/parameters/customerId"
+        - $ref: "#/components/parameters/organizationId"
+        - $ref: "#/components/parameters/siteId"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerPaymentInstrumentUpdateRequest"
+            examples:
+              UpdateCustomerPaymentInstrumentBody:
+                $ref: '#/components/examples/UpdateCustomerPaymentInstrumentBody'
+        required: true
+      responses:  
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerPaymentInstrument"
+              examples:
+                updateCustomerPaymentInstrumentSuccess:
+                  $ref: "#/components/examples/updateCustomerPaymentInstrumentSuccess"
+        "400":
+          description: |
+            Either the CustomerId URL parameter does not match the verified customer represented by the JWT token, or the request contains unsupported fields for update.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                invalidCustomer400:
+                  $ref: "#/components/examples/invalidCustomer400"
+                updatePaymentInstrumentUnsupportedFields400:
+                  $ref: "#/components/examples/updatePaymentInstrumentUnsupportedFields400"
+        "404":
+          description: |
+            Requested resource not found.
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                getCustomer404:
+                  $ref: "#/components/examples/getCustomer404"
+      security:
+        - ShopperToken:
+            - "sfcc.shopper-myaccount.paymentinstruments.rw"
   /organizations/{organizationId}/customers/{customerId}/product-lists:
     get:
       summary: Return all customer product lists. This endpoint accepts a registered customer ShopperToken (JWT) or a guest customer ShopperToken.
@@ -3774,6 +3826,30 @@ components:
           description: The default payment instrument.
           example: true
       description: Document representing a customer payment instrument request.
+    CustomerPaymentInstrumentUpdateRequest:
+      type: object
+      properties:
+        default:
+          type: boolean
+          description: The default payment instrument.
+          example: true
+        paymentCard:
+          type: object
+          properties:
+            expirationMonth:
+              type: integer
+              format: int32
+              minimum: 1
+              maximum: 12
+              description: The month when the payment card expires.
+              example: 12
+            expirationYear:
+              type: integer
+              format: int32
+              description: The year when the payment card expires.
+              example: 2028
+          description: The payment card expiration information.
+      description: "Document representing a customer payment instrument update request. Only allows updating the default flag and card expiration date."
     CustomerProductListRegistrant:
       description: Document representing a customer product list registrant.
       properties:
@@ -5848,6 +5924,22 @@ components:
         paymentMethodId: OCAPI_Payment_Simple
         paymentInstrumentId: cdOLciWbOsYl6aaadkwcsx9xHH
         default: false
+    updateCustomerPaymentInstrumentSuccess:
+      value:
+        paymentCard:
+          cardType: "MasterCard"
+          creditCardExpired: false
+          expirationMonth: 12
+          expirationYear: 2028
+          holder: "John Smith"
+          issueNumber: "i117"
+          maskedNumber: "***4567"
+          numberLastDigits: "4567"
+          validFromMonth: 8
+          validFromYear: 2007
+        paymentMethodId: "OCAPI_Payment_Simple"
+        paymentInstrumentId: "cdOLciWbOsYl6aaadkwcsx9xHH"
+        default: false
     customerProductListResult:
       value:
         limit: 1
@@ -5996,6 +6088,12 @@ components:
     UpdateCustomerProductListByListIdBody:
       value:
         description: Description
+    UpdateCustomerPaymentInstrumentBody:
+      value:
+        default: false
+        paymentCard:
+          expirationYear: 2028
+          expirationMonth: 12
     updateCustomerProductListByListId:
       value:
         coRegistrant:
@@ -6122,6 +6220,16 @@ components:
         type: https://api.commercecloud.salesforce.com/documentation/error/v1/errors/invalid-access-token
         detail: The request is unauthorized, the access token is invalid.
         accessToken: iI6IjEiLCJhbGciOiJIUzI1NiIsInR5cCI6Ik
+    invalidCustomer400:
+      value:
+        title: "Invalid Customer"
+        type: "https://api.commercecloud.salesforce.com/documentation/error/v1/errors/invalid-customer"
+        detail: "CustomerId URL parameter does not match the verified customer represented by the JWT token."
+    updatePaymentInstrumentUnsupportedFields400:
+      value:
+        title: "Unsupported Fields"
+        type: "https://api.commercecloud.salesforce.com/documentation/error/v1/errors/unsupported-fields"
+        detail: "Unsupported fields in the request for updates."
     publicProductListItemsExample:
       value:
         id: 023513f915fad06573f330fb0d
