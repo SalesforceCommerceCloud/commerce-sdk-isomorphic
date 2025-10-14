@@ -201,6 +201,7 @@ paths:
       operationId: authorizePasswordlessCustomer
       parameters:
         - $ref: '#/components/parameters/organizationId'
+        - $ref: '#/components/parameters/register_customer'
         - name: Authorization
           in: header
           description: 'Base64-encoded string for HTTP Basic authentication. The string is composed of a client ID and client secret, separated by a colon (`:`), for example: `clientId:clientSecret`'
@@ -2350,6 +2351,34 @@ components:
 
             Wildcards are not allowed in the callback_uri because this is a security risk that can expose the token. This is not considered an OAuth2 callback_url.
           example: http://localhost:9050/passwordless/login/callback
+        last_name:
+          maxLength: 100
+          type: string
+          description: |- 
+            The user's last name. Required when `register_customer` is `true`. 
+            The `last_name` parameter is not used when `register_customer` parameter is not added or is `false`.
+          example: Sampleson
+        email:
+          maxLength: 128
+          type: string
+          description: |-
+            The user's email address. Required when `register_customer` is `true` and `user_id` is not an email address. 
+            The `email` parameter is not used when `register_customer` parameter is not added or is `false`.
+          example: samantha.sampleson@example.com
+        first_name:
+          maxLength: 100
+          type: string
+          description: |- 
+            The user's first name. Optional when `register_customer` is `true`. 
+            The `first_name` parameter is not used when `register_customer` parameter is not added or is `false`.
+          example: Samantha
+        phone_number:
+          maxLength: 48
+          type: string
+          description: |-
+            The user's phone number. Optional when `register_customer` is `true`. 
+            The `phone_number` parameter is not used when `register_customer` parameter is not added or is `false`.
+          example: +17776665555
       description: A request for a passwordless login token. This is only available for resgistered users using B2C Commerce.
     TokenType:
       type: string
@@ -2878,6 +2907,18 @@ components:
       description: Refresh token that was given during the access token request.
       required: true
       schema:
+        type: string
+    register_customer:
+      name: register_customer
+      in: query
+      description: |-
+        When set to `true`, creates a new customer profile in B2C Commerce if one doesn't already exist. Requires `last_name` and `email` body parameters unless `user_id` is an email address. Optionally accepts `first_name` and `phone_number` body parameters.
+        If the customer profile doesn't exist, it is created when the TOTP is validated via the `passwordless/token` endpoint.
+        
+        When set to `false` (or omitted), no customer profile is created in B2C Commerce.
+      required: false
+      schema:
+        maxLength: 5
         type: string
     logout_hint:
       name: hint
