@@ -67,6 +67,7 @@ export interface IsomorphicEventNameMapping {
 export interface HostEventNameMapping extends IsomorphicEventNameMapping {
   ClientInitialized: Domain.ClientInitializedEvent;
   ClientReady: Domain.ClientReady;
+  PageTypeMapReady: Domain.PageTypeMapReady;
   ClientDisconnected: Domain.ClientDisconnectedEvent;
 }
 
@@ -189,6 +190,11 @@ export interface ClientConfiguration extends IsomorphicConfiguration {
    * The keys that are forwarded from the host to the client.
    */
   forwardedKeys?: string[];
+  /**
+   * A mapping of route paths to page type names (in camelCase).
+   * This mapping is sent to the host after the initial handshake.
+   */
+  pageTypeMap?: Record<string, string>;
 }
 
 export interface HostConfiguration extends IsomorphicConfiguration {

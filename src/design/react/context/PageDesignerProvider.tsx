@@ -43,6 +43,7 @@ type PageDesignerProviderProps = {
   children: React.ReactNode;
   clientId: string;
   targetOrigin: string;
+  pageTypeMap: Record<string, string>;
   clientLogger?: IsomorphicConfiguration['logger'];
   clientConnectionTimeout?: number;
   clientConnectionInterval?: number;
@@ -52,6 +53,7 @@ export const PageDesignerProvider = ({
   children,
   targetOrigin,
   clientId,
+  pageTypeMap,
   clientLogger,
   clientConnectionTimeout,
   clientConnectionInterval,
@@ -93,6 +95,7 @@ export const PageDesignerProvider = ({
         <LazyDesignProvider
           targetOrigin={targetOrigin}
           clientId={clientId}
+          pageTypeMap={pageTypeMap}
           clientLogger={clientLogger}
           clientConnectionTimeout={clientConnectionTimeout}
           clientConnectionInterval={clientConnectionInterval}>

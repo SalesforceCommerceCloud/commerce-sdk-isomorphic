@@ -26,6 +26,7 @@ export function createClientApi({
   id,
   forwardedKeys = [],
   logger,
+  pageTypeMap = {},
 }: ClientConfiguration): ClientApi {
   const messenger = new Messenger<ClientEventNameMapping, HostEventNameMapping>(
     {
@@ -99,6 +100,15 @@ export function createClientApi({
             .then(() => {
               isReady = true;
               messenger.emit('ClientReady', {clientId: id});
+
+              // Emit PageTypeMapReady event after ClientReady if pageTypeMap is provided
+              if (pageTypeMap && Object.keys(pageTypeMap).length > 0) {
+                messenger.emit('PageTypeMapReady', {
+                  clientId: id,
+                  pageTypeMap,
+                });
+              }
+
               onHostConnected?.(hostConfig as ClientAcknowledgedEvent);
             })
             .catch(error => onError?.(error));
