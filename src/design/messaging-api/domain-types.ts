@@ -144,6 +144,28 @@ export interface ClientReady extends WithBaseEvent {
 }
 
 /**
+ * Emitted by the client after ClientReady to provide the page type mapping.
+ * This event communicates the mapping of route paths to page type names,
+ * allowing the host to associate routes with their corresponding page types
+ * for design-time functionality.
+ *
+ * @target host
+ * @group Events
+ */
+export interface PageTypeMapReady extends WithBaseEvent {
+  eventType: 'PageTypeMapReady';
+  /**
+   * The id of the client.
+   */
+  clientId: string;
+  /**
+   * A mapping of route paths to page type names (in camelCase).
+   * Example: { "/": "homePage", "/product/:productId": "productDetailPage" }
+   */
+  pageTypeMap: Record<string, string>;
+}
+
+/**
  * Emits when a client disconnects from the host.
  * This event may not fire depending on the circumstances of the disconnect.
  * For example, if a crash occurs in the client environment, the event may not fire.

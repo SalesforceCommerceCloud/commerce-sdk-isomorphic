@@ -54,12 +54,14 @@ export const DesignProvider = ({
   children,
   targetOrigin,
   clientId,
+  pageTypeMap,
   clientConnectionTimeout,
   clientConnectionInterval,
   clientLogger = noop,
 }: React.PropsWithChildren<{
   targetOrigin: string;
   clientId: string;
+  pageTypeMap: Record<string, string>;
   clientConnectionTimeout?: number;
   clientConnectionInterval?: number;
   clientLogger?: IsomorphicConfiguration['logger'];
@@ -85,8 +87,9 @@ export const DesignProvider = ({
           },
         },
         id: clientId,
+        pageTypeMap,
       }),
-    [targetOrigin, clientId]
+    [targetOrigin, clientId, pageTypeMap]
   );
 
   React.useEffect(() => {
