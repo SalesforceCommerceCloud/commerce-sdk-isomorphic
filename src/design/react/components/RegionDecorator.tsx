@@ -7,8 +7,8 @@
 import React from 'react';
 import {useDesignContext} from '../context/DesignContext';
 import {ComponentDecoratorProps} from './component.types';
-import {useExternalDragHandler} from '../hooks/useExternalDragHandler';
 import {useRegionDecoratorClasses} from '../hooks/useRegionDecoratorClasses';
+import {useNodeToTargetStore} from '../hooks/useNodeToTargetStore';
 
 export function createReactRegionDesignDecorator<TProps>(
   Region: React.ComponentType<TProps>
@@ -19,11 +19,14 @@ export function createReactRegionDesignDecorator<TProps>(
     const nodeRef = React.useRef<HTMLDivElement>(null);
     const classes = useRegionDecoratorClasses({regionId: designMetadata.id});
 
-    useExternalDragHandler(
-      designMetadata.id,
-      designMetadata.parentId ?? '',
-      nodeRef
-    );
+    useNodeToTargetStore({
+      type: 'region',
+      nodeRef,
+      parentId: designMetadata.parentId,
+      componentId: designMetadata.parentId as string,
+      regionId: designMetadata.id,
+      regionDirection: designMetadata.regionDirection,
+    });
 
     if (!isDesignMode) {
       // eslint-disable-next-line react/jsx-props-no-spreading
@@ -33,7 +36,7 @@ export function createReactRegionDesignDecorator<TProps>(
     return (
       <div className={classes} ref={nodeRef}>
         {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-        <Region {...(componentProps as TProps)}>{children}</Region>
+        <Region {...(componentProps as unknown as TProps)}>{children}</Region>
       </div>
     );
   };

@@ -15,7 +15,7 @@ export function useRegionDecoratorClasses({
     externalDragState: {currentDropTarget},
   } = useDesignState();
 
-  const isHovered = currentDropTarget === regionId;
+  const isHovered = currentDropTarget?.regionId === regionId;
 
   return [
     'pd-design--decorator',

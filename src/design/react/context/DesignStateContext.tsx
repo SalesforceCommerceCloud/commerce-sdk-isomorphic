@@ -19,6 +19,14 @@ const noop = () => {
   /* noop */
 };
 
+export interface NodeToTargetMapEntry {
+  type: 'region' | 'component';
+  parentId?: string;
+  componentId: string;
+  regionId: string;
+  regionDirection: 'row' | 'column';
+}
+
 export interface DesignState extends ExternalDragInteraction {
   selectedComponentId: string | null;
   hoveredComponentId: string | null;
@@ -27,6 +35,7 @@ export interface DesignState extends ExternalDragInteraction {
   deleteComponent: (event: EventPayload<ComponentDeletedEvent>) => void;
   focusComponent: (node: Element) => void;
   focusedComponentId: string | null;
+  nodeToTargetMap: WeakMap<Element, NodeToTargetMapEntry>;
 }
 
 export const DesignStateContext = React.createContext<DesignState>({
@@ -38,14 +47,15 @@ export const DesignStateContext = React.createContext<DesignState>({
   focusComponent: noop,
   focusedComponentId: null,
   externalDragState: {
+    pendingTargetCommit: false,
     isDragging: false,
     componentType: '',
     x: 0,
     y: 0,
     currentDropTarget: null,
   },
-  setCurrentDropTarget: noop,
   commitCurrentDropTarget: noop,
+  nodeToTargetMap: new WeakMap(),
 });
 
 export const DesignStateProvider = ({
@@ -64,6 +74,8 @@ export const DesignStateProvider = ({
     setSelectedComponent: selectInteraction.setSelectedComponent,
   });
 
+  const nodeToTargetMap = React.useMemo(() => new WeakMap(), []);
+
   const state = React.useMemo(
     () => ({
       ...deleteInteraction,
@@ -71,6 +83,7 @@ export const DesignStateProvider = ({
       ...hoverInteraction,
       ...focusInteraction,
       ...externalDragInteraction,
+      nodeToTargetMap,
     }),
     [
       deleteInteraction,
@@ -78,6 +91,7 @@ export const DesignStateProvider = ({
       hoverInteraction,
       focusInteraction,
       externalDragInteraction,
+      nodeToTargetMap,
     ]
   );
 

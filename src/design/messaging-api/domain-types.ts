@@ -19,6 +19,13 @@ interface WithComponentId {
   componentId: string;
 }
 
+interface WithComponentType {
+  /**
+   * The component type that the event is related to.
+   */
+  componentType: string;
+}
+
 /**
  * @inline
  * @hidden
@@ -196,8 +203,7 @@ export interface ClientAcknowledgedEvent extends WithBaseEvent {
  */
 export interface ClientWindowDragEnteredEvent
   extends WithBaseEvent,
-    WithClientVector,
-    WithComponentId {
+    WithComponentType {
   eventType: 'ClientWindowDragEntered';
 }
 /**
@@ -208,7 +214,7 @@ export interface ClientWindowDragEnteredEvent
 export interface ClientWindowDragMovedEvent
   extends WithBaseEvent,
     WithClientVector,
-    WithComponentId {
+    WithComponentType {
   eventType: 'ClientWindowDragMoved';
 }
 /**
@@ -218,8 +224,7 @@ export interface ClientWindowDragMovedEvent
  */
 export interface ClientWindowDragExitedEvent
   extends WithBaseEvent,
-    WithClientVector,
-    WithComponentId {
+    WithComponentType {
   eventType: 'ClientWindowDragExited';
 }
 /**
@@ -229,8 +234,7 @@ export interface ClientWindowDragExitedEvent
  */
 export interface ClientWindowDragDroppedEvent
   extends WithBaseEvent,
-    WithClientVector,
-    WithComponentId {
+    WithComponentType {
   eventType: 'ClientWindowDragDropped';
 }
 /**
@@ -441,15 +445,22 @@ export interface ComponentAddedToRegionEvent<
    * The id of the region that the component is being added to.
    */
   targetRegionId: string;
+  /**
+   * When an insertComponentId is provided, this will insert the new component before or after the component with that component id.
+   */
+  insertType?: 'before' | 'after';
+  /**
+   * The id of the component this component should be inserted before or after.
+   * If not provided, then it is up to the host to determine where in the target region this is inserted.
+   */
+  insertComponentId?: string;
 }
 /**
  * Emits when a component drag starts from the host or client.
  * @target isomorphic
  * @group Events
  */
-export interface ComponentDragStartedEvent
-  extends WithBaseEvent,
-    Partial<WithClientVector> {
+export interface ComponentDragStartedEvent extends WithBaseEvent {
   eventType: 'ComponentDragStarted';
   /**
    * The type of the component that is being dragged.

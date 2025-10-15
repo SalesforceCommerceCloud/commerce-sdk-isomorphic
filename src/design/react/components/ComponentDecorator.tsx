@@ -14,6 +14,7 @@ import {useDesignCallback} from '../hooks/useDesignCallback';
 import {useDesignState} from '../hooks/useDesignState';
 import {useFocusedComponentHandler} from '../hooks/useFocusedComponentHandler';
 import {useComponentType} from '../hooks/useComponentType';
+import {useNodeToTargetStore} from '../hooks/useNodeToTargetStore';
 
 /**
  * Creates a higher-order component that wraps React components with design-time functionality.
@@ -29,7 +30,8 @@ export function createReactComponentDesignDecorator<TProps>(
 ): (props: ComponentDecoratorProps<TProps>) => JSX.Element {
   return (props: ComponentDecoratorProps<TProps>) => {
     const {designMetadata, children, ...componentProps} = props;
-    const {id, name, isFragment, parentId, regionId} = designMetadata;
+    const {id, name, isFragment, parentId, regionId, regionDirection} =
+      designMetadata;
     const componentId = id;
     const componentName = name || 'Component';
     const dragRef = useRef<HTMLDivElement>(null);
@@ -46,6 +48,14 @@ export function createReactComponentDesignDecorator<TProps>(
     const componentType = useComponentType(componentId);
 
     useFocusedComponentHandler(componentId, dragRef);
+    useNodeToTargetStore({
+      type: 'component',
+      nodeRef: dragRef,
+      parentId,
+      regionId,
+      regionDirection,
+      componentId,
+    });
 
     const handleMouseEnter = useDesignCallback(
       () => setHoveredComponent(componentId),
