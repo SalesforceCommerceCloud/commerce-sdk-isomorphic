@@ -25,6 +25,7 @@ const apiNames = [
   'shopperGiftCertificates',
   'shopperLogin',
   'shopperOrders',
+  'shopperPayments',
   'shopperProducts',
   'shopperPromotions',
   'shopperSearch',
