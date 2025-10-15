@@ -109,18 +109,6 @@ components:
     PaymentConfiguration:
       type: object
       properties:
-        multiStepCheckoutEnabled:
-          type: boolean
-          description: Whether multi-step checkout is enabled
-          example: false
-        expressCheckoutEnabled:
-          type: boolean
-          description: Whether express checkout is enabled
-          example: false
-        cardCaptureAutomatic:
-          type: boolean
-          description: Whether card capture is automatic
-          example: false
         zoneId:
           type: string
           example: Amer-Zone
@@ -230,9 +218,6 @@ components:
           description: SDK version to use
           example: latest
       required:
-        - multiStepCheckoutEnabled
-        - expressCheckoutEnabled
-        - cardCaptureAutomatic
         - paymentMethodSetAccounts
         - paymentMethods
         - sdkVersion
@@ -275,9 +260,6 @@ components:
   examples:
     PaymentConfigurationGet:
       value:
-        multiStepCheckoutEnabled: false
-        expressCheckoutEnabled: false
-        cardCaptureAutomatic: false
         zoneId: Amer-Zone
         paymentMethodSetAccounts:
           - accountId: acct_1RegszI5I22eU0I3
@@ -304,9 +286,6 @@ components:
         sdkVersion: latest
     PaymentConfigurationNullGatewayResponse:
       value:
-        multiStepCheckoutEnabled: true
-        expressCheckoutEnabled: false
-        cardCaptureAutomatic: true
         zoneId: EU-Central-Zone
         paymentMethodSetAccounts:
           - accountId: acct_eu_test_456
@@ -324,9 +303,6 @@ components:
         sdkVersion: latest
     PaymentConfigurationNoDataFound:
       value:
-        multiStepCheckoutEnabled: false
-        expressCheckoutEnabled: false
-        cardCaptureAutomatic: false
         zoneId: null
         paymentMethodSetAccounts: []
         paymentMethods: []
