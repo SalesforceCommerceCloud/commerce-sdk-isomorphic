@@ -97,7 +97,27 @@
       "import": "./lib/version.js",
       "require": "./lib/version.cjs.js"
     },
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./design": {
+      "import": {
+        "default": "./lib/design/esm/index.js",
+        "types": "./lib/design/esm/index.d.ts"
+      },
+      "require": {
+        "default": "./lib/design/cjs/index.js",
+        "types": "./lib/design/cjs/index.d.ts"
+      }
+    },
+    "./design/react": {
+      "import": {
+        "default": "./lib/design/esm/react/index.js",
+        "types": "./lib/design/esm/react/index.d.ts"
+      },
+      "require": {
+        "default": "./lib/design/cjs/react/index.js",
+        "types": "./lib/design/cjs/react/index.d.ts"
+      }
+    }
   },
   "main": "lib/index.cjs.js",
   "module": "lib/index.esm.js",
@@ -110,8 +130,10 @@
   "scripts": {
     "build": "react-scripts build",
     "build:lib": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/generateFileList.ts && rollup -c",
+    "build:design": "tsc -p tsconfig.design.json && tsc -p tsconfig.design.json --module commonjs --outDir lib/design/cjs && yarn build:design:copy",
+    "build:design:copy": "cpx 'src/design/**/*.css' lib/design/cjs && cpx 'src/design/**/*.css' lib/design/esm",
     "check:size": "npm-pack-all --output commerce-sdk-isomorphic-with-deps.tgz && bundlesize",
-    "check:types": "tsc --noEmit",
+    "check:types": "tsc -p tsconfig.sdk.json --noEmit",
     "ci": "rm -rf node_modules && yarn install",
     "clean": "rm -rf build lib src/lib commerce-sdk-isomorphic-with-deps.tgz",
     "depcheck": "depcheck",
@@ -191,6 +213,7 @@
     "@typescript-eslint/parser": "^4.33.0",
     "autoprefixer": "9.8.8",
     "bundlesize2": "^0.0.31",
+    "cpx": "^1.5.0",
     "depcheck": "^1.4.3",
     "dotenv": "^16.0.3",
     "eslint": "^7.32.0",
@@ -230,6 +253,7 @@
     "stylelint": "13.13.1",
     "stylelint-config-standard": "20.0.0",
     "stylelint-order": "4.1.0",
+    "ts-jest": "26.x.x",
     "ts-node": "9.1.1",
     "typedoc": "^0.17.7",
     "typedoc-plugin-external-module-map": "1.2.1",

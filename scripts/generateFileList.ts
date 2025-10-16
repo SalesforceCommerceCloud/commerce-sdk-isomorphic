@@ -27,17 +27,17 @@ function generateFileList(): void {
       const fileStats = fs.statSync(fullPath);
 
       if (fileStats.isDirectory()) {
-        // Check if this directory has an index.ts file (API directories)
-        const indexPath = path.join(fullPath, 'index.ts');
-        if (fs.existsSync(indexPath)) {
-          apiNamesBuilder.push(item);
-        }
+	// Check if this directory has an index.ts file (API directories)
+	const indexPath = path.join(fullPath, 'index.ts');
+	if (fs.existsSync(indexPath)) {
+	  apiNamesBuilder.push(item);
+	}
       } else if (item.endsWith('.ts') && item !== 'index.ts') {
-        // These are common dependency files (exclude index.ts)
-        commonDependenciesBuilder.push({
-          input: `src/lib/${item}`,
-          file: `lib/${item.replace('.ts', '.js')}`,
-        });
+	// These are common dependency files (exclude index.ts)
+	commonDependenciesBuilder.push({
+	  input: `src/lib/${item}`,
+	  file: `lib/${item.replace('.ts', '.js')}`,
+	});
       }
     });
   } catch (error) {

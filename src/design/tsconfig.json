@@ -1,0 +1,4 @@
+// This tsconfig is for all files within the design directory
+{
+    "extends": "../../tsconfig.design.json",
+}
