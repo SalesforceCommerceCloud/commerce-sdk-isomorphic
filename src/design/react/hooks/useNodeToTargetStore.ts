@@ -30,5 +30,5 @@ export function useNodeToTargetStore({
         type,
       } as NodeToTargetMapEntry);
     }
-  }, [nodeRef.current, parentId, componentId, regionId, type]);
+  }, [nodeRef.current, parentId, componentId, regionId, type, nodeToTargetMap]);
 }

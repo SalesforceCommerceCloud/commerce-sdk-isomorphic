@@ -12,7 +12,7 @@ export function useRegionDecoratorClasses({
   regionId: string;
 }): string {
   const {
-    externalDragState: {currentDropTarget},
+    dragState: {currentDropTarget},
   } = useDesignState();
 
   const isHovered = currentDropTarget?.regionId === regionId;

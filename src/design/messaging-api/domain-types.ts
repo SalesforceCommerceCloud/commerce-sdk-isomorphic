@@ -358,10 +358,6 @@ export interface ComponentMovedToRegionEvent
    * The region that the component is being moved from.
    */
   sourceRegionId: string;
-  /**
-   * The id of the component that the component was moved from.
-   */
-  sourceComponentId: string;
 }
 /**
  * Emits when a component is hovered over.

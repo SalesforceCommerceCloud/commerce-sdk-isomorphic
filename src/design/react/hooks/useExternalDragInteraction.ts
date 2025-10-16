@@ -14,16 +14,21 @@ export interface DropTarget extends NodeToTargetMapEntry {
   insertComponentId?: string;
 }
 
-export interface ExternalDragInteraction {
-  externalDragState: {
+export interface DragInteraction {
+  dragState: {
     isDragging: boolean;
-    componentType: string;
     x: number;
     y: number;
     currentDropTarget: DropTarget | null;
     pendingTargetCommit: boolean;
+    componentType?: string;
+    sourceComponentId?: string;
+    sourceRegionId?: string;
   };
   commitCurrentDropTarget: () => void;
+  startComponentMove: (componentId: string, regionId: string) => void;
+  updateComponentMove: (params: {x: number; y: number}) => void;
+  dropComponent: () => void;
 }
 
 function getInsertionType({
@@ -54,8 +59,11 @@ function getInsertionType({
   return y < midY ? 'before' : 'after';
 }
 
-export function useExternalDragInteraction(): ExternalDragInteraction {
-  const {nodeToTargetMap} = useDesignState();
+export function useDragInteraction({
+  nodeToTargetMap,
+}: {
+  nodeToTargetMap: WeakMap<Element, NodeToTargetMapEntry>;
+}): DragInteraction {
   const rectCache = useMemo(() => new WeakMap<Element, DOMRect>(), []);
   const getCurrentDropTarget = useCallback(
     (x: number, y: number): DropTarget | null => {
@@ -89,21 +97,31 @@ export function useExternalDragInteraction(): ExternalDragInteraction {
     [nodeToTargetMap, rectCache]
   );
 
-  const {state: dragState, commitCurrentDropTarget} = useInteraction({
+  const {
+    state: dragState,
+    commitCurrentDropTarget,
+    updateComponentMove,
+    startComponentMove,
+    dropComponent,
+  } = useInteraction({
     initialState: {
       isDragging: false,
       componentType: '',
+      sourceComponentId: undefined as string | undefined,
+      sourceRegionId: undefined as string | undefined,
       x: 0,
       y: 0,
       currentDropTarget: null as DropTarget | null,
       pendingTargetCommit: false,
-    },
+    } as DragInteraction['dragState'],
     eventHandlers: {
       ComponentDragStarted: {
         handler: (event, setState) => {
           setState(prevState => ({
             ...prevState,
             componentType: event.componentType,
+            sourceComponentId: undefined,
+            sourceRegionId: undefined,
             x: 0,
             y: 0,
             isDragging: true,
@@ -147,16 +165,52 @@ export function useExternalDragInteraction(): ExternalDragInteraction {
       },
     },
     actions: (state, setState, clientApi) => ({
+      updateComponentMove: ({x, y}: {x: number; y: number}) => {
+        setState(prevState => ({
+          ...prevState,
+          x,
+          y,
+          currentDropTarget: getCurrentDropTarget(x, y),
+        }));
+      },
+      dropComponent: () => {
+        setState(prevState => ({
+          ...prevState,
+          isDragging: false,
+          pendingTargetCommit: true,
+        }));
+      },
+      startComponentMove: (componentId: string, regionId: string) => {
+        setState(prevState => ({
+          ...prevState,
+          x: 0,
+          y: 0,
+          sourceComponentId: componentId,
+          sourceRegionId: regionId,
+          isDragging: true,
+        }));
+      },
       commitCurrentDropTarget: () => {
         if (state.currentDropTarget) {
-          clientApi?.addComponentToRegion({
-            insertType: state.currentDropTarget.insertType,
-            insertComponentId: state.currentDropTarget.insertComponentId,
-            componentProperties: {},
-            componentType: state.componentType,
-            targetComponentId: state.currentDropTarget.componentId,
-            targetRegionId: state.currentDropTarget.regionId,
-          });
+          // If we have a source component id, then we are moving a component to a different region.
+          if (state.sourceComponentId) {
+            clientApi?.moveComponentToRegion({
+              componentId: state.sourceComponentId,
+              sourceRegionId: state.sourceRegionId ?? '',
+              targetComponentId: state.currentDropTarget.componentId,
+              targetRegionId: state.currentDropTarget.regionId,
+            });
+            // If we have a component type, then we are adding a new component to a region.
+          } else if (state.componentType) {
+            clientApi?.addComponentToRegion({
+              insertType: state.currentDropTarget.insertType,
+              insertComponentId: state.currentDropTarget.insertComponentId,
+              componentProperties: {},
+              componentType: state.componentType,
+              targetComponentId: state.currentDropTarget.componentId,
+              targetRegionId: state.currentDropTarget.regionId,
+            });
+          }
         }
 
         setState(prevState => ({
@@ -164,6 +218,8 @@ export function useExternalDragInteraction(): ExternalDragInteraction {
           x: 0,
           y: 0,
           componentType: '',
+          sourceComponentId: undefined,
+          sourceRegionId: undefined,
           currentDropTarget: null,
           pendingTargetCommit: false,
         }));
@@ -178,7 +234,10 @@ export function useExternalDragInteraction(): ExternalDragInteraction {
   }, [dragState.pendingTargetCommit]);
 
   return {
-    externalDragState: dragState,
+    dragState,
     commitCurrentDropTarget,
+    startComponentMove,
+    updateComponentMove,
+    dropComponent,
   };
 }

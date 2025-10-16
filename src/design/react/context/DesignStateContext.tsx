@@ -10,8 +10,8 @@ import {useHoverInteraction} from '../hooks/useHoverInteraction';
 import {useDeleteInteraction} from '../hooks/useDeleteInteraction';
 import {useFocusInteraction} from '../hooks/useFocusInteraction';
 import {
-  ExternalDragInteraction,
-  useExternalDragInteraction,
+  DragInteraction,
+  useDragInteraction,
 } from '../hooks/useExternalDragInteraction';
 import {ComponentDeletedEvent, EventPayload} from '../../messaging-api';
 
@@ -27,7 +27,7 @@ export interface NodeToTargetMapEntry {
   regionDirection: 'row' | 'column';
 }
 
-export interface DesignState extends ExternalDragInteraction {
+export interface DesignState extends DragInteraction {
   selectedComponentId: string | null;
   hoveredComponentId: string | null;
   setSelectedComponent: (componentId: string) => void;
@@ -46,7 +46,7 @@ export const DesignStateContext = React.createContext<DesignState>({
   deleteComponent: noop,
   focusComponent: noop,
   focusedComponentId: null,
-  externalDragState: {
+  dragState: {
     pendingTargetCommit: false,
     isDragging: false,
     componentType: '',
@@ -55,6 +55,9 @@ export const DesignStateContext = React.createContext<DesignState>({
     currentDropTarget: null,
   },
   commitCurrentDropTarget: noop,
+  startComponentMove: noop,
+  updateComponentMove: noop,
+  dropComponent: noop,
   nodeToTargetMap: new WeakMap(),
 });
 
@@ -65,7 +68,6 @@ export const DesignStateProvider = ({
 }): JSX.Element => {
   const selectInteraction = useSelectInteraction();
   const hoverInteraction = useHoverInteraction();
-  const externalDragInteraction = useExternalDragInteraction();
   const deleteInteraction = useDeleteInteraction({
     selectedComponentId: selectInteraction.selectedComponentId,
     setSelectedComponent: selectInteraction.setSelectedComponent,
@@ -75,6 +77,7 @@ export const DesignStateProvider = ({
   });
 
   const nodeToTargetMap = React.useMemo(() => new WeakMap(), []);
+  const externalDragInteraction = useDragInteraction({nodeToTargetMap});
 
   const state = React.useMemo(
     () => ({

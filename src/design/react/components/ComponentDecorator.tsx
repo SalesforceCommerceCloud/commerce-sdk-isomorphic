@@ -44,6 +44,7 @@ export function createReactComponentDesignDecorator<TProps>(
       setSelectedComponent,
       setHoveredComponent,
       deleteComponent,
+      startComponentMove,
     } = useDesignState();
     const componentType = useComponentType(componentId);
 
