@@ -29,6 +29,20 @@ const TestRegion: React.FC = ({children}) => (
 type Result = RenderResult & {element: HTMLElement; host: HostApi};
 
 describe('design/react/RegionDecorator', () => {
+  // Mock document.elementsFromPoint for drag and drop tests
+  const mockElementsFromPoint = jest.fn();
+
+  beforeEach(() => {
+    // Reset the mock before each test
+    mockElementsFromPoint.mockClear();
+
+    // Mock document.elementsFromPoint
+    Object.defineProperty(document, 'elementsFromPoint', {
+      value: mockElementsFromPoint,
+      writable: true,
+    });
+  });
+
   const testBed = createTestBed({
     renderer: async <TProps,>(
       component: React.FC<TProps>,
@@ -159,7 +173,12 @@ describe('design/react/RegionDecorator', () => {
        */
       it('should add hovered class when region becomes the current drop target', async () => {
         const {element, host} = await testBed.render(TestRegion, {
-          designMetadata: {id: 'test-region-1'},
+          designMetadata: {
+            id: 'test-region-1',
+            regionDirection: 'row',
+            regionId: 'test-region-1',
+            isFragment: false,
+          },
         });
 
         // Initially, the hovered class should NOT be present
@@ -184,12 +203,19 @@ describe('design/react/RegionDecorator', () => {
           writable: true,
         });
 
+        // Mock elementsFromPoint to return the region element when dragged over it
+        mockElementsFromPoint.mockImplementation((x: number, y: number) => {
+          // Return the region element when coordinates are within bounds
+          if (x >= 50 && x <= 250 && y >= 50 && y <= 150) {
+            return [element, document.body];
+          }
+          return [document.body];
+        });
+
         // Simulate drag started event
         act(() => {
           host.startComponentDrag({
             componentType: 'dragged-component',
-            x: 100,
-            y: 100,
           });
         });
 
@@ -201,7 +227,7 @@ describe('design/react/RegionDecorator', () => {
         // Simulate drag moved to coordinates within the region bounds
         act(() => {
           host.notifyClientWindowDragMoved({
-            componentId: 'dragged-component',
+            componentType: 'dragged-component',
             x: 100, // Within region bounds
             y: 75, // Within region bounds
           });
@@ -221,7 +247,12 @@ describe('design/react/RegionDecorator', () => {
        */
       it('should remove hovered class when drag moves outside region bounds', async () => {
         const {element, host} = await testBed.render(TestRegion, {
-          designMetadata: {id: 'test-region-1'},
+          designMetadata: {
+            id: 'test-region-1',
+            regionDirection: 'row',
+            regionId: 'test-region-1',
+            isFragment: false,
+          },
         });
 
         // Mock getBoundingClientRect to simulate region position
@@ -241,18 +272,25 @@ describe('design/react/RegionDecorator', () => {
           writable: true,
         });
 
+        // Mock elementsFromPoint to return the region element when dragged over it
+        mockElementsFromPoint.mockImplementation((x: number, y: number) => {
+          // Return the region element when coordinates are within bounds
+          if (x >= 50 && x <= 250 && y >= 50 && y <= 150) {
+            return [element, document.body];
+          }
+          return [document.body];
+        });
+
         // Start drag and move to region to set hovered state
         act(() => {
           host.startComponentDrag({
             componentType: 'dragged-component',
-            x: 100,
-            y: 100,
           });
         });
 
         act(() => {
           host.notifyClientWindowDragMoved({
-            componentId: 'dragged-component',
+            componentType: 'dragged-component',
             x: 100, // Within region bounds
             y: 75, // Within region bounds
           });
@@ -268,7 +306,7 @@ describe('design/react/RegionDecorator', () => {
         // Move drag outside region bounds
         act(() => {
           host.notifyClientWindowDragMoved({
-            componentId: 'dragged-component',
+            componentType: 'dragged-component',
             x: 300, // Outside region bounds
             y: 200, // Outside region bounds
           });
