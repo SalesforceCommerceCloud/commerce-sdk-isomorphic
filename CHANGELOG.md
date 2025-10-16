@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v3.5.0
+- Make `code_challenge` an optional parameter on SLAS `getTrustedAgentAuthorizationToken` endpoint[#229](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/229)
+
 ## v3.4.0
 
 ### API Changes
