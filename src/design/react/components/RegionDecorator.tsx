@@ -9,23 +9,32 @@ import {useDesignContext} from '../context/DesignContext';
 import {ComponentDecoratorProps} from './component.types';
 import {useRegionDecoratorClasses} from '../hooks/useRegionDecoratorClasses';
 import {useNodeToTargetStore} from '../hooks/useNodeToTargetStore';
+import {DesignFrame} from './DesignFrame';
+import {useLabels} from '../hooks/useLabels';
 
 export function createReactRegionDesignDecorator<TProps>(
   Region: React.ComponentType<TProps>
 ): (props: ComponentDecoratorProps<TProps>) => JSX.Element {
   return (props: ComponentDecoratorProps<TProps>) => {
     const {designMetadata, children, ...componentProps} = props;
+    const {
+      name,
+      parentId,
+      regionDirection = 'column',
+      regionId,
+    } = designMetadata;
     const {isDesignMode} = useDesignContext();
     const nodeRef = React.useRef<HTMLDivElement>(null);
-    const classes = useRegionDecoratorClasses({regionId: designMetadata.id});
+    const classes = useRegionDecoratorClasses({regionId});
+    const labels = useLabels();
 
     useNodeToTargetStore({
       type: 'region',
       nodeRef,
-      parentId: designMetadata.parentId,
-      componentId: designMetadata.parentId as string,
-      regionId: designMetadata.id,
-      regionDirection: designMetadata.regionDirection,
+      parentId,
+      componentId: parentId as string,
+      regionId,
+      regionDirection,
     });
 
     if (!isDesignMode) {
@@ -35,6 +44,12 @@ export function createReactRegionDesignDecorator<TProps>(
 
     return (
       <div className={classes} ref={nodeRef}>
+        <DesignFrame
+          name={name ?? labels.defaultRegionName ?? 'Region'}
+          parentId={parentId}
+          regionId={regionId}
+          showToolbox={false}
+        />
         {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         <Region {...(componentProps as unknown as TProps)}>{children}</Region>
       </div>

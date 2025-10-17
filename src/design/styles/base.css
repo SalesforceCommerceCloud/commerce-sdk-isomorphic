@@ -8,7 +8,8 @@
 /* Base styles shared by both component and fragment */
 .pd-design__decorator {
   /* Temporary color for drop targets */
-  --pd-design-drop-target-color: green;
+  --pd-design-drop-target-color: #008827;
+  --pd-design-selected-color: #005fb2;
 }
 
 .pd-design__component,
@@ -32,13 +33,8 @@
 }
 
 .pd-design__decorator--selected {
-  outline-color: var(--pd-design-color);
   outline-width: 2px;
-}
-
-.pd-design__decorator--hovered {
-  outline-color: var(--pd-design-color);
-  outline-style: dashed;
+  --pd-design-color: var(--pd-design-selected-color);
 }
 
 .pd-design__frame__label {
@@ -57,6 +53,8 @@
   font-weight: 500;
   letter-spacing: 0.5px;
   opacity: 0;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
   visibility: hidden;
   transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
   white-space: nowrap;
@@ -75,12 +73,13 @@
 }
 
 .pd-design__frame__toolbox {
+  background: var(--pd-design-color);
   display: flex;
   align-items: center;
-  gap: 4px;
   position: absolute;
   top: 0;
   right: 0;
+  z-index: 1000;
 }
 
 .pd-design__frame__toolbox-button {
@@ -89,28 +88,35 @@
   justify-content: center;
   width: 20px;
   height: 20px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0);
   border: none;
-  border-radius: 3px;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
   padding: 0;
 }
 
 .pd-design__frame__toolbox-button:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.pd-design__frame__toolbox-button:focus {
-  outline: 1px solid rgba(255, 255, 255, 0.5);
-  outline-offset: 1px;
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .pd-design__frame__delete-icon,
 .pd-design__frame__move-icon {
   width: 12px;
   height: 12px;
+  fill: white;
   color: white;
+}
+
+.pd-design__region {
+  --pd-design-color: var(--pd-design-drop-target-color);
+  position: relative;
+  min-height: 50px;
+  min-width: 50px;
+}
+
+.pd-design__region--hovered {
+  outline-color: var(--pd-design-color);
+  outline-style: solid;
 }
 
 .pd-design__drop-target__y-before {

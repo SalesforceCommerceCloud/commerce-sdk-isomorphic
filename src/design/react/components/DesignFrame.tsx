@@ -13,29 +13,34 @@ import {useLabels} from '../hooks/useLabels';
 
 export const DesignFrame = ({
   componentId,
-  componentName,
+  name,
   parentId,
   regionId,
+  showToolbox = true,
 }: {
-  componentId: string;
-  componentName: string;
+  componentId?: string;
+  name: string;
   parentId?: string;
   regionId: string;
+  showToolbox?: boolean;
 }): JSX.Element => {
-  const componentType = useComponentType(componentId);
+  const componentType = useComponentType(componentId ?? '');
   const {deleteComponent, startComponentMove} = useDesignState();
   const labels = useLabels();
 
-  const handleDelete = React.useCallback(() => {
-    deleteComponent({
-      componentId,
-      sourceComponentId: parentId ?? '',
-      sourceRegionId: regionId ?? '',
-    });
-  }, [deleteComponent, componentId]);
+  const handleDelete = React.useCallback(
+    () =>
+      componentId &&
+      deleteComponent({
+        componentId,
+        sourceComponentId: parentId ?? '',
+        sourceRegionId: regionId ?? '',
+      }),
+    [deleteComponent, componentId]
+  );
 
   const handleDragStart = React.useCallback(
-    () => startComponentMove(componentId, regionId),
+    () => componentId && startComponentMove(componentId, regionId),
     [startComponentMove, componentId, regionId]
   );
 
@@ -47,24 +52,26 @@ export const DesignFrame = ({
             <img src={componentType.image} alt="" />
           </span>
         )}
-        <span className="pd-design__frame__name">
-          {componentName} ({componentId})
-        </span>
+        <span className="pd-design__frame__name">{name}</span>
       </div>
-      <div className="pd-design__frame__toolbox">
-        <MoveToolboxButton
-          title={labels.moveComponent ?? 'Move component'}
-          onDragStart={handleDragStart}
-        />
-        <DeleteToolboxButton
-          title={labels.deleteComponent ?? 'Delete component'}
-          onClick={handleDelete}
-        />
-      </div>
+      {showToolbox && (
+        <div className="pd-design__frame__toolbox">
+          <MoveToolboxButton
+            title={labels.moveComponent ?? 'Move component'}
+            onDragStart={handleDragStart}
+          />
+          <DeleteToolboxButton
+            title={labels.deleteComponent ?? 'Delete component'}
+            onClick={handleDelete}
+          />
+        </div>
+      )}
     </div>
   );
 };
 
 DesignFrame.defaultProps = {
   parentId: undefined,
+  componentId: undefined,
+  showToolbox: true,
 };

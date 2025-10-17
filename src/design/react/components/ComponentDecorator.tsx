@@ -114,7 +114,7 @@ export function createReactComponentDesignDecorator<TProps>(
         {showFrame && (
           <DesignFrame
             componentId={componentId}
-            componentName={componentName}
+            name={componentName}
             parentId={parentId}
             regionId={regionId}
           />
