@@ -312,6 +312,8 @@ describe('design/react/ComponentDecorator', () => {
             id: 'test-1',
             parentId: 'test-parent',
             regionId: 'test-region',
+            regionDirection: 'row',
+            isFragment: false,
           },
         });
 
