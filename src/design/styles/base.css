@@ -28,6 +28,8 @@
 
 .pd-design__region {
   --pd-design-color: #008827;
+  min-width: 50px;
+  min-height: 50px;
 }
 
 /* Shared state styles */
