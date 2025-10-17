@@ -6,40 +6,42 @@
  */
 
 /* Base styles shared by both component and fragment */
-.pd-design--component,
-.pd-design--fragment {
+.pd-design__decorator {
+  /* Temporary color for drop targets */
+  --pd-design-drop-target-color: green;
+}
+
+.pd-design__component,
+.pd-design__fragment {
   position: relative;
   transition: outline 0.2s ease-in-out;
   outline: 1px solid transparent;
 }
 
-.pd-design--component {
+.pd-design__component {
   --pd-design-color: #0070d2;
 }
 
-.pd-design--fragment {
+.pd-design__fragment {
   --pd-design-color: #8402ad;
 }
 
 /* Shared state styles */
-.pd-design--show-frame,
-.pd-design--fragment.pd-design--show-frame {
+.pd-design__frame--visible {
   outline: 1px solid var(--pd-design-color);
 }
 
-.pd-design--selected,
-.pd-design--fragment.pd-design--selected {
+.pd-design__decorator--selected {
   outline-color: var(--pd-design-color);
   outline-width: 2px;
 }
 
-.pd-design--hovered,
-.pd-design--fragment.pd-design--hovered {
+.pd-design__decorator--hovered {
   outline-color: var(--pd-design-color);
   outline-style: dashed;
 }
 
-.pd-design__label {
+.pd-design__frame__label {
   position: absolute;
   top: -32px;
   left: 50%;
@@ -60,26 +62,28 @@
   white-space: nowrap;
 }
 
-.pd-design--show-frame .pd-design__label,
-.pd-design--fragment.pd-design--show-frame .pd-design__label {
+.pd-design__frame--visible .pd-design__frame__label {
   opacity: 1;
   visibility: visible;
 }
 
-.pd-design__name {
+.pd-design__frame__name {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin-right: 8px;
 }
 
-.pd-design__toolbox {
+.pd-design__frame__toolbox {
   display: flex;
   align-items: center;
   gap: 4px;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
-.pd-design__toolbox-button {
+.pd-design__frame__toolbox-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,17 +97,34 @@
   padding: 0;
 }
 
-.pd-design__toolbox-button:hover {
+.pd-design__frame__toolbox-button:hover {
   background: rgba(255, 255, 255, 0.2);
 }
 
-.pd-design__toolbox-button:focus {
+.pd-design__frame__toolbox-button:focus {
   outline: 1px solid rgba(255, 255, 255, 0.5);
   outline-offset: 1px;
 }
 
-.pd-design__delete-icon {
+.pd-design__frame__delete-icon,
+.pd-design__frame__move-icon {
   width: 12px;
   height: 12px;
   color: white;
+}
+
+.pd-design__drop-target__y-before {
+  box-shadow: 0 -2px solid var(--pd-design-drop-target-color);
+}
+
+.pd-design__drop-target__y-after {
+  box-shadow: 0 2px solid var(--pd-design-drop-target-color);
+}
+
+.pd-design__drop-target__x-before {
+  box-shadow: -2px 0 solid var(--pd-design-drop-target-color);
+}
+
+.pd-design__drop-target__x-after {
+  box-shadow: 2px 0 solid var(--pd-design-drop-target-color);
 }

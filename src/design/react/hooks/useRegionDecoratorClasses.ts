@@ -18,7 +18,7 @@ export function useRegionDecoratorClasses({
   const isHovered = currentDropTarget?.regionId === regionId;
 
   return [
-    'pd-design--decorator',
+    'pd-design__decorator',
     'pd-design__region',
     isHovered && 'pd-design__region--hovered',
   ]

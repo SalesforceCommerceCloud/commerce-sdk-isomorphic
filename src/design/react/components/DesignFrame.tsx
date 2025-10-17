@@ -1,0 +1,70 @@
+/*
+ * Copyright (c) 2025, Salesforce, Inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
+import React from 'react';
+import {useComponentType} from '../hooks/useComponentType';
+import {DeleteToolboxButton} from './DeleteToolboxButton';
+import {MoveToolboxButton} from './MoveToolboxButton';
+import {useDesignState} from '../hooks/useDesignState';
+import {useLabels} from '../hooks/useLabels';
+
+export const DesignFrame = ({
+  componentId,
+  componentName,
+  parentId,
+  regionId,
+}: {
+  componentId: string;
+  componentName: string;
+  parentId?: string;
+  regionId: string;
+}): JSX.Element => {
+  const componentType = useComponentType(componentId);
+  const {deleteComponent, startComponentMove} = useDesignState();
+  const labels = useLabels();
+
+  const handleDelete = React.useCallback(() => {
+    deleteComponent({
+      componentId,
+      sourceComponentId: parentId ?? '',
+      sourceRegionId: regionId ?? '',
+    });
+  }, [deleteComponent, componentId]);
+
+  const handleDragStart = React.useCallback(
+    () => startComponentMove(componentId, regionId),
+    [startComponentMove, componentId, regionId]
+  );
+
+  return (
+    <div className="pd-design__frame">
+      <div className="pd-design__frame__label">
+        {componentType?.image && (
+          <span className="pd-design__icon">
+            <img src={componentType.image} alt="" />
+          </span>
+        )}
+        <span className="pd-design__frame__name">
+          {componentName} ({componentId})
+        </span>
+      </div>
+      <div className="pd-design__frame__toolbox">
+        <MoveToolboxButton
+          title={labels.moveComponent ?? 'Move component'}
+          onDragStart={handleDragStart}
+        />
+        <DeleteToolboxButton
+          title={labels.deleteComponent ?? 'Delete component'}
+          onClick={handleDelete}
+        />
+      </div>
+    </div>
+  );
+};
+
+DesignFrame.defaultProps = {
+  parentId: undefined,
+};

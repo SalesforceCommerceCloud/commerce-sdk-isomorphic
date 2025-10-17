@@ -13,18 +13,28 @@ export function useComponentDecoratorClasses({
   componentId: string;
   isFragment: boolean;
 }): string {
-  const {selectedComponentId, hoveredComponentId} = useDesignState();
+  const {selectedComponentId, hoveredComponentId, dragState} = useDesignState();
 
   const isSelected = selectedComponentId === componentId;
-  const isHovered = hoveredComponentId === componentId;
+  const isHovered = !dragState.isDragging && hoveredComponentId === componentId;
   const showFrame = isSelected || isHovered;
+  const isMoving =
+    dragState.isDragging && dragState.sourceComponentId === componentId;
+  const isDropTarget = dragState.currentDropTarget?.componentId === componentId;
+  const dropTargetInsertType = dragState.currentDropTarget?.insertType;
+  const dropTargetDirection = dragState.currentDropTarget?.regionDirection;
 
   return [
-    'pd-design--decorator',
-    isFragment ? 'pd-design--fragment' : 'pd-design--component',
-    showFrame && 'pd-design--show-frame',
-    isSelected && 'pd-design--selected',
-    isHovered && 'pd-design--hovered',
+    'pd-design__decorator',
+    isFragment ? 'pd-design__fragment' : 'pd-design__component',
+    showFrame && 'pd-design__frame--visible',
+    isSelected && 'pd-design__decorator--selected',
+    isHovered && 'pd-design__decorator--hovered',
+    isMoving && 'pd-design__decorator--moving',
+    isDropTarget &&
+      `pd-design__drop-target__${dropTargetDirection === 'row' ? 'x' : 'y'}-${
+        dropTargetInsertType as string
+      }`,
   ]
     .filter(Boolean)
     .join(' ');

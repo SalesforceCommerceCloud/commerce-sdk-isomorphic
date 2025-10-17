@@ -15,6 +15,7 @@ import {useDesignState} from '../hooks/useDesignState';
 import {useFocusedComponentHandler} from '../hooks/useFocusedComponentHandler';
 import {useComponentType} from '../hooks/useComponentType';
 import {useNodeToTargetStore} from '../hooks/useNodeToTargetStore';
+import {DesignFrame} from './DesignFrame';
 
 /**
  * Creates a higher-order component that wraps React components with design-time functionality.
@@ -111,37 +112,12 @@ export function createReactComponentDesignDecorator<TProps>(
         data-component-id={componentId}
         data-component-name={componentName}>
         {showFrame && (
-          <div className="pd-design__label">
-            {componentType?.image && (
-              <span className="pd-design__icon">
-                <img src={componentType.image} alt="" />
-              </span>
-            )}
-            <span className="pd-design__name">
-              {componentName} ({componentId})
-            </span>
-            <div className="pd-design__toolbox">
-              <button
-                className="pd-design__toolbox-button"
-                onClick={handleDelete}
-                title="Delete component"
-                type="button">
-                <svg
-                  className="pd-design__delete-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M18 6L6 18M6 6l12 12"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
+          <DesignFrame
+            componentId={componentId}
+            componentName={componentName}
+            parentId={parentId}
+            regionId={regionId}
+          />
         )}
         {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         <Component {...(componentProps as unknown as TProps)}>

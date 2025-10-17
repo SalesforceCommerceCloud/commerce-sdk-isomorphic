@@ -9,15 +9,8 @@ import {useSelectInteraction} from '../hooks/useSelectInteraction';
 import {useHoverInteraction} from '../hooks/useHoverInteraction';
 import {useDeleteInteraction} from '../hooks/useDeleteInteraction';
 import {useFocusInteraction} from '../hooks/useFocusInteraction';
-import {
-  DragInteraction,
-  useDragInteraction,
-} from '../hooks/useExternalDragInteraction';
+import {DragInteraction, useDragInteraction} from '../hooks/useDragInteraction';
 import {ComponentDeletedEvent, EventPayload} from '../../messaging-api';
-
-const noop = () => {
-  /* noop */
-};
 
 export interface NodeToTargetMapEntry {
   type: 'region' | 'component';
@@ -38,28 +31,9 @@ export interface DesignState extends DragInteraction {
   nodeToTargetMap: WeakMap<Element, NodeToTargetMapEntry>;
 }
 
-export const DesignStateContext = React.createContext<DesignState>({
-  selectedComponentId: '',
-  hoveredComponentId: null,
-  setSelectedComponent: noop,
-  setHoveredComponent: noop,
-  deleteComponent: noop,
-  focusComponent: noop,
-  focusedComponentId: null,
-  dragState: {
-    pendingTargetCommit: false,
-    isDragging: false,
-    componentType: '',
-    x: 0,
-    y: 0,
-    currentDropTarget: null,
-  },
-  commitCurrentDropTarget: noop,
-  startComponentMove: noop,
-  updateComponentMove: noop,
-  dropComponent: noop,
-  nodeToTargetMap: new WeakMap(),
-});
+export const DesignStateContext = React.createContext<DesignState>(
+  null as unknown as DesignState
+);
 
 export const DesignStateProvider = ({
   children,
@@ -77,7 +51,7 @@ export const DesignStateProvider = ({
   });
 
   const nodeToTargetMap = React.useMemo(() => new WeakMap(), []);
-  const externalDragInteraction = useDragInteraction({nodeToTargetMap});
+  const dragInteraction = useDragInteraction({nodeToTargetMap});
 
   const state = React.useMemo(
     () => ({
@@ -85,7 +59,7 @@ export const DesignStateProvider = ({
       ...selectInteraction,
       ...hoverInteraction,
       ...focusInteraction,
-      ...externalDragInteraction,
+      ...dragInteraction,
       nodeToTargetMap,
     }),
     [
@@ -93,7 +67,7 @@ export const DesignStateProvider = ({
       selectInteraction,
       hoverInteraction,
       focusInteraction,
-      externalDragInteraction,
+      dragInteraction,
       nodeToTargetMap,
     ]
   );

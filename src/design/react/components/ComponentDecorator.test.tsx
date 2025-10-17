@@ -90,7 +90,7 @@ describe('design/react/ComponentDecorator', () => {
 
       const finalResult = Object.assign(result, {
         host,
-        element: result.container.querySelector('.pd-design--decorator'),
+        element: result.container.querySelector('.pd-design__decorator'),
       }) as Result;
 
       return finalResult;
@@ -153,8 +153,8 @@ describe('design/react/ComponentDecorator', () => {
           designMetadata: {id: 'test-1', isFragment: true},
         });
 
-        expect(element.classList.contains('pd-design--fragment')).toBe(true);
-        expect(element.classList.contains('pd-design--component')).toBe(false);
+        expect(element.classList.contains('pd-design__fragment')).toBe(true);
+        expect(element.classList.contains('pd-design__component')).toBe(false);
       });
     });
 
@@ -164,8 +164,8 @@ describe('design/react/ComponentDecorator', () => {
           designMetadata: {id: 'test-1', isFragment: false},
         });
 
-        expect(element.classList.contains('pd-design--fragment')).toBe(false);
-        expect(element.classList.contains('pd-design--component')).toBe(true);
+        expect(element.classList.contains('pd-design__fragment')).toBe(false);
+        expect(element.classList.contains('pd-design__component')).toBe(true);
       });
     });
 
@@ -182,8 +182,8 @@ describe('design/react/ComponentDecorator', () => {
       it('should show the frame', async () => {
         const {element} = await testBed.render(TestComponent);
 
-        expect(element.classList.contains('pd-design--show-frame')).toBe(true);
-        expect(element.classList.contains('pd-design--hovered')).toBe(true);
+        expect(element.classList.contains('pd-design__frame--visible')).toBe(true);
+        expect(element.classList.contains('pd-design__decorator--hovered')).toBe(true);
       });
 
       it('should notify the host of the hover', async () => {
@@ -203,7 +203,7 @@ describe('design/react/ComponentDecorator', () => {
           hoverOutSpy = jest.fn();
           testBed.afterRender(async ({host, element}) => {
             await waitFor(() => {
-              expect(element.classList.contains('pd-design--hovered')).toBe(
+              expect(element.classList.contains('pd-design__decorator--hovered')).toBe(
                 true
               );
             });
@@ -226,10 +226,10 @@ describe('design/react/ComponentDecorator', () => {
         it('should not show the frame', async () => {
           const {element} = await testBed.render(TestComponent);
 
-          expect(element.classList.contains('pd-design--show-frame')).toBe(
+          expect(element.classList.contains('pd-design__frame--visible')).toBe(
             false
           );
-          expect(element.classList.contains('pd-design--hovered')).toBe(false);
+          expect(element.classList.contains('pd-design__decorator--hovered')).toBe(false);
         });
       });
     });
@@ -240,8 +240,8 @@ describe('design/react/ComponentDecorator', () => {
 
         element.click();
 
-        expect(element.classList.contains('pd-design--show-frame')).toBe(true);
-        expect(element.classList.contains('pd-design--selected')).toBe(true);
+        expect(element.classList.contains('pd-design__frame--visible')).toBe(true);
+        expect(element.classList.contains('pd-design__decorator--selected')).toBe(true);
       });
 
       it('should notify the host of the selection', async () => {
@@ -272,7 +272,7 @@ describe('design/react/ComponentDecorator', () => {
           fireEvent.click(element);
 
           await waitFor(() => {
-            expect(element.classList.contains('pd-design--show-frame')).toBe(
+            expect(element.classList.contains('pd-design__frame--visible')).toBe(
               true
             );
           });
@@ -280,7 +280,7 @@ describe('design/react/ComponentDecorator', () => {
           host.on('ComponentDeleted', hostSpy);
           const deleteButton = await testBed.findBySelector(
             element,
-            '.pd-design__toolbox-button'
+            '.pd-design__frame__toolbox-button'
           );
           fireEvent.click(deleteButton);
         });
