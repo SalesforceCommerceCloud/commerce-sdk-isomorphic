@@ -11,9 +11,14 @@ import {DesignStateContext, DesignState} from '../context/DesignStateContext';
  * Custom hook that manages design-time component state by composing
  * individual interaction hooks for better maintainability and testability.
  *
- * @param isDesignMode - Whether design mode is active
- * @param clientApi - Client API for host communication
  * @returns Combined design state from all interactions
  */
-export const useDesignState = (): DesignState =>
-  React.useContext(DesignStateContext);
+export const useDesignState = (): DesignState => {
+  const context = React.useContext(DesignStateContext);
+
+  if (!context) {
+    throw new Error('useDesignState must be used within a DesignStateProvider');
+  }
+
+  return context;
+};

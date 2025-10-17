@@ -9,13 +9,18 @@ import {useSelectInteraction} from '../hooks/useSelectInteraction';
 import {useHoverInteraction} from '../hooks/useHoverInteraction';
 import {useDeleteInteraction} from '../hooks/useDeleteInteraction';
 import {useFocusInteraction} from '../hooks/useFocusInteraction';
+import {DragInteraction, useDragInteraction} from '../hooks/useDragInteraction';
 import {ComponentDeletedEvent, EventPayload} from '../../messaging-api';
 
-const noop = () => {
-  /* noop */
-};
+export interface NodeToTargetMapEntry {
+  type: 'region' | 'component';
+  parentId?: string;
+  componentId: string;
+  regionId: string;
+  regionDirection: 'row' | 'column';
+}
 
-export interface DesignState {
+export interface DesignState extends DragInteraction {
   selectedComponentId: string | null;
   hoveredComponentId: string | null;
   setSelectedComponent: (componentId: string) => void;
@@ -23,17 +28,12 @@ export interface DesignState {
   deleteComponent: (event: EventPayload<ComponentDeletedEvent>) => void;
   focusComponent: (node: Element) => void;
   focusedComponentId: string | null;
+  nodeToTargetMap: WeakMap<Element, NodeToTargetMapEntry>;
 }
 
-export const DesignStateContext = React.createContext<DesignState>({
-  selectedComponentId: '',
-  hoveredComponentId: null,
-  setSelectedComponent: noop,
-  setHoveredComponent: noop,
-  deleteComponent: noop,
-  focusComponent: noop,
-  focusedComponentId: null,
-});
+export const DesignStateContext = React.createContext<DesignState>(
+  null as unknown as DesignState
+);
 
 export const DesignStateProvider = ({
   children,
@@ -50,14 +50,26 @@ export const DesignStateProvider = ({
     setSelectedComponent: selectInteraction.setSelectedComponent,
   });
 
+  const nodeToTargetMap = React.useMemo(() => new WeakMap(), []);
+  const dragInteraction = useDragInteraction({nodeToTargetMap});
+
   const state = React.useMemo(
     () => ({
       ...deleteInteraction,
       ...selectInteraction,
       ...hoverInteraction,
       ...focusInteraction,
+      ...dragInteraction,
+      nodeToTargetMap,
     }),
-    [deleteInteraction, selectInteraction, hoverInteraction, focusInteraction]
+    [
+      deleteInteraction,
+      selectInteraction,
+      hoverInteraction,
+      focusInteraction,
+      dragInteraction,
+      nodeToTargetMap,
+    ]
   );
 
   return (

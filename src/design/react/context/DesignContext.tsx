@@ -15,6 +15,7 @@ import {
 } from '../../messaging-api';
 import {isDesignModeActive} from '../../modeDetection';
 import {DesignStateProvider} from './DesignStateContext';
+import {DesignApp} from '../components/DesignApp';
 
 const noop = () => {
   /* noop */
@@ -123,7 +124,9 @@ export const DesignProvider = ({
 
   return (
     <DesignContext.Provider value={contextValue}>
-      <DesignStateProvider>{children}</DesignStateProvider>
+      <DesignStateProvider>
+        <DesignApp>{children}</DesignApp>
+      </DesignStateProvider>
     </DesignContext.Provider>
   );
 };
