@@ -101,7 +101,7 @@ describe('design/react/RegionDecorator', () => {
 
       const finalResult = Object.assign(result, {
         host,
-        element: result.container.querySelector('.pd-design--decorator'),
+        element: result.container.querySelector('.pd-design__decorator'),
       }) as Result;
 
       return finalResult;
@@ -156,7 +156,7 @@ describe('design/react/RegionDecorator', () => {
       const {element} = await testBed.render(TestRegion);
 
       expect(element).toBeDefined();
-      expect(element.classList.contains('pd-design--decorator')).toBe(true);
+      expect(element.classList.contains('pd-design__decorator')).toBe(true);
       expect(element.classList.contains('pd-design__region')).toBe(true);
     });
 
@@ -329,7 +329,7 @@ describe('design/react/RegionDecorator', () => {
       it('should include base decorator and region classes', async () => {
         const {element} = await testBed.render(TestRegion);
 
-        expect(element.classList.contains('pd-design--decorator')).toBe(true);
+        expect(element.classList.contains('pd-design__decorator')).toBe(true);
         expect(element.classList.contains('pd-design__region')).toBe(true);
       });
     });

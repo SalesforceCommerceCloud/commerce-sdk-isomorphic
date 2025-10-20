@@ -14,7 +14,7 @@ export function createReactRegionDesignDecorator<TProps>(
 ): (props: ComponentDecoratorProps<TProps>) => JSX.Element {
   return (props: ComponentDecoratorProps<TProps>) => {
     const {designMetadata, children, ...componentProps} = props;
-    const isDesignMode = usePageDesignerMode();
+    const {isDesignMode} = usePageDesignerMode();
 
     return isDesignMode ? (
       <DesignRegion designMetadata={designMetadata}>
