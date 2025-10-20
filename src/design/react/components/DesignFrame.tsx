@@ -39,11 +39,14 @@ export const DesignFrame = ({
     [deleteComponent, componentId]
   );
 
-  const handleDragStart = React.useCallback(
-    () => componentId && startComponentMove(componentId, regionId),
-    [startComponentMove, componentId, regionId]
-  );
+  const handleDragStart = React.useCallback(() => {
+    if (componentId) {
+      startComponentMove(componentId, regionId);
+    }
+  }, [startComponentMove, componentId, regionId]);
 
+  // TODO: For the frame label, when there is not enough space above the component to display it, we
+  // need to display it inside the container instead.
   return (
     <div className="pd-design__frame">
       <div className="pd-design__frame__label">

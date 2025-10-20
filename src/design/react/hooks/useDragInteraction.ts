@@ -6,7 +6,6 @@
  */
 import {useCallback, useEffect, useMemo} from 'react';
 import {useInteraction} from './useInteraction';
-import {useDesignState} from './useDesignState';
 import type {NodeToTargetMapEntry} from '../context/DesignStateContext';
 
 export interface DropTarget extends NodeToTargetMapEntry {

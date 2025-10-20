@@ -150,7 +150,12 @@ describe('design/react/ComponentDecorator', () => {
     describe('when the component is a fragment', () => {
       it('should include the corresponding fragment class', async () => {
         const {element} = await testBed.render(TestComponent, {
-          designMetadata: {id: 'test-1', isFragment: true},
+          designMetadata: {
+            id: 'test-1',
+            isFragment: true,
+            regionDirection: 'row',
+            regionId: 'test-region',
+          },
         });
 
         expect(element.classList.contains('pd-design__fragment')).toBe(true);
@@ -161,7 +166,12 @@ describe('design/react/ComponentDecorator', () => {
     describe('when the component is a component', () => {
       it('should include the corresponding component class', async () => {
         const {element} = await testBed.render(TestComponent, {
-          designMetadata: {id: 'test-1', isFragment: false},
+          designMetadata: {
+            id: 'test-1',
+            isFragment: false,
+            regionDirection: 'row',
+            regionId: 'test-region',
+          },
         });
 
         expect(element.classList.contains('pd-design__fragment')).toBe(false);
@@ -182,8 +192,12 @@ describe('design/react/ComponentDecorator', () => {
       it('should show the frame', async () => {
         const {element} = await testBed.render(TestComponent);
 
-        expect(element.classList.contains('pd-design__frame--visible')).toBe(true);
-        expect(element.classList.contains('pd-design__decorator--hovered')).toBe(true);
+        expect(element.classList.contains('pd-design__frame--visible')).toBe(
+          true
+        );
+        expect(
+          element.classList.contains('pd-design__decorator--hovered')
+        ).toBe(true);
       });
 
       it('should notify the host of the hover', async () => {
@@ -203,9 +217,9 @@ describe('design/react/ComponentDecorator', () => {
           hoverOutSpy = jest.fn();
           testBed.afterRender(async ({host, element}) => {
             await waitFor(() => {
-              expect(element.classList.contains('pd-design__decorator--hovered')).toBe(
-                true
-              );
+              expect(
+                element.classList.contains('pd-design__decorator--hovered')
+              ).toBe(true);
             });
 
             host.on('ComponentHoveredOut', hoverOutSpy);
@@ -229,7 +243,9 @@ describe('design/react/ComponentDecorator', () => {
           expect(element.classList.contains('pd-design__frame--visible')).toBe(
             false
           );
-          expect(element.classList.contains('pd-design__decorator--hovered')).toBe(false);
+          expect(
+            element.classList.contains('pd-design__decorator--hovered')
+          ).toBe(false);
         });
       });
     });
@@ -240,8 +256,12 @@ describe('design/react/ComponentDecorator', () => {
 
         element.click();
 
-        expect(element.classList.contains('pd-design__frame--visible')).toBe(true);
-        expect(element.classList.contains('pd-design__decorator--selected')).toBe(true);
+        expect(element.classList.contains('pd-design__frame--visible')).toBe(
+          true
+        );
+        expect(
+          element.classList.contains('pd-design__decorator--selected')
+        ).toBe(true);
       });
 
       it('should notify the host of the selection', async () => {
@@ -272,15 +292,15 @@ describe('design/react/ComponentDecorator', () => {
           fireEvent.click(element);
 
           await waitFor(() => {
-            expect(element.classList.contains('pd-design__frame--visible')).toBe(
-              true
-            );
+            expect(
+              element.classList.contains('pd-design__frame--visible')
+            ).toBe(true);
           });
 
           host.on('ComponentDeleted', hostSpy);
           const deleteButton = await testBed.findBySelector(
             element,
-            '.pd-design__frame__toolbox-button'
+            '.pd-design__frame__delete-icon'
           );
           fireEvent.click(deleteButton);
         });
@@ -292,6 +312,8 @@ describe('design/react/ComponentDecorator', () => {
             id: 'test-1',
             parentId: 'test-parent',
             regionId: 'test-region',
+            regionDirection: 'row',
+            isFragment: false,
           },
         });
 
