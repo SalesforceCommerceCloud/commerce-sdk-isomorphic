@@ -21,7 +21,7 @@
       "import": "./lib/shopperBaskets.js",
       "require": "./lib/shopperBaskets.cjs.js"
     },
-    "./shopperBasketsv2": {
+    "./shopperBasketsV2": {
       "import": "./lib/shopperBasketsv2.js",
       "require": "./lib/shopperBasketsv2.cjs.js"
     },
@@ -65,7 +65,7 @@
       "import": "./lib/shopperSearch.js",
       "require": "./lib/shopperSearch.cjs.js"
     },
-    "./shopperSeo": {
+    "./shopperSEO": {
       "import": "./lib/shopperSeo.js",
       "require": "./lib/shopperSeo.cjs.js"
     },
