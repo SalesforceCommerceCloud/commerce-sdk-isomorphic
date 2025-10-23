@@ -5,26 +5,25 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import React from 'react';
-import {useDesignContext} from '../context/DesignContext';
 import {ComponentDecoratorProps} from './component.types';
+import {DesignRegion} from './DesignRegion';
+import {usePageDesignerMode} from '../context/PageDesignerProvider';
 
 export function createReactRegionDesignDecorator<TProps>(
   Region: React.ComponentType<TProps>
 ): (props: ComponentDecoratorProps<TProps>) => JSX.Element {
   return (props: ComponentDecoratorProps<TProps>) => {
-    const {children, ...componentProps} = props;
-    const {isDesignMode} = useDesignContext();
+    const {designMetadata, children, ...componentProps} = props;
+    const {isDesignMode} = usePageDesignerMode();
 
-    if (!isDesignMode) {
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      return <Region {...props} />;
-    }
-
-    return (
-      <div className="pd-region">
+    return isDesignMode ? (
+      <DesignRegion designMetadata={designMetadata}>
         {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-        <Region {...(componentProps as TProps)}>{children}</Region>
-      </div>
+        <Region {...(componentProps as unknown as TProps)}>{children}</Region>
+      </DesignRegion>
+    ) : (
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      <Region {...(componentProps as unknown as TProps)}>{children}</Region>
     );
   };
 }

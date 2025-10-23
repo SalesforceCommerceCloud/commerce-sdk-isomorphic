@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ClientApi, ClientEventNameMapping} from '../../messaging-api';
 import {useDesignContext} from '../context/DesignContext';
 
@@ -14,7 +14,7 @@ export interface EventHandler<
 > {
   handler: (
     event: ClientEventNameMapping[TName],
-    setState: (newState: TState) => void
+    setState: React.Dispatch<React.SetStateAction<TState>>
   ) => void;
 }
 
@@ -28,7 +28,7 @@ export interface InteractionConfig<TState, TActions> {
   /** Action creators that return functions to interact with the client API */
   actions?: (
     state: TState,
-    setState: (newState: TState) => void,
+    setState: React.Dispatch<React.SetStateAction<TState>>,
     clientApi: ClientApi | null
   ) => TActions;
 }
