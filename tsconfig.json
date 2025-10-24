@@ -17,6 +17,9 @@
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "moduleResolution": "node",
+    "paths": {
+      "commerce-sdk-isomorphic/*": ["lib/*"]
+    },
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",

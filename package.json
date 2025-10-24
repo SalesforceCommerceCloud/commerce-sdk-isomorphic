@@ -17,6 +17,10 @@
       "import": "./lib/index.esm.js",
       "require": "./lib/index.cjs.js"
     },
+    "./importUtil": {
+      "import": "./lib/importUtil.js",
+      "require": "./lib/importUtil.cjs.js"
+    },
     "./shopperBaskets": {
       "import": "./lib/shopperBaskets.js",
       "require": "./lib/shopperBaskets.cjs.js"
@@ -24,6 +28,10 @@
     "./shopperBasketsv2": {
       "import": "./lib/shopperBasketsv2.js",
       "require": "./lib/shopperBasketsv2.cjs.js"
+    },
+    "./shopperConfigurations": {
+      "import": "./lib/shopperConfigurations.js",
+      "require": "./lib/shopperConfigurations.cjs.js"
     },
     "./shopperConsents": {
       "import": "./lib/shopperConsents.js",
@@ -52,6 +60,10 @@
     "./shopperOrders": {
       "import": "./lib/shopperOrders.js",
       "require": "./lib/shopperOrders.cjs.js"
+    },
+    "./shopperPayments": {
+      "import": "./lib/shopperPayments.js",
+      "require": "./lib/shopperPayments.cjs.js"
     },
     "./shopperProducts": {
       "import": "./lib/shopperProducts.js",
@@ -250,7 +262,7 @@
     },
     {
       "path": "commerce-sdk-isomorphic-with-deps.tgz",
-      "maxSize": "2.49 MB"
+      "maxSize": "2.51 MB"
     }
   ],
   "proxy": "https://SHORTCODE.api.commercecloud.salesforce.com"

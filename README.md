@@ -340,6 +340,62 @@ console.log("categoriesResult: ", categoriesResult);
 
 **NOTE: In the next major version release, path parameters will be single encoded by default**
 
+#### Dynamic Import Utility (`importUtil`)
+
+This utility enables on-demand loading of individual APIs to keep your initial bundle small and improve page performance.
+
+##### When and why to use it
+- **Slimmer initial bundle**: Only load the API you need at the moment (e.g., load `ShopperSearch` on a search page, not at app startup).
+- **Code-splitting friendly**: Uses dynamic `import()` under the hood so bundlers split APIs into separate chunks automatically.
+- **Faster startup/TTI**: Defer heavy SDK code until the user triggers a feature.
+- **Server and browser**: Works in both ESM and CommonJS environments.
+
+##### How to use
+
+1) Import the utility (and optional key type):
+
+```ts
+import { sdkImporters } from 'commerce-sdk-isomorphic/importUtil';
+import type { CommerceSdkKeyMap } from 'commerce-sdk-isomorphic/importUtil';
+```
+
+2) Dynamically load a specific API (ESM):
+
+```ts
+// inside an async function
+const { ShopperSearch } = await sdkImporters.ShopperSearch();
+
+const shopperSearch = new ShopperSearch({
+  proxy: 'https://localhost:3000',
+  parameters: {
+    clientId: '<your-client-id>',
+    organizationId: '<your-org-id>',
+    shortCode: '<your-short-code>',
+    siteId: '<your-site-id>',
+  },
+  headers: { authorization: `Bearer ${accessToken}` },
+});
+
+const result = await shopperSearch.productSearch({ parameters: { q: 'shirt' } });
+```
+
+3) CommonJS usage:
+
+```js
+const { sdkImporters } = require('commerce-sdk-isomorphic/importUtil');
+
+(async () => {
+  const { ShopperLogin } = await sdkImporters.ShopperLogin();
+  const slas = new ShopperLogin({ /* config */ });
+})();
+```
+
+##### Additional notes
+- **Subpath exports**: This utility depends on `package.json` subpath exports (e.g., `"./shopperSearch"`). When adding a new API, ensure you add matching entries; see Contributing > New APIs.
+- **Chunking behavior**: Each API becomes a separate chunk in modern bundlers. Prefer loading at route or feature boundaries.
+- **Error handling**: If a subpath export is missing or fails to load, the promise will reject. Handle with `try/catch` as needed.
+- **Naming**: Keys are PascalCase (e.g., `ShopperBasketsV2`) while subpaths are lower camel case (e.g., `shopperBasketsv2`).
+
 ## License Information
 
 The Commerce SDK Isomorphic is licensed under BSD-3-Clause license. See the [license](./LICENSE.txt) for details.
