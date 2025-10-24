@@ -6,21 +6,34 @@
  */
 import {useEffect} from 'react';
 import {useDesignState} from './useDesignState';
+import {useThrottledCallback} from './useThrottledCallback';
+
+const FPS_60 = 1000 / 60;
 
 export function useGlobalDragListener(): void {
-  const {dropComponent, updateComponentMove} = useDesignState();
+  const {dropComponent, updateComponentMove, cancelDrag} = useDesignState();
+  const dragListener = useThrottledCallback(
+    (event: DragEvent) =>
+      updateComponentMove({x: event.clientX, y: event.clientY}),
+    FPS_60,
+    [updateComponentMove]
+  );
 
   useEffect(() => {
-    const dragListener = (event: DragEvent) =>
-      updateComponentMove({x: event.clientX, y: event.clientY});
     const dragEndListener = () => dropComponent();
+    const mouseUpListener = () => cancelDrag();
 
-    window.addEventListener('drag', dragListener);
+    window.addEventListener('dragover', dragListener);
     window.addEventListener('dragend', dragEndListener);
+    // We need to make sure we cancel dragging on mouseup since we
+    // we are using mousedown to start dragging or else it would stay in a dragging
+    // state from regular click events.
+    window.addEventListener('mouseup', mouseUpListener);
 
     return () => {
-      window.removeEventListener('drag', dragListener);
+      window.removeEventListener('dragover', dragListener);
       window.removeEventListener('dragend', dragEndListener);
+      window.removeEventListener('mouseup', mouseUpListener);
     };
-  }, [updateComponentMove, dropComponent]);
+  }, [dropComponent, cancelDrag, dragListener]);
 }

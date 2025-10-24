@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+/* eslint-disable max-lines */
 interface WithBaseEvent {
   eventType: string;
   // Add any properties that apply to all events
@@ -347,9 +348,22 @@ export interface ComponentMovedToRegionEvent
     WithComponentId {
   eventType: 'ComponentMovedToRegion';
   /**
-   * The id of the component where this component is being moved to.
+   * The id of the component that comes before the insert component.
    */
-  targetComponentId: string;
+  beforeComponentId?: string;
+  /**
+   * The id of the component that comes afterthe insert component.
+   */
+  afterComponentId?: string;
+  /**
+   * The id of the component this component should be inserted before or after.
+   * If not provided, then it is up to the host to determine where in the target region this is inserted.
+   */
+  insertComponentId?: string;
+  /**
+   * When an insertComponentId is provided, this will insert the new component before or after the component with that component id.
+   */
+  insertType?: 'before' | 'after';
   /**
    * The id of the region that the component is being moved to.
    */
@@ -450,6 +464,14 @@ export interface ComponentAddedToRegionEvent<
    * If not provided, then it is up to the host to determine where in the target region this is inserted.
    */
   insertComponentId?: string;
+  /**
+   * The id of the component that comes before the insert component.
+   */
+  beforeComponentId?: string;
+  /**
+   * The id of the component that comes afterthe insert component.
+   */
+  afterComponentId?: string;
 }
 /**
  * Emits when a component drag starts from the host or client.

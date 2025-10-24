@@ -4,8 +4,6 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import {ComponentDecoratorProps} from './component.types';
 import {DesignComponent} from './DesignComponent';

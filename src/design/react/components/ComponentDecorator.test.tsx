@@ -18,13 +18,18 @@ import {
 import {HostApi} from '../../messaging-api/api-types';
 import {createHostApi} from '../../messaging-api/host';
 import {createReactComponentDesignDecorator} from './ComponentDecorator';
-import {ComponentDecoratorProps} from './component.types';
+import {ComponentDecoratorProps, RegionDecoratorProps} from './component.types';
 import {PageDesignerProvider} from '../context/PageDesignerProvider';
 import {createTestBed} from '../../test/testBed';
+import {createReactRegionDesignDecorator} from './RegionDecorator';
 
 // Test component to decorate
 const TestComponent: React.FC = ({children}) => (
   <div data-testid="test-component">{children}</div>
+);
+
+const TestRegion: React.FC = ({children}) => (
+  <div data-testid="test-region">{children}</div>
 );
 
 type Result = RenderResult & {element: HTMLElement; host: HostApi};
@@ -33,16 +38,22 @@ describe('design/react/ComponentDecorator', () => {
   const testBed = createTestBed({
     renderer: async <TProps,>(
       component: React.FC<TProps>,
-      props: Partial<ComponentDecoratorProps<TProps>> = {},
       {
+        props = {},
+        regionMetadata = {},
         mode = 'EDIT',
         waitForHost = true,
       }: {
+        props?: Partial<ComponentDecoratorProps<TProps>>;
+        regionMetadata?: Partial<
+          RegionDecoratorProps<unknown>['designMetadata']
+        >;
         mode?: 'EDIT' | 'PREVIEW' | null;
         waitForHost?: boolean;
       } = {}
     ) => {
       const DecoratedComponent = createReactComponentDesignDecorator(component);
+      const DecoratedRegion = createReactRegionDesignDecorator(TestRegion);
       const host = testBed.setupHost();
 
       if (mode) {
@@ -78,9 +89,14 @@ describe('design/react/ComponentDecorator', () => {
 
       const result = tlRender(
         <PageDesignerProvider clientId="test1" targetOrigin="*">
-          <DecoratedComponent {...(props as ComponentDecoratorProps<TProps>)}>
-            Test Content
-          </DecoratedComponent>
+          <DecoratedRegion
+            designMetadata={
+              regionMetadata as RegionDecoratorProps<unknown>['designMetadata']
+            }>
+            <DecoratedComponent {...(props as ComponentDecoratorProps<TProps>)}>
+              Test Content
+            </DecoratedComponent>
+          </DecoratedRegion>
         </PageDesignerProvider>
       );
 
@@ -90,7 +106,9 @@ describe('design/react/ComponentDecorator', () => {
 
       const finalResult = Object.assign(result, {
         host,
-        element: result.container.querySelector('.pd-design__decorator'),
+        element: result.container.querySelector(
+          '.pd-design__decorator:not(.pd-design__region)'
+        ),
       }) as Result;
 
       return finalResult;
@@ -131,11 +149,9 @@ describe('design/react/ComponentDecorator', () => {
 
   describe('when decorating a component', () => {
     it('should render the original component when not in design mode', async () => {
-      const {element, getByTestId} = await testBed.render(
-        TestComponent,
-        {},
-        {mode: null}
-      );
+      const {element, getByTestId} = await testBed.render(TestComponent, {
+        mode: null,
+      });
 
       expect(getByTestId('test-component')).toBeDefined();
       expect(element).toBeNull();
@@ -150,11 +166,15 @@ describe('design/react/ComponentDecorator', () => {
     describe('when the component is a fragment', () => {
       it('should include the corresponding fragment class', async () => {
         const {element} = await testBed.render(TestComponent, {
-          designMetadata: {
-            id: 'test-1',
-            isFragment: true,
+          props: {
+            designMetadata: {
+              id: 'test-1',
+              isFragment: true,
+            },
+          },
+          regionMetadata: {
             regionDirection: 'row',
-            regionId: 'test-region',
+            id: 'test-region',
           },
         });
 
@@ -166,11 +186,15 @@ describe('design/react/ComponentDecorator', () => {
     describe('when the component is a component', () => {
       it('should include the corresponding component class', async () => {
         const {element} = await testBed.render(TestComponent, {
-          designMetadata: {
-            id: 'test-1',
-            isFragment: false,
+          props: {
+            designMetadata: {
+              id: 'test-1',
+              isFragment: false,
+            },
+          },
+          regionMetadata: {
             regionDirection: 'row',
-            regionId: 'test-region',
+            id: 'test-region',
           },
         });
 
@@ -308,12 +332,16 @@ describe('design/react/ComponentDecorator', () => {
 
       it('should notify the host of the deletion', async () => {
         await testBed.render(TestComponent, {
-          designMetadata: {
-            id: 'test-1',
-            parentId: 'test-parent',
-            regionId: 'test-region',
+          props: {
+            designMetadata: {
+              id: 'test-1',
+              parentId: 'test-parent',
+              isFragment: false,
+            },
+          },
+          regionMetadata: {
             regionDirection: 'row',
-            isFragment: false,
+            id: 'test-region',
           },
         });
 

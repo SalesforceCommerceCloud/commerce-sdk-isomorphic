@@ -5,13 +5,23 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import {ComponentRegistry} from './componentRegistry';
+import {isDesignModeActive} from './modeDetection';
 
 type TestComponent = {name: string};
 
+jest.mock('./modeDetection', () => ({
+  isDesignModeActive: jest.fn().mockReturnValue(true),
+}));
+
 describe('design/componentRegistry', () => {
+  let designMode = false;
   let registry: ComponentRegistry<TestComponent>;
 
   beforeEach(() => {
+    designMode = false;
+
+    (isDesignModeActive as jest.Mock).mockImplementation(() => designMode);
+
     registry = new ComponentRegistry<TestComponent>({
       designDecorator: component => ({
         ...component,
@@ -27,9 +37,13 @@ describe('design/componentRegistry', () => {
     });
 
     describe('when getting a component in design mode', () => {
+      beforeEach(() => {
+        designMode = true;
+      });
+
       it('should get the decorated component', () => {
         registry.registerComponent('test', {name: 'test'});
-        expect(registry.getComponent('test', {mode: 'design'})).toEqual({
+        expect(registry.getComponent('test')).toEqual({
           name: 'test-design',
         });
       });

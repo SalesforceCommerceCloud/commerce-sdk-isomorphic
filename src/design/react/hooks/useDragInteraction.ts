@@ -4,13 +4,17 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import {useCallback, useEffect, useMemo} from 'react';
+import {useCallback, useEffect} from 'react';
 import {useInteraction} from './useInteraction';
 import type {NodeToTargetMapEntry} from '../context/DesignStateContext';
 
 export interface DropTarget extends NodeToTargetMapEntry {
+  beforeComponentId?: string;
+  afterComponentId?: string;
   insertType?: 'before' | 'after';
   insertComponentId?: string;
+  regionId: string;
+  regionDirection: 'row' | 'column';
 }
 
 export interface DragInteraction {
@@ -23,11 +27,13 @@ export interface DragInteraction {
     componentType?: string;
     sourceComponentId?: string;
     sourceRegionId?: string;
+    rectCache: WeakMap<Element, DOMRect>;
   };
   commitCurrentDropTarget: () => void;
   startComponentMove: (componentId: string, regionId: string) => void;
   updateComponentMove: (params: {x: number; y: number}) => void;
   dropComponent: () => void;
+  cancelDrag: () => void;
 }
 
 function getInsertionType({
@@ -42,7 +48,7 @@ function getInsertionType({
   x: number;
   y: number;
   direction: 'row' | 'column';
-}): 'before' | 'after' | undefined {
+}): 'before' | 'after' {
   const rect = cache.get(node) ?? node.getBoundingClientRect();
 
   cache.set(node, rect);
@@ -63,37 +69,83 @@ export function useDragInteraction({
 }: {
   nodeToTargetMap: WeakMap<Element, NodeToTargetMapEntry>;
 }): DragInteraction {
-  const rectCache = useMemo(() => new WeakMap<Element, DOMRect>(), []);
-  const getCurrentDropTarget = useCallback(
-    (x: number, y: number): DropTarget | null => {
+  const getNearestComponentAndRegion = useCallback(
+    (
+      x: number,
+      y: number
+    ): {
+      component: (NodeToTargetMapEntry & {node: Element}) | null;
+      region: (NodeToTargetMapEntry & {node: Element}) | null;
+    } => {
       const nodeStack = document.elementsFromPoint(x, y);
+      let component: (NodeToTargetMapEntry & {node: Element}) | null = null;
+      let region: (NodeToTargetMapEntry & {node: Element}) | null = null;
 
       for (let i = 0; i < nodeStack.length; i += 1) {
         const node = nodeStack[i];
         const entry = nodeToTargetMap.get(node);
 
-        if (entry) {
-          const isComponent = entry.type === 'component';
-          const insertComponentId = isComponent ? entry.componentId : undefined;
-          const insertType = getInsertionType({
-            cache: rectCache,
-            node,
-            x,
-            y,
-            direction: entry.regionDirection,
-          });
-
-          return {
-            ...entry,
-            insertComponentId,
-            insertType,
-          };
+        if (entry?.type === 'component') {
+          component = {...entry, node};
+        } else if (entry?.type === 'region') {
+          region = {...entry, node};
+          // Once we find a region we need to exit.
+          break;
         }
+      }
+
+      return {component, region};
+    },
+    [nodeToTargetMap]
+  );
+
+  const getInsertionComponentIds = (
+    componentId: string,
+    region: NodeToTargetMapEntry & {node: Element}
+  ): [string | undefined, string | undefined] => {
+    const componentIndex = region.componentIds.indexOf(componentId);
+
+    return [
+      region.componentIds[componentIndex - 1],
+      region.componentIds[componentIndex + 1],
+    ];
+  };
+
+  const getCurrentDropTarget = useCallback(
+    (
+      x: number,
+      y: number,
+      rectCache: WeakMap<Element, DOMRect>
+    ): DropTarget | null => {
+      const {component, region} = getNearestComponentAndRegion(x, y);
+
+      if (region) {
+        const insertType = component
+          ? getInsertionType({
+              cache: rectCache,
+              node: component.node,
+              x,
+              y,
+              direction: region.regionDirection,
+            })
+          : 'after';
+
+        const [beforeComponentId, afterComponentId] = component
+          ? getInsertionComponentIds(component.componentId, region)
+          : [];
+
+        return {
+          ...(component ?? region),
+          beforeComponentId,
+          afterComponentId,
+          insertComponentId: component?.componentId,
+          insertType,
+        };
       }
 
       return null;
     },
-    [nodeToTargetMap, rectCache]
+    [nodeToTargetMap]
   );
 
   const {
@@ -102,6 +154,7 @@ export function useDragInteraction({
     updateComponentMove,
     startComponentMove,
     dropComponent,
+    cancelDrag,
   } = useInteraction({
     initialState: {
       isDragging: false,
@@ -112,6 +165,7 @@ export function useDragInteraction({
       y: 0,
       currentDropTarget: null as DropTarget | null,
       pendingTargetCommit: false,
+      rectCache: new WeakMap<Element, DOMRect>(),
     } as DragInteraction['dragState'],
     eventHandlers: {
       ComponentDragStarted: {
@@ -126,6 +180,7 @@ export function useDragInteraction({
             isDragging: true,
             currentDropTarget: null,
             pendingTargetCommit: false,
+            rectCache: new WeakMap<Element, DOMRect>(),
           }));
         },
       },
@@ -149,7 +204,11 @@ export function useDragInteraction({
             x: event.x,
             y: event.y,
             isDragging: true,
-            currentDropTarget: getCurrentDropTarget(event.x, event.y),
+            currentDropTarget: getCurrentDropTarget(
+              event.x,
+              event.y,
+              dragState.rectCache
+            ),
           }));
         },
       },
@@ -164,12 +223,20 @@ export function useDragInteraction({
       },
     },
     actions: (state, setState, clientApi) => ({
+      cancelDrag: () => {
+        setState(prevState => ({
+          ...prevState,
+          x: 0,
+          y: 0,
+          isDragging: false,
+        }));
+      },
       updateComponentMove: ({x, y}: {x: number; y: number}) => {
         setState(prevState => ({
           ...prevState,
           x,
           y,
-          currentDropTarget: getCurrentDropTarget(x, y),
+          currentDropTarget: getCurrentDropTarget(x, y, state.rectCache),
         }));
       },
       dropComponent: () => {
@@ -187,6 +254,7 @@ export function useDragInteraction({
           sourceComponentId: componentId,
           sourceRegionId: regionId,
           isDragging: true,
+          rectCache: new WeakMap<Element, DOMRect>(),
         }));
       },
       commitCurrentDropTarget: () => {
@@ -196,7 +264,10 @@ export function useDragInteraction({
             clientApi?.moveComponentToRegion({
               componentId: state.sourceComponentId,
               sourceRegionId: state.sourceRegionId ?? '',
-              targetComponentId: state.currentDropTarget.componentId,
+              insertType: state.currentDropTarget.insertType,
+              insertComponentId: state.currentDropTarget.insertComponentId,
+              beforeComponentId: state.currentDropTarget.beforeComponentId,
+              afterComponentId: state.currentDropTarget.afterComponentId,
               targetRegionId: state.currentDropTarget.regionId,
             });
             // If we have a component type, then we are adding a new component to a region.
@@ -207,6 +278,8 @@ export function useDragInteraction({
               componentProperties: {},
               componentType: state.componentType,
               targetComponentId: state.currentDropTarget.componentId,
+              beforeComponentId: state.currentDropTarget.beforeComponentId,
+              afterComponentId: state.currentDropTarget.afterComponentId,
               targetRegionId: state.currentDropTarget.regionId,
             });
           }
@@ -238,5 +311,6 @@ export function useDragInteraction({
     startComponentMove,
     updateComponentMove,
     dropComponent,
+    cancelDrag,
   };
 }

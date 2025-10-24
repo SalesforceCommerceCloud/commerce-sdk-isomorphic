@@ -14,14 +14,6 @@ export type ComponentDecoratorProps<TProps> = React.PropsWithChildren<
        */
       id: string;
       /**
-       * The direction of the region or the region the component belongs to.
-       */
-      regionDirection: 'row' | 'column';
-      /**
-       * The region id of the region or the region this component belongs to.
-       */
-      regionId: string;
-      /**
        * Whether the component is a fragment.
        */
       isFragment: boolean;
@@ -33,6 +25,33 @@ export type ComponentDecoratorProps<TProps> = React.PropsWithChildren<
        * The id of the parent component if it exists.
        */
       parentId?: string;
+    };
+  } & TProps
+>;
+
+export type RegionDecoratorProps<TProps> = React.PropsWithChildren<
+  {
+    designMetadata: {
+      /**
+       * The id of the component or region.
+       */
+      id: string;
+      /**
+       * The direction of the region or the region the component belongs to.
+       */
+      regionDirection: 'row' | 'column';
+      /**
+       * The name of the component or region.
+       */
+      name?: string;
+      /**
+       * The id of the parent component if it exists.
+       */
+      parentId?: string;
+      /**
+       * A list of component ids that are part of this region.
+       */
+      componentIds: string[];
     };
   } & TProps
 >;

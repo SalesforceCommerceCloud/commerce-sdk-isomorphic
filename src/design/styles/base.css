@@ -10,12 +10,13 @@
   /* Temporary color for drop targets */
   --pd-design-drop-target-color: #008827;
   --pd-design-selected-color: #005fb2;
+  --pd-design-decorator-z-index: 100;
 }
 
 .pd-design__component,
 .pd-design__fragment {
   position: relative;
-  transition: outline 0.2s ease-in-out;
+  z-index: var(--pd-design-decorator-z-index);
   outline: 1px solid transparent;
 }
 
@@ -56,11 +57,11 @@
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   visibility: hidden;
-  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
   white-space: nowrap;
 }
 
-.pd-design__frame--visible .pd-design__frame__label {
+.pd-design__frame--visible .pd-design__frame__label,
+.pd-design__region--hovered .pd-design__frame__label {
   opacity: 1;
   visibility: visible;
 }
@@ -120,17 +121,17 @@
 }
 
 .pd-design__drop-target__y-before {
-  box-shadow: 0 -2px solid var(--pd-design-drop-target-color);
+  box-shadow: 0 -2px var(--pd-design-drop-target-color);
 }
 
 .pd-design__drop-target__y-after {
-  box-shadow: 0 2px solid var(--pd-design-drop-target-color);
+  box-shadow: 0 2px var(--pd-design-drop-target-color);
 }
 
 .pd-design__drop-target__x-before {
-  box-shadow: -2px 0 solid var(--pd-design-drop-target-color);
+  box-shadow: -2px 0 var(--pd-design-drop-target-color);
 }
 
 .pd-design__drop-target__x-after {
-  box-shadow: 2px 0 solid var(--pd-design-drop-target-color);
+  box-shadow: 2px 0 var(--pd-design-drop-target-color);
 }
