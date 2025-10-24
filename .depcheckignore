@@ -6,3 +6,6 @@
 /apis
 /docs
 /node_modules
+
+# Ignore as it dynamically imports the commerce-sdk-isomorphic package when utility is used
+/src/lib/importUtil.ts

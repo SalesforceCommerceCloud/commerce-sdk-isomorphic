@@ -6,6 +6,7 @@
 
 - Use native node fetch available in node 18+ instead of `node-fetch` polyfill [#214](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/214)
 - Support subpath imports for individual APIs and named imports [#219](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/219)
+- Add importer utility for dynamic imports [#236](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/236)
 
 ## v4.0.0
 
