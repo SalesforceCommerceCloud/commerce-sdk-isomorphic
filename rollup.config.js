@@ -111,22 +111,27 @@ const esmConfig = {
 };
 
 // Generate common dependencies files (both ESM and CJS)
-const commonDependenciesConfig = commonDependencies.flatMap(dependency => [
-  // ESM version
-  createSubpathConfig({
+const commonDependenciesConfig = commonDependencies.flatMap(dependency => {
+  const isImporterUtil = /\bimportUtil\.ts$/.test(dependency.input);
+  const esmSubpathConfig = createSubpathConfig({
     input: dependency.input,
     outputFile: dependency.file,
     name: 'CommerceSdkCommonDependencies',
     format: 'es',
-  }),
-  // CJS version
-  createSubpathConfig({
+  });
+  const cjsSubpathConfig = createSubpathConfig({
     input: dependency.input,
     outputFile: dependency.file.replace('.js', '.cjs.js'),
     name: 'CommerceSdkCommonDependencies',
     format: 'cjs',
-  }),
-]);
+  });
+  if (isImporterUtil) {
+    // Preserves dynamic subpath imports and loads on demand instead of bundling them in the file
+    esmSubpathConfig.external = id => id.startsWith('commerce-sdk-isomorphic/');
+    cjsSubpathConfig.external = id => id.startsWith('commerce-sdk-isomorphic/');
+  }
+  return [esmSubpathConfig, cjsSubpathConfig];
+});
 
 // Generate individual API files (both ESM and CJS) so developers can import them individually
 const apiConfigs = apiNames.flatMap(apiName => [
