@@ -1,5 +1,3 @@
-// TODO: add docs for readme for importerUtil
-
 # commerce-sdk-isomorphic
 
 This SDK provides a Browser & Node.js JavaScript client for calling [B2C Commerce Shopper APIs](https://developer.salesforce.com/docs/commerce/commerce-api/overview).
