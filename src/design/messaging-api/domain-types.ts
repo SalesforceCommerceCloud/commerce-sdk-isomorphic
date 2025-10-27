@@ -365,6 +365,10 @@ export interface ComponentMovedToRegionEvent
    */
   insertType?: 'before' | 'after';
   /**
+   * The id of the component that owns the region this component is being moved to.
+   */
+  targetComponentId: string;
+  /**
    * The id of the region that the component is being moved to.
    */
   targetRegionId: string;

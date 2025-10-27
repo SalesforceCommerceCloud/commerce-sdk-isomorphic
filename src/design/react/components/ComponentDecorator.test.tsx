@@ -22,6 +22,7 @@ import {ComponentDecoratorProps, RegionDecoratorProps} from './component.types';
 import {PageDesignerProvider} from '../context/PageDesignerProvider';
 import {createTestBed} from '../../test/testBed';
 import {createReactRegionDesignDecorator} from './RegionDecorator';
+import {ComponentContext} from '../context/ComponentContext';
 
 // Test component to decorate
 const TestComponent: React.FC = ({children}) => (
@@ -89,14 +90,17 @@ describe('design/react/ComponentDecorator', () => {
 
       const result = tlRender(
         <PageDesignerProvider clientId="test1" targetOrigin="*">
-          <DecoratedRegion
-            designMetadata={
-              regionMetadata as RegionDecoratorProps<unknown>['designMetadata']
-            }>
-            <DecoratedComponent {...(props as ComponentDecoratorProps<TProps>)}>
-              Test Content
-            </DecoratedComponent>
-          </DecoratedRegion>
+          <ComponentContext.Provider value={{componentId: 'test-parent'}}>
+            <DecoratedRegion
+              designMetadata={
+                regionMetadata as RegionDecoratorProps<unknown>['designMetadata']
+              }>
+              <DecoratedComponent
+                {...(props as ComponentDecoratorProps<TProps>)}>
+                Test Content
+              </DecoratedComponent>
+            </DecoratedRegion>
+          </ComponentContext.Provider>
         </PageDesignerProvider>
       );
 
@@ -335,7 +339,6 @@ describe('design/react/ComponentDecorator', () => {
           props: {
             designMetadata: {
               id: 'test-1',
-              parentId: 'test-parent',
               isFragment: false,
             },
           },

@@ -13,16 +13,22 @@ import {useFocusedComponentHandler} from '../hooks/useFocusedComponentHandler';
 import {useNodeToTargetStore} from '../hooks/useNodeToTargetStore';
 import {DesignFrame} from './DesignFrame';
 import {useRegionContext} from '../context/RegionContext';
+import {
+  ComponentContext,
+  ComponentContextType,
+  useComponentContext,
+} from '../context/ComponentContext';
 
 export function DesignComponent(
   props: ComponentDecoratorProps<unknown>
 ): JSX.Element {
   const {designMetadata, children} = props;
-  const {id, name, isFragment, parentId} = designMetadata;
+  const {id, name, isFragment} = designMetadata;
   const componentId = id;
   const componentName = name || 'Component';
   const dragRef = useRef<HTMLDivElement>(null);
   const {regionId, regionDirection} = useRegionContext() ?? {};
+  const {componentId: parentComponentId} = useComponentContext() ?? {};
 
   const {
     selectedComponentId,
@@ -36,7 +42,7 @@ export function DesignComponent(
   useNodeToTargetStore({
     type: 'component',
     nodeRef: dragRef,
-    parentId,
+    parentId: parentComponentId,
     regionId,
     regionDirection,
     componentId,
@@ -69,6 +75,11 @@ export function DesignComponent(
     isFragment: Boolean(isFragment),
   });
 
+  const context = React.useMemo<ComponentContextType>(
+    () => ({componentId: id, name}),
+    [id, name]
+  );
+
   // Makes the component a drop target.
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) =>
     event.preventDefault();
@@ -90,11 +101,13 @@ export function DesignComponent(
         <DesignFrame
           componentId={componentId}
           name={componentName}
-          parentId={parentId}
+          parentId={parentComponentId}
           regionId={regionId}
         />
       )}
-      {children}
+      <ComponentContext.Provider value={context}>
+        {children}
+      </ComponentContext.Provider>
     </div>
   );
 }

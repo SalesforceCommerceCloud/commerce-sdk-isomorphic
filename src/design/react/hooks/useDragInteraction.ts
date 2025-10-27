@@ -134,8 +134,15 @@ export function useDragInteraction({
           ? getInsertionComponentIds(component.componentId, region)
           : [];
 
+        // If we find a component before a region, it means we are dropping over a component.
+        // If no component is found before a region, it means we are dropping over an empty region.
         return {
-          ...(component ?? region),
+          type: component ? 'component' : 'region',
+          regionId: region.regionId,
+          regionDirection: region.regionDirection,
+          componentIds: region.componentIds,
+          componentId: component?.componentId ?? '',
+          parentId: region.parentId,
           beforeComponentId,
           afterComponentId,
           insertComponentId: component?.componentId,
@@ -269,6 +276,7 @@ export function useDragInteraction({
               beforeComponentId: state.currentDropTarget.beforeComponentId,
               afterComponentId: state.currentDropTarget.afterComponentId,
               targetRegionId: state.currentDropTarget.regionId,
+              targetComponentId: state.currentDropTarget.parentId ?? '',
             });
             // If we have a component type, then we are adding a new component to a region.
           } else if (state.componentType) {
@@ -277,7 +285,7 @@ export function useDragInteraction({
               insertComponentId: state.currentDropTarget.insertComponentId,
               componentProperties: {},
               componentType: state.componentType,
-              targetComponentId: state.currentDropTarget.componentId,
+              targetComponentId: state.currentDropTarget.parentId ?? '',
               beforeComponentId: state.currentDropTarget.beforeComponentId,
               afterComponentId: state.currentDropTarget.afterComponentId,
               targetRegionId: state.currentDropTarget.regionId,

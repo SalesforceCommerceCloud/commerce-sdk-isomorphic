@@ -17,7 +17,7 @@ import {
 import {HostApi} from '../../messaging-api/api-types';
 import {createHostApi} from '../../messaging-api/host';
 import {createReactRegionDesignDecorator} from './RegionDecorator';
-import {ComponentDecoratorProps} from './component.types';
+import {RegionDecoratorProps} from './component.types';
 import {PageDesignerProvider} from '../context/PageDesignerProvider';
 import {createTestBed} from '../../test/testBed';
 
@@ -46,7 +46,7 @@ describe('design/react/RegionDecorator', () => {
   const testBed = createTestBed({
     renderer: async <TProps,>(
       component: React.FC<TProps>,
-      props: Partial<ComponentDecoratorProps<TProps>> = {},
+      props: Partial<RegionDecoratorProps<TProps>> = {},
       {
         mode = 'EDIT',
         waitForHost = true,
@@ -76,7 +76,7 @@ describe('design/react/RegionDecorator', () => {
         props.designMetadata ??
         ({
           id: 'test-region-1',
-        } as unknown as ComponentDecoratorProps<TProps>['designMetadata']);
+        } as unknown as RegionDecoratorProps<TProps>['designMetadata']);
 
       Object.assign(props, {designMetadata});
 
@@ -91,7 +91,7 @@ describe('design/react/RegionDecorator', () => {
 
       const result = tlRender(
         <PageDesignerProvider clientId="test1" targetOrigin="*">
-          <DecoratedComponent {...(props as ComponentDecoratorProps<TProps>)} />
+          <DecoratedComponent {...(props as RegionDecoratorProps<TProps>)} />
         </PageDesignerProvider>
       );
 
@@ -176,8 +176,7 @@ describe('design/react/RegionDecorator', () => {
           designMetadata: {
             id: 'test-region-1',
             regionDirection: 'row',
-            regionId: 'test-region-1',
-            isFragment: false,
+            componentIds: [],
           },
         });
 
@@ -250,8 +249,7 @@ describe('design/react/RegionDecorator', () => {
           designMetadata: {
             id: 'test-region-1',
             regionDirection: 'row',
-            regionId: 'test-region-1',
-            isFragment: false,
+            componentIds: [],
           },
         });
 

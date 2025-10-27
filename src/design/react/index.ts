@@ -17,3 +17,9 @@ export type {DesignContextType} from './context/DesignContext';
 // Components
 export {createReactComponentDesignDecorator} from './components/ComponentDecorator';
 export {createReactRegionDesignDecorator} from './components/RegionDecorator';
+export type {
+  ComponentDecoratorProps,
+  RegionDecoratorProps,
+  ComponentDesignMetadata,
+  RegionDesignMetadata,
+} from './components/component.types';

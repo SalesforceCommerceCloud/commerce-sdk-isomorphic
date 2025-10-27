@@ -11,28 +11,24 @@ import {useNodeToTargetStore} from '../hooks/useNodeToTargetStore';
 import {DesignFrame} from './DesignFrame';
 import {useLabels} from '../hooks/useLabels';
 import {RegionContext, RegionContextType} from '../context/RegionContext';
+import {useComponentContext} from '../context/ComponentContext';
 
 export function DesignRegion(
   props: RegionDecoratorProps<unknown>
 ): JSX.Element {
   const {designMetadata, children} = props;
-  const {
-    name,
-    parentId,
-    regionDirection = 'column',
-    id,
-    componentIds,
-  } = designMetadata;
+  const {name, regionDirection = 'column', id, componentIds} = designMetadata;
   const nodeRef = React.useRef<HTMLDivElement>(null);
   const classes = useRegionDecoratorClasses({regionId: id});
   const labels = useLabels();
+  const {componentId: parentComponentId} = useComponentContext() ?? {};
 
   useNodeToTargetStore({
     type: 'region',
     nodeRef,
-    parentId,
+    parentId: parentComponentId,
     componentIds,
-    componentId: parentId as string,
+    componentId: parentComponentId ?? '',
     regionId: id,
     regionDirection,
   });
@@ -49,7 +45,7 @@ export function DesignRegion(
     <div className={classes} ref={nodeRef} onDragOver={handleDragOver}>
       <DesignFrame
         name={name ?? labels.defaultRegionName ?? 'Region'}
-        parentId={parentId}
+        parentId={parentComponentId}
         regionId={id}
         showToolbox={false}
       />
