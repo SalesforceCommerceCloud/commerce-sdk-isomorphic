@@ -1,6 +1,7 @@
 {
   "name": "commerce-sdk-isomorphic",
   "version": "4.0.0",
+  "private": false,
   "description": "Salesforce Commerce SDK Isomorphic",
   "bugs": {
     "url": "https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/issues"
@@ -157,10 +158,14 @@
     ]
   },
   "resolutions": {
+    "**/@npmcli/fs": "<1.1.0",
+    "**/@oclif/command": "<=1.8.3",
+    "**/@oclif/core": "<=0.5.9",
+    "**/isbot": "<=3.0.27",
+    "**/yargs": "<17",
     "depcheck/@babel/parser": "7.16.4"
   },
   "dependencies": {
-    "@openapitools/openapi-generator-cli": "^2.25.0",
     "nanoid": "^3.3.8",
     "seedrandom": "^3.0.5"
   },
