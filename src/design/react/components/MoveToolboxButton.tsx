@@ -8,16 +8,16 @@ import React from 'react';
 
 export const MoveToolboxButton = ({
   title,
-  onDragStart,
+  onMouseDown,
 }: {
   title: string;
-  onDragStart: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onMouseDown: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }): JSX.Element => (
   <button
     className="pd-design__frame__toolbox-button"
     title={title}
     type="button"
-    onDragStart={onDragStart}>
+    onMouseDown={onMouseDown}>
     <svg
       className="pd-design__frame__move-icon"
       viewBox="0 0 24 24"

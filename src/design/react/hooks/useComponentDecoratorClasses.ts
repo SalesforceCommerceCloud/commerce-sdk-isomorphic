@@ -20,7 +20,10 @@ export function useComponentDecoratorClasses({
   const showFrame = isSelected || isHovered;
   const isMoving =
     dragState.isDragging && dragState.sourceComponentId === componentId;
-  const isDropTarget = dragState.currentDropTarget?.componentId === componentId;
+  const isDropTarget =
+    dragState.currentDropTarget?.componentId === componentId &&
+    // We don't want to show the drop target if we are moving a component to itself.
+    dragState.sourceComponentId !== componentId;
   const dropTargetInsertType = dragState.currentDropTarget?.insertType;
   const dropTargetDirection = dragState.currentDropTarget?.regionDirection;
 

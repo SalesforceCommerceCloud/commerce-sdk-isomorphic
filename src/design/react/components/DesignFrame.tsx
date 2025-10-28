@@ -21,12 +21,13 @@ export const DesignFrame = ({
   componentId?: string;
   name: string;
   parentId?: string;
-  regionId: string;
+  regionId?: string;
   showToolbox?: boolean;
 }): JSX.Element => {
   const componentType = useComponentType(componentId ?? '');
   const {deleteComponent, startComponentMove} = useDesignState();
   const labels = useLabels();
+  const nodeRef = React.useRef<HTMLDivElement>(null);
 
   const handleDelete = React.useCallback(
     () =>
@@ -39,16 +40,16 @@ export const DesignFrame = ({
     [deleteComponent, componentId]
   );
 
-  const handleDragStart = React.useCallback(() => {
-    if (componentId) {
+  const handleMouseDown = React.useCallback(() => {
+    if (componentId && regionId) {
       startComponentMove(componentId, regionId);
     }
-  }, [startComponentMove, componentId, regionId]);
+  }, []);
 
   // TODO: For the frame label, when there is not enough space above the component to display it, we
   // need to display it inside the container instead.
   return (
-    <div className="pd-design__frame">
+    <div className="pd-design__frame" ref={nodeRef}>
       <div className="pd-design__frame__label">
         {componentType?.image && (
           <span className="pd-design__icon">
@@ -61,7 +62,7 @@ export const DesignFrame = ({
         <div className="pd-design__frame__toolbox">
           <MoveToolboxButton
             title={labels.moveComponent ?? 'Move component'}
-            onDragStart={handleDragStart}
+            onMouseDown={handleMouseDown}
           />
           <DeleteToolboxButton
             title={labels.deleteComponent ?? 'Delete component'}
@@ -77,4 +78,5 @@ DesignFrame.defaultProps = {
   parentId: undefined,
   componentId: undefined,
   showToolbox: true,
+  regionId: undefined,
 };

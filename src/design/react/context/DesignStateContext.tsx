@@ -18,6 +18,7 @@ export interface NodeToTargetMapEntry {
   componentId: string;
   regionId: string;
   regionDirection: 'row' | 'column';
+  componentIds: string[];
 }
 
 export interface DesignState extends DragInteraction {
