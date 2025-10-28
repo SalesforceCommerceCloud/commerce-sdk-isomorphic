@@ -3971,6 +3971,15 @@ components:
           description: 'The zone ID.'
           example: default
           type: string
+        shippingPreference:
+          maxLength: 64
+          description: Shipping preference for PayPal payment processing. Applicable only for basket payment instruments.
+          enum:
+            - GET_FROM_FILE
+            - NO_SHIPPING
+            - SET_PROVIDED_ADDRESS
+          example: GET_FROM_FILE
+          type: string
   parameters:
     siteId:
       description: The identifier of the site that a request is being made in the context of. Attributes might have site specific values, and some objects may only be assigned to specific sites.
