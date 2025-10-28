@@ -131,7 +131,8 @@
     "test": "yarn run check:types && yarn run test:unit && CI=true yarn run test:react",
     "test:react": "react-scripts test --env=jest-environment-jsdom-sixteen src/environment --setupFilesAfterEnv ./src/test/setupTests.ts",
     "test:unit": "jest --coverage --testPathIgnorePatterns node_modules src/environment --silent",
-    "updateApis": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/updateApis.ts && yarn diffApis"
+    "updateApis": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/updateApis.ts && yarn diffApis",
+    "updateApisWithVersionMap": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' scripts/updateApisWithVersionsMap.ts"
   },
   "husky": {
     "hooks": {
@@ -183,12 +184,16 @@
     "@rollup/plugin-node-resolve": "8.4.0",
     "@testing-library/jest-dom": "5.16.4",
     "@testing-library/react": "10.4.9",
+    "@types/adm-zip": "^0.5.0",
     "@types/fs-extra": "^9.0.13",
     "@types/node-fetch": "^2.6.2",
     "@types/react-dom": "^16.9.16",
     "@types/seedrandom": "^3.0.8",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
+    "adm-zip": "^0.5.10",
+    "anypoint-cli-exchange-plugin": "^1.0.0",
+    "anypoint-cli-v4": "1.6.12",
     "autoprefixer": "9.8.8",
     "bundlesize2": "^0.0.31",
     "depcheck": "^1.4.3",
