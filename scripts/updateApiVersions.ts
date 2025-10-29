@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-
+/* eslint-disable no-console */
 import {execSync} from 'child_process';
 import path from 'path';
 import fs from 'fs-extra';
@@ -108,7 +108,7 @@ function getLatestVersion(
   const password = process.env.ANYPOINT_PASSWORD || '';
 
   // Parse the API name to get base name (without version suffix)
-  const {baseName, versionSuffix} = parseApiName(apiNameWithSuffix);
+  const {baseName} = parseApiName(apiNameWithSuffix);
   const currentMajorVersion = getMajorVersion(currentVersion);
 
   // Use current version to query the asset (any version works to get all versions)

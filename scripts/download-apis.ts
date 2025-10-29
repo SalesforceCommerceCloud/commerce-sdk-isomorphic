@@ -5,6 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 /* eslint-disable import/prefer-default-export */
+/* eslint-disable no-console */
 import {execSync} from 'child_process';
 import path from 'path';
 import fs from 'fs-extra';
@@ -57,14 +58,12 @@ export async function downloadApisWithAnypointCli(
     console.log(`Extracting ${zipFile} to ${targetDir}...`);
 
     // Extract the zip file
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
     const zip = new AdmZip(zipPath);
 
     // Ensure target directory exists
     await fs.ensureDir(targetDir);
 
     // Extract all contents to target directory
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     zip.extractAllTo(targetDir, true);
 
     // Clean up temporary files
