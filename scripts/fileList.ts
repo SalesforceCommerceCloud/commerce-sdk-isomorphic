@@ -17,6 +17,7 @@ const apiNames = [
   'helpers',
   'shopperBaskets',
   'shopperBasketsv2',
+  'shopperConfigurations',
   'shopperConsents',
   'shopperContext',
   'shopperCustomers',
@@ -24,6 +25,7 @@ const apiNames = [
   'shopperGiftCertificates',
   'shopperLogin',
   'shopperOrders',
+  'shopperPayments',
   'shopperProducts',
   'shopperPromotions',
   'shopperSearch',
@@ -34,12 +36,13 @@ const apiNames = [
 const commonDependencies = [
   {input: 'src/lib/clientConfig.ts', file: 'lib/clientConfig.js'},
   {input: 'src/lib/config.ts', file: 'lib/config.js'},
+  {input: 'src/lib/importUtil.ts', file: 'lib/importUtil.js'},
   {input: 'src/lib/responseError.ts', file: 'lib/responseError.js'},
   {input: 'src/lib/templateUrl.ts', file: 'lib/templateUrl.js'},
   {input: 'src/lib/version.ts', file: 'lib/version.js'},
 ];
 
-// Total APIs: 15
-// Total common dependencies: 5
+// Total APIs: 17
+// Total common dependencies: 6
 
 export {apiNames, commonDependencies};

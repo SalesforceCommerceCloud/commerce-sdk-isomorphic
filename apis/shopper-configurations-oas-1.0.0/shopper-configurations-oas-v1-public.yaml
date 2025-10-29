@@ -1,0 +1,190 @@
+openapi: "3.0.3"
+info:
+  x-api-type: Shopper
+  x-api-family: Configuration
+  title: Shopper Configurations
+  version: 1.0.0
+  description: <shopper-configurations-description.md>
+servers:
+  - url: "https://{shortCode}.api.commercecloud.salesforce.com/configuration/shopper-configurations/v1"
+    variables:
+      shortCode:
+        default: "shortCode"
+paths:
+  /organizations/{organizationId}/configurations:
+    get:
+      summary: Retrieves configurations
+      description: Retrieves configurations for the specified organization and site.
+      operationId: getConfigurations
+      parameters:
+        - $ref: "#/components/parameters/organizationId"
+        - $ref: "#/components/parameters/siteId"
+      responses:
+        "200":
+          description: Retrieved configurations successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiteConfiguration"
+              examples:
+                ConfigurationsExample:
+                  $ref: "#/components/examples/ConfigurationsExample"
+        "400":
+          description: Bad request - invalid parameters provided.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                getShopperConfigurations400:
+                  $ref: "#/components/examples/BadRequest"
+        "401":
+          description: Your shopper JWT is invalid and cannot be used to identify the API client.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                getShopperConfigurations401:
+                  $ref: "#/components/examples/Unauthorized"
+        "404":
+          description: Application context not found for the specified organization and site.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                getShopperConfigurations404:
+                  $ref: "#/components/examples/NotFound"
+      security:
+        - ShopperToken:
+            - "sfcc.shopper-configurations"
+components:
+  parameters:
+    organizationId:
+      description: An identifier for the organization the request is being made by
+      name: organizationId
+      in: path
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 32
+    siteId:
+      description: The identifier of the site that a request is being made in the context of.
+      name: siteId
+      in: query
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 32
+  securitySchemes:
+    ShopperToken:
+      type: oauth2
+      description: |
+        Shopper token flow.
+      flows:
+        clientCredentials:
+          tokenUrl: https://{shortCode}.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/{organizationId}/oauth2/token
+          scopes:
+            sfcc.shopper-configurations: Shopper Configurations READONLY
+        authorizationCode:
+          authorizationUrl: https://{short-code}.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/{organizationId}/oauth2/authorize
+          tokenUrl: https://{short-code}.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/{organizationId}/oauth2/token
+          scopes:
+            sfcc.shopper-configurations: Shopper Configurations READONLY
+  schemas:
+    ErrorResponse:
+      type: object
+      additionalProperties: true
+      properties:
+        title:
+          description: A short, human-readable summary of the problem type.
+          type: string
+          maxLength: 256
+        type:
+          description: A URI reference that identifies the problem type.
+          type: string
+          maxLength: 2048
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          type: string
+        instance:
+          description: A URI reference that identifies the specific occurrence of the problem.
+          type: string
+          maxLength: 2048
+      required:
+        - title
+        - type
+        - detail
+    Configuration:
+      description: Configuration object
+      type: object
+      properties:
+        id:
+          description: identifier
+          type: string
+          maxLength: 255
+          example: "SalesforcePaymentsAllowed"
+        value:
+          description: value for identifier
+          example: true
+          maxLength: 255
+          #In RAML a DataType: any was supported
+          #In OAS the definition anyOf or oneOf must be used. Those expressions of any type cause various issues
+          #in code generation or spec parsers. By letting the type undefined we achieve the closed result to data type any.
+        configurationType:
+          description: type of configuration value
+          type: string
+          maxLength: 255
+          example: "globalConfiguration"
+      required:
+        - id
+        - value
+    SiteConfiguration:
+      description: Site Configuration object
+      type: object
+      properties:
+        configurations:
+          description: List configurations for the instance and site
+          maxItems: 100
+          type: array
+          items:
+            $ref: '#/components/schemas/Configuration'
+      required:
+        - configurations
+  examples:
+    BadRequest:
+      summary: Bad Request Error
+      description: Example of a 400 Bad Request error response
+      value:
+        type: "https://api.commercecloud.salesforce.com/documentation/error/v1/errors/bad-request"
+        title: "Bad Request"
+        detail: "The request could not be processed due to invalid parameters."
+        correlationId: "12345678-1234-1234-1234-123456789012"
+    Unauthorized:
+      summary: Unauthorized Error
+      description: Example of a 401 Unauthorized error response
+      value:
+        type: "https://api.commercecloud.salesforce.com/documentation/error/v1/errors/unauthorized"
+        title: "Unauthorized"
+        detail: "Your shopper JWT is invalid and cannot be used to identify the API client."
+        correlationId: "12345678-1234-1234-1234-123456789012"
+    NotFound:
+      summary: Not Found Error
+      description: Example of a 404 Not Found error response
+      value:
+        type: "https://api.commercecloud.salesforce.com/documentation/error/v1/errors/not-found"
+        title: "Not Found"
+        detail: "Configuration not found for the specified organization and site."
+        correlationId: "12345678-1234-1234-1234-123456789012"
+    ConfigurationsExample:
+      value:
+        configurations:
+          - id: "SalesforcePaymentsAllowed"
+            value: true
+            configurationType: "globalConfiguration"
+          - id: "gcp"
+            value: "abc123"
+            configurationType: "globalConfiguration"

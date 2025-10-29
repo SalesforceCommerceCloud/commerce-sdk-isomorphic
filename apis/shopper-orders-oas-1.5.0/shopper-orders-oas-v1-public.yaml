@@ -319,7 +319,7 @@ paths:
               $ref: '#/components/schemas/OrderPaymentInstrumentRequest'
       responses:
         '200':
-          description: Success, the response body contains the order with the updated payment instrument.
+          description: Success, the response body contains the order with the updated payment instrument. When Salesforce Payments is enabled, the paymentReference object will be included in the paymentInstruments.
           content:
             application/json:
               schema:
@@ -2299,6 +2299,10 @@ components:
           description: The payment method ID.
           example: CREDIT_CARD
           type: string
+        paymentReferenceRequest:
+          description: The payment reference request used by Salesforce Payments.
+          allOf:
+            - $ref: '#/components/schemas/SalesforcePaymentsRequest'
     PaymentCardSpec:
       description: Document representing the specification for a payment card.
       type: object
@@ -2381,6 +2385,20 @@ components:
           items:
             $ref: '#/components/schemas/PaymentMethod'
       type: object
+    SalesforcePaymentsRequest:
+      description: Document representing a Salesforce Payments request.
+      type: object
+      properties:
+        paymentMethodType:
+          maxLength: 100
+          description: 'The payment method type (for example: Visa).'
+          example: card
+          type: string
+        zoneId:
+          maxLength: 100
+          description: 'The zone ID.'
+          example: default
+          type: string
     TaxItem:
       description: Object representing the taxation.
       properties:
