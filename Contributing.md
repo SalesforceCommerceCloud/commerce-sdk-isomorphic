@@ -40,6 +40,13 @@ $ yarn test
 
 ### Merging to `preview`
 
+#### Update APIs:
+Update the version file in `api-versions.txt` to the version you want to test or add a new API. Use the API version from your API release or branch build.
+
+Alternatively, you can run `yarn updateApiVersion` to update the `api-versions.txt` file with the latest API version snapshots for the APIs listed in the file.
+
+#### Update and Check SDK before merging:
+
 Before merging any changes into `preview`, SDK generation must pass locally:
 
 ```
