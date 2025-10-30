@@ -22,11 +22,11 @@ jobs:
         run: |
           BASE_VERSION=$(node -p "require('./package.json').version.split('-')[0]")
           DATE=$(date -u +%Y%m%d%H%M%S)
-          NEW_VERSION="$BASE_VERSION-nightly-$DATE"
+          NEW_VERSION="$BASE_VERSION-unstable-$DATE"
           echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
           npm version --no-git-tag-version "$NEW_VERSION"
       - run: yarn run renderTemplates
       - run: yarn build:lib
-      - run: npm publish --tag preview
+      - run: npm publish --tag preview # TODO: consider changing to unstable
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
