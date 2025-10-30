@@ -72,26 +72,19 @@ async function updateApis(): Promise<void> {
       const apiId = `${ORG_ID}/${baseApiName}/${version}`;
       console.log(`Processing API: ${apiId}`);
 
-      try {
-        // Only use the base semantic version without SNAPSHOT or branch build suffixes 1.2.0-master-b70 = 1.2.0
-        const versionWithoutSuffix = version.includes('-')
-          ? version.substring(0, version.indexOf('-'))
-          : version;
+      // Only use the base semantic version without SNAPSHOT or branch build suffixes 1.2.0-master-b70 = 1.2.0
+      const versionWithoutSuffix = version.includes('-')
+        ? version.substring(0, version.indexOf('-'))
+        : version;
 
-        const apiFolderName = `${baseApiName}-${versionWithoutSuffix}`;
-        await downloadApisWithAnypointCli(
-          apiId,
-          path.join(PRODUCTION_API_PATH, apiFolderName),
-          ORG_ID
-        );
-        console.log(`Successfully updated ${apiName} to version ${version}`);
-      } catch (error) {
-        console.error(
-          `Error updating ${apiName} (${version}):`,
-          error instanceof Error ? error.message : String(error)
-        );
-        // Continue with other APIs even if one fails
-      }
+      const apiFolderName = `${baseApiName}-${versionWithoutSuffix}`;
+      // throws error if download fails
+      await downloadApisWithAnypointCli(
+        apiId,
+        path.join(PRODUCTION_API_PATH, apiFolderName),
+        ORG_ID
+      );
+      console.log(`Successfully updated ${apiName} to version ${version}`);
     }, Promise.resolve());
 
     console.log('API update process completed successfully');
@@ -102,10 +95,8 @@ async function updateApis(): Promise<void> {
     );
 
     // Restore from backup if something went wrong
-    if (fs.existsSync(OLD_APIS_PATH) && !fs.existsSync(PRODUCTION_API_PATH)) {
-      console.log('Restoring APIs from backup...');
-      await fs.move(OLD_APIS_PATH, PRODUCTION_API_PATH, {overwrite: true});
-    }
+    console.log('Restoring APIs from backup...');
+    await fs.move(OLD_APIS_PATH, PRODUCTION_API_PATH, {overwrite: true});
 
     process.exit(1);
   }

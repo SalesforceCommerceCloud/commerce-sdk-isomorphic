@@ -161,7 +161,6 @@
   "resolutions": {
     "**/@npmcli/fs": "<1.1.0",
     "**/@oclif/command": "<=1.8.3",
-    "**/@oclif/core": "<=0.5.9",
     "**/isbot": "<=3.0.27",
     "**/yargs": "<17",
     "depcheck/@babel/parser": "7.16.4"

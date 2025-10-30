@@ -38,11 +38,18 @@ export async function downloadApisWithAnypointCli(
 
     // Execute the command
     console.log(`Downloading API ${apiId} using anypoint-cli...`);
-    execSync(cmd, {
-      stdio: 'inherit',
-      cwd: process.cwd(),
-      env: process.env,
-    });
+
+    try {
+      execSync(cmd, {
+        stdio: 'inherit',
+        cwd: process.cwd(),
+        env: process.env,
+      });
+    } catch (error) {
+      throw new Error(
+        `Failed to download API ${apiId}: potential reasons: api or version does not exist, wrong credentials, wrong organization ID`
+      );
+    }
 
     // Find the downloaded zip file
     const files = await fs.readdir(tempDir);
