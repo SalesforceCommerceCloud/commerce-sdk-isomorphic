@@ -138,6 +138,11 @@ components:
                     description: API key for the payment processor
                     example: pk_test_JsbBx7imKb7n7Xtlb5MH5BNO00ttiURmPV
                     maxLength: 200
+                  bnCode:
+                    type: string
+                    description: Account BN code (optional, null if not a PayPal account)
+                    example: "Example_PPCP"
+                    maxLength: 100
                 additionalProperties: true
               gatewayId:
                 type: string
@@ -213,14 +218,9 @@ components:
               - accountId
               - paymentMethodType
               - paymentModes
-        sdkVersion:
-          type: string
-          description: SDK version to use
-          example: latest
       required:
         - paymentMethodSetAccounts
         - paymentMethods
-        - sdkVersion
   parameters:
     organizationId:
       description: An identifier for the organization the request is being made by
