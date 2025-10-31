@@ -2,10 +2,14 @@
 
 ## v4.1.0
 
-### Enchancements
+### Enhancements
 
 - Use native node fetch available in node 18+ instead of `node-fetch` polyfill [#214](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/214)
 - Support subpath imports for individual APIs and named imports [#219](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/219)
+- Introduce feature flag to control encoding of path parameters [#245](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/245)
+
+### Bug Fixes
+- Fix incorrect encoding of multi-segment endpoint paths in `callCustomEndpoint` [#245](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/245)
 
 ## v4.0.0
 
@@ -28,7 +32,7 @@
 | shopper-seo | 1.0.13 |
 | shopper-stores | 1.0.17 |
 
-### Enchancements
+### Enhancements
 
 - Enum types have been added for certain operations and types
 - Certain operations have had types updated for query parameters
@@ -55,7 +59,7 @@
 - Add SLAS passwordless login helpers [#173](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/173)
 - Add SLAS social login helper [#172](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/172)
 - Support Node 22 [#178](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/178)
-- 
+
 ### API Changes
 - The `expand` query parameter for `Shopper Products` calls now includes a new argument, `page_meta_tags`
 - The `expand` query parameter for `Shopper Search` calls now includes a new argument, `page_meta_tags`
@@ -63,7 +67,7 @@
 
 ## v3.1.1
 
-### Bug fixes
+### Bug Fixes
 - Fixed a bug that may cause the DNT flag to be omitted [#170](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/170)
 
 ## v3.1.0
@@ -90,7 +94,7 @@ In practice, we recommend:
 - For customers using the SLAS helpers with a public client, it is recommended to upgrade to at least `v1.8.0` of the `commerce-sdk-isomorphic`.
 - For customers using the SLAS helpers with a private client, it is recommended to upgrade to `v3.0.0` of the `commerce-sdk-isomorphic`.
 
-### Enchancements
+### Enhancements
 
 - Update SLAS helper function `loginGuestUserPrivate` to require `channel_id` through `clientConfig.parameters.siteId` [#165](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/165)
 
@@ -130,11 +134,11 @@ In practice, we recommend:
   - `authorizeCustomer`
   - `authorizeTrustedSystem`
 
-#### Enchancements
+#### Enhancements
 
 - Add helper function `callCustomEndpoint` to call [Custom APIs](https://developer.salesforce.com/docs/commerce/commerce-api/guide/custom-apis.html) - [#149](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/149)
 
-#### Bug fixes
+#### Bug Fixes
 
 - Fixed createCodeVerifier adding entropy to be successfully indexed by Google Search Console [#150](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/150)
 
@@ -142,7 +146,7 @@ In practice, we recommend:
 
 #### Bug fixes
 
-- Fix the missing `offset` and `limit` paramters in Shopper Search
+- Fix the missing `offset` and `limit` parameters in Shopper Search
 
 ## v1.13.0
 - Update APIs for [Shopper Search](https://developer.salesforce.com/docs/commerce/commerce-api/references/about-commerce-api/about.html#282024)
@@ -159,7 +163,7 @@ In practice, we recommend:
 
 #### Enhancements
 
-* Add support for Shopper Login (SLAS) prviate client with helper functions [#148](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/140)
+* Add support for Shopper Login (SLAS) private client with helper functions [#148](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/140)
   * ⚠️ WARNING ⚠️: Users should be extremely cautious about using the SLAS private client helper functions in the browser as it can expose your client secret 
 * Add support for custom query parameters [#139](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/139)
 
