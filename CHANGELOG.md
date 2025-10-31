@@ -2,10 +2,14 @@
 
 ## v4.1.0
 
-### Enchancements
+### Enhancements
 
 - Use native node fetch available in node 18+ instead of `node-fetch` polyfill [#214](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/214)
 - Support subpath imports for individual APIs and named imports [#219](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/219)
+
+### Bug Fixes
+
+- Fix incorrect encoding of multi-segment endpoint paths in `callCustomEndpoint` [#246](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/246)
 
 ## v4.0.0
 
