@@ -16,6 +16,7 @@ module.exports = {
       },
     ],
     '@babel/typescript',
+    '@babel/preset-react',
   ],
   ignore: ['node_modules/**'],
 };

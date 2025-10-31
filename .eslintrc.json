@@ -89,7 +89,12 @@
           "plugin:@typescript-eslint/recommended-requiring-type-checking"
         ],
         "rules": {
-          "@typescript-eslint/explicit-module-boundary-types": "error"
+          "@typescript-eslint/explicit-module-boundary-types": "error",
+          "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
+          "no-use-before-define": "off",
+          "import/prefer-default-export": "off",
+          "@typescript-eslint/no-use-before-define": "error",
+          "import/no-unresolved": "off"
         }
       },
       {
