@@ -85,7 +85,7 @@ export function createClientApi({
       messenger.connect();
 
       subscriptions.push(
-        messenger.on('ClientAcknowledged', event => {
+        messenger.on('ClientAcknowledged', async event => {
           if (event.meta.hostId === messenger.getRemoteId()) {
             // We've already been acknowledged by the host in this case.
             return;
@@ -95,13 +95,15 @@ export function createClientApi({
           messenger.setRemoteId(event.meta.hostId as string);
           clearConnectionTimeout();
 
-          prepareClient()
-            .then(() => {
-              isReady = true;
-              messenger.emit('ClientReady', {clientId: id});
-              onHostConnected?.(hostConfig as ClientAcknowledgedEvent);
-            })
-            .catch(error => onError?.(error));
+          try {
+            await prepareClient();
+
+            isReady = true;
+            messenger.emit('ClientReady', {clientId: id});
+            onHostConnected?.(hostConfig);
+          } catch (error) {
+            onError?.(error as Error);
+          }
         })
       );
 
