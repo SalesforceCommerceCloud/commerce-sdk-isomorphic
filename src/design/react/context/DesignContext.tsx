@@ -13,9 +13,9 @@ import {
   ClientAcknowledgedEvent,
   EventPayload,
 } from '../../messaging-api';
-import {isDesignModeActive} from '../../modeDetection';
 import {DesignStateProvider} from './DesignStateContext';
 import {DesignApp} from '../components/DesignApp';
+import {usePageDesignerMode} from './PageDesignerProvider';
 
 const noop = () => {
   /* noop */
@@ -65,7 +65,7 @@ export const DesignProvider = ({
   clientConnectionInterval?: number;
   clientLogger?: IsomorphicConfiguration['logger'];
 }>): JSX.Element => {
-  const isDesignMode = isDesignModeActive();
+  const {isDesignMode} = usePageDesignerMode();
   const [isConnected, setIsConnected] = React.useState(false);
   const [pageDesignerConfig, setPageDesignerConfig] =
     React.useState<ClientAcknowledgedEvent | null>(null);

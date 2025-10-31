@@ -84,8 +84,6 @@ export interface ClientEventNameMapping extends IsomorphicEventNameMapping {
   ClientWindowDragDropped: Domain.ClientWindowDragDroppedEvent;
   ComponentPropertiesChanged: Domain.ComponentPropertiesChangedEvent;
   MediaChangedEvent: Domain.MediaChangedEvent;
-  ClientWindowBoundsHoverOver: Domain.ClientWindowBoundsHoverOverEvent;
-  ClientWindowBoundsHoverOut: Domain.ClientWindowBoundsHoverOutEvent;
   ComponentFocused: Domain.ComponentFocusedEvent;
 }
 
@@ -139,7 +137,7 @@ export type EventHandler<
         Partial<WithMeta & WithEventType<TMapping, TEvent> & TMapping[TEvent]>
       >
     : Readonly<WithMeta & WithEventType<TMapping, TEvent> & TMapping[TEvent]>
-) => void;
+) => unknown;
 
 /**
  * An emitter that will perform the underlying communication with the client or host.
@@ -730,25 +728,6 @@ export interface HostApi extends IsomorphicApi {
     event: EventPayload<Domain.ComponentPropertiesChangedEvent<TProps>>
   ): void;
 
-  /**
-   * Notifies the host that the client window bounds have been hovered over.
-   *
-   * @param event - The client window bounds hover over event
-   * @stability development
-   */
-  notifyClientWindowBoundsHoverOver(
-    event: EventPayload<Domain.ClientWindowBoundsHoverOverEvent>
-  ): void;
-
-  /**
-   * Notifies the host that the client window bounds have been hovered out.
-   *
-   * @param event - The client window bounds hover out event
-   * @stability development
-   */
-  notifyClientWindowBoundsHoverOut(
-    event: EventPayload<Domain.ClientWindowBoundsHoverOutEvent>
-  ): void;
   /**
    * Notifies the host that a component has been focused.
    *
