@@ -46,6 +46,7 @@ type PageDesignerProviderProps = {
   clientLogger?: IsomorphicConfiguration['logger'];
   clientConnectionTimeout?: number;
   clientConnectionInterval?: number;
+  mode?: 'design' | 'preview';
 };
 
 export const PageDesignerProvider = ({
@@ -55,13 +56,14 @@ export const PageDesignerProvider = ({
   clientLogger,
   clientConnectionTimeout,
   clientConnectionInterval,
+  mode,
 }: PageDesignerProviderProps): JSX.Element => {
   const contextValue = useMemo(
     () => ({
-      isDesignMode: isDesignModeActive(),
-      isPreviewMode: isPreviewModeActive(),
+      isDesignMode: mode === 'design' || isDesignModeActive(),
+      isPreviewMode: mode === 'preview' || isPreviewModeActive(),
     }),
-    []
+    [mode]
   );
   const {isDesignMode, isPreviewMode} = contextValue;
 
@@ -112,6 +114,7 @@ export const PageDesignerProvider = ({
 PageDesignerProvider.defaultProps = {
   clientConnectionTimeout: 60_000,
   clientConnectionInterval: 1_000,
+  mode: undefined,
   clientLogger: () => {
     // noop
   },

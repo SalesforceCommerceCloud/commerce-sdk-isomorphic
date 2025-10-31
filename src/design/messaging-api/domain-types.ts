@@ -295,28 +295,6 @@ export interface MediaChangedEvent extends WithBaseEvent {
   eventType: 'MediaChanged';
 }
 
-/**
- * Emits when the user's cursor hovers over the bounds of the client window.
- * Used to indicate that the pointer has entered a sensitive boundary area.
- * @target client
- */
-export interface ClientWindowBoundsHoverOverEvent extends WithBaseEvent {
-  eventType: 'ClientWindowBoundsHoverOver';
-  /**
-   * The distance in pixels from the window edge where the hover occurred.
-   */
-  delta: number;
-}
-
-/**
- * Emits when the user's cursor leaves the bounds of the client window.
- * Used to indicate that the pointer has exited a sensitive boundary area.
- * @target client
- */
-export interface ClientWindowBoundsHoverOutEvent extends WithBaseEvent {
-  eventType: 'ClientWindowBoundsHoverOut';
-}
-
 /// ////////////////////////////////////////////////////////////////////////////
 // Isomorphic Events - Events that are subscribed to on both client and host side. //
 /// ////////////////////////////////////////////////////////////////////////////

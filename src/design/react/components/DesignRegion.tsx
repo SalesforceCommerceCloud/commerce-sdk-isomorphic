@@ -12,6 +12,7 @@ import {DesignFrame} from './DesignFrame';
 import {useLabels} from '../hooks/useLabels';
 import {RegionContext, RegionContextType} from '../context/RegionContext';
 import {useComponentContext} from '../context/ComponentContext';
+import {useDesignState} from '../hooks/useDesignState';
 
 export function DesignRegion(
   props: RegionDecoratorProps<unknown>
@@ -20,7 +21,11 @@ export function DesignRegion(
   const {name, regionDirection = 'column', id, componentIds} = designMetadata;
   const nodeRef = React.useRef<HTMLDivElement>(null);
   const classes = useRegionDecoratorClasses({regionId: id});
+  const {
+    dragState: {currentDropTarget},
+  } = useDesignState();
   const labels = useLabels();
+  const showFrame = Boolean(id && currentDropTarget?.regionId === id);
   const {componentId: parentComponentId} = useComponentContext() ?? {};
 
   useNodeToTargetStore({
@@ -42,16 +47,21 @@ export function DesignRegion(
     event.preventDefault();
 
   return (
-    <div className={classes} ref={nodeRef} onDragOver={handleDragOver}>
+    <div
+      className={classes}
+      ref={nodeRef}
+      onDragOver={handleDragOver}
+      data-region-id={id}>
       <DesignFrame
         name={name ?? labels.defaultRegionName ?? 'Region'}
         parentId={parentComponentId}
         regionId={id}
-        showToolbox={false}
-      />
-      <RegionContext.Provider value={context}>
-        {children}
-      </RegionContext.Provider>
+        showFrame={showFrame}
+        showToolbox={false}>
+        <RegionContext.Provider value={context}>
+          {children}
+        </RegionContext.Provider>
+      </DesignFrame>
     </div>
   );
 }

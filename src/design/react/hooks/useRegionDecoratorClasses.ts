@@ -20,7 +20,7 @@ export function useRegionDecoratorClasses({
   return [
     'pd-design__decorator',
     'pd-design__region',
-    isHovered && 'pd-design__region--hovered',
+    isHovered && 'pd-design__region--hovered pd-design__frame--visible',
   ]
     .filter(Boolean)
     .join(' ');

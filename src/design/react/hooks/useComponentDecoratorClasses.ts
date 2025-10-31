@@ -17,7 +17,7 @@ export function useComponentDecoratorClasses({
 
   const isSelected = selectedComponentId === componentId;
   const isHovered = !dragState.isDragging && hoveredComponentId === componentId;
-  const showFrame = isSelected || isHovered;
+  const showFrame = (isSelected || isHovered) && !dragState.isDragging;
   const isMoving =
     dragState.isDragging && dragState.sourceComponentId === componentId;
   const isDropTarget =
