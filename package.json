@@ -167,6 +167,7 @@
   },
   "dependencies": {
     "nanoid": "^3.3.8",
+    "node-fetch": "2.6.13",
     "seedrandom": "^3.0.5"
   },
   "devDependencies": {
@@ -209,7 +210,6 @@
     "jest-environment-jsdom-sixteen": "1.0.3",
     "lint-staged": "10.5.4",
     "nock": "^13.2.8",
-    "node-fetch": "2.6.13",
     "npm-pack-all": "^1.12.7",
     "postcss-preset-env": "6.7.1",
     "prettier": "^2.7.1",
