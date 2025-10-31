@@ -177,6 +177,8 @@ describe('design/react/RegionDecorator', () => {
             id: 'test-region-1',
             regionDirection: 'row',
             componentIds: [],
+            componentTypeExclusions: [],
+            componentTypeInclusions: [],
           },
         });
 
@@ -250,6 +252,8 @@ describe('design/react/RegionDecorator', () => {
             id: 'test-region-1',
             regionDirection: 'row',
             componentIds: [],
+            componentTypeExclusions: [],
+            componentTypeInclusions: [],
           },
         });
 
@@ -330,6 +334,120 @@ describe('design/react/RegionDecorator', () => {
         expect(element.classList.contains('pd-design__decorator')).toBe(true);
         expect(element.classList.contains('pd-design__region')).toBe(true);
       });
+    });
+
+    describe('drag and drop component type exclusion/inclusion', () => {
+      const setupDragTest = (element: HTMLElement) => {
+        // Mock getBoundingClientRect for drag positioning
+        const mockRect = {
+          x: 50,
+          y: 50,
+          width: 200,
+          height: 100,
+          top: 50,
+          left: 50,
+          bottom: 150,
+          right: 250,
+          toJSON: () => ({}),
+        };
+        Object.defineProperty(element, 'getBoundingClientRect', {
+          value: () => mockRect,
+          writable: true,
+        });
+
+        // Mock elementsFromPoint to return the region element
+        mockElementsFromPoint.mockImplementation((x: number, y: number) => {
+          if (x >= 50 && x <= 250 && y >= 50 && y <= 150) {
+            return [element, document.body];
+          }
+          return [document.body];
+        });
+      };
+
+      it.each([
+        // isComponentTypeAllowedInRegion returns true
+        {
+          componentType: 'AllowedComponent',
+          inclusions: ['AllowedComponent'],
+          exclusions: [],
+          expectedHover: true,
+          expectedPreventDefault: true,
+          scenario: 'isComponentTypeAllowedInRegion returns true',
+        },
+
+        // isComponentTypeAllowedInRegion returns false
+        {
+          componentType: 'BlockedComponent',
+          inclusions: ['AllowedComponent'],
+          exclusions: [],
+          expectedHover: false,
+          expectedPreventDefault: false,
+          scenario: 'isComponentTypeAllowedInRegion returns false',
+        },
+      ])(
+        'should handle CSS classes when $scenario',
+        async ({
+          componentType,
+          inclusions,
+          exclusions,
+          expectedHover,
+          expectedPreventDefault,
+        }) => {
+          const {element, host} = await testBed.render(TestRegion, {
+            designMetadata: {
+              id: 'test-region-1',
+              regionDirection: 'row',
+              componentIds: [],
+              componentTypeInclusions: inclusions,
+              componentTypeExclusions: exclusions,
+            },
+          });
+
+          setupDragTest(element);
+
+          // Initially, no hover class should be present
+          expect(element.classList.contains('pd-design__region--hovered')).toBe(
+            false
+          );
+
+          // Start dragging the component
+          act(() => {
+            host.startComponentDrag({
+              componentType,
+            });
+          });
+
+          // Simulate drag moved to coordinates within the region bounds
+          act(() => {
+            host.notifyClientWindowDragMoved({
+              componentType,
+              x: 100,
+              y: 75,
+            });
+          });
+
+          // Check hover class based on expected behavior
+          await waitFor(() => {
+            expect(
+              element.classList.contains('pd-design__region--hovered')
+            ).toBe(expectedHover);
+          });
+
+          // Test dragover preventDefault behavior
+          const dragOverEvent = new Event('dragover', {
+            bubbles: true,
+            cancelable: true,
+          });
+          const preventDefaultSpy = jest.spyOn(dragOverEvent, 'preventDefault');
+          element.dispatchEvent(dragOverEvent);
+
+          if (expectedPreventDefault) {
+            expect(preventDefaultSpy).toHaveBeenCalled();
+          } else {
+            expect(preventDefaultSpy).not.toHaveBeenCalled();
+          }
+        }
+      );
     });
   });
 });
