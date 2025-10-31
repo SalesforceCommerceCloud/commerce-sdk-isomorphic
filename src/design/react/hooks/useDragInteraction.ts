@@ -7,6 +7,7 @@
 import {useCallback, useEffect} from 'react';
 import {useInteraction} from './useInteraction';
 import type {NodeToTargetMapEntry} from '../context/DesignStateContext';
+import {isComponentTypeAllowedInRegion} from '../utils/regionUtils';
 
 export interface DropTarget extends NodeToTargetMapEntry {
   beforeComponentId?: string;
@@ -115,11 +116,23 @@ export function useDragInteraction({
     (
       x: number,
       y: number,
-      rectCache: WeakMap<Element, DOMRect>
+      rectCache: WeakMap<Element, DOMRect>,
+      componentType?: string
     ): DropTarget | null => {
       const {component, region} = getNearestComponentAndRegion(x, y);
 
       if (region) {
+        // If component type is not allowed, don't return a drop target
+        if (
+          isComponentTypeAllowedInRegion(
+            componentType,
+            region.componentTypeInclusions || [],
+            region.componentTypeExclusions || []
+          )
+        ) {
+          return null;
+        }
+
         const insertType = component
           ? getInsertionType({
               cache: rectCache,
@@ -147,6 +160,8 @@ export function useDragInteraction({
           afterComponentId,
           insertComponentId: component?.componentId,
           insertType,
+          componentTypeInclusions: region.componentTypeInclusions,
+          componentTypeExclusions: region.componentTypeExclusions,
         };
       }
 
@@ -214,7 +229,8 @@ export function useDragInteraction({
             currentDropTarget: getCurrentDropTarget(
               event.x,
               event.y,
-              dragState.rectCache
+              prevState.rectCache,
+              prevState.componentType
             ),
           }));
         },
@@ -243,7 +259,12 @@ export function useDragInteraction({
           ...prevState,
           x,
           y,
-          currentDropTarget: getCurrentDropTarget(x, y, state.rectCache),
+          currentDropTarget: getCurrentDropTarget(
+            x,
+            y,
+            state.rectCache,
+            state.componentType
+          ),
         }));
       },
       dropComponent: () => {

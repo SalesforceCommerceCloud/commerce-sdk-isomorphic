@@ -23,6 +23,14 @@ export interface RegionDesignMetadata {
    * A list of component ids that are part of this region.
    */
   componentIds: string[];
+  /**
+   * A list of allowed component types in this region.
+   */
+  componentTypeInclusions: string[];
+  /**
+   * A list of forbidden component types in this region.
+   */
+  componentTypeExclusions: string[];
 }
 
 export interface ComponentDesignMetadata {
