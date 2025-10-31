@@ -141,7 +141,8 @@ export const callCustomEndpoint = async (args: {
       pathParams: pathParams as PathParameters,
       queryParams: optionsCopy.parameters,
       origin: clientConfigCopy.proxy,
-    }
+    },
+    clientConfig.encodePathParams
   );
 
   return doFetch(url.toString(), optionsCopy, clientConfigCopy, rawResponse);

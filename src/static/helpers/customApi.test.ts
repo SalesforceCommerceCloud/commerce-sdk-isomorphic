@@ -249,4 +249,49 @@ describe('callCustomEndpoint', () => {
       undefined
     );
   });
+
+  test('should not encode endpoint path with multi-segment paths by default', async () => {
+    const {shortCode, organizationId} = clientConfig.parameters;
+    const {apiName} = options.customApiPathParameters;
+    const endpointPath = 'multi/segment/path';
+
+    const nockBasePath = `https://${shortCode}.api.commercecloud.salesforce.com`;
+    const nockEndpointPath = `/custom/${apiName}/v2/organizations/${
+      organizationId as string
+    }/${endpointPath}`;
+    nock(nockBasePath).post(nockEndpointPath).query(true).reply(200);
+
+    const copyOptions = {
+      ...options,
+      customApiPathParameters: {
+        ...options.customApiPathParameters,
+        endpointPath,
+      },
+    };
+
+    const expectedUrl = `${
+      nockBasePath + nockEndpointPath
+    }?${queryParamString}`;
+    const expectedOptions = addSiteIdToOptions(copyOptions);
+
+    const expectedClientConfig = {
+      ...clientConfig,
+      baseUri:
+        'https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}',
+    };
+
+    const doFetchSpy = jest.spyOn(fetchHelper, 'doFetch');
+    await callCustomEndpoint({
+      options: copyOptions,
+      clientConfig,
+      rawResponse: true,
+    });
+    expect(doFetchSpy).toBeCalledTimes(1);
+    expect(doFetchSpy).toBeCalledWith(
+      expectedUrl,
+      expectedOptions,
+      expectedClientConfig,
+      true
+    );
+  });
 });

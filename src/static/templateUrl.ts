@@ -18,21 +18,24 @@ export default class TemplateURL extends URL {
       pathParams?: PathParameters;
       queryParams?: QueryParameters;
       origin?: string;
-    }
+    },
+    encodePathParams = false
   ) {
-    const encodedPathParams: PathParameters = {};
+    const currentPathParams = parameters?.pathParams || {};
 
-    Object.keys(parameters?.pathParams || {}).forEach(key => {
-      const value = parameters?.pathParams?.[key];
-      if (value) {
-        encodedPathParams[key] = encodeURIComponent(value);
-      }
-    });
+    if (encodePathParams) {
+      Object.keys(currentPathParams).forEach(key => {
+        const value = currentPathParams[key];
+        if (value) {
+          currentPathParams[key] = encodeURIComponent(value);
+        }
+      });
+    }
 
     super(
       TemplateURL.renderTemplateUri(
         `${base}/${url}`.replace(/\/\/+/g, '/'),
-        encodedPathParams
+        currentPathParams
       )
     );
     this.addQueryParams(parameters?.queryParams);

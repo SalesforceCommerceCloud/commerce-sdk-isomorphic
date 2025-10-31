@@ -232,7 +232,8 @@
                 pathParams,
                 queryParams,
                 origin: this.clientConfig.proxy
-            }
+            },
+            this.clientConfig.encodePathParams
         );
 
         const headers: Record<string, string> = {
