@@ -134,11 +134,33 @@ export const callCustomEndpoint = async (args: {
     };
   }
 
+  const currentEndpointPath = (options?.customApiPathParameters?.endpointPath || clientConfig.parameters?.endpointPath) as string;
+  let newEndpointPath = currentEndpointPath;
+  const endpointPathSegments = {} as Record<string, string>;
+
+  // Normalize and template the endpointPath so each segment is encoded as a path param.
+  // Example:
+  //    currentEndpointPath: "action/categories/Special,Summer" ->
+  //    endpointPathParams: { endpointPathSegment0: "action", endpointPathSegment1: "categories", endpointPathSegment2: "Special,Summer" }
+  //    newEndpointPath: "{endpointPathSegment0}/{endpointPathSegment1}/{endpointPathSegment2}/"
+  // The TemplateURL will then encode the path parameters and construct the URL with the encoded path parameters
+  // The resulting endpointPath will be: "actions/categories/Special%2CSummer"
+  if(currentEndpointPath.indexOf('/') > 0) {
+    newEndpointPath = '';
+    currentEndpointPath.split('/').forEach((segment: string, index) => {
+      const key = `endpointPathSegment${index}`;
+      endpointPathSegments[key] = segment
+      newEndpointPath += `{${key}}/`;
+    });
+    // remove trailing slash '/'
+    newEndpointPath = newEndpointPath.slice(0, -1);
+  }
+
   const url = new TemplateURL(
-    '/organizations/{organizationId}/{endpointPath}',
+    `/organizations/{organizationId}/${newEndpointPath}`,
     clientConfigCopy.baseUri as string,
     {
-      pathParams: pathParams as PathParameters,
+      pathParams: { ...pathParams, ...endpointPathSegments } as PathParameters,
       queryParams: optionsCopy.parameters,
       origin: clientConfigCopy.proxy,
     }
