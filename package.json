@@ -262,7 +262,7 @@
     },
     {
       "path": "commerce-sdk-isomorphic-with-deps.tgz",
-      "maxSize": "2.51 MB"
+      "maxSize": "2.42 MB"
     }
   ],
   "proxy": "https://SHORTCODE.api.commercecloud.salesforce.com"
