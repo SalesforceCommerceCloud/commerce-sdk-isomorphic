@@ -32,6 +32,7 @@ export interface ClientConfigInit<Params extends BaseUriParameters> {
     headers: {[key: string]: string}
   ) => Required<FetchOptions>['body'];
   throwOnBadResponse?: boolean;
+  encodePathParams?: boolean;
 }
 
 export type FetchFunction = (
@@ -61,6 +62,8 @@ export default class ClientConfig<Params extends BaseUriParameters>
 
   public throwOnBadResponse: boolean;
 
+  public encodePathParams: boolean;
+
   constructor(config: ClientConfigInit<Params>) {
     this.headers = {...config.headers};
     this.parameters = {...config.parameters};
@@ -74,6 +77,8 @@ export default class ClientConfig<Params extends BaseUriParameters>
     };
     this.transformRequest =
       config.transformRequest || ClientConfig.defaults.transformRequest;
+
+    this.encodePathParams = config.encodePathParams || false;
 
     // Optional properties
     if (config.baseUri) {

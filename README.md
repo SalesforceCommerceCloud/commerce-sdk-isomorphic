@@ -43,10 +43,6 @@ In practice, we recommend:
 
 ## :warning: Planned SDK Changes :warning:
 
-### Encoding path parameters
-
-In the next major version release, the SDK will encode special characters (UTF-8 based on SCAPI guidelines) in path parameters by default. Please see the [Encoding special characters](#encoding-special-characters) section for more details.
-
 ## Getting Started
 
 ### Requirements
@@ -281,7 +277,7 @@ For more documentation about this helper function, please refer to the [commerce
 
 #### Encoding special characters
 
-The SDK currently single encodes special characters for query parameters in UTF-8 format based on SCAPI guidelines. However, the SDK does NOT encode path parameters, and will require the developer to encode any path parameters with special characters.
+The SDK currently single encodes special characters for query parameters in UTF-8 format based on SCAPI guidelines.
 
 Additionally, SCAPI has special characters that should be double encoded, specifically `%` and `,`:
 - `%` should always be double encoded
@@ -336,6 +332,36 @@ const categoriesResult = await shopperProducts.getCategories({
 });
 
 console.log("categoriesResult: ", categoriesResult);
+```
+
+##### Feature flag: encode path parameters
+
+By default, the SDK does not URL-encode path parameters. To opt in to encoding special characters in path parameters, enable `encodePathParams` on `clientConfig`. When enabled, the SDK percent-encodes special characters in each path segment (UTF‑8), while preserving `/` as the separator.
+
+```javascript
+import pkg from "commerce-sdk-isomorphic";
+const { helpers, ShopperProducts } = pkg;
+
+const clientConfig = {
+  parameters: {
+    clientId: "<your-client-id>",
+    organizationId: "<your-org-id>",
+    shortCode: "<your-short-code>",
+    siteId: "<your-site-id>",
+  },
+  encodePathParams: true,
+};
+
+const shopperProducts = new ShopperProducts({
+  ...clientConfig,
+  headers: {authorization: `Bearer <insert_access_token>`},
+});
+
+const categoryId = "Special,Summer";
+// With encodePathParams enabled, this becomes 'Special%2CSummer' in the URL
+const category = await shopperProducts.getCategory({
+  parameters: {id: categoryId},
+});
 ```
 
 **NOTE: In the next major version release, path parameters will be single encoded by default**

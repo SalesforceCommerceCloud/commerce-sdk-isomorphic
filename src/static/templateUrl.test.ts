@@ -176,6 +176,8 @@ it.each([
 ])(
   'Handles special characters in path: %s',
   (url, base, parameters, expected) => {
-    expect(new TemplateURL(url, base, parameters).toString()).toBe(expected);
+    expect(new TemplateURL(url, base, parameters, true).toString()).toBe(
+      expected
+    );
   }
 );
