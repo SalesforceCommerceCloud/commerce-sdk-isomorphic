@@ -13,6 +13,7 @@ module.exports = {
     '!scripts/generate.ts',
     '!scripts/generateFileList.ts',
     '!scripts/updateApis.ts',
+    '!scripts/utils.ts',
     '!scripts/generateVersionTable.ts',
     '!src/static/fileList.ts',
     '!<rootDir>/node_modules/',
