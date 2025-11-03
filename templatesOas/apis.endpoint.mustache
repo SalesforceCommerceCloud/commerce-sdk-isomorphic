@@ -185,45 +185,12 @@
         
         const pathParams: {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}PathParameters & Required<BaseUriParameters> = {
           shortCode: configParams.shortCode,
+          ...optionParams
         };
 
-        {{#pathParams}}
-        if (optionParams["{{paramName}}"] !== undefined) {
-            pathParams["{{paramName}}"] = optionParams["{{paramName}}"];
-        } else if (configParams["{{paramName}}"] !== undefined) {
-            pathParams["{{paramName}}"] = configParams["{{paramName}}"];
-        }
-        {{#required}}
-        else {
-            throw new Error('Missing required path parameter: {{paramName}}');
-        }
-        {{/required}}
-        {{/pathParams}}
-
-        const queryParams: Partial<{{nickname}}QueryParameters> & QueryParameters = {};
-
-        {{#queryParams}}
-        if (optionParams["{{paramName}}"] !== undefined) {
-            queryParams["{{paramName}}"] = optionParams["{{paramName}}"];
-        } else if (configParams["{{paramName}}"] !== undefined) {
-            queryParams["{{paramName}}"] = configParams["{{paramName}}"];
-        }
-        {{#required}}
-        else {
-            throw new Error('Missing required query parameter: {{paramName}}');
-        }
-        {{/required}}
-        {{/queryParams}}
-
-        Object.keys(optionParams).forEach((key) => {
-            const paramValue = optionParams[key as keyof typeof optionParams];
-            if(paramValue !== undefined && (key.startsWith('c_') || !((key in queryParams) || (key in pathParams)))) {
-                if(!key.startsWith('c_')) {
-                    console.warn(`Found unknown parameter for {{{nickname}}}: ${key}, adding as query parameter anyway`);
-                }
-                queryParams[key as keyof typeof queryParams] = paramValue;
-            }
-        })
+        const queryParams: Partial<{{nickname}}QueryParameters> & QueryParameters = {
+          ...optionParams
+        };
 
         const url = new TemplateURL(
             "{{{path}}}",
