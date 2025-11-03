@@ -27,6 +27,6 @@ jobs:
           npm version --no-git-tag-version "$NEW_VERSION"
       - run: yarn run renderTemplates
       - run: yarn build:lib
-      - run: npm publish --tag preview # TODO: consider changing to unstable
+      - run: npm publish --tag preview
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

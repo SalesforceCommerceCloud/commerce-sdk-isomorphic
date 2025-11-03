@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import {BaseUriParameters} from 'lib/helpers';
-import ClientConfig, {ClientConfigInit} from './clientConfig';
+import ClientConfig, {ClientConfigInit, FetchFunction} from './clientConfig';
 
 describe('ClientConfig constructor', () => {
   test('will throw if missing shortCode parameter', () => {
@@ -26,6 +26,7 @@ describe('ClientConfig constructor', () => {
       proxy: 'https://proxy.com',
       transformRequest: ClientConfig.defaults.transformRequest,
       throwOnBadResponse: false,
+      fetch: fetch as FetchFunction,
     };
     expect(new ClientConfig(init)).toEqual({...init});
   });

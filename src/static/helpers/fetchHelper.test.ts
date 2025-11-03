@@ -80,7 +80,7 @@ describe('doFetch', () => {
       .query({siteId: 'site_id'})
       .reply(200, responseBody);
 
-    const spy = jest.spyOn(global, 'fetch');
+    const spy = jest.spyOn(environment, 'fetch');
 
     const response = await doFetch(url, copyOptions, copyClientConfig);
     expect(response).toEqual(responseBody);
@@ -130,8 +130,26 @@ describe('doFetch', () => {
   test('passes on fetchOptions from clientConfig to fetch call', async () => {
     nock(basePath).post(endpointPath).query(true).reply(200, responseBody);
 
-    const spy = jest.spyOn(global, 'fetch');
+    const spy = jest.spyOn(environment, 'fetch');
     await doFetch(url, options, clientConfig, false);
+    expect(spy).toBeCalledTimes(1);
+    expect(spy).toBeCalledWith(
+      expect.any(String),
+      expect.objectContaining(clientConfig.fetchOptions)
+    );
+  });
+
+  test('uses fetch from clientConfig if provided', async () => {
+    nock(basePath).post(endpointPath).query(true).reply(200, responseBody);
+
+    const spy = jest.spyOn(global, 'fetch');
+
+    const clientConfigCopy = {
+      ...clientConfig,
+      fetch,
+    };
+
+    await doFetch(url, options, clientConfigCopy, false);
     expect(spy).toBeCalledTimes(1);
     expect(spy).toBeCalledWith(
       expect.any(String),

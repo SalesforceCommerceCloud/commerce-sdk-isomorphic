@@ -79,7 +79,7 @@ export default class ClientConfig<Params extends BaseUriParameters>
     this.transformRequest =
       config.transformRequest || ClientConfig.defaults.transformRequest;
 
-    this.fetch = config.fetch || fetch;
+    this.fetch = config.fetch;
 
     // Optional properties
     if (config.baseUri) {
