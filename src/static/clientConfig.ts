@@ -6,7 +6,6 @@
  */
 import type {RequestInit as NodeRequestInit} from 'node-fetch';
 import type {BaseUriParameters} from './helpers/types';
-import {fetch} from './helpers/environment';
 
 /**
  * Alias for `RequestInit` from TypeScript's DOM lib, to more clearly differentiate
