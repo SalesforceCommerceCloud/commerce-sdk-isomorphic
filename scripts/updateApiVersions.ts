@@ -33,7 +33,7 @@ interface ExchangeAssetDescribeResponse {
  * Reads the API versions from the api-versions.txt file
  * @returns Array of { apiName, version } objects
  */
-function readApiVersions(): Array<{apiName: string; version: string}> {
+export function readApiVersions(): Array<{apiName: string; version: string}> {
   if (!fs.existsSync(API_VERSIONS_FILE)) {
     throw new Error(`API versions file not found at: ${API_VERSIONS_FILE}`);
   }
@@ -52,7 +52,7 @@ function readApiVersions(): Array<{apiName: string; version: string}> {
  * Writes updated API versions back to the api-versions.txt file
  * @param apiVersions - Array of { apiName, version } objects
  */
-function writeApiVersions(
+export function writeApiVersions(
   apiVersions: Array<{apiName: string; version: string}>
 ): void {
   const content = apiVersions
@@ -67,7 +67,7 @@ function writeApiVersions(
  * @param version - Version string (e.g., '1.9.0', '2.1.0')
  * @returns Major version number
  */
-function getMajorVersion(version: string): number {
+export function getMajorVersion(version: string): number {
   const match = /^(\d+)/.exec(version);
   return match ? parseInt(match[1], 10) : 0;
 }
@@ -77,7 +77,7 @@ function getMajorVersion(version: string): number {
  * @param apiNameWithSuffix - API name with optional version suffix (e.g., 'shopper-baskets-oas-v1')
  * @returns Object with baseName and versionSuffix (e.g., {baseName: 'shopper-baskets-oas', versionSuffix: 'v1'})
  */
-function parseApiName(apiNameWithSuffix: string): {
+export function parseApiName(apiNameWithSuffix: string): {
   baseName: string;
   versionSuffix: string | null;
 } {
@@ -98,11 +98,13 @@ function parseApiName(apiNameWithSuffix: string): {
  * Gets the latest version of an API from Anypoint Exchange for a specific major version
  * @param apiNameWithSuffix - The API name with version suffix (e.g., 'shopper-baskets-oas-v1')
  * @param currentVersion - The current version to compare against
+ * @param orgId
  * @returns The latest version string for the same major version
  */
-function getLatestVersion(
+export function getLatestVersion(
   apiNameWithSuffix: string,
-  currentVersion: string
+  currentVersion: string,
+  orgId: string
 ): string | null {
   const username = process.env.ANYPOINT_USERNAME || '';
   const password = process.env.ANYPOINT_PASSWORD || '';
@@ -113,7 +115,7 @@ function getLatestVersion(
 
   // Use current version to query the asset (any version works to get all versions)
   const assetId = `${ORG_ID}/${baseName}/${currentVersion}`;
-  const cmd = `anypoint-cli-v4 exchange:asset:describe ${assetId} -o json --username '${username}' --password '${password}'`;
+  const cmd = `anypoint-cli-v4 exchange:asset:describe ${assetId} -o json --username '${username}' --password '${password}' --organization=${orgId}`;
 
   try {
     console.log(`Checking latest version for ${apiNameWithSuffix}`);
@@ -157,7 +159,7 @@ function getLatestVersion(
 /**
  * Main function to check and update API versions
  */
-function updateApiVersions(): void {
+export function updateApiVersions(): void {
   // Check for required environment variables
   if (!process.env.ANYPOINT_USERNAME || !process.env.ANYPOINT_PASSWORD) {
     throw new Error(
@@ -171,7 +173,7 @@ function updateApiVersions(): void {
 
     // Check each API for latest version
     const updatedVersions = apiVersions.map(({apiName, version}) => {
-      const latestVersion = getLatestVersion(apiName, version);
+      const latestVersion = getLatestVersion(apiName, version, ORG_ID);
 
       if (latestVersion && latestVersion !== version) {
         return {
@@ -225,10 +227,12 @@ function updateApiVersions(): void {
   }
 }
 
-// Execute the main function
-try {
-  updateApiVersions();
-} catch (error) {
-  console.error('Unhandled error:', error);
-  process.exit(1);
+// Execute the main function only if this file is run directly
+if (require.main === module) {
+  try {
+    updateApiVersions();
+  } catch (error) {
+    console.error('Unhandled error:', error);
+    process.exit(1);
+  }
 }
