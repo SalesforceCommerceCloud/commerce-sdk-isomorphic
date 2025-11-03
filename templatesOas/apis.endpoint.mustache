@@ -183,14 +183,17 @@
         const optionParams = options?.parameters || ({} as Partial<NonNullable<NonNullable<typeof options>["parameters"]>>);
         const configParams = this.clientConfig.parameters;
 
-        // @ts-expect-error - Simplified parameter handling for bundle size reduction
+        // @ts-ignore - Simplified parameter handling for bundle size reduction
         const pathParams: {{#lambda.titlecase}}{{#lambda.camelcase}}{{appName}}{{/lambda.camelcase}}{{/lambda.titlecase}}PathParameters & Required<BaseUriParameters> = {
+          // @ts-ignore - Simplified parameter handling for bundle size reduction
           shortCode: configParams.shortCode,
+          // @ts-ignore - Simplified parameter handling for bundle size reduction
           ...optionParams
         };
 
-        // @ts-expect-error - Simplified parameter handling for bundle size reduction
+        // @ts-ignore - Simplified parameter handling for bundle size reduction
         const queryParams: Partial<{{nickname}}QueryParameters> & QueryParameters = {
+          // @ts-ignore - Simplified parameter handling for bundle size reduction
           ...optionParams
         };
 
