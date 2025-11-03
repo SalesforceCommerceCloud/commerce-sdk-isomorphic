@@ -146,14 +146,18 @@ export const callCustomEndpoint = async (args: {
   //    newEndpointPath: "{endpointPathSegment0}/{endpointPathSegment1}/{endpointPathSegment2}/"
   // The TemplateURL will then encode the path parameters and construct the URL with the encoded path parameters
   // The resulting endpointPath will be: "actions/categories/Special%2CSummer"
-  if (currentEndpointPath.indexOf('/') > 0) {
+  if (currentEndpointPath.includes('/')) {
+    // Remove multiple consecutive slashes from the endpoint path
+    // Example: "test/path//path1///path2" -> "test/path/path1/path2"
+    const normalizedEndpointPath = currentEndpointPath.replace(/\/+/g, '/');
     newEndpointPath = '';
-    currentEndpointPath.split('/').forEach((segment: string, index) => {
+    normalizedEndpointPath.split('/').forEach((segment: string, index) => {
       const key = `endpointPathSegment${index}`;
       endpointPathSegments[key] = segment;
       newEndpointPath += `{${key}}/`;
     });
-    // remove trailing slash '/'
+    // Remove the trailing slash added after the last segment
+    // as TemplateURL does not expect a trailing slash
     newEndpointPath = newEndpointPath.slice(0, -1);
   }
 
