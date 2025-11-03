@@ -7,6 +7,10 @@
 - Allow developers to pass in custom fetch implementation via `clientConfig` [#246](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/246)
 - Support subpath imports for individual APIs and named imports [#219](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/219)
 
+### Bug Fixes
+
+- Fix incorrect encoding of multi-segment endpoint paths in `callCustomEndpoint` [#246](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/246)
+
 ## v4.0.0
 
 ### API Versions
