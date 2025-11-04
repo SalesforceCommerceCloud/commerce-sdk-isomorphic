@@ -42,6 +42,9 @@
 - Remove API version from client config
   - Use `ShopperBasketsV2` API class to use V2 of Shopper Baskets
 
+**NOTE: The Shopper-Consents API is experimental and will not be available for consumption until October 21st, 2025.
+DO NOT use Shopper-Consents API in production, this api might be subject to change.**
+
 ## v3.4.0
 
 ### API Changes
