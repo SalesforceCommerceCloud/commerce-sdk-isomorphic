@@ -55,6 +55,8 @@ export const fetch: FetchFunction = ((...args: Parameters<FetchFunction>) => {
 
       // Browser (or any environment with a native fetch). If fetch is missing
       // we surface the same runtime error that existed before.
+      // Difficult to test this path in the Node-based test environment, so exclude it from coverage
+      /* istanbul ignore next */
       if (!hasFetchAvailable)
         throw new Error(
           'Bad environment: it is not a node environment but fetch is not defined'
