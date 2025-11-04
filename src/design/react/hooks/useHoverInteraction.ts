@@ -30,16 +30,18 @@ export function useHoverInteraction(): HoverInteraction {
     },
     actions: (state, setState, clientApi) => ({
       setHoveredComponent: (componentId: string | null) => {
-        setState(componentId);
-
-        if (componentId) {
-          clientApi?.hoverInToComponent({componentId});
-        } else if (state) {
+        if (state && componentId !== state) {
           // Use the current hovered component for hover out
           clientApi?.hoverOutOfComponent({
             componentId: state,
           });
         }
+
+        if (componentId && componentId !== state) {
+          clientApi?.hoverInToComponent({componentId});
+        }
+
+        setState(componentId);
       },
     }),
   });

@@ -61,12 +61,6 @@ export function createHostApi({
     notifyWindowScrollChanged: messenger.toEmitter('WindowScrollChanged'),
     notifyPageSettingsChanged: messenger.toEmitter('PageSettingsChanged'),
     notifyMediaChanged: () => messenger.emit('MediaChangedEvent', {}),
-    notifyClientWindowBoundsHoverOver: messenger.toEmitter(
-      'ClientWindowBoundsHoverOver'
-    ),
-    notifyClientWindowBoundsHoverOut: messenger.toEmitter(
-      'ClientWindowBoundsHoverOut'
-    ),
     notifyError: messenger.toEmitter('Error'),
     focusComponent: messenger.toEmitter('ComponentFocused'),
     connect: ({
@@ -99,7 +93,7 @@ export function createHostApi({
       );
 
       subscriptions.push(
-        messenger.on('ClientInitialized', event => {
+        messenger.on('ClientInitialized', async event => {
           const remoteId = messenger.getRemoteId();
 
           // If the same client tries reconnecting, we should allow it.
@@ -107,21 +101,21 @@ export function createHostApi({
           if ((remoteId && event.meta.clientId === remoteId) || !remoteId) {
             messenger.setRemoteId(event.meta.clientId as string);
 
-            configFactory()
-              .then(config => {
-                messenger.emit('ClientAcknowledged', config);
+            try {
+              const config = await configFactory();
 
-                return messenger.toPromise('ClientReady');
-              })
-              .then(({clientId}) => {
-                if (clientId !== messenger.getRemoteId()) {
-                  throw new Error('Client id mismatch');
-                }
+              messenger.emit('ClientAcknowledged', config);
 
-                return clientId;
-              })
-              .then(clientId => onClientConnected?.(clientId))
-              .catch(error => onError?.(error));
+              const {clientId} = await messenger.toPromise('ClientReady');
+
+              if (clientId !== messenger.getRemoteId()) {
+                throw new Error('Client id mismatch');
+              }
+
+              onClientConnected?.(clientId);
+            } catch (error) {
+              onError?.(error as Error);
+            }
           }
         })
       );

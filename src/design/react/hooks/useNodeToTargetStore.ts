@@ -15,17 +15,16 @@ export function useNodeToTargetStore({
   regionDirection,
   nodeRef,
   type,
-  componentIds = [],
-  componentTypeInclusions = [],
-  componentTypeExclusions = [],
+  componentIds,
+  componentTypeInclusions,
+  componentTypeExclusions,
 }: Partial<NodeToTargetMapEntry> & {
   nodeRef: React.RefObject<Element>;
 }): void {
   const {nodeToTargetMap} = useDesignState();
 
   React.useEffect(() => {
-    // We need a region id and direction for this to be a target.
-    if (nodeRef.current && regionId && regionDirection) {
+    if (nodeRef.current) {
       nodeToTargetMap.set(nodeRef.current, {
         parentId,
         componentId,
@@ -43,6 +42,7 @@ export function useNodeToTargetStore({
     componentId,
     regionId,
     type,
+    componentIds,
     nodeToTargetMap,
     componentTypeInclusions,
     componentTypeExclusions,

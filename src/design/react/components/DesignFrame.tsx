@@ -13,17 +13,20 @@ import {useLabels} from '../hooks/useLabels';
 
 export const DesignFrame = ({
   componentId,
+  children,
   name,
   parentId,
   regionId,
+  showFrame = false,
   showToolbox = true,
-}: {
+}: React.PropsWithChildren<{
   componentId?: string;
   name: string;
   parentId?: string;
   regionId?: string;
   showToolbox?: boolean;
-}): JSX.Element => {
+  showFrame?: boolean;
+}>): JSX.Element => {
   const componentType = useComponentType(componentId ?? '');
   const {deleteComponent, startComponentMove} = useDesignState();
   const labels = useLabels();
@@ -46,10 +49,20 @@ export const DesignFrame = ({
     }
   }, []);
 
+  const classes = `pd-design__frame ${
+    showFrame ? 'pd-design__frame--visible' : ''
+  }`.trim();
+
   // TODO: For the frame label, when there is not enough space above the component to display it, we
   // need to display it inside the container instead.
   return (
-    <div className="pd-design__frame" ref={nodeRef}>
+    <div className={classes} ref={nodeRef}>
+      {showFrame && (
+        <>
+          <div className="pd-design__frame--x" />
+          <div className="pd-design__frame--y" />
+        </>
+      )}
       <div className="pd-design__frame__label">
         {componentType?.image && (
           <span className="pd-design__icon">
@@ -70,6 +83,7 @@ export const DesignFrame = ({
           />
         </div>
       )}
+      {children}
     </div>
   );
 };
@@ -79,4 +93,5 @@ DesignFrame.defaultProps = {
   componentId: undefined,
   showToolbox: true,
   regionId: undefined,
+  showFrame: false,
 };

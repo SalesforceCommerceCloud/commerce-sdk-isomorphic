@@ -33,7 +33,11 @@ export function DesignRegion(
     componentTypeInclusions,
     componentTypeExclusions,
   });
+  const {
+    dragState: {currentDropTarget},
+  } = useDesignState();
   const labels = useLabels();
+  const showFrame = Boolean(id && currentDropTarget?.regionId === id);
   const {componentId: parentComponentId} = useComponentContext() ?? {};
   const {dragState} = useDesignState();
 
@@ -70,16 +74,21 @@ export function DesignRegion(
   );
 
   return (
-    <div className={classes} ref={nodeRef} onDragOver={handleDragOver}>
+    <div
+      className={classes}
+      ref={nodeRef}
+      onDragOver={handleDragOver}
+      data-region-id={id}>
       <DesignFrame
         name={name ?? labels.defaultRegionName ?? 'Region'}
         parentId={parentComponentId}
         regionId={id}
-        showToolbox={false}
-      />
-      <RegionContext.Provider value={context}>
-        {children}
-      </RegionContext.Provider>
+        showFrame={showFrame}
+        showToolbox={false}>
+        <RegionContext.Provider value={context}>
+          {children}
+        </RegionContext.Provider>
+      </DesignFrame>
     </div>
   );
 }

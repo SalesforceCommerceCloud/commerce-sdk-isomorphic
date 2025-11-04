@@ -18,6 +18,7 @@ import {
   ComponentContextType,
   useComponentContext,
 } from '../context/ComponentContext';
+import {useComponentDiscovery} from '../hooks/useComponentDiscovery';
 
 export function DesignComponent(
   props: ComponentDecoratorProps<unknown>
@@ -29,14 +30,18 @@ export function DesignComponent(
   const dragRef = useRef<HTMLDivElement>(null);
   const {regionId, regionDirection} = useRegionContext() ?? {};
   const {componentId: parentComponentId} = useComponentContext() ?? {};
+  const {nodeToTargetMap} = useDesignState();
 
   const {
     selectedComponentId,
     hoveredComponentId,
     setSelectedComponent,
     setHoveredComponent,
-    dragState: {isDragging},
+    dragState: {isDragging, sourceComponentId: draggingSourceComponentId},
   } = useDesignState();
+
+  const isDraggingComponent =
+    isDragging && draggingSourceComponentId === componentId;
 
   useFocusedComponentHandler(componentId, dragRef);
   useNodeToTargetStore({
@@ -48,14 +53,31 @@ export function DesignComponent(
     componentId,
   });
 
+  const discoverComponents = useComponentDiscovery({
+    nodeToTargetMap,
+  });
+
   const handleMouseEnter = useDesignCallback(
     () => setHoveredComponent(componentId),
     [setHoveredComponent, componentId]
   );
 
   const handleMouseLeave = useDesignCallback(
-    () => setHoveredComponent(null),
-    [setHoveredComponent]
+    (event: React.MouseEvent) => {
+      // If we hover off a component, we could still be hovering over a parent component
+      // that contains that child. In this instance, the mouse enter doesn't fire and that parent
+      // would not be highlighted. Everytime we leave a component, we check
+      // if we are hovering over a component at those coordinates. If we are,
+      // we set the hovered component to that component.
+      const components = discoverComponents({
+        x: event.clientX,
+        y: event.clientY,
+        filter: entry => entry.type === 'component',
+      });
+
+      setHoveredComponent(components[0]?.componentId ?? null);
+    },
+    [setHoveredComponent, nodeToTargetMap]
   );
 
   const handleClick = useDesignCallback(
@@ -81,8 +103,15 @@ export function DesignComponent(
   );
 
   // Makes the component a drop target.
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) =>
-    event.preventDefault();
+  const handleDragOver = React.useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      // If we are moving a component, don't let it be droppable on itself.
+      if (draggingSourceComponentId !== componentId) {
+        event.preventDefault();
+      }
+    },
+    [draggingSourceComponentId, componentId]
+  );
 
   return (
     /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -90,24 +119,24 @@ export function DesignComponent(
     <div
       ref={dragRef}
       className={classes}
-      draggable={isDragging}
+      draggable={isDraggingComponent}
       onClick={handleClick}
       onDragOver={handleDragOver}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       data-component-id={componentId}
       data-component-name={componentName}>
-      {showFrame && (
-        <DesignFrame
-          componentId={componentId}
-          name={componentName}
-          parentId={parentComponentId}
-          regionId={regionId}
-        />
-      )}
-      <ComponentContext.Provider value={context}>
-        {children}
-      </ComponentContext.Provider>
+      <div className="pd-design__component__drop-target" />
+      <DesignFrame
+        showFrame={showFrame}
+        componentId={componentId}
+        name={componentName}
+        parentId={parentComponentId}
+        regionId={regionId}>
+        <ComponentContext.Provider value={context}>
+          {children}
+        </ComponentContext.Provider>
+      </DesignFrame>
     </div>
   );
 }
