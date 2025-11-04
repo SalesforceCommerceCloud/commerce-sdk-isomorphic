@@ -148,7 +148,9 @@ export const callCustomEndpoint = async (args: {
   // The resulting endpointPath will be: "actions/categories/Special%2CSummer"
   if (currentEndpointPath.includes('/')) {
     // Normalize endpoint path by removing multiple consecutive slashes
-    const segments = currentEndpointPath.split('/').filter(segment => segment !== '');
+    const segments = currentEndpointPath
+      .split('/')
+      .filter(segment => segment !== '');
     newEndpointPath = '';
     segments.forEach((segment: string, index: number) => {
       const key = `endpointPathSegment${index}`;

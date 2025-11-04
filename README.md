@@ -149,6 +149,45 @@ const helpers = require('commerce-sdk-isomorphic/helpers');
 
 **Note:** While subpath imports reduce initial bundle size, using them for all APIs will result in a larger total bundle size due to duplicated dependencies required for standalone operation.
 
+#### Custom Fetch function
+
+You can provide your own custom fetch function to intercept, log, or modify all SDK requests. This is useful for:
+- **Request/Response Logging**: Track all API calls for debugging and monitoring
+- **Request Interception**: Add custom headers, modify request URLs, or implement custom retry logic
+- **Error Handling**: Add custom error processing or transformation before responses reach your application
+- **Performance Monitoring**: Measure request/response times and track API performance metrics
+
+**Example with Logging:**
+```javascript
+// Custom fetch function with detailed logging
+const customFetch = async (url, options) => {
+  console.log(`[SDK Request] ${options?.method || 'GET'} ${url}`);
+  console.log('[SDK Request Headers]', options?.headers);
+  if (options?.body) {
+    console.log('[SDK Request Body]', options.body);
+  }
+  
+  const startTime = Date.now();
+  const response = await fetch(url, options);
+  const duration = Date.now() - startTime;
+  
+  console.log(`[SDK Response] ${response.status} ${response.statusText} (${duration}ms)`);
+  console.log('[SDK Response Headers]', Object.fromEntries(response.headers.entries()));
+  
+  return response;
+};
+
+const config = {
+  parameters: {
+    clientId: '<your-client-id>',
+    organizationId: '<your-org-id>',
+    shortCode: '<your-short-code>',
+    siteId: '<your-site-id>',
+  },
+  fetch: customFetch,
+};
+```
+
 #### Fetch Options
 
 You can configure how the SDK makes requests using the `fetchOptions` parameter. It is passed to [node-fetch](https://github.com/node-fetch/node-fetch/1#api) on the server and [whatwg-fetch](https://github.github.io/fetch/) on browser.
@@ -339,6 +378,24 @@ console.log("categoriesResult: ", categoriesResult);
 ```
 
 **NOTE: In the next major version release, path parameters will be single encoded by default**
+
+## Unstable Releases
+
+**⚠️ Important: Unstable/preview releases are experimental and not officially supported.**
+
+Preview releases (e.g., preview, unstable, or pre-release versions) are provided for experimental purposes and early testing of upcoming features. These releases:
+
+- **Are not intended for production use** - Do not use unstable releases in production environments
+- **May contain breaking changes** - API signatures, behavior, and structure may change without notice
+- **Are not officially supported** - No support, bug fixes, or security patches are guaranteed
+- **May have incomplete features** - Functionality may be partially implemented or subject to change
+
+**Use stable releases for production applications.** Only use unstable releases for:
+- Testing upcoming features in development environments
+- Providing feedback on new functionality before official release
+- Experimental integrations that are not mission-critical
+
+For production deployments, always use the latest stable release version available on npm.
 
 ## License Information
 
