@@ -14,7 +14,7 @@ module.exports = {
     '!scripts/generateFileList.ts',
     '!scripts/updateApis.ts',
     '!scripts/generateVersionTable.ts',
-    '!src/static/fileList.ts',
+    '!scripts/fileList.ts',
     '!<rootDir>/node_modules/',
   ],
   coverageReporters: ['text'],
