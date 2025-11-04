@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+/* eslint-disable max-lines */
 import {useCallback, useEffect, useRef} from 'react';
 import {useInteraction} from './useInteraction';
 import type {NodeToTargetMapEntry} from '../context/DesignStateContext';
@@ -11,6 +12,7 @@ import {
   ComponentDiscoveryResult,
   useComponentDiscovery,
 } from './useComponentDiscovery';
+import {isComponentTypeAllowedInRegion} from '../utils/regionUtils';
 
 // The height of the scroll buffer on the top and bottom of the window
 // as a percentage of the window height.
@@ -161,15 +163,33 @@ export function useDragInteraction({
   };
 
   const getCurrentDropTarget = useCallback(
-    (
-      x: number,
-      y: number,
-      rectCache: WeakMap<Element, DOMRect>,
-      sourceComponentId?: string
-    ): DropTarget | null => {
+    ({
+      x,
+      y,
+      rectCache,
+      componentType,
+      sourceComponentId,
+    }: {
+      x: number;
+      y: number;
+      rectCache: WeakMap<Element, DOMRect>;
+      componentType?: string;
+      sourceComponentId?: string;
+    }): DropTarget | null => {
       const {component, region} = getNearestComponentAndRegion(x, y);
 
       if (region) {
+        // If component type is not allowed, don't return a drop target
+        if (
+          isComponentTypeAllowedInRegion(
+            componentType,
+            region.componentTypeInclusions || [],
+            region.componentTypeExclusions || []
+          )
+        ) {
+          return null;
+        }
+
         const insertType = component
           ? getInsertionType({
               cache: rectCache,
@@ -211,6 +231,8 @@ export function useDragInteraction({
           afterComponentId,
           insertComponentId: component?.componentId,
           insertType,
+          componentTypeInclusions: region.componentTypeInclusions,
+          componentTypeExclusions: region.componentTypeExclusions,
         };
       }
 
@@ -243,7 +265,7 @@ export function useDragInteraction({
     return 0;
   };
 
-  const computeScrollDirection = (factor: number) => {
+  const computeScrollDirection = (factor: number): 0 | 1 | -1 => {
     if (factor > 0) {
       return 1;
     }
@@ -325,12 +347,13 @@ export function useDragInteraction({
             y: event.y,
             isDragging: true,
             scrollDirection: computeScrollDirection(scrollFactorRef.current),
-            currentDropTarget: getCurrentDropTarget(
-              event.x,
-              event.y,
-              dragState.rectCache,
-              dragState.sourceComponentId
-            ),
+            currentDropTarget: getCurrentDropTarget({
+              x: event.x,
+              y: event.y,
+              rectCache: dragState.rectCache,
+              componentType: prevState.componentType,
+              sourceComponentId: dragState.sourceComponentId,
+            }),
           }));
         },
       },
@@ -367,12 +390,13 @@ export function useDragInteraction({
           x,
           y,
           scrollDirection: computeScrollDirection(scrollFactorRef.current),
-          currentDropTarget: getCurrentDropTarget(
+          currentDropTarget: getCurrentDropTarget({
             x,
             y,
-            state.rectCache,
-            state.sourceComponentId
-          ),
+            rectCache: state.rectCache,
+            componentType: state.componentType,
+            sourceComponentId: state.sourceComponentId,
+          }),
         }));
       },
       dropComponent: () => {

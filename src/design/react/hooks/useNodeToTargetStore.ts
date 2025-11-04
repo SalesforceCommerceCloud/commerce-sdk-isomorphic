@@ -16,6 +16,8 @@ export function useNodeToTargetStore({
   nodeRef,
   type,
   componentIds,
+  componentTypeInclusions,
+  componentTypeExclusions,
 }: Partial<NodeToTargetMapEntry> & {
   nodeRef: React.RefObject<Element>;
 }): void {
@@ -30,6 +32,8 @@ export function useNodeToTargetStore({
         regionDirection,
         type,
         componentIds,
+        componentTypeInclusions,
+        componentTypeExclusions,
       } as NodeToTargetMapEntry);
     }
   }, [
@@ -40,5 +44,7 @@ export function useNodeToTargetStore({
     type,
     componentIds,
     nodeToTargetMap,
+    componentTypeInclusions,
+    componentTypeExclusions,
   ]);
 }
