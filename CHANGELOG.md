@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v4.0.1
+
+### Bug Fixes
+- Fix incorrect encoding of multi-segment endpoint paths in `callCustomEndpoint` [#246](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/246)
+
 ## v4.0.0
 
 ### API Versions
