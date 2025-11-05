@@ -283,7 +283,6 @@ components:
             paymentMethodType: card
             paymentModes:
               - Multistep
-        sdkVersion: latest
     PaymentConfigurationNullGatewayResponse:
       value:
         zoneId: EU-Central-Zone
@@ -300,10 +299,8 @@ components:
             paymentMethodType: card
             paymentModes:
               - Multistep
-        sdkVersion: latest
     PaymentConfigurationNoDataFound:
       value:
         zoneId: null
         paymentMethodSetAccounts: []
         paymentMethods: []
-        sdkVersion: latest
