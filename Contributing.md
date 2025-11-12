@@ -8,6 +8,9 @@ We welcome contributions to commerce-sdk-isomorphic! To ensure that your contrib
 
 ## Building
 
+> Recommended: use Yarn 1.x (1.22.22). Newer Yarn versions are not fully supported
+> Requirement: Java/JDK must be installed and on your PATH (OpenAPI generation depends on it).
+
 To create the SDK package:
 
 ```
@@ -26,6 +29,67 @@ $ yarn build:lib
 # Run tests
 $ yarn test
 ```
+
+## Preview Releases
+
+### Nightly preview
+
+- Nightly preview releases run automatically from the `preview` branch every night at midnight Pacific Time (08:00 UTC).
+- The npm dist-tag is `preview`.
+- Version format is `<base>-nightly-<UTC timestamp>`, for example: `4.0.0-nightly-20251007080238`.
+
+### Merging to `preview`
+
+Before merging any changes into `preview`, SDK generation must pass locally:
+
+```
+yarn install
+yarn clean
+yarn renderTemplates
+yarn build:lib
+yarn test
+```
+
+- Verify generated output under `src/lib/<apiName>/apis/DefaultApi.ts`:
+  - New endpoints exist
+  - New parameters are present where expected
+
+If generation or build fails, fix issues before opening/merging a PR to `preview`.
+
+For guidance on adding new API features or introducing new APIs, see [Adding or Updating APIs](#adding-or-updating-apis).
+
+## Adding or Updating APIs
+
+### New API features (existing APIs)
+
+- Locate the API’s OAS directory: `apis/<api-name>-oas-<version>/`
+- Edit or replace the public OAS file (keep the same filename), for example:
+  - `apis/shopper-products-oas-1.0.37/shopper-products-oas-v1-public.yaml`
+
+### New APIs
+
+- Create a new directory: `apis/<api-name>-oas-<version>/` (e.g., `apis/shopper-test-oas-1.0.1`)
+- Add the following files:
+  - `exchange.json` (example):
+
+    ```
+    {
+      "main": "shopper-products-oas-v1-public.yaml",
+      "name": "Shopper Products OAS",
+      "groupId": "893f605e-10e2-423a-bdb4-f952f56eb6d8",
+      "assetId": "shopper-products-oas",
+      "version": "1.0.37",
+      "classifier": "oas",
+      "tags": [],
+      "descriptorVersion": "1.0.0",
+      "organizationId": "893f605e-10e2-423a-bdb4-f952f56eb6d8",
+      "apiVersion": "v1"
+    }
+    ```
+
+  - Main OAS file named `<api-name>-oas-v1-public.yaml` (e.g., `shopper-products-oas-v1-public.yaml`)
+
+
 
 ## Usage
 
