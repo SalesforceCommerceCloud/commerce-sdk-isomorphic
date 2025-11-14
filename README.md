@@ -51,13 +51,15 @@ In the next major version release, the SDK will encode special characters (UTF-8
 
 ### Requirements
 
-- Node `^12.x`, `^14.x`, `^16.x`, `^18.x`
+- Node `^20.x` or `^22.x`
 - The SDK requires B2C Commerce API (SCAPI) to be configured. For more info see [Getting started with SCAPI](https://developer.salesforce.com/docs/commerce/commerce-api/guide/get-started.html).
 
 ### Installation
 
 ```bash
-npm install commerce-sdk-isomorphic
+# This package uses yarn, if you don't have yarn:
+# npm install -g yarn
+yarn install commerce-sdk-isomorphic
 ```
 
 ### Usage
