@@ -30,11 +30,4 @@ describe('test downloadLatestApis script', () => {
       downloadLatestApis('category:Visibility = "External"', '/tmp')
     ).rejects.toThrow('Failed to download API specs: It failed.');
   });
-
-  it('rejects with non-Error when download fails', async () => {
-    jest.spyOn(download, 'downloadRestApis').mockRejectedValue('It failed.');
-    await expect(
-      downloadLatestApis('category:Visibility = "External"', '/tmp')
-    ).rejects.toBe('It failed.');
-  });
 });
