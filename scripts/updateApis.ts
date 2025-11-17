@@ -9,34 +9,13 @@ import path from 'path';
 import fs from 'fs-extra';
 import dotenv from 'dotenv';
 import {downloadApisWithAnypointCli} from './download-apis';
-import removeInternalOas from './utils';
+import {readApiVersions, removeInternalOas, ORG_ID} from './utils';
 
 dotenv.config();
 
 // Constants
-const ORG_ID = '893f605e-10e2-423a-bdb4-f952f56eb6d8';
-const API_VERSIONS_FILE = path.join(__dirname, '../api-versions.txt');
 const PRODUCTION_API_PATH = path.join(__dirname, '../apis');
 const OLD_APIS_PATH = path.join(__dirname, '../temp/oldApis');
-
-/**
- * Reads the API versions from the api-versions.txt file
- * @returns Array of { apiName, version } objects
- */
-function readApiVersions(): Array<{apiName: string; version: string}> {
-  if (!fs.existsSync(API_VERSIONS_FILE)) {
-    throw new Error(`API versions file not found at: ${API_VERSIONS_FILE}`);
-  }
-
-  const content = fs.readFileSync(API_VERSIONS_FILE, 'utf-8');
-  return content
-    .split('\n')
-    .filter(line => line.trim() && !line.startsWith('#'))
-    .map(line => {
-      const [apiName, version] = line.split('=').map(s => s.trim());
-      return {apiName, version};
-    });
-}
 
 /**
  * Main function to update APIs based on versions in api-versions.txt

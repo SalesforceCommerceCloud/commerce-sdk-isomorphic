@@ -6,15 +6,11 @@
  */
 /* eslint-disable no-console */
 import {execSync} from 'child_process';
-import path from 'path';
 import fs from 'fs-extra';
 import dotenv from 'dotenv';
+import {API_VERSIONS_FILE, ORG_ID, readApiVersions} from './utils';
 
 dotenv.config();
-
-// Constants
-const ORG_ID = '893f605e-10e2-423a-bdb4-f952f56eb6d8';
-const API_VERSIONS_FILE = path.join(__dirname, '../api-versions.txt');
 
 // Types for Anypoint Exchange API response
 interface AssetVersion {
@@ -27,25 +23,6 @@ interface ExchangeAssetDescribeResponse {
   versions: AssetVersion[];
   id: string;
   name: string;
-}
-
-/**
- * Reads the API versions from the api-versions.txt file
- * @returns Array of { apiName, version } objects
- */
-export function readApiVersions(): Array<{apiName: string; version: string}> {
-  if (!fs.existsSync(API_VERSIONS_FILE)) {
-    throw new Error(`API versions file not found at: ${API_VERSIONS_FILE}`);
-  }
-
-  const content = fs.readFileSync(API_VERSIONS_FILE, 'utf-8');
-  return content
-    .split('\n')
-    .filter(line => line.trim() && !line.startsWith('#'))
-    .map(line => {
-      const [apiName, version] = line.split('=').map(s => s.trim());
-      return {apiName, version};
-    });
 }
 
 /**
@@ -114,7 +91,7 @@ export function getLatestVersion(
   const currentMajorVersion = getMajorVersion(currentVersion);
 
   // Use current version to query the asset (any version works to get all versions)
-  const assetId = `${ORG_ID}/${baseName}/${currentVersion}`;
+  const assetId = `${orgId}/${baseName}/${currentVersion}`;
   const cmd = `anypoint-cli-v4 exchange:asset:describe ${assetId} -o json --username '${username}' --password '${password}' --organization=${orgId}`;
 
   try {
