@@ -8,6 +8,7 @@ import {BodyInit} from 'node-fetch';
 import {BaseUriParameters} from '.';
 import type {FetchOptions} from '../clientConfig';
 import ResponseError from '../responseError';
+import {fetch} from './environment';
 import {ClientConfigInit} from '../clientConfig';
 
 /**
