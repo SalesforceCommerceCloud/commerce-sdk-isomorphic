@@ -205,6 +205,7 @@ export function updateApiVersions(): void {
 }
 
 // Execute the main function only if this file is run directly
+/* istanbul ignore next */
 if (require.main === module) {
   try {
     updateApiVersions();
