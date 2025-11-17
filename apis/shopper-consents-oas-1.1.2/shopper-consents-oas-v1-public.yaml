@@ -1,11 +1,13 @@
 openapi: 3.0.3
 info:
+  x-api-type: Shopper
+  x-api-family: Shopper
   title: Shopper Consents
-  version: v1
+  version: 1.1.2
   description: |-
-    # Shopper Consent
+    [Download API specification](https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-consents/shopper-consents-oas-v1-public.yaml)
 
-    ## API Overview
+    # API Overview
 
     The Shopper Consent API offers a centralized method for managing shopper consent. With this API, shoppers can view and update subscription preferences for marketing communications across various channels. This API controls how and where shoppers receive marketing messages while ensuring compliance with privacy regulations.
 

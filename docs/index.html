@@ -121,17 +121,29 @@
 					<h3>Requirements</h3>
 				</a>
 				<ul>
-					<li>Node <code>^12.x</code>, <code>^14.x</code>, <code>^16.x</code>, <code>^18.x</code></li>
+					<li>Node <code>^20.x</code> or <code>^22.x</code></li>
 					<li>The SDK requires B2C Commerce API (SCAPI) to be configured. For more info see <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/get-started.html">Getting started with SCAPI</a>.</li>
 				</ul>
 				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
 					<h3>Installation</h3>
 				</a>
-				<pre><code class="language-bash">npm install commerce-sdk-isomorphic</code></pre>
+				<pre><code class="language-bash"><span class="hljs-comment"># This package uses yarn, if you don&#x27;t have yarn:</span>
+<span class="hljs-comment"># npm install -g yarn</span>
+yarn install commerce-sdk-isomorphic</code></pre>
 				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 					<h3>Usage</h3>
 				</a>
-				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> {helpers, ShopperLogin, ShopperSearch} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;commerce-sdk-isomorphic&#x27;</span>;
+				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> ocapi <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;commerce-sdk-isomorphic&#x27;</span>;
+<span class="hljs-keyword">const</span> { helpers, ShopperLogin, ShopperSearch } = ocapi;
+
+<span class="hljs-comment">// Named imports also work</span>
+<span class="hljs-comment">// import {helpers, ShopperLogin, ShopperSearch} from &#x27;commerce-sdk-isomorphic&#x27;;</span>
+
+<span class="hljs-comment">// Alternatively, you can use subpath imports to import a single API at a time instead of the entire SDK</span>
+<span class="hljs-comment">// Useful for when you want a slimmer bundle size and only need a single API</span>
+<span class="hljs-comment">// import * as helpers from &#x27;commerce-sdk-isomorphic/helpers&#x27;</span>
+<span class="hljs-comment">// import { ShopperProducts } from &#x27;commerce-sdk-isomorphic/shopperProducts&#x27;;</span>
+<span class="hljs-comment">// import { ShopperSearch } from &#x27;commerce-sdk-isomorphic/shopperSearch&#x27;;</span>
 
 <span class="hljs-keyword">const</span> config = {
   <span class="hljs-comment">// SCAPI does not support CORS, so client side requests must use a reverse proxy.</span>
@@ -157,6 +169,40 @@
 <span class="hljs-keyword">const</span> searchResult = <span class="hljs-keyword">await</span> shopperSearch.productSearch({
   <span class="hljs-attr">parameters</span>: {<span class="hljs-attr">q</span>: <span class="hljs-string">&#x27;shirt&#x27;</span>},
 });</code></pre>
+				<a href="#import-strategies" id="import-strategies" style="color: inherit; text-decoration: none;">
+					<h4>Import Strategies</h4>
+				</a>
+				<p>The SDK supports multiple import patterns to accommodate different use cases:</p>
+				<p><strong>Default Import (Full SDK)</strong></p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> ocapi <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;commerce-sdk-isomorphic&#x27;</span>;
+<span class="hljs-keyword">const</span> { helpers, ShopperLogin, ShopperSearch } = ocapi;</code></pre>
+				<p><strong>Named Imports (Full SDK)</strong></p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { helpers, ShopperLogin, ShopperSearch } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;commerce-sdk-isomorphic&#x27;</span>;</code></pre>
+				<p><strong>Subpath Imports (Individual APIs and Common dependencies)</strong></p>
+				<p><em>ESM (ES Modules):</em></p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { ShopperLogin } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;commerce-sdk-isomorphic/shopperLogin&#x27;</span>;
+<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> helpers <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;commerce-sdk-isomorphic/helpers&#x27;</span>;</code></pre>
+				<p><em>CommonJS:</em></p>
+				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> { ShopperLogin } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;commerce-sdk-isomorphic/shopperLogin&#x27;</span>);
+<span class="hljs-keyword">const</span> helpers = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;commerce-sdk-isomorphic/helpers&#x27;</span>);</code></pre>
+				<a href="#choosing-the-right-import-strategy" id="choosing-the-right-import-strategy" style="color: inherit; text-decoration: none;">
+					<h4>Choosing the Right Import Strategy</h4>
+				</a>
+				<p><strong>Use Default/Named Imports when:</strong></p>
+				<ul>
+					<li>You need multiple APIs from the SDK</li>
+					<li>You want the smallest overall bundle size for comprehensive usage</li>
+					<li>The entire SDK is optimized and maximally compressed as a single bundle</li>
+				</ul>
+				<p><strong>Note:</strong> Default and named imports load the entire SDK, including all APIs, helpers, and dependencies.</p>
+				<p><strong>Use Subpath Imports when:</strong></p>
+				<ul>
+					<li>You only need specific APIs</li>
+					<li>You want to minimize initial bundle size</li>
+					<li>You&#39;re implementing dynamic loading for better page performance</li>
+					<li>You need granular control over which APIs are loaded</li>
+				</ul>
+				<p><strong>Note:</strong> While subpath imports reduce initial bundle size, using them for all APIs will result in a larger total bundle size due to duplicated dependencies required for standalone operation.</p>
 				<a href="#fetch-options" id="fetch-options" style="color: inherit; text-decoration: none;">
 					<h4>Fetch Options</h4>
 				</a>
@@ -362,10 +408,16 @@
 						<a href="modules/shopperbasketsv2.html">shopper<wbr>Basketsv2</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="modules/shopperconfigurations.html">shopper<wbr>Configurations</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="modules/shopperconsents.html">shopper<wbr>Consents</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/shoppercontext.html">shopper<wbr>Context</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/shoppercustomobjects.html">shopper<wbr>Custom<wbr>Objects</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/shoppercustomers.html">shopper<wbr>Customers</a>

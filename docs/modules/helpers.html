@@ -478,10 +478,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
 					<a name="fetch-1" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> fetch</h3>
-					<div class="tsd-signature tsd-kind-icon">fetch<span class="tsd-signature-symbol">:</span> <a href="clientconfig.html#fetchfunction" class="tsd-signature-type">FetchFunction</a><span class="tsd-signature-symbol"> = (() &#x3D;&gt; {if (isNode) {// .default is added because the newer versions of babel doesn&#x27;t get the default export automatically for require().// eslint-disable-next-line global-require, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-member-accessreturn require(&#x27;node-fetch&#x27;).default;}// difficult to test in node environment/* istanbul ignore next */if (!hasFetchAvailable)throw new Error(&#x27;Bad environment: it is not a node environment but fetch is not defined&#x27;);return globalObject.fetch;})()</span></div>
+					<div class="tsd-signature tsd-kind-icon">fetch<span class="tsd-signature-symbol">:</span> <a href="clientconfig.html#fetchfunction" class="tsd-signature-type">FetchFunction</a><span class="tsd-signature-symbol"> = (() &#x3D;&gt; {// Difficult to test in node environment/* istanbul ignore next */if (!hasFetchAvailable) {throw new Error(&#x27;Please use Node.js 18+ for native fetch support.&#x27;);}return globalObject.fetch;})()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/helpers/environment.ts:28</li>
+							<li>Defined in src/lib/helpers/environment.ts:29</li>
 						</ul>
 					</aside>
 				</section>
@@ -848,7 +848,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/fetchHelper.ts:28</li>
+									<li>Defined in src/lib/helpers/fetchHelper.ts:27</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -897,7 +897,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/helpers/fetchHelper.ts:77</li>
+									<li>Defined in src/lib/helpers/fetchHelper.ts:76</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1518,10 +1518,16 @@
 						<a href="shopperbasketsv2.html">shopper<wbr>Basketsv2</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="shopperconfigurations.html">shopper<wbr>Configurations</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="shopperconsents.html">shopper<wbr>Consents</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="shoppercontext.html">shopper<wbr>Context</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="shoppercustomobjects.html">shopper<wbr>Custom<wbr>Objects</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="shoppercustomers.html">shopper<wbr>Customers</a>

@@ -76,7 +76,10 @@
 							<h1><a href="https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-customers:Summary">Shopper Customers</a></h1>
 						</a>
 					</div>
-					<p>*# API Overview</p>
+					<p>*<a href="https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-customers/shopper-customers-oas-v1-public.yaml">Download API specification</a></p>
+					<a href="#api-overview" id="api-overview" style="color: inherit; text-decoration: none;">
+						<h1>API Overview</h1>
+					</a>
 					<p>The Shopper Customers API enables you to develop functionality that lets customers log in, and manage their profiles and product lists. Profile management includes ability for shoppers to add or modify addresses and payment methods, and add or modify products to wishlists or favorites. Commerce Cloud provides a rich set of Authentication APIs that include logging in guest shoppers, registered shoppers, agents on behalf of customers and a trusted system authentication on behalf of customers. In all authentication scenarios involving customers, a JSON Web Token (JWT) is generated in Commerce Cloud. Using the JWT, customers can access other Shopper API resources like Orders and Baskets. The application must refresh the JWT every 30 minutes to save the shopper activity (for example, retain products in a shopper&#39;s cart) for prolonged periods of time.</p>
 					<a href="#authentication-amp-authorization" id="authentication-amp-authorization" style="color: inherit; text-decoration: none;">
 						<h2>Authentication &amp; Authorization</h2>
@@ -230,7 +233,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:515</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:517</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -252,7 +255,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="clientconfig.clientconfig-1.html" class="tsd-signature-type">ClientConfig</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>baseUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:481</li>
+							<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:483</li>
 						</ul>
 					</aside>
 				</section>
@@ -262,7 +265,7 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Base<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"https://{shortCode}.api.commercecloud.salesforce.com/customer/shopper-customers/v1"</span><span class="tsd-signature-symbol"> = currentBaseUri</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:483</li>
+							<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:485</li>
 						</ul>
 					</aside>
 				</section>
@@ -272,7 +275,7 @@
 					<div class="tsd-signature tsd-kind-icon">param<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>createCustomerAddress<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>createCustomerAddressRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>createCustomerPaymentInstrument<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>createCustomerPaymentInstrumentRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>createCustomerProductList<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>createCustomerProductListItem<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"listId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>createCustomerProductListItemRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"listId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>createCustomerProductListRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>deleteCustomerPaymentInstrument<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"paymentInstrumentId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>deleteCustomerPaymentInstrumentRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"paymentInstrumentId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>deleteCustomerProductList<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"listId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>deleteCustomerProductListItem<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"itemId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"listId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>deleteCustomerProductListItemRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"itemId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"listId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>deleteCustomerProductListRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"listId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getCustomerAddress<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"addressName"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getCustomerAddressRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"addressName"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getCustomerBaskets<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getCustomerBasketsRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getCustomerOrders<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"crossSites"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"from"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"until"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"status"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"limit"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"offset"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getCustomerOrdersRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getCustomerPaymentInstrument<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"paymentInstrumentId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getCustomerPaymentInstrumentRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"paymentInstrumentId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getCustomerProductList<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"listId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getCustomerProductListItem<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"itemId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"listId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getCustomerProductListItemRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"itemId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"listId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getCustomerProductListRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"listId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getCustomerProductLists<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getCustomerProductListsRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getExternalProfile<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"externalId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"authenticationProviderId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getExternalProfileRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"externalId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"authenticationProviderId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getProductListItem<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"itemId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"listId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getProductListItemRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"itemId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"listId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPublicProductList<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"listId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPublicProductListRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"listId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPublicProductListsBySearchTerm<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"email"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"firstName"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"lastName"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPublicProductListsBySearchTermRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getResetPasswordToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getResetPasswordTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>registerCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>registerCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>registerExternalProfile<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>registerExternalProfileRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>removeCustomerAddress<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"addressName"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>removeCustomerAddressRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"addressName"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>resetPassword<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>resetPasswordRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>updateCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>updateCustomerAddress<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"addressName"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>updateCustomerAddressRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"addressName"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>updateCustomerPassword<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>updateCustomerPasswordRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>updateCustomerProductList<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"listId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>updateCustomerProductListItem<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"itemId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"listId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>updateCustomerProductListItemRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"itemId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"listId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>updateCustomerProductListRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"listId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>updateCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"customerId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {createCustomerAddress: [&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],createCustomerAddressRequired: [&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],createCustomerPaymentInstrument: [&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],createCustomerPaymentInstrumentRequired: [&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],createCustomerProductList: [&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],createCustomerProductListRequired: [&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],createCustomerProductListItem: [&#x27;listId&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],createCustomerProductListItemRequired: [&#x27;listId&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],deleteCustomerPaymentInstrument: [&#x27;paymentInstrumentId&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],deleteCustomerPaymentInstrumentRequired: [&#x27;paymentInstrumentId&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],deleteCustomerProductList: [&#x27;listId&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],deleteCustomerProductListRequired: [&#x27;listId&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],deleteCustomerProductListItem: [&#x27;itemId&#x27;,&#x27;listId&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],deleteCustomerProductListItemRequired: [&#x27;itemId&#x27;,&#x27;listId&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getCustomer: [&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getCustomerRequired: [&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getCustomerAddress: [&#x27;addressName&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getCustomerAddressRequired: [&#x27;addressName&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getCustomerBaskets: [&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getCustomerBasketsRequired: [&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getCustomerOrders: [&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,&#x27;crossSites&#x27;,&#x27;from&#x27;,&#x27;until&#x27;,&#x27;status&#x27;,&#x27;limit&#x27;,&#x27;offset&#x27;,],getCustomerOrdersRequired: [&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getCustomerPaymentInstrument: [&#x27;paymentInstrumentId&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getCustomerPaymentInstrumentRequired: [&#x27;paymentInstrumentId&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getCustomerProductList: [&#x27;listId&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getCustomerProductListRequired: [&#x27;listId&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getCustomerProductListItem: [&#x27;itemId&#x27;,&#x27;listId&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getCustomerProductListItemRequired: [&#x27;itemId&#x27;,&#x27;listId&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getCustomerProductLists: [&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getCustomerProductListsRequired: [&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getExternalProfile: [&#x27;organizationId&#x27;,&#x27;externalId&#x27;,&#x27;authenticationProviderId&#x27;,&#x27;siteId&#x27;,],getExternalProfileRequired: [&#x27;organizationId&#x27;,&#x27;externalId&#x27;,&#x27;authenticationProviderId&#x27;,&#x27;siteId&#x27;,],getProductListItem: [&#x27;itemId&#x27;,&#x27;listId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getProductListItemRequired: [&#x27;itemId&#x27;,&#x27;listId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getPublicProductList: [&#x27;listId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getPublicProductListRequired: [&#x27;listId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getPublicProductListsBySearchTerm: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,&#x27;email&#x27;,&#x27;firstName&#x27;,&#x27;lastName&#x27;,],getPublicProductListsBySearchTermRequired: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getResetPasswordToken: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getResetPasswordTokenRequired: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],registerCustomer: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],registerCustomerRequired: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],registerExternalProfile: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],registerExternalProfileRequired: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],removeCustomerAddress: [&#x27;addressName&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],removeCustomerAddressRequired: [&#x27;addressName&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],resetPassword: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],resetPasswordRequired: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],updateCustomer: [&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],updateCustomerRequired: [&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],updateCustomerAddress: [&#x27;addressName&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],updateCustomerAddressRequired: [&#x27;addressName&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],updateCustomerPassword: [&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],updateCustomerPasswordRequired: [&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],updateCustomerProductList: [&#x27;listId&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],updateCustomerProductListRequired: [&#x27;listId&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],updateCustomerProductListItem: [&#x27;itemId&#x27;,&#x27;listId&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],updateCustomerProductListItemRequired: [&#x27;itemId&#x27;,&#x27;listId&#x27;,&#x27;customerId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],} as const</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:524</li>
+							<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:526</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -469,7 +472,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:866</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:868</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -494,7 +497,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:892</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:894</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -540,7 +543,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1026</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1028</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -565,7 +568,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1052</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1054</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -611,7 +614,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1186</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1188</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -636,7 +639,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1212</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1214</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -682,7 +685,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1358</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1360</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -718,7 +721,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1397</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1399</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -777,7 +780,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1553</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1555</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -802,7 +805,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1579</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1581</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -848,7 +851,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1721</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1723</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -874,7 +877,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1747</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1749</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -923,7 +926,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1890</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1892</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -948,7 +951,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1918</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:1920</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -994,7 +997,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2070</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2072</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1019,7 +1022,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2094</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2096</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1065,7 +1068,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2223</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2225</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1090,7 +1093,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2249</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2251</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1136,7 +1139,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2388</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2390</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1161,7 +1164,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2412</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2414</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1207,7 +1210,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2546</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2548</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1232,7 +1235,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2582</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2584</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1278,7 +1281,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2759</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2761</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1303,7 +1306,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2785</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2787</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1349,7 +1352,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2925</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2927</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1374,7 +1377,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2951</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:2953</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1420,7 +1423,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3092</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3094</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1445,7 +1448,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3120</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3122</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1491,7 +1494,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3270</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3272</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1516,7 +1519,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3294</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3296</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1562,7 +1565,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3423</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3425</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1587,7 +1590,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3449</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3451</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1633,7 +1636,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3589</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3591</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1658,7 +1661,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3615</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3617</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1704,7 +1707,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3754</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3756</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1729,7 +1732,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3778</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3780</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1775,7 +1778,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3908</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3910</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1800,7 +1803,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3936</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:3938</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1846,7 +1849,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4077</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4079</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1872,7 +1875,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4101</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4103</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1921,7 +1924,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4223</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4225</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1947,7 +1950,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4247</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4249</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1996,7 +1999,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4369</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4371</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2021,7 +2024,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4393</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4395</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2067,7 +2070,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4516</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4518</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2092,7 +2095,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4542</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4544</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2138,7 +2141,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4683</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4685</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2164,7 +2167,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4707</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4709</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2213,7 +2216,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4832</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4834</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2238,7 +2241,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4858</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4860</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2284,7 +2287,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4993</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:4995</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2309,7 +2312,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:5021</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:5023</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2355,7 +2358,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:5166</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:5168</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2380,7 +2383,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:5192</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:5194</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2426,7 +2429,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:5329</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:5331</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2451,7 +2454,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:5357</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:5359</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2497,7 +2500,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:5513</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:5515</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2531,7 +2534,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:5552</li>
+									<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:5554</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2586,7 +2589,7 @@
 					<div class="tsd-signature tsd-kind-icon">api<wbr>Paths<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:485</li>
+							<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:487</li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -2595,7 +2598,7 @@
 						<div class="tsd-signature tsd-kind-icon">create<wbr>Customer<wbr>Address<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}/addresses&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:486</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:488</li>
 							</ul>
 						</aside>
 					</section>
@@ -2605,7 +2608,7 @@
 						<div class="tsd-signature tsd-kind-icon">create<wbr>Customer<wbr>Payment<wbr>Instrument<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}/payment-instruments&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:487</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:489</li>
 							</ul>
 						</aside>
 					</section>
@@ -2615,7 +2618,7 @@
 						<div class="tsd-signature tsd-kind-icon">create<wbr>Customer<wbr>Product<wbr>List<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}/product-lists&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:488</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:490</li>
 							</ul>
 						</aside>
 					</section>
@@ -2625,7 +2628,7 @@
 						<div class="tsd-signature tsd-kind-icon">create<wbr>Customer<wbr>Product<wbr>List<wbr>Item<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}/product-lists/{listId}/items&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:489</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:491</li>
 							</ul>
 						</aside>
 					</section>
@@ -2635,7 +2638,7 @@
 						<div class="tsd-signature tsd-kind-icon">delete<wbr>Customer<wbr>Payment<wbr>Instrument<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}/payment-instruments/{paymentInstrumentId}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:490</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:492</li>
 							</ul>
 						</aside>
 					</section>
@@ -2645,7 +2648,7 @@
 						<div class="tsd-signature tsd-kind-icon">delete<wbr>Customer<wbr>Product<wbr>List<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}/product-lists/{listId}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:491</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:493</li>
 							</ul>
 						</aside>
 					</section>
@@ -2655,7 +2658,7 @@
 						<div class="tsd-signature tsd-kind-icon">delete<wbr>Customer<wbr>Product<wbr>List<wbr>Item<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}/product-lists/{listId}/items/{itemId}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:492</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:494</li>
 							</ul>
 						</aside>
 					</section>
@@ -2665,7 +2668,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Customer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:493</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:495</li>
 							</ul>
 						</aside>
 					</section>
@@ -2675,7 +2678,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Customer<wbr>Address<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}/addresses/{addressName}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:494</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:496</li>
 							</ul>
 						</aside>
 					</section>
@@ -2685,7 +2688,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Customer<wbr>Baskets<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}/baskets&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:495</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:497</li>
 							</ul>
 						</aside>
 					</section>
@@ -2695,7 +2698,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Customer<wbr>Orders<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}/orders&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:496</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:498</li>
 							</ul>
 						</aside>
 					</section>
@@ -2705,7 +2708,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Customer<wbr>Payment<wbr>Instrument<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}/payment-instruments/{paymentInstrumentId}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:497</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:499</li>
 							</ul>
 						</aside>
 					</section>
@@ -2715,7 +2718,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Customer<wbr>Product<wbr>List<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}/product-lists/{listId}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:498</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:500</li>
 							</ul>
 						</aside>
 					</section>
@@ -2725,7 +2728,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Customer<wbr>Product<wbr>List<wbr>Item<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}/product-lists/{listId}/items/{itemId}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:499</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:501</li>
 							</ul>
 						</aside>
 					</section>
@@ -2735,7 +2738,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Customer<wbr>Product<wbr>Lists<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}/product-lists&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:500</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:502</li>
 							</ul>
 						</aside>
 					</section>
@@ -2745,7 +2748,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>External<wbr>Profile<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/external-profile&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:501</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:503</li>
 							</ul>
 						</aside>
 					</section>
@@ -2755,7 +2758,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Product<wbr>List<wbr>Item<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/product-lists/{listId}/items/{itemId}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:502</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:504</li>
 							</ul>
 						</aside>
 					</section>
@@ -2765,7 +2768,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Public<wbr>Product<wbr>List<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/product-lists/{listId}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:503</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:505</li>
 							</ul>
 						</aside>
 					</section>
@@ -2775,7 +2778,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Public<wbr>Product<wbr>Lists<wbr>BySearch<wbr>Term<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/product-lists&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:504</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:506</li>
 							</ul>
 						</aside>
 					</section>
@@ -2785,7 +2788,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Reset<wbr>Password<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/password/actions/create-reset-token&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:505</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:507</li>
 							</ul>
 						</aside>
 					</section>
@@ -2795,7 +2798,7 @@
 						<div class="tsd-signature tsd-kind-icon">register<wbr>Customer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:506</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:508</li>
 							</ul>
 						</aside>
 					</section>
@@ -2805,7 +2808,7 @@
 						<div class="tsd-signature tsd-kind-icon">register<wbr>External<wbr>Profile<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/external-profile&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:507</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:509</li>
 							</ul>
 						</aside>
 					</section>
@@ -2815,7 +2818,7 @@
 						<div class="tsd-signature tsd-kind-icon">remove<wbr>Customer<wbr>Address<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}/addresses/{addressName}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:508</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:510</li>
 							</ul>
 						</aside>
 					</section>
@@ -2825,7 +2828,7 @@
 						<div class="tsd-signature tsd-kind-icon">reset<wbr>Password<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/password/actions/reset&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:509</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:511</li>
 							</ul>
 						</aside>
 					</section>
@@ -2835,7 +2838,7 @@
 						<div class="tsd-signature tsd-kind-icon">update<wbr>Customer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:510</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:512</li>
 							</ul>
 						</aside>
 					</section>
@@ -2845,7 +2848,7 @@
 						<div class="tsd-signature tsd-kind-icon">update<wbr>Customer<wbr>Address<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}/addresses/{addressName}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:511</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:513</li>
 							</ul>
 						</aside>
 					</section>
@@ -2855,7 +2858,7 @@
 						<div class="tsd-signature tsd-kind-icon">update<wbr>Customer<wbr>Password<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}/password&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:512</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:514</li>
 							</ul>
 						</aside>
 					</section>
@@ -2865,7 +2868,7 @@
 						<div class="tsd-signature tsd-kind-icon">update<wbr>Customer<wbr>Product<wbr>List<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}/product-lists/{listId}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:513</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:515</li>
 							</ul>
 						</aside>
 					</section>
@@ -2875,7 +2878,7 @@
 						<div class="tsd-signature tsd-kind-icon">update<wbr>Customer<wbr>Product<wbr>List<wbr>Item<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/customers/{customerId}/product-lists/{listId}/items/{itemId}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:514</li>
+								<li>Defined in src/lib/shopperCustomers/apis/DefaultApi.ts:516</li>
 							</ul>
 						</aside>
 					</section>
@@ -2907,10 +2910,16 @@
 						<a href="../modules/shopperbasketsv2.html">shopper<wbr>Basketsv2</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="../modules/shopperconfigurations.html">shopper<wbr>Configurations</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="../modules/shopperconsents.html">shopper<wbr>Consents</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/shoppercontext.html">shopper<wbr>Context</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/shoppercustomobjects.html">shopper<wbr>Custom<wbr>Objects</a>
 					</li>
 					<li class="current tsd-kind-module">
 						<a href="../modules/shoppercustomers.html">shopper<wbr>Customers</a>

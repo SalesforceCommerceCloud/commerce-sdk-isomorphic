@@ -26,7 +26,6 @@ const apiNames = [
   'shopperGiftCertificates',
   'shopperLogin',
   'shopperOrders',
-  'shopperPayments',
   'shopperProducts',
   'shopperPromotions',
   'shopperSearch',
@@ -42,7 +41,7 @@ const commonDependencies = [
   {input: 'src/lib/version.ts', file: 'lib/version.js'},
 ];
 
-// Total APIs: 18
+// Total APIs: 17
 // Total common dependencies: 5
 
 export {apiNames, commonDependencies};

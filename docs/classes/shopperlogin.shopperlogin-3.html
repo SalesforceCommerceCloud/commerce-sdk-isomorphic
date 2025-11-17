@@ -76,7 +76,10 @@
 							<h1><a href="https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary">Shopper Login</a></h1>
 						</a>
 					</div>
-					<p>*# API Overview</p>
+					<p>*<a href="https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-login/shopper-login-oas-v1-public.yaml">Download API specification</a></p>
+					<a href="#api-overview" id="api-overview" style="color: inherit; text-decoration: none;">
+						<h1>API Overview</h1>
+					</a>
 					<p>The Shopper Login and API Access Service (SLAS) enables secure access to Commerce Cloud’s Shopper APIs for a wide range of headless commerce applications.</p>
 					<p><em>Important:*</em> Before using this API, see <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/authorization-for-shopper-apis.html">Authorization for Shopper APIs</a> in the Get Started guides and the more detailed <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas.html">SLAS guides</a> for instructions on setting up a SLAS client, obtaining credentials, as well as flow and use case information.</p>
 					<p>For load shedding and rate limiting information, see <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/throttle-rates.html">Load Shedding and Rate Limiting.</a>*<br /></p>
@@ -175,7 +178,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:482</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:485</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -197,7 +200,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="clientconfig.clientconfig-1.html" class="tsd-signature-type">ClientConfig</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>baseUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:460</li>
+							<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:463</li>
 						</ul>
 					</aside>
 				</section>
@@ -207,17 +210,17 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Base<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"https://{shortCode}.api.commercecloud.salesforce.com/shopper/auth/v1"</span><span class="tsd-signature-symbol"> = currentBaseUri</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:462</li>
+							<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:465</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="paramkeys" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> param<wbr>Keys</h3>
-					<div class="tsd-signature tsd-kind-icon">param<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>authenticateCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"state"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"scope"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authenticateCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizeCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"scope"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"state"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"ui_locales"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizeCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizePasswordlessCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"callback_uri"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizePasswordlessCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"refresh_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dnt"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getJwksUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getJwksUriRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordLessAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwdless_login_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordLessAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwdless_login_token"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordResetToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"callback_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_name"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordResetTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getSessionBridgeAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dwsid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dwsgst"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dwsrst"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dnt"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getSessionBridgeAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dwsid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"agent_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dnt"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"state"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAuthorizationToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAuthorizationTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedSystemAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"email_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dnt"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedSystemAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getUserInfo<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getUserInfoRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getWellknownOpenidConfiguration<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getWellknownOpenidConfigurationRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>introspectToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token_type_hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>introspectTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>logoutCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"refresh_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>logoutCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"refresh_token"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>resetPassword<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwd_action_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"new_password"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>resetPasswordRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwd_action_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>revokeToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token_type_hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>revokeTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {authenticateCustomer: [&#x27;organizationId&#x27;,&#x27;redirect_uri&#x27;,&#x27;channel_id&#x27;,&#x27;client_id&#x27;,&#x27;response_type&#x27;,&#x27;state&#x27;,&#x27;scope&#x27;,&#x27;usid&#x27;,&#x27;code_challenge&#x27;,],authenticateCustomerRequired: [&#x27;organizationId&#x27;,&#x27;redirect_uri&#x27;,&#x27;channel_id&#x27;,],authorizeCustomer: [&#x27;organizationId&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,&#x27;client_id&#x27;,&#x27;scope&#x27;,&#x27;state&#x27;,&#x27;usid&#x27;,&#x27;hint&#x27;,&#x27;channel_id&#x27;,&#x27;code_challenge&#x27;,&#x27;ui_locales&#x27;,],authorizeCustomerRequired: [&#x27;organizationId&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,&#x27;client_id&#x27;,],authorizePasswordlessCustomer: [&#x27;organizationId&#x27;,&#x27;user_id&#x27;,&#x27;mode&#x27;,&#x27;channel_id&#x27;,&#x27;locale&#x27;,&#x27;usid&#x27;,&#x27;callback_uri&#x27;,],authorizePasswordlessCustomerRequired: [&#x27;organizationId&#x27;,&#x27;user_id&#x27;,&#x27;mode&#x27;,&#x27;channel_id&#x27;,],getAccessToken: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;refresh_token&#x27;,&#x27;code&#x27;,&#x27;usid&#x27;,&#x27;redirect_uri&#x27;,&#x27;code_verifier&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;dnt&#x27;,],getAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,],getJwksUri: [&#x27;organizationId&#x27;,],getJwksUriRequired: [&#x27;organizationId&#x27;,],getPasswordLessAccessToken: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;hint&#x27;,&#x27;pwdless_login_token&#x27;,&#x27;client_id&#x27;,&#x27;code_verifier&#x27;,],getPasswordLessAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;hint&#x27;,&#x27;pwdless_login_token&#x27;,],getPasswordResetToken: [&#x27;organizationId&#x27;,&#x27;user_id&#x27;,&#x27;mode&#x27;,&#x27;channel_id&#x27;,&#x27;locale&#x27;,&#x27;client_id&#x27;,&#x27;code_challenge&#x27;,&#x27;callback_uri&#x27;,&#x27;idp_name&#x27;,&#x27;hint&#x27;,],getPasswordResetTokenRequired: [&#x27;organizationId&#x27;,&#x27;user_id&#x27;,&#x27;mode&#x27;,&#x27;channel_id&#x27;,],getSessionBridgeAccessToken: [&#x27;organizationId&#x27;,&#x27;code&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;code_verifier&#x27;,&#x27;dwsid&#x27;,&#x27;grant_type&#x27;,&#x27;login_id&#x27;,&#x27;dwsgst&#x27;,&#x27;dwsrst&#x27;,&#x27;usid&#x27;,&#x27;dnt&#x27;,],getSessionBridgeAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;code&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;code_verifier&#x27;,&#x27;dwsid&#x27;,&#x27;grant_type&#x27;,&#x27;login_id&#x27;,],getTrustedAgentAccessToken: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;code_verifier&#x27;,&#x27;grant_type&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;agent_id&#x27;,&#x27;usid&#x27;,&#x27;dnt&#x27;,&#x27;state&#x27;,],getTrustedAgentAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;code_verifier&#x27;,&#x27;grant_type&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,],getTrustedAgentAuthorizationToken: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,&#x27;code_challenge&#x27;,],getTrustedAgentAuthorizationTokenRequired: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,],getTrustedSystemAccessToken: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;hint&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;usid&#x27;,&#x27;email_id&#x27;,&#x27;dnt&#x27;,],getTrustedSystemAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;hint&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,],getUserInfo: [&#x27;organizationId&#x27;,&#x27;channel_id&#x27;,],getUserInfoRequired: [&#x27;organizationId&#x27;,],getWellknownOpenidConfiguration: [&#x27;organizationId&#x27;,],getWellknownOpenidConfigurationRequired: [&#x27;organizationId&#x27;,],introspectToken: [&#x27;organizationId&#x27;,&#x27;token&#x27;,&#x27;token_type_hint&#x27;,],introspectTokenRequired: [&#x27;organizationId&#x27;,&#x27;token&#x27;,],logoutCustomer: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;refresh_token&#x27;,&#x27;channel_id&#x27;,&#x27;hint&#x27;,],logoutCustomerRequired: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;refresh_token&#x27;,],resetPassword: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;pwd_action_token&#x27;,&#x27;code_verifier&#x27;,&#x27;channel_id&#x27;,&#x27;new_password&#x27;,&#x27;hint&#x27;,],resetPasswordRequired: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;pwd_action_token&#x27;,&#x27;code_verifier&#x27;,&#x27;channel_id&#x27;,],revokeToken: [&#x27;organizationId&#x27;,&#x27;token&#x27;,&#x27;token_type_hint&#x27;,],revokeTokenRequired: [&#x27;organizationId&#x27;,&#x27;token&#x27;,],} as const</span></div>
+					<div class="tsd-signature tsd-kind-icon">param<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>authenticateCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"state"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"scope"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authenticateCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizeCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"scope"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"state"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"ui_locales"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizeCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizePasswordlessCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"callback_uri"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizePasswordlessCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"refresh_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dnt"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getJwksUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getJwksUriRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordLessAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwdless_login_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordLessAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwdless_login_token"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordResetToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"callback_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_name"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordResetTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getSessionBridgeAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dwsid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dwsgst"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dwsrst"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dnt"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getSessionBridgeAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dwsid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"agent_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dnt"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"state"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAuthorizationToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAuthorizationTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedSystemAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"email_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dnt"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedSystemAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getUserInfo<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getUserInfoRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getWellknownOpenidConfiguration<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getWellknownOpenidConfigurationRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>introspectToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token_type_hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>introspectTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>logoutCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"refresh_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>logoutCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"refresh_token"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>resetPassword<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwd_action_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"new_password"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>resetPasswordRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwd_action_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>revokeToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token_type_hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>revokeTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {authenticateCustomer: [&#x27;organizationId&#x27;,&#x27;redirect_uri&#x27;,&#x27;channel_id&#x27;,&#x27;client_id&#x27;,&#x27;response_type&#x27;,&#x27;state&#x27;,&#x27;scope&#x27;,&#x27;usid&#x27;,&#x27;code_challenge&#x27;,],authenticateCustomerRequired: [&#x27;organizationId&#x27;,&#x27;redirect_uri&#x27;,&#x27;channel_id&#x27;,],authorizeCustomer: [&#x27;organizationId&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,&#x27;client_id&#x27;,&#x27;scope&#x27;,&#x27;state&#x27;,&#x27;usid&#x27;,&#x27;hint&#x27;,&#x27;channel_id&#x27;,&#x27;code_challenge&#x27;,&#x27;ui_locales&#x27;,],authorizeCustomerRequired: [&#x27;organizationId&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,&#x27;client_id&#x27;,],authorizePasswordlessCustomer: [&#x27;organizationId&#x27;,&#x27;user_id&#x27;,&#x27;mode&#x27;,&#x27;channel_id&#x27;,&#x27;locale&#x27;,&#x27;usid&#x27;,&#x27;callback_uri&#x27;,],authorizePasswordlessCustomerRequired: [&#x27;organizationId&#x27;,&#x27;user_id&#x27;,&#x27;mode&#x27;,&#x27;channel_id&#x27;,],getAccessToken: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;refresh_token&#x27;,&#x27;code&#x27;,&#x27;usid&#x27;,&#x27;redirect_uri&#x27;,&#x27;code_verifier&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;dnt&#x27;,],getAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,],getJwksUri: [&#x27;organizationId&#x27;,],getJwksUriRequired: [&#x27;organizationId&#x27;,],getPasswordLessAccessToken: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;hint&#x27;,&#x27;pwdless_login_token&#x27;,&#x27;client_id&#x27;,&#x27;code_verifier&#x27;,&#x27;login_id&#x27;,],getPasswordLessAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;hint&#x27;,&#x27;pwdless_login_token&#x27;,],getPasswordResetToken: [&#x27;organizationId&#x27;,&#x27;user_id&#x27;,&#x27;mode&#x27;,&#x27;channel_id&#x27;,&#x27;locale&#x27;,&#x27;client_id&#x27;,&#x27;code_challenge&#x27;,&#x27;callback_uri&#x27;,&#x27;idp_name&#x27;,&#x27;hint&#x27;,],getPasswordResetTokenRequired: [&#x27;organizationId&#x27;,&#x27;user_id&#x27;,&#x27;mode&#x27;,&#x27;channel_id&#x27;,],getSessionBridgeAccessToken: [&#x27;organizationId&#x27;,&#x27;code&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;code_verifier&#x27;,&#x27;dwsid&#x27;,&#x27;grant_type&#x27;,&#x27;login_id&#x27;,&#x27;dwsgst&#x27;,&#x27;dwsrst&#x27;,&#x27;usid&#x27;,&#x27;dnt&#x27;,],getSessionBridgeAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;code&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;code_verifier&#x27;,&#x27;dwsid&#x27;,&#x27;grant_type&#x27;,&#x27;login_id&#x27;,],getTrustedAgentAccessToken: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;code_verifier&#x27;,&#x27;grant_type&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;agent_id&#x27;,&#x27;usid&#x27;,&#x27;dnt&#x27;,&#x27;state&#x27;,],getTrustedAgentAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;code_verifier&#x27;,&#x27;grant_type&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,],getTrustedAgentAuthorizationToken: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,&#x27;code_challenge&#x27;,],getTrustedAgentAuthorizationTokenRequired: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,],getTrustedSystemAccessToken: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;hint&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;usid&#x27;,&#x27;email_id&#x27;,&#x27;dnt&#x27;,],getTrustedSystemAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;hint&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,],getUserInfo: [&#x27;organizationId&#x27;,&#x27;channel_id&#x27;,],getUserInfoRequired: [&#x27;organizationId&#x27;,],getWellknownOpenidConfiguration: [&#x27;organizationId&#x27;,],getWellknownOpenidConfigurationRequired: [&#x27;organizationId&#x27;,],introspectToken: [&#x27;organizationId&#x27;,&#x27;token&#x27;,&#x27;token_type_hint&#x27;,],introspectTokenRequired: [&#x27;organizationId&#x27;,&#x27;token&#x27;,],logoutCustomer: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;refresh_token&#x27;,&#x27;channel_id&#x27;,&#x27;hint&#x27;,],logoutCustomerRequired: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;refresh_token&#x27;,],resetPassword: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;pwd_action_token&#x27;,&#x27;code_verifier&#x27;,&#x27;channel_id&#x27;,&#x27;new_password&#x27;,&#x27;hint&#x27;,],resetPasswordRequired: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;pwd_action_token&#x27;,&#x27;code_verifier&#x27;,&#x27;channel_id&#x27;,],revokeToken: [&#x27;organizationId&#x27;,&#x27;token&#x27;,&#x27;token_type_hint&#x27;,],revokeTokenRequired: [&#x27;organizationId&#x27;,&#x27;token&#x27;,],} as const</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:491</li>
+							<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:494</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -254,7 +257,7 @@
 								<h5>get<wbr>Jwks<wbr>Uri<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span></h5>
 							</li>
 							<li class="tsd-parameter">
-								<h5>get<wbr>Password<wbr>Less<wbr>Access<wbr>Token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwdless_login_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">]</span></h5>
+								<h5>get<wbr>Password<wbr>Less<wbr>Access<wbr>Token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwdless_login_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">]</span></h5>
 							</li>
 							<li class="tsd-parameter">
 								<h5>get<wbr>Password<wbr>Less<wbr>Access<wbr>Token<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwdless_login_token"</span><span class="tsd-signature-symbol">]</span></h5>
@@ -342,7 +345,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:776</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:780</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -378,7 +381,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:817</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:821</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -437,7 +440,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:976</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:980</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -464,7 +467,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1035</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1039</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -514,7 +517,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1256</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1260</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -540,7 +543,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1284</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1288</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -589,7 +592,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1421</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1425</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -621,7 +624,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1464</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1468</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -676,7 +679,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1599</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1603</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -704,7 +707,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1624</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1628</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -755,7 +758,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1739</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1744</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -781,7 +784,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1766</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1772</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -830,7 +833,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1890</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1897</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -856,7 +859,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1921</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1928</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -905,7 +908,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2061</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2068</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -935,7 +938,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2102</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2109</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -988,7 +991,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2243</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2250</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1015,7 +1018,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2277</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2284</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1065,7 +1068,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2420</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2427</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1091,7 +1094,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2469</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2476</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1140,7 +1143,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2680</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2687</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1168,7 +1171,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2717</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2724</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1219,7 +1222,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2842</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2849</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1245,7 +1248,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2864</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2871</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1294,7 +1297,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2976</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2983</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1320,7 +1323,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2996</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3003</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1369,7 +1372,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3103</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3110</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1395,7 +1398,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3127</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3134</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1444,7 +1447,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3250</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3259</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1472,7 +1475,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3286</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3297</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1523,7 +1526,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3443</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3456</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1549,7 +1552,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3471</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3484</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1598,7 +1601,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3591</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3604</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1624,7 +1627,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3615</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3628</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1671,7 +1674,7 @@
 					<div class="tsd-signature tsd-kind-icon">api<wbr>Paths<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:464</li>
+							<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:467</li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -1680,7 +1683,7 @@
 						<div class="tsd-signature tsd-kind-icon">authenticate<wbr>Customer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/login&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:465</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:468</li>
 							</ul>
 						</aside>
 					</section>
@@ -1690,7 +1693,7 @@
 						<div class="tsd-signature tsd-kind-icon">authorize<wbr>Customer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/authorize&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:466</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:469</li>
 							</ul>
 						</aside>
 					</section>
@@ -1700,7 +1703,7 @@
 						<div class="tsd-signature tsd-kind-icon">authorize<wbr>Passwordless<wbr>Customer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/passwordless/login&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:467</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:470</li>
 							</ul>
 						</aside>
 					</section>
@@ -1710,7 +1713,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Access<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/token&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:468</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:471</li>
 							</ul>
 						</aside>
 					</section>
@@ -1720,7 +1723,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Jwks<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/jwks&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:469</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:472</li>
 							</ul>
 						</aside>
 					</section>
@@ -1730,7 +1733,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Password<wbr>Less<wbr>Access<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/passwordless/token&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:470</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:473</li>
 							</ul>
 						</aside>
 					</section>
@@ -1740,7 +1743,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Password<wbr>Reset<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/password/reset&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:471</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:474</li>
 							</ul>
 						</aside>
 					</section>
@@ -1750,7 +1753,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Session<wbr>Bridge<wbr>Access<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/session-bridge/token&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:472</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:475</li>
 							</ul>
 						</aside>
 					</section>
@@ -1760,7 +1763,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Trusted<wbr>Agent<wbr>Access<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/trusted-agent/token&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:473</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:476</li>
 							</ul>
 						</aside>
 					</section>
@@ -1770,7 +1773,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Trusted<wbr>Agent<wbr>Authorization<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/trusted-agent/authorize&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:474</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:477</li>
 							</ul>
 						</aside>
 					</section>
@@ -1780,7 +1783,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Trusted<wbr>System<wbr>Access<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/trusted-system/token&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:475</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:478</li>
 							</ul>
 						</aside>
 					</section>
@@ -1790,7 +1793,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>User<wbr>Info<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/userinfo&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:476</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:479</li>
 							</ul>
 						</aside>
 					</section>
@@ -1800,7 +1803,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Wellknown<wbr>Openid<wbr>Configuration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/.well-known/openid-configuration&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:477</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:480</li>
 							</ul>
 						</aside>
 					</section>
@@ -1810,7 +1813,7 @@
 						<div class="tsd-signature tsd-kind-icon">introspect<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/introspect&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:478</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:481</li>
 							</ul>
 						</aside>
 					</section>
@@ -1820,7 +1823,7 @@
 						<div class="tsd-signature tsd-kind-icon">logout<wbr>Customer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/logout&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:479</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:482</li>
 							</ul>
 						</aside>
 					</section>
@@ -1830,7 +1833,7 @@
 						<div class="tsd-signature tsd-kind-icon">reset<wbr>Password<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/password/action&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:480</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:483</li>
 							</ul>
 						</aside>
 					</section>
@@ -1840,7 +1843,7 @@
 						<div class="tsd-signature tsd-kind-icon">revoke<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/revoke&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:481</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:484</li>
 							</ul>
 						</aside>
 					</section>
@@ -1872,10 +1875,16 @@
 						<a href="../modules/shopperbasketsv2.html">shopper<wbr>Basketsv2</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="../modules/shopperconfigurations.html">shopper<wbr>Configurations</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="../modules/shopperconsents.html">shopper<wbr>Consents</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/shoppercontext.html">shopper<wbr>Context</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/shoppercustomobjects.html">shopper<wbr>Custom<wbr>Objects</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/shoppercustomers.html">shopper<wbr>Customers</a>
