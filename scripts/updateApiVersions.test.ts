@@ -322,7 +322,11 @@ shopper-payments-oas-v1=1.1.0
         throw new Error('Command failed');
       });
 
-      const result = getLatestVersion('shopper-baskets-oas-v1', '1.9.0', ORG_ID);
+      const result = getLatestVersion(
+        'shopper-baskets-oas-v1',
+        '1.9.0',
+        ORG_ID
+      );
 
       expect(result).toBeNull();
       // eslint-disable-next-line no-console
