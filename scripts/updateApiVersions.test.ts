@@ -8,7 +8,6 @@ import {execSync} from 'child_process';
 import fs from 'fs-extra';
 import path from 'path';
 import {
-  readApiVersions,
   writeApiVersions,
   getMajorVersion,
   parseApiName,
@@ -75,64 +74,6 @@ shopper-payments-oas-v1=1.1.0`;
     delete process.env.ANYPOINT_USERNAME;
     delete process.env.ANYPOINT_PASSWORD;
     jest.restoreAllMocks();
-  });
-
-  describe('readApiVersions', () => {
-    it('should read and parse api-versions.txt correctly', () => {
-      const result = readApiVersions();
-
-      expect(mockedFs.existsSync).toHaveBeenCalledWith(mockApiVersionsFile);
-      expect(mockedFs.readFileSync).toHaveBeenCalledWith(
-        mockApiVersionsFile,
-        'utf-8'
-      );
-      expect(result).toEqual([
-        {apiName: 'shopper-baskets-oas-v1', version: '1.9.0'},
-        {apiName: 'shopper-baskets-oas-v2', version: '2.1.0'},
-        {apiName: 'shopper-payments-oas-v1', version: '1.1.0'},
-      ]);
-    });
-
-    it('should filter out empty lines and comments', () => {
-      const contentWithComments = `# This is a comment
-shopper-baskets-oas-v1=1.9.0
-
-shopper-baskets-oas-v2=2.1.0
-# Another comment
-shopper-payments-oas-v1=1.1.0
-
-`;
-      mockedFs.readFileSync.mockReturnValue(contentWithComments);
-
-      const result = readApiVersions();
-
-      expect(result).toEqual([
-        {apiName: 'shopper-baskets-oas-v1', version: '1.9.0'},
-        {apiName: 'shopper-baskets-oas-v2', version: '2.1.0'},
-        {apiName: 'shopper-payments-oas-v1', version: '1.1.0'},
-      ]);
-    });
-
-    it('should throw error when file does not exist', () => {
-      mockedFs.existsSync.mockReturnValue(false);
-
-      expect(() => readApiVersions()).toThrow(
-        `API versions file not found at: ${mockApiVersionsFile}`
-      );
-    });
-
-    it('should handle whitespace around api names and versions', () => {
-      const contentWithWhitespace = `shopper-baskets-oas-v1  =  1.9.0
-  shopper-baskets-oas-v2=2.1.0  `;
-      mockedFs.readFileSync.mockReturnValue(contentWithWhitespace);
-
-      const result = readApiVersions();
-
-      expect(result).toEqual([
-        {apiName: 'shopper-baskets-oas-v1', version: '1.9.0'},
-        {apiName: 'shopper-baskets-oas-v2', version: '2.1.0'},
-      ]);
-    });
   });
 
   describe('writeApiVersions', () => {

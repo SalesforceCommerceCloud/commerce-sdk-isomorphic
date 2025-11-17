@@ -16,10 +16,7 @@ export const ORG_ID = '893f605e-10e2-423a-bdb4-f952f56eb6d8';
  * @param directoryPath - The path to the directory to process
  * @param depth - The depth of the directory to process, we limit the depth to 3 to avoid infinite recursion
  */
-export function removeInternalOas(
-  directoryPath: string,
-  depth = 0
-): void {
+export function removeInternalOas(directoryPath: string, depth = 0): void {
   if (depth > 3) {
     console.warn(
       `Reached maximum depth (${depth}) for directory: ${directoryPath}`
