@@ -76,7 +76,11 @@
 							<h1><a href="https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-experience:Summary">Shopper Experience</a></h1>
 						</a>
 					</div>
-					<p>*Use the Shopper Experience API to look up page information for pages that are created in Page Designer.</p>
+					<p>*<a href="https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-experience/shopper-experience-oas-v1-public.yaml">Download API specification</a></p>
+					<a href="#api-overview" id="api-overview" style="color: inherit; text-decoration: none;">
+						<h1>API Overview</h1>
+					</a>
+					<p>Use the Shopper Experience API to look up page information for pages that are created in Page Designer.</p>
 					<p>Responses include the following:</p>
 					<ul>
 						<li>The entire component hierarchy of the page at design time.</li>
@@ -172,7 +176,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:130</li>
+									<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:133</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -194,7 +198,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="clientconfig.clientconfig-1.html" class="tsd-signature-type">ClientConfig</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>baseUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:123</li>
+							<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:126</li>
 						</ul>
 					</aside>
 				</section>
@@ -204,7 +208,7 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Base<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"https://{shortCode}.api.commercecloud.salesforce.com/experience/shopper-experience/v1"</span><span class="tsd-signature-symbol"> = currentBaseUri</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:125</li>
+							<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:128</li>
 						</ul>
 					</aside>
 				</section>
@@ -214,7 +218,7 @@
 					<div class="tsd-signature tsd-kind-icon">param<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>getPage<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"pageId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"aspectAttributes"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"parameters"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPageRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"pageId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPages<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"aspectTypeId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"categoryId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"productId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"aspectAttributes"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"parameters"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPagesRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"aspectTypeId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {getPage: [&#x27;pageId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,&#x27;aspectAttributes&#x27;,&#x27;parameters&#x27;,&#x27;locale&#x27;,],getPageRequired: [&#x27;pageId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getPages: [&#x27;organizationId&#x27;,&#x27;aspectTypeId&#x27;,&#x27;siteId&#x27;,&#x27;categoryId&#x27;,&#x27;productId&#x27;,&#x27;aspectAttributes&#x27;,&#x27;parameters&#x27;,&#x27;locale&#x27;,],getPagesRequired: [&#x27;organizationId&#x27;,&#x27;aspectTypeId&#x27;,&#x27;siteId&#x27;,],} as const</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:139</li>
+							<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:142</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -249,7 +253,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:193</li>
+									<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:196</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -281,7 +285,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:228</li>
+									<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:231</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -336,7 +340,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:397</li>
+									<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:400</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -369,7 +373,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:438</li>
+									<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:441</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -423,7 +427,7 @@
 					<div class="tsd-signature tsd-kind-icon">api<wbr>Paths<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:127</li>
+							<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:130</li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -432,7 +436,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Page<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/pages/{pageId}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:128</li>
+								<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:131</li>
 							</ul>
 						</aside>
 					</section>
@@ -442,7 +446,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Pages<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/pages&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:129</li>
+								<li>Defined in src/lib/shopperExperience/apis/DefaultApi.ts:132</li>
 							</ul>
 						</aside>
 					</section>
@@ -472,6 +476,9 @@
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/shopperbasketsv2.html">shopper<wbr>Basketsv2</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/shopperconfigurations.html">shopper<wbr>Configurations</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/shopperconsents.html">shopper<wbr>Consents</a>
