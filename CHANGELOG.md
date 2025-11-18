@@ -23,6 +23,9 @@
 | shopper-seo | 1.0.14 |
 | shopper-stores | 1.0.18 |
 
+**NOTE: The Shopper-Consents API is experimental
+DO NOT use Shopper-Consents API in production, this api might be subject to change.**
+
 ## v4.1.0 (DEPRECATED)
 
 ### Enhancements
