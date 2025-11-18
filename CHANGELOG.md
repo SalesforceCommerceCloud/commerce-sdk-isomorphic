@@ -4,6 +4,9 @@
 
 ### API Versions
 
+New APIs:
+- Shopper Configurations
+
 | API Name | API Version |
 |----------|-------------|
 | shopper-baskets | 1.9.1 |
