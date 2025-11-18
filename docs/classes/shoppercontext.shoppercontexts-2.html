@@ -76,7 +76,10 @@
 							<h1><a href="https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-context:Summary">Shopper Context</a></h1>
 						</a>
 					</div>
-					<p>*# API Overview</p>
+					<p>*<a href="https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-context/shopper-context-oas-v1-public.yaml">Download API specification</a></p>
+					<a href="#api-overview" id="api-overview" style="color: inherit; text-decoration: none;">
+						<h1>API Overview</h1>
+					</a>
 					<p>With the Shopper Context API, you can set any context information as a key/value pair and use it to retrieve personalized promotions, payment methods, and shipping methods. The context information that is set is evaluated against the customer group definitions to determine a customer group (shopper segment), and is then used to activate the experiences that are associated with a particular segment, such as promotions.</p>
 					<p>You can also get personalized API responses triggered by shopper context from the <a href="https://developer.salesforce.com/docs/commerce/b2c-commerce/references/b2c-commerce-ocapi/get-started-with-ocapi.html">Open Commerce API</a> (OCAPI). Support for both the B2C Commerce API and OCAPI allows shopper context to be used in hybrid deployments.</p>
 					<p><em>Warning*</em>
@@ -179,7 +182,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:157</li>
+									<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:159</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -201,7 +204,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="clientconfig.clientconfig-1.html" class="tsd-signature-type">ClientConfig</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>baseUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:148</li>
+							<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:150</li>
 						</ul>
 					</aside>
 				</section>
@@ -211,7 +214,7 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Base<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"https://{shortCode}.api.commercecloud.salesforce.com/shopper/shopper-context/v1"</span><span class="tsd-signature-symbol"> = currentBaseUri</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:150</li>
+							<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:152</li>
 						</ul>
 					</aside>
 				</section>
@@ -221,7 +224,7 @@
 					<div class="tsd-signature tsd-kind-icon">param<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>createShopperContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"evaluateContextWithClientIp"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>createShopperContextRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>deleteShopperContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>deleteShopperContextRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getShopperContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getShopperContextRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>updateShopperContext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"evaluateContextWithClientIp"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>updateShopperContextRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {createShopperContext: [&#x27;usid&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,&#x27;evaluateContextWithClientIp&#x27;,],createShopperContextRequired: [&#x27;usid&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],deleteShopperContext: [&#x27;usid&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],deleteShopperContextRequired: [&#x27;usid&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getShopperContext: [&#x27;usid&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],getShopperContextRequired: [&#x27;usid&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],updateShopperContext: [&#x27;usid&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,&#x27;evaluateContextWithClientIp&#x27;,],updateShopperContextRequired: [&#x27;usid&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],} as const</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:166</li>
+							<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:168</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -268,7 +271,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:234</li>
+									<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:236</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -293,7 +296,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:268</li>
+									<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:270</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -339,7 +342,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:417</li>
+									<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:419</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -365,7 +368,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:441</li>
+									<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:443</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -414,7 +417,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:571</li>
+									<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:573</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -439,7 +442,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:595</li>
+									<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:597</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -485,7 +488,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:761</li>
+									<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:763</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -536,7 +539,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:825</li>
+									<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:827</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -608,7 +611,7 @@
 					<div class="tsd-signature tsd-kind-icon">api<wbr>Paths<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:152</li>
+							<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:154</li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -617,7 +620,7 @@
 						<div class="tsd-signature tsd-kind-icon">create<wbr>Shopper<wbr>Context<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/shopper-context/{usid}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:153</li>
+								<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:155</li>
 							</ul>
 						</aside>
 					</section>
@@ -627,7 +630,7 @@
 						<div class="tsd-signature tsd-kind-icon">delete<wbr>Shopper<wbr>Context<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/shopper-context/{usid}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:154</li>
+								<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:156</li>
 							</ul>
 						</aside>
 					</section>
@@ -637,7 +640,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Shopper<wbr>Context<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/shopper-context/{usid}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:155</li>
+								<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:157</li>
 							</ul>
 						</aside>
 					</section>
@@ -647,7 +650,7 @@
 						<div class="tsd-signature tsd-kind-icon">update<wbr>Shopper<wbr>Context<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/shopper-context/{usid}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:156</li>
+								<li>Defined in src/lib/shopperContext/apis/DefaultApi.ts:158</li>
 							</ul>
 						</aside>
 					</section>
@@ -677,6 +680,9 @@
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/shopperbasketsv2.html">shopper<wbr>Basketsv2</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/shopperconfigurations.html">shopper<wbr>Configurations</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/shopperconsents.html">shopper<wbr>Consents</a>

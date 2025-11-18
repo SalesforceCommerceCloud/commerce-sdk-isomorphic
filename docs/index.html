@@ -133,17 +133,7 @@ yarn install commerce-sdk-isomorphic</code></pre>
 				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
 					<h3>Usage</h3>
 				</a>
-				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> ocapi <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;commerce-sdk-isomorphic&#x27;</span>;
-<span class="hljs-keyword">const</span> { helpers, ShopperLogin, ShopperSearch } = ocapi;
-
-<span class="hljs-comment">// Named imports also work</span>
-<span class="hljs-comment">// import {helpers, ShopperLogin, ShopperSearch} from &#x27;commerce-sdk-isomorphic&#x27;;</span>
-
-<span class="hljs-comment">// Alternatively, you can use subpath imports to import a single API at a time instead of the entire SDK</span>
-<span class="hljs-comment">// Useful for when you want a slimmer bundle size and only need a single API</span>
-<span class="hljs-comment">// import * as helpers from &#x27;commerce-sdk-isomorphic/helpers&#x27;</span>
-<span class="hljs-comment">// import { ShopperProducts } from &#x27;commerce-sdk-isomorphic/shopperProducts&#x27;;</span>
-<span class="hljs-comment">// import { ShopperSearch } from &#x27;commerce-sdk-isomorphic/shopperSearch&#x27;;</span>
+				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> {helpers, ShopperLogin, ShopperSearch} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;commerce-sdk-isomorphic&#x27;</span>;
 
 <span class="hljs-keyword">const</span> config = {
   <span class="hljs-comment">// SCAPI does not support CORS, so client side requests must use a reverse proxy.</span>
@@ -169,78 +159,6 @@ yarn install commerce-sdk-isomorphic</code></pre>
 <span class="hljs-keyword">const</span> searchResult = <span class="hljs-keyword">await</span> shopperSearch.productSearch({
   <span class="hljs-attr">parameters</span>: {<span class="hljs-attr">q</span>: <span class="hljs-string">&#x27;shirt&#x27;</span>},
 });</code></pre>
-				<a href="#import-strategies" id="import-strategies" style="color: inherit; text-decoration: none;">
-					<h4>Import Strategies</h4>
-				</a>
-				<p>The SDK supports multiple import patterns to accommodate different use cases:</p>
-				<p><strong>Default Import (Full SDK)</strong></p>
-				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> ocapi <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;commerce-sdk-isomorphic&#x27;</span>;
-<span class="hljs-keyword">const</span> { helpers, ShopperLogin, ShopperSearch } = ocapi;</code></pre>
-				<p><strong>Named Imports (Full SDK)</strong></p>
-				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { helpers, ShopperLogin, ShopperSearch } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;commerce-sdk-isomorphic&#x27;</span>;</code></pre>
-				<p><strong>Subpath Imports (Individual APIs and Common dependencies)</strong></p>
-				<p><em>ESM (ES Modules):</em></p>
-				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { ShopperLogin } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;commerce-sdk-isomorphic/shopperLogin&#x27;</span>;
-<span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> helpers <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;commerce-sdk-isomorphic/helpers&#x27;</span>;</code></pre>
-				<p><em>CommonJS:</em></p>
-				<pre><code class="language-javascript"><span class="hljs-keyword">const</span> { ShopperLogin } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;commerce-sdk-isomorphic/shopperLogin&#x27;</span>);
-<span class="hljs-keyword">const</span> helpers = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;commerce-sdk-isomorphic/helpers&#x27;</span>);</code></pre>
-				<a href="#choosing-the-right-import-strategy" id="choosing-the-right-import-strategy" style="color: inherit; text-decoration: none;">
-					<h4>Choosing the Right Import Strategy</h4>
-				</a>
-				<p><strong>Use Default/Named Imports when:</strong></p>
-				<ul>
-					<li>You need multiple APIs from the SDK</li>
-					<li>You want the smallest overall bundle size for comprehensive usage</li>
-					<li>The entire SDK is optimized and maximally compressed as a single bundle</li>
-				</ul>
-				<p><strong>Note:</strong> Default and named imports load the entire SDK, including all APIs, helpers, and dependencies.</p>
-				<p><strong>Use Subpath Imports when:</strong></p>
-				<ul>
-					<li>You only need specific APIs</li>
-					<li>You want to minimize initial bundle size</li>
-					<li>You&#39;re implementing dynamic loading for better page performance</li>
-					<li>You need granular control over which APIs are loaded</li>
-				</ul>
-				<p><strong>Note:</strong> While subpath imports reduce initial bundle size, using them for all APIs will result in a larger total bundle size due to duplicated dependencies required for standalone operation.</p>
-				<a href="#custom-fetch-function" id="custom-fetch-function" style="color: inherit; text-decoration: none;">
-					<h4>Custom Fetch function</h4>
-				</a>
-				<p>You can provide your own custom fetch function to intercept, log, or modify all SDK requests. This is useful for:</p>
-				<ul>
-					<li><strong>Request/Response Logging</strong>: Track all API calls for debugging and monitoring</li>
-					<li><strong>Request Interception</strong>: Add custom headers, modify request URLs, or implement custom retry logic</li>
-					<li><strong>Error Handling</strong>: Add custom error processing or transformation before responses reach your application</li>
-					<li><strong>Performance Monitoring</strong>: Measure request/response times and track API performance metrics</li>
-				</ul>
-				<p><strong>Example with Logging:</strong></p>
-				<pre><code class="language-javascript"><span class="hljs-comment">// Custom fetch function with detailed logging</span>
-<span class="hljs-keyword">const</span> customFetch = <span class="hljs-keyword">async</span> (url, options) =&gt; {
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`[SDK Request] <span class="hljs-subst">${options?.method || <span class="hljs-string">&#x27;GET&#x27;</span>}</span> <span class="hljs-subst">${url}</span>`</span>);
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;[SDK Request Headers]&#x27;</span>, options?.headers);
-  <span class="hljs-keyword">if</span> (options?.body) {
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;[SDK Request Body]&#x27;</span>, options.body);
-  }
-
-  <span class="hljs-keyword">const</span> startTime = <span class="hljs-built_in">Date</span>.now();
-  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> fetch(url, options);
-  <span class="hljs-keyword">const</span> duration = <span class="hljs-built_in">Date</span>.now() - startTime;
-
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`[SDK Response] <span class="hljs-subst">${response.status}</span> <span class="hljs-subst">${response.statusText}</span> (<span class="hljs-subst">${duration}</span>ms)`</span>);
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;[SDK Response Headers]&#x27;</span>, <span class="hljs-built_in">Object</span>.fromEntries(response.headers.entries()));
-
-  <span class="hljs-keyword">return</span> response;
-};
-
-<span class="hljs-keyword">const</span> config = {
-  <span class="hljs-attr">parameters</span>: {
-    <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;&lt;your-client-id&gt;&#x27;</span>,
-    <span class="hljs-attr">organizationId</span>: <span class="hljs-string">&#x27;&lt;your-org-id&gt;&#x27;</span>,
-    <span class="hljs-attr">shortCode</span>: <span class="hljs-string">&#x27;&lt;your-short-code&gt;&#x27;</span>,
-    <span class="hljs-attr">siteId</span>: <span class="hljs-string">&#x27;&lt;your-site-id&gt;&#x27;</span>,
-  },
-  <span class="hljs-attr">fetch</span>: customFetch,
-};</code></pre>
 				<a href="#fetch-options" id="fetch-options" style="color: inherit; text-decoration: none;">
 					<h4>Fetch Options</h4>
 				</a>
@@ -415,24 +333,6 @@ yarn install commerce-sdk-isomorphic</code></pre>
 
 <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;categoriesResult: &quot;</span>, categoriesResult);</code></pre>
 				<p><strong>NOTE: In the next major version release, path parameters will be single encoded by default</strong></p>
-				<a href="#unstable-releases" id="unstable-releases" style="color: inherit; text-decoration: none;">
-					<h2>Unstable Releases</h2>
-				</a>
-				<p><strong>⚠️ Important: Unstable/preview releases are experimental and not officially supported.</strong></p>
-				<p>Preview releases (e.g., preview, unstable, or pre-release versions) are provided for experimental purposes and early testing of upcoming features. These releases:</p>
-				<ul>
-					<li><strong>Are not intended for production use</strong> - Do not use unstable releases in production environments</li>
-					<li><strong>May contain breaking changes</strong> - API signatures, behavior, and structure may change without notice</li>
-					<li><strong>Are not officially supported</strong> - No support, bug fixes, or security patches are guaranteed</li>
-					<li><strong>May have incomplete features</strong> - Functionality may be partially implemented or subject to change</li>
-				</ul>
-				<p><strong>Use stable releases for production applications.</strong> Only use unstable releases for:</p>
-				<ul>
-					<li>Testing upcoming features in development environments</li>
-					<li>Providing feedback on new functionality before official release</li>
-					<li>Experimental integrations that are not mission-critical</li>
-				</ul>
-				<p>For production deployments, always use the latest stable release version available on npm.</p>
 				<a href="#license-information" id="license-information" style="color: inherit; text-decoration: none;">
 					<h2>License Information</h2>
 				</a>
@@ -462,6 +362,9 @@ yarn install commerce-sdk-isomorphic</code></pre>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/shopperbasketsv2.html">shopper<wbr>Basketsv2</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/shopperconfigurations.html">shopper<wbr>Configurations</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/shopperconsents.html">shopper<wbr>Consents</a>
