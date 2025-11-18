@@ -3,7 +3,6 @@ shopper-baskets-oas-v2=2.1.1
 shopper-configurations-oas=1.0.0
 shopper-consents-oas-v1=1.1.2
 shopper-context-oas-v1=1.1.2
-shopper-custom-objects-oas-v1=1.0.10
 shopper-customers-oas-v1=1.1.2
 shopper-experience-oas-v1=1.0.9
 shopper-gift-certificates-oas-v1=1.0.27

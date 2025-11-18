@@ -4,6 +4,9 @@
 
 ### API Versions
 
+New APIs:
+- Shopper Configurations
+
 | API Name | API Version |
 |----------|-------------|
 | shopper-baskets | 1.9.1 |
@@ -11,7 +14,6 @@
 | shopper-configurations | 1.0.0 |
 | shopper-consents | 1.1.2 |
 | shopper-context | 1.1.2 |
-| shopper-custom-objects | 1.0.10 |
 | shopper-customers | 1.1.2 |
 | shopper-experience | 1.0.9 |
 | shopper-gift-certificates | 1.0.27 |
