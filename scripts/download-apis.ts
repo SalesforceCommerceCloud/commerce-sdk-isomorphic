@@ -11,7 +11,6 @@ import path from 'path';
 import fs from 'fs-extra';
 import AdmZip from 'adm-zip';
 
-
 /**
  * Downloads API assets using anypoint-cli-v4 and extracts them to the target directory.
  *

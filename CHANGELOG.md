@@ -33,7 +33,7 @@ DO NOT use Shopper-Consents API in production, this api might be subject to chan
 - Use native node fetch available in node 18+ instead of `node-fetch` polyfill [#214](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/214)
 - Support subpath imports for individual APIs and named imports [#219](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/219)
 
-NOTE: This release is deprecated. The features introduced in v4.1.0 were experimental and were removed in v4.2.0.
+NOTE: This release is deprecated. The features introduced in v4.1.0 were experimental and were removed in v4.2.0
 
 ## v4.0.1
 
@@ -70,6 +70,9 @@ NOTE: This release is deprecated. The features introduced in v4.1.0 were experim
 - Allow custom properties on request bodies to be passed
 - Remove API version from client config
   - Use `ShopperBasketsV2` API class to use V2 of Shopper Baskets
+
+**NOTE: The Shopper-Consents API is experimental and will not be available for consumption until October 21st, 2025.
+DO NOT use Shopper-Consents API in production, this api might be subject to change.**
 
 ## v3.4.0
 

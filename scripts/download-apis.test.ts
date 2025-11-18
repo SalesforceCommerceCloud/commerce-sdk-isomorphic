@@ -20,7 +20,8 @@ const mockedFs = fs as jest.Mocked<typeof fs>;
 const MockedAdmZip = AdmZip as jest.MockedClass<typeof AdmZip>;
 
 describe('download-apis', () => {
-  const mockApiId = '893f605e-10e2-423a-bdb4-f952f56eb6d8/shopper-baskets-oas/1.9.0';
+  const mockApiId =
+    '893f605e-10e2-423a-bdb4-f952f56eb6d8/shopper-baskets-oas/1.9.0';
   const mockTargetDir = '/path/to/target';
   const mockOrgId = '893f605e-10e2-423a-bdb4-f952f56eb6d8';
   const mockTempDir = path.join(process.cwd(), 'temp', 'downloads');
@@ -206,9 +207,7 @@ describe('download-apis', () => {
 
       await expect(
         downloadApisWithAnypointCli(mockApiId, mockTargetDir, mockOrgId)
-      ).rejects.toThrow(
-        `Failed to download API ${mockApiId}`
-      );
+      ).rejects.toThrow(`Failed to download API ${mockApiId}`);
     });
 
     it('should use correct temp directory path', async () => {
@@ -264,10 +263,7 @@ describe('download-apis', () => {
 
       await downloadApisWithAnypointCli(mockApiId, mockTargetDir, mockOrgId);
 
-      expect(mockExtractAllTo).toHaveBeenCalledWith(
-        mockTargetDir,
-        true
-      );
+      expect(mockExtractAllTo).toHaveBeenCalledWith(mockTargetDir, true);
     });
   });
 });
