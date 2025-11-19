@@ -311,8 +311,8 @@ describe('callCustomEndpoint', () => {
     const copyOptions = {
       ...options,
       customApiPathParameters: {
-        ...options.customApiPathParameters,
-        endpointPath,
+        apiName: 'api_name',
+        apiVersion: 'v2',
       },
     };
 
@@ -325,12 +325,22 @@ describe('callCustomEndpoint', () => {
       ...clientConfig,
       baseUri:
         'https://{shortCode}.api.commercecloud.salesforce.com/custom/{apiName}/{apiVersion}',
+      parameters: {
+        ...clientConfig.parameters,
+        endpointPath,
+      },
     };
 
     const doFetchSpy = jest.spyOn(fetchHelper, 'doFetch');
     await callCustomEndpoint({
       options: copyOptions,
-      clientConfig,
+      clientConfig: {
+        ...clientConfig,
+        parameters: {
+          ...clientConfig.parameters,
+          endpointPath, // pass endpoint path through clientConfig to increase branch coverage
+        },
+      },
       rawResponse: true,
     });
     expect(doFetchSpy).toBeCalledTimes(1);
