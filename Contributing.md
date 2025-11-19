@@ -40,6 +40,24 @@ $ yarn test
 
 ### Merging to `preview`
 
+### Updating APIs
+Update the version file in `api-versions.txt` to the version you want to test or add a new API. Use the API version from your API release or branch build.
+
+To add a new API:
+
+1. Edit `api-versions.txt` and add a new line following the existing format:
+   - `<api-asset-id-with-version-suffix>=<semantic-version>`
+   - Example:
+
+   ```
+   shopper-newfeature-oas-v1=1.0.0
+   ```
+
+2. Run:
+   - `yarn updateApis` to download the API OAS into `apis/` directory
+
+#### Update and Check SDK before merging:
+
 Before merging any changes into `preview`, SDK generation must pass locally:
 
 ```
