@@ -145,59 +145,6 @@ export class {{#vendorExtensions}}{{#x-sdk-classname}}{{{ . }}}{{/x-sdk-classnam
         this.clientConfig = new ClientConfig(cfg) as ClientConfig<ConfigParameters> & { baseUri: string };
     }
 
-    static readonly paramKeys = {
-    {{#operations}}
-    {{#operation}}
-    {{#vendorExtensions}}
-    {{^x-scapi-internal}}
-        {{nickname}}: [
-            {{#allParams}}
-            {{^isBodyParam}}
-            {{^isHeaderParam}}
-            '{{paramName}}',
-            {{/isHeaderParam}}
-            {{/isBodyParam}}
-            {{/allParams}}
-        ],
-        {{nickname}}Required: [
-            {{#allParams}}
-            {{^isBodyParam}}
-            {{^isHeaderParam}}
-            {{#required}}
-            '{{paramName}}',
-            {{/required}}
-            {{/isHeaderParam}}
-            {{/isBodyParam}}
-            {{/allParams}}
-        ],
-    {{/x-scapi-internal}}
-    {{/vendorExtensions}}
-    {{^vendorExtensions}}
-        {{nickname}}: [
-            {{#allParams}}
-            {{^isBodyParam}}
-            {{^isHeaderParam}}
-            '{{paramName}}',
-            {{/isHeaderParam}}
-            {{/isBodyParam}}
-            {{/allParams}}
-        ],
-        {{nickname}}Required: [
-            {{#allParams}}
-            {{^isBodyParam}}
-            {{^isHeaderParam}}
-            {{#required}}
-            '{{paramName}}',
-            {{/required}}
-            {{/isHeaderParam}}
-            {{/isBodyParam}}
-            {{/allParams}}
-        ],
-    {{/vendorExtensions}}
-    {{/operation}}
-    {{/operations}}
-    } as const;
-
 {{#operations}}
 {{#operation}}
 {{#vendorExtensions}}
