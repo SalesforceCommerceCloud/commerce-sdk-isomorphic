@@ -4878,7 +4878,7 @@ anypoint-cli-designcenter-plugin@1.0.20:
     upath "^2.0.1"
     util "^0.12.4"
 
-anypoint-cli-exchange-plugin@1.0.12, anypoint-cli-exchange-plugin@^1.0.0:
+anypoint-cli-exchange-plugin@1.0.12:
   version "1.0.12"
   resolved "https://registry.yarnpkg.com/anypoint-cli-exchange-plugin/-/anypoint-cli-exchange-plugin-1.0.12.tgz#3d0859adaff99d1980152f46ee044ae471e0c24b"
   integrity sha512-BZlzua8P4Y0TE6YChI9ldKeBw39vAdB1Djn8xMZAfyTDP7UaubNKt/mWbJ6Z/dKdpEqkbLCFh/ynJnrTZ9BWRw==

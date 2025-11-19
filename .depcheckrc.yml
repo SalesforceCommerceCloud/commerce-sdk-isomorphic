@@ -2,7 +2,6 @@ ignores:
   # Include an explanation why the package is ignored
   - '@babel/*' # Used in babel.config.js and babel.config.jest.js
   - '@types/react-dom' # Used in src/index.jsx
-  - anypoint-cli-exchange-plugin # CLI tool executed via execSync in scripts, not imported
   - anypoint-cli-v4 # CLI tool executed via execSync in scripts, not imported
   - jest-environment-jsdom-sixteen # Used by test:react script in package.json
   - lib # Used in App.jsx, references local directory

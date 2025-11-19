@@ -124,7 +124,6 @@
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "adm-zip": "^0.5.10",
-    "anypoint-cli-exchange-plugin": "^1.0.0",
     "anypoint-cli-v4": "1.6.12",
     "autoprefixer": "9.8.8",
     "bundlesize2": "^0.0.31",
