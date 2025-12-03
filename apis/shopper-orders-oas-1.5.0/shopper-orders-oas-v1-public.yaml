@@ -1,8 +1,12 @@
 openapi: 3.0.3
 info:
+  x-api-type: Shopper
+  x-api-family: Checkout
   title: Shopper Orders
   version: v1
   description: |-
+    [Download API specification](https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-orders/shopper-orders-oas-v1-public.yaml)
+
     # API Overview
 
     The Shopper Orders API enables you to:
@@ -111,6 +115,7 @@ paths:
         - $ref: '#/components/parameters/organizationId'
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
+        - $ref: '#/components/parameters/expandOrders'
       responses:
         '200':
           description: Success, the response body contains the order.
@@ -200,6 +205,75 @@ paths:
         - ShopperTokenTsob:
             - sfcc.shopper-baskets-orders
             - sfcc.shopper-baskets-orders.rw
+  /organizations/{organizationId}/orders/{orderNo}/actions/fail:
+    post:
+      description: |-
+        Fails an unplaced order and optionally reopens the basket when indicated.
+        Creates a HistoryEntry in the failed Order with provided reasonCode.
+      externalDocs:
+        description: Find more info on fail order behavior here
+        url: https://salesforcecommercecloud.github.io/b2c-dev-doc/docs/current/scriptapi/html/index.html?target=class_dw_order_OrderMgr.html#dw_order_OrderMgr_failOrder_Order_Boolean_DetailAnchor
+      operationId: failOrder
+      summary: Fail an Order.
+      parameters:
+        - $ref: '#/components/parameters/organizationId'
+        - $ref: '#/components/parameters/orderNo'
+        - $ref: '#/components/parameters/siteId'
+        - $ref: '#/components/parameters/locale'
+        - $ref: '#/components/parameters/reopenBasket'
+      requestBody:
+        content:
+          application/json:
+            examples:
+              FailOrder:
+                $ref: '#/components/examples/FailOrder'
+            schema:
+              $ref: '#/components/schemas/FailOrderRequest'
+      security:
+        - ShopperToken:
+            - sfcc.shopper-baskets-orders
+            - sfcc.shopper-baskets-orders.rw
+      responses:
+        '201':
+          description: |
+            Order failed successfully. No content returned.
+          headers:
+            Location:
+              description: The location for accessing the reopened basket if one exists.
+              schema:
+                type: string
+        '204':
+          description: |
+            Order failed successfully. No content returned.
+        '400':
+          description: |-
+            Possible reasons:
+              - Invalid request parameters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                BadRequest:
+                  $ref: '#/components/examples/BadRequest'
+        '404':
+          description: The order with the given order number is unknown for the shopper.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                OrderNotFound:
+                  $ref: '#/components/examples/OrderNotFound'
+        '409':
+          description: The order is in invalid status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                InvalidStateTransition:
+                  $ref: '#/components/examples/InvalidStateTransition'
   /organizations/{organizationId}/orders/{orderNo}/payment-instruments:
     post:
       description: |-
@@ -315,6 +389,8 @@ paths:
             examples:
               PaymentInstrumentPatch:
                 $ref: '#/components/examples/PaymentInstrumentPatch'
+              PaymentInstrumentPatchWithSalesforcePayments:
+                $ref: '#/components/examples/PaymentInstrumentPatchWithSalesforcePayments'
             schema:
               $ref: '#/components/schemas/OrderPaymentInstrumentRequest'
       responses:
@@ -327,6 +403,8 @@ paths:
               examples:
                 Order:
                   $ref: '#/components/examples/examples-PaymentInstrumentPatch'
+                OrderWhenSalesforcePaymentsEnabled:
+                  $ref: '#/components/examples/PaymentInstrumentPatchWhenSalesforcePaymentsEnabled'
         '400':
           description: |-
             Possible reasons:
@@ -1073,7 +1151,51 @@ components:
           description: The payment method ID. It is read only.
           example: CREDIT_CARD
           type: string
-      type: object
+        paymentReference:
+          description: Payment reference information for various payment service providers, only when Salesforce Payments is enabled.
+          type: object
+          properties:
+            paymentReferenceId:
+              description: Payment reference identifier. Can be payment intent ID for Stripe, PSP reference for Adyen, PayPal order ID for PayPal, or similar identifier for other payment providers.
+              type: string
+              maxLength: 256
+              example: pi_3N4B2vF0wDjebNCp1234567
+            clientSecret:
+              description: Client secret for payment confirmation. Used primarily by Stripe for client-side payment confirmation.
+              type: string
+              maxLength: 256
+              example: pi_3N4B2vF0wDjebNCp1234567_secret_abc123
+            redirectUrl:
+              description: Redirect URL for payment methods that require user redirection to complete payment.
+              type: string
+              format: uri
+              maxLength: 2048
+              example: https://checkout.stripe.com/pay/cs_test_abc123
+            gateway:
+              description: The payment gateway used to process the payment.
+              example: stripe
+              type: string
+              enum:
+                - stripe
+                - paypal
+                - adyen
+            gatewayProperties:
+              description: The payment gateway specific properties.
+              type: object
+              additionalProperties: false
+              properties:
+                stripe:
+                  description: Stripe specific properties.
+                  type: object
+                  additionalProperties: true
+                adyen:
+                  description: Ayden specific properties.
+                  type: object
+                  additionalProperties: true
+                paypal:
+                  description: PayPal specific properties.
+                  type: object
+                  additionalProperties: true
     ProductItem:
       description: Document representing a product item.
       additionalProperties:
@@ -1202,6 +1324,9 @@ components:
             a particular shipping method. It is read only.
           example: 006490dcc338feeafc71c964bf
           type: string
+        somInfo:
+          description: Information retrieved from Salesforce Order Management (SOM) for the product.
+          $ref: '#/components/schemas/SomInfo'
         tax:
           format: double
           description: The tax for the product item, not including price adjustments. It is read only.
@@ -1454,6 +1579,31 @@ components:
           type: string
       required:
         - id
+    SomInfo:
+      description: "Additional information retrieved from Salesforce Order Management (SOM) \nSee https://developer.salesforce.com/docs/atlas.en-us.order_management_developer_guide.meta/order_management_developer_guide/sforce_api_objects_orderitemsummary.htm for more information."
+      additionalProperties: false
+      properties:
+        status:
+          description: Salesforce Order Management (SOM) status
+          example: ordered
+          enum:
+            - ordered
+            - returned
+            - canceled
+            - paid
+            - reshipped
+            - fulfilled
+            - partially_fulfilled
+            - allocated
+            - partially_allocated
+            - return_initiated
+          type: string
+        quantityAvailableToCancel:
+          format: double
+          description: The quantity that can be cancelled.
+          example: 2
+          type: number
+      type: object
     ShipmentId:
       minLength: 1
       type: string
@@ -1903,6 +2053,78 @@ components:
       maxLength: 50
       type: string
       example: '00000410'
+    ShipmentItem:
+      description: Individual item within a shipment
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          description: Unique identifier for the shipment item
+          type: string
+          example: 0OBVF000006603F4AQ
+        productItemId:
+          description: Reference to the product item in the order
+          type: string
+          example: 10uVF0000002fGnYAI
+        quantity:
+          description: Quantity of product items with the referenced productItemId in this shipment
+          type: number
+          format: double
+          example: 2
+    schemas-Shipment:
+      description: Shipment information from Salesforce Order Management created during fulfillment process. See https://developer.salesforce.com/docs/atlas.en-us.230.0.order_management_developer_guide.meta/order_management_developer_guide/sforce_api_objects_fulfillmentorder.htm for more information.
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          description: Unique identifier for the shipment
+          type: string
+          example: 0OBVF000000003F4AQ
+        status:
+          description: Current status of the shipment
+          type: string
+          example: shipped
+        provider:
+          description: Shipping provider name
+          type: string
+          example: UPS
+        trackingNumber:
+          description: Tracking number for the shipment
+          type: string
+          example: '123456789'
+        trackingUrl:
+          description: URL to track the shipment
+          type: string
+          example: https://www.ups.com/track?loc=en_US&tracknum=123456789
+        expectedDeliveryDate:
+          description: Expected delivery date and time
+          type: string
+          format: date-time
+          example: 2025-11-12T20:00:00.000+0000
+        actualDeliveryDate:
+          description: Actual delivery date and time (null if not yet delivered)
+          type: string
+          format: date-time
+          example: 2025-11-12T20:00:00.000+0000
+        shipmentItems:
+          description: Items included in this shipment
+          type: array
+          items:
+            $ref: '#/components/schemas/ShipmentItem'
+    schemas-SomInfo:
+      description: "Additional information retrieved from Salesforce Order Management (SOM) \nSee https://developer.salesforce.com/docs/atlas.en-us.order_management_developer_guide.meta/order_management_developer_guide/sforce_api_objects_ordersummary.htm for more information."
+      additionalProperties: false
+      properties:
+        status:
+          description: Current status of the order
+          type: string
+          example: shipped
+        shipments:
+          description: List of shipments associated with the order
+          type: array
+          items:
+            $ref: '#/components/schemas/schemas-Shipment'
+      type: object
     Order:
       description: Document representing an order.
       type: object
@@ -2119,6 +2341,9 @@ components:
           example: ShoppingSite
           allOf:
             - $ref: '#/components/schemas/SiteId'
+        somInfo:
+          description: Information retrieved from Salesforce Order Management (SOM) for the order.
+          $ref: '#/components/schemas/schemas-SomInfo'
         sourceCode:
           description: The source code assigned to the basket from which this order was created. It is read only.
           example: OUTDOOR1
@@ -2212,6 +2437,18 @@ components:
         orderViewCode:
           description: The order view code associated with the order to be looked up.
           type: string
+    FailOrderRequest:
+      description: Document representing a fail order request.
+      type: object
+      properties:
+        reasonCode:
+          description: The reason code for failing the order.
+          enum:
+            - payment_confirm_failure
+            - payment_capture_failure
+            - payment_auth_failure
+          type: string
+          example: payment_confirm_failure
     OrderPaymentCardRequest:
       description: Document representing an order payment card request.
       type: object
@@ -2265,6 +2502,57 @@ components:
           description: The year the payment card is valid from.
           example: 2019
           type: integer
+    PaymentReferenceRequest:
+      type: object
+      description: Properties for Payments Reference Request
+      properties:
+        paymentMethodType:
+          type: string
+          maxLength: 64
+          description: Payment Method Type
+          example: card
+        zoneId:
+          type: string
+          description: The unique identifier for a Payments zone.
+          pattern: ^[a-zA-Z0-9\-_]{1,100}$
+          minLength: 1
+          maxLength: 100
+          example:
+            Amer-Zone: null
+        shippingPreference:
+          type: string
+          maxLength: 64
+          description: Shipping preference for PayPal payment processing. Applicable only for basket payment instruments.
+          enum:
+            - GET_FROM_FILE
+            - NO_SHIPPING
+            - SET_PROVIDED_ADDRESS
+          example: GET_FROM_FILE
+        gateway:
+          description: The payment gateway used to process the payment.
+          example: stripe
+          type: string
+          enum:
+            - stripe
+            - paypal
+            - adyen
+        gatewayProperties:
+          description: The payment gateway specific properties.
+          type: object
+          additionalProperties: false
+          properties:
+            stripe:
+              description: Stripe specific properties.
+              type: object
+              additionalProperties: true
+            adyen:
+              description: Ayden specific properties.
+              type: object
+              additionalProperties: true
+            paypal:
+              description: PayPal specific properties.
+              type: object
+              additionalProperties: true
     OrderPaymentInstrumentRequest:
       description: Document representing an order payment instrument request.
       additionalProperties:
@@ -2300,9 +2588,9 @@ components:
           example: CREDIT_CARD
           type: string
         paymentReferenceRequest:
-          description: The payment reference request used by Salesforce Payments.
+          description: Payment reference information for various payment service providers, only when Salesforce Payments is enabled.
           allOf:
-            - $ref: '#/components/schemas/SalesforcePaymentsRequest'
+            - $ref: '#/components/schemas/PaymentReferenceRequest'
     PaymentCardSpec:
       description: Document representing the specification for a payment card.
       type: object
@@ -2385,20 +2673,6 @@ components:
           items:
             $ref: '#/components/schemas/PaymentMethod'
       type: object
-    SalesforcePaymentsRequest:
-      description: Document representing a Salesforce Payments request.
-      type: object
-      properties:
-        paymentMethodType:
-          maxLength: 100
-          description: 'The payment method type (for example: Visa).'
-          example: card
-          type: string
-        zoneId:
-          maxLength: 100
-          description: 'The zone ID.'
-          example: default
-          type: string
     TaxItem:
       description: Object representing the taxation.
       properties:
@@ -2477,6 +2751,31 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/OrderNo'
+    expandOrders:
+      name: expand
+      in: query
+      required: false
+      style: form
+      explode: false
+      example: som,som_shipments
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+            - som
+            - som_shipments
+          example: som
+      description: "When a 'som' expand is selected, data is primarily loaded from Salesforce Order Management (SOM), if available. \nWhen data is available in SOM, the expand parameter has the following behavior:\n\"expand=som\": order and related order entities (product items, delivery group, etc) are returned.\n\"expand=som_shipments\": order and fulfillment (shipment) data is returned.\n\"expand=som,som_shipments\": order, related order entities and fulfillment (shipment) data is returned\nIf your instance is not integrated with SOM or the order data is not available, the `expand=som` command is disregarded."
+    reopenBasket:
+      name: reopenBasket
+      in: query
+      description: "Set to true to reopen basket from the order.\nA basket can only be reopened if no other basket for the customer exists at the moment of the call to fail Order, \nsince a customer is limited to 1 storefront basket at a time."
+      required: false
+      schema:
+        type: boolean
+        default: false
+        example: false
     paymentInstrumentId:
       name: paymentInstrumentId
       in: path
@@ -2816,6 +3115,14 @@ components:
         type: https://api.commercecloud.salesforce.com/documentation/error/v1/errors/order-not-found
         title: Order Not Found
         detail: No order with number '123' was found.
+    FailOrder:
+      value:
+        reasonCode: payment_confirm_failure
+    InvalidStateTransition:
+      value:
+        type: https://api.commercecloud.salesforce.com/documentation/error/v1/errors/order-status-transition
+        title: Order Status Transition
+        detail: The order status change from 'Completed' to 'Failed' for order with number '00000335' isn't supported.
     PaymentInstrumentPost:
       value:
         amount: 700
@@ -3003,6 +3310,17 @@ components:
         paymentCard:
           cardType: Visa
           maskedNumber: '****-****-****-4567'
+    PaymentInstrumentPatchWithSalesforcePayments:
+      value:
+        amount: 700
+        paymentMethodId: Salesforce Payments
+        paymentReferenceRequest:
+          paymentMethodType: card
+          zoneId: Amer-Zone
+          gateway: stripe
+          gatewayProperties:
+            stripe:
+              setup_future_usage: on_session
     examples-PaymentInstrumentPatch:
       value:
         adjustedMerchandizeTotalTax: 30
@@ -3163,6 +3481,185 @@ components:
             tax: 0.8
             taxBasis: 15.99
             taxClassId: standard
+            taxRate: 0.05
+        shippingStatus: not_shipped
+        shippingTotal: 15.99
+        shippingTotalTax: 0.8
+        status: new
+        taxation: net
+        taxTotal: 30.8
+    PaymentInstrumentPatchWhenSalesforcePaymentsEnabled:
+      value:
+        adjustedMerchandizeTotalTax: 30
+        adjustedShippingTotalTax: 0.8
+        billingAddress:
+          address1: 104 Presidential Way
+          city: Woburn
+          countryCode: US
+          firstName: Stephanie
+          fullName: Stephanie Miller
+          id: 5f695b6f4bb63cb686483d65a0
+          lastName: Miller
+          postalCode: '01801'
+          stateCode: MA
+        channelType: storefront
+        confirmationStatus: not_confirmed
+        couponItems:
+          - code: 5ties
+            couponItemId: d3f7ae47e5897a6b5d2fd541f0
+            statusCode: applied
+            valid: true
+        createdBy: Customer
+        creationDate: '2019-10-22T12:17:28.341Z'
+        currency: USD
+        customerInfo:
+          customerId: beQeANXJNsd0xcINsB6cSrobQa
+          customerName: Stephanie Miller
+          email: shopper@salesforce-test.com
+        customerName: Stephanie Miller
+        exportStatus: not_exported
+        groupedTaxItems:
+          - taxRate: 0.05
+            taxValue: 30.8
+        guest: true
+        giftCertificateItems:
+          - amount: 1
+            giftCertificateItemId: 540db3ffe58bfb04ab673757d7
+            recipientEmail: miller@salesforce-test.com
+            shipmentId: me
+        lastModified: '2019-10-22T12:17:28.376Z'
+        merchandizeTotalTax: 30
+        orderNo: '00000410'
+        orderPriceAdjustments:
+          - appliedDiscount:
+              amount: 10
+              type: amount
+            reasonCode: customer service
+            createdBy: support
+            creationDate: '2019-10-22T12:17:28.347Z'
+            custom: true
+            lastModified: '2019-10-22T12:17:28.349Z'
+            manual: true
+            price: -10
+            priceAdjustmentId: 63b9eb9b4a92bd3e5c6ee804c2
+            promotionId: 5ties
+        orderToken: 7gJDIFlnho_mXrxfxVB9Neic3J7szzR9glvgU5Ath-I
+        orderTotal: 586.76
+        orderViewCode: YGXrGbZWlr29tIsGnYgR5o_8OxBMXWigevx1WD0X1Hc
+        paymentInstruments:
+          - amount: 20
+            paymentInstrumentId: ca47e0da3d49b067b630db624a
+            paymentMethodId: PAYPAL
+            paymentReference:
+              paymentReferenceId: PAY-1AB23456CD789012EF34GHIJ
+              redirectUrl: https://www.paypal.com/checkoutnow?token=EC-1AB23456CD789012EF
+          - amount: 566.76
+            paymentCard:
+              cardType: Visa
+              creditCardExpired: false
+            paymentInstrumentId: 6b970a04ca8a468a64b9936764
+            paymentMethodId: CREDIT_CARD
+            paymentReference:
+              paymentReferenceId: 8815749596351791C
+              redirectUrl: https://test.adyen.com/hpp/pay.shtml?merchantReference=12345
+          - amount: 2
+            paymentCard:
+              expirationYear: 1990
+              expirationMonth: 7
+              validFromMonth: 8
+              validFromYear: 2007
+              issueNumber: i117
+              maskedNumber: '******4567'
+              holder: Miller
+              cardType: Visa
+            paymentInstrumentId: 9f21f0b51f206fbde2ff5789e5
+            paymentMethodId: CREDIT_CARD
+            paymentReference:
+              paymentReferenceId: pi_1J4K5L2eZvKYlo2CyZ8K5L6M
+              clientSecret: pi_1J4K5L2eZvKYlo2CyZ8K5L6M_secret_abcdef123456
+              gateway: stripe
+              gatewayProperties:
+                stripe:
+                  setup_future_usage: on_session
+        paymentStatus: not_paid
+        productItems:
+          - adjustedTax: 30
+            basePrice: 199.99
+            bonusProductLineItem: false
+            gift: false
+            itemId: d9516eecc64bd90b0022714d26
+            itemText: Green Umbrella - Sustained Edition
+            optionItems:
+              - adjustedTax: 0
+                basePrice: 0
+                bonusProductLineItem: false
+                gift: false
+                itemId: 8991e8d7adf0f46ffbc584e175
+                itemText: 'Monogramming: Letter "A"'
+                optionId: textMonogramLetters
+                optionValueId: A
+                price: 0
+                priceAfterItemDiscount: 0
+                priceAfterOrderDiscount: 0
+                productId: '701643632930'
+                productName: Flat Front Pant
+                shipmentId: me
+                tax: 0
+                taxBasis: 0
+                taxRate: 0.05
+            priceAfterItemDiscount: 199.99
+            priceAfterOrderDiscount: 199.99
+            productId: '701643632930'
+            productName: Green Umbrella - Sustained Edition
+            quantity: 1
+            shipmentId: me
+            tax: 30
+            taxBasis: 199.99
+            taxRate: 0.05
+        productSubTotal: 199.99
+        productTotal: 199.99
+        shipments:
+          - adjustedMerchandizeTotalTax: 30
+            adjustedShippingTotalTax: 0.8
+            gift: false
+            merchandizeTotalTax: 199.99
+            productSubTotal: 199.99
+            productTotal: 199.99
+            shipmentId: me
+            shipmentNo: '00000001'
+            shipmentTotal: 386.75
+            shippingAddress:
+              address1: 104 Presidential Way
+              city: Woburn
+              countryCode: US
+              firstName: Stephanie
+              fullName: Stephanie Miller
+              id: 5f695b6f4bb63cb686483d65a0
+              lastName: Miller
+              postalCode: '01801'
+              stateCode: MA
+            shippingMethod:
+              description: Order within the next 3 hours to get it tomorrow morning
+              id: EXPRESS
+              name: Express
+              price: 15.99
+              shippingPromotions:
+                - calloutMsg: Free shipping amount has been reduced!
+                  promotionId: freeshipping_level1
+                  promotionName: Free shipping Level 1
+            shippingStatus: not_shipped
+            shippingTotal: 15.99
+            shippingTotalTax: 0.8
+            taxTotal: 30.8
+        shippingItems:
+          - adjustedTax: 0.8
+            basePrice: 15.99
+            itemId: 768abee75aa8015239a9696c7e
+            itemText: Shipping
+            priceAfterItemDiscount: 15.99
+            shipmentId: me
+            tax: 0.8
+            taxBasis: 15.99
             taxRate: 0.05
         shippingStatus: not_shipped
         shippingTotal: 15.99
