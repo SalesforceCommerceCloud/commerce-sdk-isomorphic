@@ -2331,6 +2331,7 @@ components:
           enum:
             - callback
             - sms
+            - email
         locale:
           type: string
           description: The locale of the template. Not needed for the `callback` mode
