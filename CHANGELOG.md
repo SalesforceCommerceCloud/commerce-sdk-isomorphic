@@ -1,12 +1,44 @@
 # CHANGELOG
 
-## v4.1.0
+## v4.2.0
 
-### Enchancements
+### API Versions
+
+New APIs:
+- Shopper Configurations
+
+| API Name | API Version |
+|----------|-------------|
+| shopper-baskets | 1.9.1 |
+| shopper-baskets | 2.1.1 |
+| shopper-configurations | 1.0.0 |
+| shopper-consents | 1.1.2 |
+| shopper-context | 1.1.2 |
+| shopper-customers | 1.1.2 |
+| shopper-experience | 1.0.9 |
+| shopper-gift-certificates | 1.0.27 |
+| shopper-login | 1.40.0 |
+| shopper-orders | 1.5.1 |
+| shopper-products | 1.0.39 |
+| shopper-promotions | 1.0.37 |
+| shopper-search | 1.5.1 |
+| shopper-seo | 1.0.14 |
+| shopper-stores | 1.0.18 |
+
+## v4.1.0 (DEPRECATED)
+
+### Enhancements
 
 - Use native node fetch available in node 18+ instead of `node-fetch` polyfill [#214](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/214)
 - Support subpath imports for individual APIs and named imports [#219](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/219)
 - Add importer utility for dynamic imports [#236](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/236)
+
+NOTE: This release is deprecated. The features introduced in v4.1.0 were experimental and were removed in v4.2.0
+
+## v4.0.1
+
+### Bug Fixes
+- Fix incorrect encoding of multi-segment endpoint paths in `callCustomEndpoint` [#246](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/246)
 
 ## v4.0.0
 
@@ -38,6 +70,9 @@
 - Allow custom properties on request bodies to be passed
 - Remove API version from client config
   - Use `ShopperBasketsV2` API class to use V2 of Shopper Baskets
+
+**NOTE: The Shopper-Consents API is experimental and will not be available for consumption until October 21st, 2025.
+DO NOT use Shopper-Consents API in production, this api might be subject to change.**
 
 ## v3.4.0
 

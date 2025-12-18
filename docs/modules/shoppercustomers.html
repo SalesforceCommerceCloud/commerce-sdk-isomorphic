@@ -458,7 +458,6 @@
 								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="shoppercustomers.html#pagemetatag-2" class="tsd-kind-icon">Page<wbr>Meta<wbr>Tag</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="shoppercustomers.html#paginatedresultbase-2" class="tsd-kind-icon">Paginated<wbr>Result<wbr>Base</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="shoppercustomers.html#passwordchangerequest-2" class="tsd-kind-icon">Password<wbr>Change<wbr>Request</a></li>
-								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="shoppercustomers.html#paymentbankaccount" class="tsd-kind-icon">Payment<wbr>Bank<wbr>Account</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="shoppercustomers.html#paymentbankaccountrequest-2" class="tsd-kind-icon">Payment<wbr>Bank<wbr>Account<wbr>Request</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="shoppercustomers.html#paymentcard-2" class="tsd-kind-icon">Payment<wbr>Card</a></li>
 								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="shoppercustomers.html#priceadjustment-2" class="tsd-kind-icon">Price<wbr>Adjustment</a></li>
@@ -4063,56 +4062,6 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
-					<a name="paymentbankaccount" class="tsd-anchor"></a>
-					<h3>Payment<wbr>Bank<wbr>Account</h3>
-					<div class="tsd-signature tsd-kind-icon">Payment<wbr>Bank<wbr>Account<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>driversLicenseLastDigits<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>driversLicenseStateCode<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>holder<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>maskedDriversLicense<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>maskedNumber<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>numberLastDigits<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in src/lib/shopperCustomers/models/PaymentBankAccount.ts:24</li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-comment-tags">
-							<dt>property</dt>
-							<dd><p>driversLicenseLastDigits: The last 4 characters of the decrypted driver’s license number of the bank account associated with this payment instrument.</p>
-								<ul>
-									<li><strong>Max Length:</strong> 256</li>
-								</ul>
-							</dd>
-							<dt>property</dt>
-							<dd><p>driversLicenseStateCode: The driver’s license state code.</p>
-								<ul>
-									<li><strong>Max Length:</strong> 256</li>
-								</ul>
-							</dd>
-							<dt>property</dt>
-							<dd><p>holder: The holder of the bank account.</p>
-								<ul>
-									<li><strong>Max Length:</strong> 256</li>
-								</ul>
-							</dd>
-							<dt>property</dt>
-							<dd><p>maskedDriversLicense: The decrypted driver’s license number of the bank account with all but the last 4 characters replaced with <code>*</code> characters.</p>
-								<ul>
-									<li><strong>Max Length:</strong> 256</li>
-								</ul>
-							</dd>
-							<dt>property</dt>
-							<dd><p>maskedNumber: The masked bank account number.</p>
-								<ul>
-									<li><strong>Max Length:</strong> 256</li>
-								</ul>
-							</dd>
-							<dt>property</dt>
-							<dd><p>numberLastDigits: The last digits of the bank account number.</p>
-								<ul>
-									<li><strong>Max Length:</strong> 256</li>
-								</ul>
-							</dd>
-						</dl>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
 					<a name="paymentbankaccountrequest-2" class="tsd-anchor"></a>
 					<h3>Payment<wbr>Bank<wbr>Account<wbr>Request</h3>
 					<div class="tsd-signature tsd-kind-icon">Payment<wbr>Bank<wbr>Account<wbr>Request<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>driversLicense<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>driversLicenseStateCode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>holder<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>number<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{}</span></div>
@@ -6800,6 +6749,9 @@
 						<a href="shopperbasketsv2.html">shopper<wbr>Basketsv2</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="shopperconfigurations.html">shopper<wbr>Configurations</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="shopperconsents.html">shopper<wbr>Consents</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -7956,9 +7908,6 @@
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
 						<a href="shoppercustomers.html#passwordchangerequest-2" class="tsd-kind-icon">Password<wbr>Change<wbr>Request</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="shoppercustomers.html#paymentbankaccount" class="tsd-kind-icon">Payment<wbr>Bank<wbr>Account</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
 						<a href="shoppercustomers.html#paymentbankaccountrequest-2" class="tsd-kind-icon">Payment<wbr>Bank<wbr>Account<wbr>Request</a>

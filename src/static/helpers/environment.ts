@@ -24,14 +24,20 @@ export const globalObject = isBrowser ? window : globalThis;
 
 export const hasFetchAvailable = typeof globalObject.fetch === 'function';
 
-// TODO: Remove this function in the next major version
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 export const fetch: FetchFunction = (() => {
-  // Difficult to test in node environment
-  /* istanbul ignore next */
-  if (!hasFetchAvailable) {
-    throw new Error('Please use Node.js 18+ for native fetch support.');
+  if (isNode) {
+    // .default is added because the newer versions of babel doesn't get the default export automatically for require().
+    // eslint-disable-next-line global-require, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-var-requires, @typescript-eslint/no-unsafe-member-access
+    return require('node-fetch').default;
   }
+
+  // difficult to test in node environment
+  /* istanbul ignore next */
+  if (!hasFetchAvailable)
+    throw new Error(
+      'Bad environment: it is not a node environment but fetch is not defined'
+    );
 
   return globalObject.fetch;
 })();
