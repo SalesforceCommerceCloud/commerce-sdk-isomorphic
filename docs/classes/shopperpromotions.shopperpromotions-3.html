@@ -76,7 +76,8 @@
 							<h1><a href="https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-promotions:Summary">Shopper Promotions</a></h1>
 						</a>
 					</div>
-					<p>*# API Overview</p>
+					<p>*# API Overview
+					<a href="https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-promotions/shopper-promotions-oas-v1-public.yaml">Download API specification</a></p>
 					<p>Retrieve information about active promotions within the context of a shopper and a site. You can use this API to retrieve promotions that you configured in the commerce platform by searching for specific promotion IDs or by searching for promotions associated with a campaign.</p>
 					<p>Caching is provided for the Shopper Promotions API. For details, see <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/server-side-web-tier-caching.html">Server-Side Web-Tier Caching.</a></p>
 					<a href="#authentication-amp-authorization" id="authentication-amp-authorization" style="color: inherit; text-decoration: none;">
@@ -181,7 +182,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:137</li>
+									<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:138</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -203,7 +204,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="clientconfig.clientconfig-1.html" class="tsd-signature-type">ClientConfig</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>baseUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:130</li>
+							<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:131</li>
 						</ul>
 					</aside>
 				</section>
@@ -213,7 +214,7 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Base<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"https://{shortCode}.api.commercecloud.salesforce.com/pricing/shopper-promotions/v1"</span><span class="tsd-signature-symbol"> = currentBaseUri</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:132</li>
+							<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:133</li>
 						</ul>
 					</aside>
 				</section>
@@ -223,7 +224,7 @@
 					<div class="tsd-signature tsd-kind-icon">param<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>getPromotions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"ids"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPromotionsForCampaign<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"campaignId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"startDate"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"endDate"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"currency"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPromotionsForCampaignRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"campaignId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPromotionsRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"ids"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {getPromotions: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,&#x27;ids&#x27;,&#x27;locale&#x27;,],getPromotionsRequired: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,&#x27;ids&#x27;,],getPromotionsForCampaign: [&#x27;campaignId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,&#x27;startDate&#x27;,&#x27;endDate&#x27;,&#x27;currency&#x27;,],getPromotionsForCampaignRequired: [&#x27;campaignId&#x27;,&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],} as const</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:146</li>
+							<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:147</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -258,7 +259,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:190</li>
+									<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:191</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -285,7 +286,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:217</li>
+									<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:218</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -335,7 +336,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:360</li>
+									<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:361</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -364,7 +365,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:393</li>
+									<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:394</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -414,7 +415,7 @@
 					<div class="tsd-signature tsd-kind-icon">api<wbr>Paths<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:134</li>
+							<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:135</li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -423,7 +424,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Promotions<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/promotions&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:135</li>
+								<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:136</li>
 							</ul>
 						</aside>
 					</section>
@@ -433,7 +434,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Promotions<wbr>For<wbr>Campaign<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/promotions/campaigns/{campaignId}&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:136</li>
+								<li>Defined in src/lib/shopperPromotions/apis/DefaultApi.ts:137</li>
 							</ul>
 						</aside>
 					</section>
@@ -463,6 +464,9 @@
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/shopperbasketsv2.html">shopper<wbr>Basketsv2</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/shopperconfigurations.html">shopper<wbr>Configurations</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/shopperconsents.html">shopper<wbr>Consents</a>
