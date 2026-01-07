@@ -3103,6 +3103,11 @@ components:
           type: string
           description: Adding a `hint` query parameter with a value of `cross_device` will remove the need to have the code_verifier for password reset request. If the `hint` query parameter is used it must also have been used in the password action request.
           example: cross_device
+        user_id:
+          maxLength: 128
+          type: string
+          description: User ID for logging in. This is the id that is used to log into SFCC. Required only when hint is provided.
+          example: samantha.sampleson@example.com
       description: A request for creating a new password using the password action token.
     PasswordLessLoginTokenRequest:
       required:
