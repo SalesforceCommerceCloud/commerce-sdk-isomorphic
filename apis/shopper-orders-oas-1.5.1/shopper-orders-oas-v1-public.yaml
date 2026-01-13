@@ -114,6 +114,7 @@ paths:
         - $ref: '#/components/parameters/organizationId'
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
+        - $ref: '#/components/parameters/expand'
       responses:
         '200':
           description: Success, the response body contains the order.
@@ -2468,6 +2469,14 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/PaymentInstrumentId'
+    expand:
+      name: expand
+      in: query
+      description: Expand options for the order.
+      required: false
+      example: oms
+      schema:
+        type: string
   examples:
     OrderPost:
       value:

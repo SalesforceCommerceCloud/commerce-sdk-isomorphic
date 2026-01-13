@@ -600,6 +600,7 @@ paths:
         - $ref: '#/components/parameters/until'
         - $ref: '#/components/parameters/status'
         - $ref: '#/components/parameters/siteId'
+        - $ref: '#/components/parameters/expand'
         - name: limit
           in: query
           required: false
@@ -4956,6 +4957,14 @@ components:
       name: status
       in: query
       required: false
+      schema:
+        type: string
+    expand:
+      name: expand
+      in: query
+      description: Expand options for the order.
+      required: false
+      example: oms
       schema:
         type: string
     paymentInstrumentId:
