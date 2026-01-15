@@ -1,8 +1,12 @@
 openapi: 3.0.3
 info:
+  x-api-type: Shopper
+  x-api-family: Shopper
   title: Shopper Login
-  version: 1.39.41
+  version: 1.42.2
   description: |-
+    [Download API specification](https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-login/shopper-login-oas-v1-public.yaml)
+
     # API Overview
 
     The Shopper Login and API Access Service (SLAS) enables secure access to Commerce Cloud’s Shopper APIs for a wide range of headless commerce applications.
@@ -256,6 +260,13 @@ paths:
               examples:
                 BadOrMissingAccessToken400:
                   $ref: '#/components/examples/BadOrMissingAccessToken400'
+                TooManyLoginRequests400:
+                  description: |
+                    This error is returned specifically when mode = email and the user has exceeded the maximum number of login attempts within the rate limit window.
+                    The client should implement exponential backoff and retry the request after the specified time period.
+                  value:
+                    error: invalid_request
+                    error_description: Too many login requests were made. Please try again later.
           headers:
             X-RateLimit-1M-Limit:
               description: The 1 minute maximum number of requests permitted per hour.
@@ -2222,6 +2233,265 @@ paths:
               examples:
                 InternalServerError500:
                   $ref: '#/components/examples/InternalServerError500'
+  /organizations/{organizationId}/oauth2/webauthn/register/authorize:
+    post:
+      summary: Authorize user for WebAuthn registration
+      description: "Authorizes a user to register a WebAuthn credential (passkey). This endpoint validates the user's \ncredentials and creates a password action token that can be used to start the registration process.\nThe token is sent to the user via the specified channel (email or SMS).\n"
+      operationId: authorizeWebauthnRegistration
+      parameters:
+        - $ref: '#/components/parameters/organizationId'
+        - name: Authorization
+          in: header
+          description: 'Base64-encoded string for HTTP Basic authentication. The string is composed of a client ID and client secret, separated by a colon (`:`). For example: `clientId:clientSecret`.'
+          required: false
+          schema:
+            type: string
+            example: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordActionRequest'
+        required: true
+      responses:
+        '204':
+          description: User successfully authorized for WebAuthn registration. TOTP sent to user.
+        '400':
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Oauth2ErrorResponse'
+              examples:
+                BadOrMissingClientId400:
+                  $ref: '#/components/examples/BadOrMissingClientId400'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Oauth2ErrorResponse'
+              examples:
+                Unauthorized401:
+                  $ref: '#/components/examples/InvalidClient401'
+  /organizations/{organizationId}/oauth2/webauthn/register/start:
+    post:
+      summary: Start WebAuthn registration
+      description: |
+        Starts the WebAuthn registration process by generating credential creation options.
+        Returns the challenge and other parameters needed by the authenticator to create a new credential.
+      operationId: startWebauthnUserRegistration
+      parameters:
+        - $ref: '#/components/parameters/organizationId'
+        - name: Authorization
+          in: header
+          description: 'Base64-encoded string for HTTP Basic authentication. The string is composed of a client ID and client secret, separated by a colon (`:`). For example: `clientId:clientSecret`.'
+          required: false
+          schema:
+            type: string
+            example: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RegistrationStartRequest'
+            examples:
+              registrationStartRequest:
+                value:
+                  client_id: 12345678-1234-1234-1234-123456789012
+                  pwd_action_token: '12345678'
+                  user_id: user@example.com
+                  channel_id: RefArch
+                  display_name: John Doe
+                  nick_name: My iPhone
+      responses:
+        '200':
+          description: Registration options successfully generated.
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                startWebauthnUserRegistrationSuccess:
+                  $ref: '#/components/examples/startWebauthnUserRegistrationSuccess'
+        '400':
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Oauth2ErrorResponse'
+              examples:
+                BadOrMissingClientId400:
+                  $ref: '#/components/examples/BadOrMissingClientId400'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Oauth2ErrorResponse'
+              examples:
+                Unauthorized401:
+                  $ref: '#/components/examples/InvalidClient401'
+  /organizations/{organizationId}/oauth2/webauthn/register/finish:
+    post:
+      summary: Finish WebAuthn registration
+      description: |
+        Completes the WebAuthn registration process by verifying the credential created by the authenticator.
+        Stores the public key and credential information for future authentication.
+      operationId: finishWebauthnUserRegistration
+      parameters:
+        - $ref: '#/components/parameters/organizationId'
+        - name: Authorization
+          in: header
+          description: 'Base64-encoded string for HTTP Basic authentication. The string is composed of a client ID and client secret, separated by a colon (`:`). For example: `clientId:clientSecret`.'
+          required: false
+          schema:
+            type: string
+            example: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationFinishRequest'
+      responses:
+        '204':
+          description: Registration successfully completed
+        '400':
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Oauth2ErrorResponse'
+              examples:
+                BadOrMissingClientId400:
+                  $ref: '#/components/examples/BadOrMissingClientId400'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Oauth2ErrorResponse'
+              examples:
+                Unauthorized401:
+                  $ref: '#/components/examples/InvalidClient401'
+  /organizations/{organizationId}/oauth2/webauthn/authenticate/start:
+    post:
+      summary: Start WebAuthn authentication
+      description: |
+        Starts the WebAuthn authentication process by generating credential request options.
+        Returns the challenge and allowed credentials for the user to authenticate with.
+      operationId: startWebauthnAuthentication
+      parameters:
+        - $ref: '#/components/parameters/organizationId'
+        - name: Authorization
+          in: header
+          description: 'Base64-encoded string for HTTP Basic authentication. The string is composed of a client ID and client secret, separated by a colon (`:`). For example: `clientId:clientSecret`.'
+          required: false
+          schema:
+            type: string
+            example: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthenticateRequest'
+            examples:
+              authenticateRequest:
+                value:
+                  tenant_id: zzte_053
+                  client_id: 12345678-1234-1234-1234-123456789012
+                  channel_id: RefArch
+                  user_id: user@example.com
+      responses:
+        '200':
+          description: Authentication options successfully generated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicKeyCredentialRequestOptions'
+              examples:
+                webauthnAuthenticationStartSuccess:
+                  $ref: '#/components/examples/webauthnAuthenticationStartSuccess'
+        '400':
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Oauth2ErrorResponse'
+              examples:
+                BadOrMissingClientId400:
+                  $ref: '#/components/examples/BadOrMissingClientId400'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Oauth2ErrorResponse'
+              examples:
+                Unauthorized401:
+                  $ref: '#/components/examples/InvalidClient401'
+        '404':
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Oauth2ErrorResponse'
+              examples:
+                UserNotFound404:
+                  $ref: '#/components/examples/UserNotFound404'
+  /organizations/{organizationId}/oauth2/webauthn/authenticate/finish:
+    post:
+      summary: Finish WebAuthn authentication
+      description: |
+        Completes the WebAuthn authentication process by verifying the assertion from the authenticator.
+        Returns OAuth tokens upon successful authentication.
+      operationId: finishWebauthnAuthentication
+      parameters:
+        - $ref: '#/components/parameters/organizationId'
+        - name: Authorization
+          in: header
+          description: 'Base64-encoded string for HTTP Basic authentication. The string is composed of a client ID and client secret, separated by a colon (`:`). For example: `clientId:clientSecret`.'
+          required: false
+          schema:
+            type: string
+            example: Basic czZCaGRSa3F0MzpnWDFmQmF0M2JW
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticateFinishRequest'
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticateResult'
+              examples:
+                webauthnAuthenticationFinishSuccess:
+                  $ref: '#/components/examples/webauthnAuthenticationFinishSuccess'
+        '400':
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Oauth2ErrorResponse'
+              examples:
+                BadOrMissingClientId400:
+                  $ref: '#/components/examples/BadOrMissingClientId400'
+        '401':
+          description: Unauthorized
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Oauth2ErrorResponse'
+              examples:
+                Unauthorized401:
+                  $ref: '#/components/examples/InvalidClient401'
 components:
   schemas:
     OrganizationId:
@@ -2347,7 +2617,7 @@ components:
           example: RefArch
         callback_uri:
           type: string
-          description: |
+          description: |-
             The callback URI. Required when the mode is `callback`. The `callback_uri` property will be validated against the callback URIs that have been registered with the SLAS client. The callback URI _must_ be a `POST` endpoint because the token will be included in the body.
 
             Wildcards are not allowed in the callback_uri because this is a security risk that can expose the token. This is not considered an OAuth2 callback_url.
@@ -2355,32 +2625,24 @@ components:
         last_name:
           maxLength: 100
           type: string
-          description: |- 
-            The user's last name. Required when `register_customer` is `true`. 
-            The `last_name` parameter is not used when `register_customer` parameter is not added or is `false`.
+          description: "The user's last name. Required when `register_customer` is `true`. \nThe `last_name` parameter is not used when `register_customer` parameter is not added or is `false`."
           example: Sampleson
         email:
           maxLength: 128
           type: string
-          description: |-
-            The user's email address. Required when `register_customer` is `true` and `user_id` is not an email address. 
-            The `email` parameter is not used when `register_customer` parameter is not added or is `false`.
+          description: "The user's email address. Required when `register_customer` is `true` and `user_id` is not an email address. \nThe `email` parameter is not used when `register_customer` parameter is not added or is `false`."
           example: samantha.sampleson@example.com
         first_name:
           maxLength: 100
           type: string
-          description: |- 
-            The user's first name. Optional when `register_customer` is `true`. 
-            The `first_name` parameter is not used when `register_customer` parameter is not added or is `false`.
+          description: "The user's first name. Optional when `register_customer` is `true`. \nThe `first_name` parameter is not used when `register_customer` parameter is not added or is `false`."
           example: Samantha
         phone_number:
           maxLength: 48
           type: string
-          description: |-
-            The user's phone number. Optional when `register_customer` is `true`. 
-            The `phone_number` parameter is not used when `register_customer` parameter is not added or is `false`.
-          example: +17776665555
-      description: A request for a passwordless login token. This is only available for resgistered users using B2C Commerce.
+          description: "The user's phone number. Optional when `register_customer` is `true`. \nThe `phone_number` parameter is not used when `register_customer` parameter is not added or is `false`."
+          example: 17776665555
+      description: A request for a passwordless login token. This is only available for registered users using B2C Commerce.
     TokenType:
       type: string
       description: Token Type
@@ -2443,6 +2705,16 @@ components:
           type: string
           description: This is the access token that is returned from the IDP. The IDP access token is returned to be able to make calls into the IDP outside of SLAS.
           example: eyJraWQiOiJYS21HbHVuSm0zSlBTMHNjQXZXV19XQlYtRi1wMkxLSDR0V05UMHVVSjVJIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULjFMY0xxTWhqM2t0N1FKeFhxQ0VtdGZOOVV2eUcweW1meDFxZG9BdzF1NWMub2FyeXhveHF0QUtxaVFMbkM1ZDYiLCJpc3MiOiJodHRwczovL2Rldi05NTY1MjM2Lm9rdGEuY29tIiwiYXVkIjoiaHR0cHM6Ly9kZXYtOTU2NTIzNi5va3RhLmNvbSIsInN1YiI6Im9rdGEuc2xhcy50ZXN0IiwiaWF0IjoxNjc5Njk4MzA4LCJleHAiOjE2Nzk3MDE5MDgsImNpZCI6IjBvYTJrNXNma0JXZ0poTEVHNWQ2IiwidWlkIjoiMDB1MzhxZGpuU2NMT0IxbXE1ZDYiLCJzY3AiOlsib2ZmbGluZV9hY2Nlc3MiLCJvcGVuaWQiLCJlbWFpbCIsInByb2ZpbGUiXSwiYXV0aF90aW1lIjoxNjc5Njk4MzA2fQ.FDbGsnZGwTYVKGSlAo6jqcjG2HQ_BqQKRk72M5h69DRHyOM4wngsEELN_Wtgj3E77sP7IOmIKjiK5SFP17ADMbKZptVr2pqaMVF3PuU3Cbl_MgXZValfT-z12jHRq9sHMfsdTjY2RnvG44ZDFKc2no8mdL6IJ1MfCaZT5Tql5Ktq_UgudaWFsYqad3ETcmp5Y8ivz1bFnqud0sO9D9JzYOtfd9h71JKcsSC2rXc_Si-INPKKaGl8CDgaLXxu_Am9twJpUenHLpy0BerhcVvdFz7_611E53xOT_Esrc1pe-XAZtlYsJFnhxTBDT342ukiSWk2m6juVappv1GsRfUf2g
+        idp_refresh_token:
+          maxLength: 128
+          type: string
+          description: This is the refresh token that is returned from the IDP. The IDP refresh token is returned to be able to make calls into the IDP outside of SLAS.
+          example: EgMYpjfFKdlSy-a3PYeyihmP95IpIp3FaDpPmVH1yu8.lahomBi7zJbRa6yKAuAAiKu3lprTPsEueKwqcBvhRLU
+        dnt:
+          maxLength: 5
+          type: string
+          description: Do not track
+          example: true
     GrantType:
       type: string
       description: Grant Type
@@ -2752,6 +3024,7 @@ components:
           enum:
             - callback
             - sms
+            - email
         channel_id:
           type: string
           description: The channel (B2C Commerce site) that the user is associated with.
@@ -2793,7 +3066,6 @@ components:
       required:
         - channel_id
         - client_id
-        - code_verifier
         - pwd_action_token
       type: object
       properties:
@@ -2830,6 +3102,11 @@ components:
           type: string
           description: Adding a `hint` query parameter with a value of `cross_device` will remove the need to have the code_verifier for password reset request. If the `hint` query parameter is used it must also have been used in the password action request.
           example: cross_device
+        user_id:
+          maxLength: 128
+          type: string
+          description: User ID for logging in. This is the id that is used to log into SFCC. Required only when hint is provided.
+          example: samantha.sampleson@example.com
       description: A request for creating a new password using the password action token.
     PasswordLessLoginTokenRequest:
       required:
@@ -2869,6 +3146,13 @@ components:
 
             The `code_verifier` should be a high entropy cryptographically random string with a minimum of 43 characters and a maximum of 128 characters.
           example: Ar0lAwU_jsuA~ZXX8-JnMbZFxrnDot2OtgLEi1kOT_FxD6Bo0EQDbbrvoym9xHvatNGnNzrObLJeK6e4U9m4pveRMbdwNGa4jwiAlKGvijVn0PW0hqb03_w1gQE00wTo
+        login_id:
+          maxLength: 128
+          type: string
+          description: |-
+            The ID used by the shopper for password token request. When provided, login_id must exactly match the ID used during passwordless login.
+            ex. If passwordless login used `samantha.sampleson@example.com`, but the passwordless login token request provides `sam.sampleson@example.com`, the request fails due to mismatch.
+          example: samantha.sampleson@example.com
       description: A request for an access token using a passwordless token.
     TokenActionRequest:
       required:
@@ -2885,6 +3169,353 @@ components:
           enum:
             - access_token
             - refresh_token
+    RegistrationStartRequest:
+      type: object
+      description: |
+        WebAuthn registration request. Inherits most fields from PasswordActionVerifyRequest
+        but does NOT use code_verifier or new_password fields.
+      required:
+        - channel_id
+        - pwd_action_token
+        - user_id
+      properties:
+        client_id:
+          type: string
+          description: OAuth client identifier. Required if Authorization header is not provided.
+          pattern: ^[A-Za-z0-9_-]+$
+          minLength: 36
+          maxLength: 36
+          example: 12345678-1234-1234-1234-123456789012
+        pwd_action_token:
+          type: string
+          description: Password action token (TOTP) received by the user.
+          pattern: ^[0-9]{8}$
+          example: '12345678'
+        user_id:
+          type: string
+          description: The ID of the user.
+          maxLength: 128
+          example: user@example.com
+        channel_id:
+          type: string
+          description: The ID of the channel.
+          pattern: ^[A-Za-z0-9_-]+$
+          maxLength: 100
+          example: RefArch
+        display_name:
+          type: string
+          description: Display name for the passkey.
+          maxLength: 128
+          example: John Doe
+        nick_name:
+          type: string
+          description: Nickname for the credential.
+          maxLength: 128
+          example: My iPhone
+    AuthenticatorAttestationResponseJson:
+      type: object
+      description: Authenticator response for registration (attestation).
+      required:
+        - clientDataJSON
+        - attestationObject
+      properties:
+        clientDataJSON:
+          description: Base64url-encoded client data JSON.
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: byte
+                example: eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiVjJGc2RHVnlJRmRvYVhSbElGUmxjM1FnUTJoaGJHeGxibWRsIiwib3JpZ2luIjoiaHR0cHM6Ly9leGFtcGxlLmNvbSJ9
+        attestationObject:
+          description: Base64url-encoded attestation object.
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: byte
+                example: o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVikSZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2NFAAAAAK3OAAI1vMYKZIsLJfHwVQMAIAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8gpQECAyYgASFYIIGjL8Hs9Yz5LvVGBnGJlGYKbJZXLqLLnKLJKLJLKLJLIlgg
+    AuthenticatorAssertionResponseJson:
+      type: object
+      description: Authenticator response for authentication (assertion).
+      required:
+        - authenticatorData
+        - clientDataJSON
+        - signature
+      properties:
+        authenticatorData:
+          description: Base64url-encoded authenticator data
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: byte
+                example: SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFAAAAAQ
+        clientDataJSON:
+          description: Base64url-encoded client data JSON.
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: byte
+                example: eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiVjJGc2RHVnlJRmRvYVhSbElGUmxjM1FnUTJoaGJHeGxibWRsIiwib3JpZ2luIjoiaHR0cHM6Ly9leGFtcGxlLmNvbSJ9
+        signature:
+          description: Base64url-encoded signature.
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: byte
+                example: MEYCIQDqwzerkQlKKLJKLJKLJKLJKLJKLJKLJKLJKLJKLJKLJAiEA
+        userHandle:
+          description: Base64url-encoded user handle.
+          nullable: true
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: byte
+                example: dXNlckBleGFtcGxlLmNvbQ
+    PublicKeyCredentialJson:
+      type: object
+      description: "WebAuthn credential representation. The response field can contain either\nAuthenticatorAttestationResponseJson (for registration) or \nAuthenticatorAssertionResponseJson (for authentication).\n"
+      required:
+        - id
+        - rawId
+        - type
+        - response
+      properties:
+        id:
+          type: string
+          description: Base64url-encoded credential ID
+          maxLength: 256
+          example: AQIDBAUGBwgJCgsMDQ4PEA
+        rawId:
+          type: string
+          description: Base64url-encoded raw credential ID.
+          maxLength: 256
+          example: AQIDBAUGBwgJCgsMDQ4PEA
+        type:
+          type: string
+          description: The type of credential.
+          enum:
+            - public-key
+          example: public-key
+        clientExtensionResults:
+          type: string
+          description: WebAuthn client extension results (typically empty).
+          nullable: true
+          maxLength: 100
+          example:
+            extensions: {}
+        response:
+          oneOf:
+            - $ref: '#/components/schemas/AuthenticatorAttestationResponseJson'
+            - $ref: '#/components/schemas/AuthenticatorAssertionResponseJson'
+          description: Authenticator response (attestation for registration, assertion for authentication)
+    RegistrationFinishRequest:
+      type: object
+      required:
+        - client_id
+        - channel_id
+        - pwd_action_token
+        - username
+        - credential
+      properties:
+        client_id:
+          type: string
+          description: The ID of the OAuth client.
+          maxLength: 36
+          example: 12345678-1234-1234-1234-123456789012
+        username:
+          type: string
+          description: Username for the credential.
+          maxLength: 128
+          example: user@example.com
+        credential:
+          $ref: '#/components/schemas/PublicKeyCredentialJson'
+        channel_id:
+          type: string
+          description: The ID of the channel.
+          maxLength: 128
+          example: RefArch
+        pwd_action_token:
+          type: string
+          description: Password action token.
+          maxLength: 8
+          pattern: ^[0-9]{8}$
+          example: '12345678'
+    AuthenticateRequest:
+      type: object
+      required:
+        - client_id
+        - channel_id
+        - user_id
+      properties:
+        tenant_id:
+          type: string
+          description: The ID of the tenant.
+          maxLength: 8
+          example: zzte_053
+        client_id:
+          type: string
+          description: The ID of the OAuth client.
+          pattern: ^[A-Za-z0-9_-]+$
+          minLength: 36
+          maxLength: 36
+          example: 12345678-1234-1234-1234-123456789012
+        channel_id:
+          type: string
+          description: The ID of the channel.
+          pattern: ^[A-Za-z0-9_-]+$
+          maxLength: 100
+          example: RefArch
+        user_id:
+          type: string
+          description: The ID of the user.
+          maxLength: 128
+          example: user@example.com
+    PublicKeyCredentialDescriptor:
+      type: object
+      description: Public key credential descriptor.
+      required:
+        - type
+        - id
+      properties:
+        type:
+          type: string
+          maxLength: 256
+          description: Credential type.
+          enum:
+            - public-key
+          example: public-key
+        id:
+          type: string
+          description: The base64url-encoded ID of the credential.
+          maxLength: 64
+          example: AQIDBAUGBwgJCgsMDQ4PEA
+        transports:
+          type: array
+          description: Authenticator transports.
+          example:
+            - internal
+            - usb
+          items:
+            type: string
+            maxLength: 8
+            enum:
+              - usb
+              - nfc
+              - ble
+              - internal
+            example: usb
+    PublicKeyCredentialRequestOptions:
+      type: object
+      description: Options for requesting a WebAuthn credential (returned by authenticate/start).
+      properties:
+        challenge:
+          type: string
+          description: Base64url-encoded challenge.
+          maxLength: 512
+          example: V2FsdGVyIFdoaXRlIFRlc3QgQ2hhbGxlbmdl
+        timeout:
+          type: integer
+          description: Timeout value in milliseconds.
+          example: 60000
+        rpId:
+          type: string
+          description: The ID of the relying party.
+          maxLength: 256
+          example: example.com
+        allowCredentials:
+          type: array
+          description: Allowed credentials for authentication.
+          items:
+            $ref: '#/components/schemas/PublicKeyCredentialDescriptor'
+        userVerification:
+          type: string
+          description: The level of requirement for user verification.
+          enum:
+            - required
+            - preferred
+            - discouraged
+          example: preferred
+        extensions:
+          type: object
+          description: WebAuthn extensions.
+          additionalProperties: true
+    AuthenticateFinishRequest:
+      type: object
+      required:
+        - channel_id
+        - client_id
+        - credential
+      properties:
+        user_id:
+          maxLength: 128
+          type: string
+          description: The ID of the user.
+          example: user@example.com
+        channel_id:
+          type: string
+          maxLength: 100
+          description: The ID of the channel.
+          example: RefArch
+        client_id:
+          type: string
+          description: The ID of the OAuth client.
+          minLength: 36
+          maxLength: 36
+          example: 12345678-1234-1234-1234-123456789012
+        email:
+          type: string
+          format: email
+          description: User's email address.
+          maxLength: 128
+          example: user@example.com
+        tenant_id:
+          type: string
+          description: The ID of the tenant.
+          maxLength: 8
+          example: zzte_053
+        usid:
+          type: string
+          description: The unique session ID.
+          maxLength: 128
+          example: 87654321-4321-4321-4321-210987654321
+        credential:
+          $ref: '#/components/schemas/PublicKeyCredentialJson'
+    AuthenticateResult:
+      type: object
+      properties:
+        credentialId:
+          type: string
+          description: The credential ID that was used for authentication.
+          maxLength: 1024
+          example: AQIDBAUGBwgJCgsMDQ4PEA
+        username:
+          type: string
+          description: The authenticated username.
+          maxLength: 128
+          example: user@example.com
+        success:
+          type: boolean
+          description: Specifies whether authentication was successful (true) or not (false).
+          example: true
+        tokenResponse:
+          $ref: '#/components/schemas/TokenResponse'
   parameters:
     organizationId:
       description: An identifier for the organization the request is being made by
@@ -2894,6 +3525,18 @@ components:
       example: f_ecom_zzxy_prd
       schema:
         $ref: '#/components/schemas/OrganizationId'
+    register_customer:
+      name: register_customer
+      in: query
+      description: |-
+        When set to `true`, creates a new customer profile in B2C Commerce if one doesn't already exist. Requires `last_name` and `email` body parameters unless `user_id` is an email address. Optionally accepts `first_name` and `phone_number` body parameters.
+        If the customer profile doesn't exist, it is created when the TOTP is validated via the `passwordless/token` endpoint.
+
+        When set to `false` (or omitted), no customer profile is created in B2C Commerce.
+      required: false
+      schema:
+        maxLength: 5
+        type: string
     client_id:
       name: client_id
       in: query
@@ -2909,23 +3552,13 @@ components:
       required: true
       schema:
         type: string
-    register_customer:
-      name: register_customer
-      in: query
-      description: |-
-        When set to `true`, creates a new customer profile in B2C Commerce if one doesn't already exist. Requires `last_name` and `email` body parameters unless `user_id` is an email address. Optionally accepts `first_name` and `phone_number` body parameters.
-        If the customer profile doesn't exist, it is created when the TOTP is validated via the `passwordless/token` endpoint.
-        
-        When set to `false` (or omitted), no customer profile is created in B2C Commerce.
-      required: false
-      schema:
-        maxLength: 5
-        type: string
     logout_hint:
       name: hint
       in: query
       description: |-
-        `hint=all-sessions` logs out all sessions of the shopper and invalidates all active refresh tokens for the shopper.
+        `hint=all-sessions` logs out all sessions and invalidates all refresh tokens for a shopper with the same SLAS user ID.
+        This only works within the same session type. Sessions created through different authentication methods (/authorize vs. Trusted System On Behalf) are treated as separate sessions. To invalidate tokens with different SLAS User IDs, you must make explicit logout calls with each token.
+        A shopper authenticated via both /authorize and TSOB has two separate sessions. You will need two logout calls (one per token) to fully log them out.
 
         If this query parameter is not provided, the default behavior is to log out only the current session that matches the refresh token in the request.
 
@@ -3107,7 +3740,7 @@ components:
       value:
         access_token: ''
         id_token: 'null'
-        refresh_token: EnL9U2f3-WiVPwL60CFBI21UY_oxWAwX5JkgO-X12Vs
+        refresh_token: ''
         expires_in: 0
         refresh_token_expires_in: 0
         token_type: Bearer
@@ -3115,6 +3748,8 @@ components:
         customer_id: 'null'
         enc_user_id: 'null'
         idp_access_token: ''
+        idp_refresh_token: 'null'
+        dnt: 'null'
     authorizeCustomerSuccess:
       value:
         authorizationCode: eyJ2ZXIiOiIxLjAiLCJraWQiOiJTTEFTIiwidHlwIjoiand0IiwiY2x2IjoiS
@@ -3289,3 +3924,57 @@ components:
             use: sig
             x: KpmPoZTFXs80Uxy7QcOQ9aaqW35xgT3Qyakee8zR7gA
             'y': P87TZ52rjnOGlmjaPeUGbLaOqiB7FHnoEzULIw6QlfJ
+    startWebauthnUserRegistrationSuccess:
+      value:
+        extensions: {}
+        attestation: none
+        challenge: qcjjr4ZckSHuiSd1nShZkVt12I1udQO_7MAkynXP8Nk
+        authenticatorSelection:
+          userVerification: preferred
+          requireResidentKey: false
+          residentKey: preferred
+        user:
+          name: darth.vader
+          id: GyOH81kDRxJBvHPQkkbmTagOADuixhp_37P_UnSwHAI
+          displayName: Darth Vader
+        rp:
+          name: SLAS Service
+          id: localhost
+        timeout: 90000
+        excludeCredentials: []
+        pubKeyCredParams:
+          alg: -7
+          type: public-key
+    webauthnAuthenticationStartSuccess:
+      value:
+        challenge: V2FsdGVyIFdoaXRlIFRlc3QgQ2hhbGxlbmdl
+        timeout: 60000
+        rpId: localhost
+        allowCredentials:
+          - type: public-key
+            id: AQIDBAUGBwgJCgsMDQ4PEA
+            transports:
+              - usb
+              - nfc
+        userVerification: preferred
+        extensions: {}
+    UserNotFound404:
+      value:
+        error: not_found
+        error_description: User Not Found
+    webauthnAuthenticationFinishSuccess:
+      value:
+        credentialId: AQIDBAUGBwgJCgsMDQ4PEA
+        username: user@example.com
+        success: true
+        tokenResponse:
+          access_token: eyJ2ZXIiOiIxLjAiLCJraWQiOiJTTEFTIiwidHlwIjoiand0IiwiY2x2IjoiSjIuMS4wIiwiYWxnIjoiRVMyNTYifQ.eyJhdWQiOiJjb3JlL2Rldi9idGluZ2V5bHRtMiIsImF1dCI6IkdVSUQiLCJzdWIiOiJ1c2lkOjo1NGFkMmM1YS05MWYwLTQ0YWItODE3Yy03M2Q2Yjg2ODcyZDk6OnVwbjpndWVzdCIsIm5iZiI6MTU4Mjg0NTYyNCwiY3R4Ijoic2ZkYy5jb21tZXJjZWNsb3VkIiwiaXNzIjoiY29yZS9kZXYvYnRpbmdleWx0bTIiLCJzdHkiOiJVc2VyIiwiaXN0IjoxLCJleHAiOjE1ODI4NDU3NDQsImlhdCI6MTU4Mjg0NTY1NCwianRpIjoiQzJDOTA0ODg2NDA3MDkwNDg4NjQwNzMyMjExNzQ1ODEyMTQzIn0.2a6lMBSY17PrhDO8pvEk7PCXW_nkguMHi4J-Tuirkz-ETB6rnKyuRjF5yD6B55tMvm8dO8ulAHyDYqjObMxLJg
+          id_token: eyJraWQiOiI3NGU2YjMxZS1lYTczLTQ3OTYtOWRkYi1jMDJmZGI4ZDgwYmUiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1c2lkOmQ1MDBhMzY5LTc1MWQtNDkzYy1iNDAzLThmOThmYjg3MTdiNiIsImF1ZCI6IjU1M2FjOGFjLTRkYjktNGVkMy04MjVjLTNhZTNiZjVkMzI3YiIsImlzcyI6ImRldi51cy5zaG9wcGVyLmNjLnNhbGVzZm9yY2UuY29tIiwibmFtZSI6ImJsYWlyLnNsYXMudGVzdEBnbWFpbC5jb20iLCJleHAiOjE1OTExMTE0MzgsImlhdCI6MTU5MTEwOTYzOCwiZW1haWwiOiJibGFpci5zbGFzLnRlc3RAZ21haWwuY29tIn0.KgpAcq-G9Lz7IGnjkJlaFLFXYncVCwcVrRIuy3bEfgzRozqaDRvAori4oOz4RtgYjmoc5x2euoisHL0mVnHgPKOdYBty1wTJqneJEQt6hP4Kp0KFciID_ILCi-DE8VWS5t0NknnMP_iKhIkqcRL48iwPFUWkWA6AEWxE_yvJLNRLithsSxsx7EfBfpD8Hr2b5tMEwImQNmJNYGRTI4LSmcYspBORvJoAnfGpMC0kglxl40bhf5j4ItX4_DiWQC4zaGYD-HJV4BDr6C7iGCs5ZVPypF0yQD3iBio26fwj9Ys5WF9XMtPtqET2kqsz6fDC5GkE6HTUHH_r87jxbDq-8w
+          refresh_token: EgMYpjfFKdlSy-a3PYeyihmP95IpIp3FaDpPmVH1yu8.lahomBi7zJbRa6yKAuAAiKu3lprTPsEueKwqcBvhRLU
+          expires_in: 900
+          refresh_token_expires_in: 7776000
+          token_type: Bearer
+          usid: 18cda486-fe32-4e27-888b-6e4f89938e67
+          customer_id: '1000005'
+          enc_user_id: 45D39A8499A95288F82855427EBA99B5
+          idp_access_token: ''
