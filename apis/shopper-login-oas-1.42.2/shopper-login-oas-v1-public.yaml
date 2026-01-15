@@ -3,7 +3,7 @@ info:
   x-api-type: Shopper
   x-api-family: Shopper
   title: Shopper Login
-  version: 1.41.0
+  version: 1.42.2
   description: |-
     [Download API specification](https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-login/shopper-login-oas-v1-public.yaml)
 
@@ -3066,7 +3066,6 @@ components:
       required:
         - channel_id
         - client_id
-        - code_verifier
         - pwd_action_token
       type: object
       properties:
