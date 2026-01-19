@@ -1,0 +1,14 @@
+shopper-baskets-oas-v1=1.9.1
+shopper-baskets-oas-v2=2.1.1
+shopper-consents-oas-v1=1.1.4
+shopper-context-oas-v1=1.1.3
+shopper-customers-oas-v1=1.2.1
+shopper-experience-oas-v1=1.1.2
+shopper-gift-certificates-oas-v1=1.0.29
+shopper-login-oas-v1=1.42.2
+shopper-orders-oas-v1=1.6.0
+shopper-products-oas-v1=1.1.2
+shopper-promotions-oas-v1=1.0.39
+shopper-search-oas-v1=1.5.4
+shopper-seo-oas-v1=1.0.16
+shopper-stores-oas-v1=1.0.19
