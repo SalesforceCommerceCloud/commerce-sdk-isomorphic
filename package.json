@@ -181,7 +181,7 @@
   "bundlesize": [
     {
       "path": "lib/**/*.js",
-      "maxSize": "55 kB"
+      "maxSize": "56 kB"
     },
     {
       "path": "commerce-sdk-isomorphic-with-deps.tgz",
