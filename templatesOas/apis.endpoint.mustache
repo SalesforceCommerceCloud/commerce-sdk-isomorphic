@@ -50,7 +50,17 @@
             headers?: { [key: string]: string },
             {{#hasBodyParam}}
             {{#bodyParam}}
+            {{#isArray}}
+            {{#items.isPrimitiveType}}
+            body: Array<{{items.dataType}}>
+            {{/items.isPrimitiveType}}
+            {{^items.isPrimitiveType}}
+            body: Array<{{items.dataType}} & CustomRequestBody>
+            {{/items.isPrimitiveType}}
+            {{/isArray}}
+            {{^isArray}}
             body: {{{dataType}}} & CustomRequestBody
+            {{/isArray}}
             {{/bodyParam}}
             {{/hasBodyParam}}
             {{^hasBodyParam}}
@@ -109,7 +119,17 @@
             headers?: { [key: string]: string },
             {{#hasBodyParam}}
             {{#bodyParam}}
+            {{#isArray}}
+            {{#items.isPrimitiveType}}
+            body: Array<{{items.dataType}}>
+            {{/items.isPrimitiveType}}
+            {{^items.isPrimitiveType}}
+            body: Array<{{items.dataType}} & CustomRequestBody>
+            {{/items.isPrimitiveType}}
+            {{/isArray}}
+            {{^isArray}}
             body: {{{dataType}}} & CustomRequestBody
+            {{/isArray}}
             {{/bodyParam}}
             {{/hasBodyParam}}
             {{^hasBodyParam}}
@@ -169,7 +189,17 @@
             headers?: { [key: string]: string },
             {{#hasBodyParam}}
             {{#bodyParam}}
+            {{#isArray}}
+            {{#items.isPrimitiveType}}
+            body: Array<{{items.dataType}}>
+            {{/items.isPrimitiveType}}
+            {{^items.isPrimitiveType}}
+            body: Array<{{items.dataType}} & CustomRequestBody>
+            {{/items.isPrimitiveType}}
+            {{/isArray}}
+            {{^isArray}}
             body: {{{dataType}}} & CustomRequestBody
+            {{/isArray}}
             {{/bodyParam}}
             {{/hasBodyParam}}
             {{^hasBodyParam}}

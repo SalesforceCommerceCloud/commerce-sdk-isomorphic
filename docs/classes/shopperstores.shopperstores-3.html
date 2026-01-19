@@ -76,7 +76,10 @@
 							<h1><a href="https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-stores:Summary">Shopper Stores</a></h1>
 						</a>
 					</div>
-					<p>*# API Overview</p>
+					<p>*<a href="https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-stores/shopper-stores-oas-v1-public.yaml">Download API specification</a></p>
+					<a href="#api-overview" id="api-overview" style="color: inherit; text-decoration: none;">
+						<h1>API Overview</h1>
+					</a>
 					<p>Provides access to stores via search or ID lookup.</p>
 					<a href="#authentication-amp-authorization" id="authentication-amp-authorization" style="color: inherit; text-decoration: none;">
 						<h2>Authentication &amp; Authorization</h2>
@@ -163,7 +166,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:121</li>
+									<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:123</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -185,7 +188,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="clientconfig.clientconfig-1.html" class="tsd-signature-type">ClientConfig</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>baseUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:114</li>
+							<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:116</li>
 						</ul>
 					</aside>
 				</section>
@@ -195,7 +198,7 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Base<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"https://{shortCode}.api.commercecloud.salesforce.com/store/shopper-stores/v1"</span><span class="tsd-signature-symbol"> = currentBaseUri</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:116</li>
+							<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:118</li>
 						</ul>
 					</aside>
 				</section>
@@ -205,7 +208,7 @@
 					<div class="tsd-signature tsd-kind-icon">param<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>getStores<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"ids"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getStoresRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"ids"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>searchStores<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"countryCode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"distanceUnit"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"latitude"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"longitude"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"maxDistance"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"postalCode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"limit"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"offset"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>searchStoresRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {getStores: [&#x27;organizationId&#x27;,&#x27;ids&#x27;,&#x27;siteId&#x27;,&#x27;locale&#x27;,],getStoresRequired: [&#x27;organizationId&#x27;,&#x27;ids&#x27;,&#x27;siteId&#x27;,],searchStores: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,&#x27;countryCode&#x27;,&#x27;distanceUnit&#x27;,&#x27;latitude&#x27;,&#x27;longitude&#x27;,&#x27;maxDistance&#x27;,&#x27;postalCode&#x27;,&#x27;locale&#x27;,&#x27;limit&#x27;,&#x27;offset&#x27;,],searchStoresRequired: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,],} as const</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:130</li>
+							<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:132</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -240,7 +243,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:177</li>
+									<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:179</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -265,7 +268,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:203</li>
+									<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:205</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -311,7 +314,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:354</li>
+									<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:356</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -346,7 +349,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:401</li>
+									<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:403</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -402,7 +405,7 @@
 					<div class="tsd-signature tsd-kind-icon">api<wbr>Paths<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:118</li>
+							<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:120</li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -411,7 +414,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Stores<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/stores&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:119</li>
+								<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:121</li>
 							</ul>
 						</aside>
 					</section>
@@ -421,7 +424,7 @@
 						<div class="tsd-signature tsd-kind-icon">search<wbr>Stores<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/store-search&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:120</li>
+								<li>Defined in src/lib/shopperStores/apis/DefaultApi.ts:122</li>
 							</ul>
 						</aside>
 					</section>
@@ -451,6 +454,9 @@
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/shopperbasketsv2.html">shopper<wbr>Basketsv2</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/shopperconfigurations.html">shopper<wbr>Configurations</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/shopperconsents.html">shopper<wbr>Consents</a>
