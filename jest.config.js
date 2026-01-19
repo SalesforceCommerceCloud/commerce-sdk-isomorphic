@@ -12,6 +12,7 @@ module.exports = {
     'scripts/**/*.{js,jsx,ts,tsx}',
     '!scripts/generate.ts',
     '!scripts/updateApis.ts',
+    '!scripts/utils.ts',
     '!scripts/generateVersionTable.ts',
     '!<rootDir>/node_modules/',
   ],
