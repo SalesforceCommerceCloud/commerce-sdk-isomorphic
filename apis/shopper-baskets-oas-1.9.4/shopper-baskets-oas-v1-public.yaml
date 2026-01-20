@@ -3,7 +3,7 @@ info:
   x-api-type: Shopper
   x-api-family: Checkout
   title: Shopper Baskets
-  version: 1.9.1
+  version: 1.9.4
   description: |-
     [Download API specification](https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-baskets/shopper-baskets-oas-v1-public.yaml)
 
@@ -44,7 +44,7 @@ info:
 
     For details on how to request a shopper access token from SLAS, see the guest user flows for [public clients](https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-public-client.html#guest-user) and [private clients](https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-private-client.html#guest-user) in the SLAS guides.
 
-    You must include the relevant scope(s) in the client ID used to generate the SLAS token. For details, see the  [Authorization Scopes Catalog.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/auth-z-scope-catalog.html)
+    You must include `sfcc.shopper-baskets-orders` or `sfcc.shopper-baskets-orders.rw` in the client ID used to generate the SLAS token. For a full list of permissions, see the [Authorization Scopes Catalog.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/auth-z-scope-catalog.html)
 
     The following resources require an Account Manager OAuth token with a client ID:
 
@@ -119,7 +119,8 @@ paths:
 
         The created basket is initialized with default values. Optional JSON data provided in the request body is populated into the created basket. It can be updated with other endpoints offered by the Shopper Baskets API.
 
-        Each customer can have just one open basket. When a basket is created, it is said to be open. It remains open until either an order is created from it or it is deleted.
+        Each shopper is limited to one open basket at a time. Attempting to create a second basket for the same customer will result in a 400 Bad Request error with the message: "Customer Baskets Quota Exceeded".
+        A basket is considered "open" upon creation and remains in this state until it is either converted into an order or explicitly deleted. For implementation best practices, see [Hybrid Storefront Best Practices for Working with Baskets](https://developer.salesforce.com/docs/commerce/commerce-api/guide/hybrid-storefront-baskets.html#hybrid-storefront-best-practices-for-working-with-baskets).
       operationId: createBasket
       summary: Create a new basket.
       security:
@@ -2171,9 +2172,8 @@ components:
     DefaultFallback:
       default: default
       description: A specialized value indicating the system default values for locales.
+      pattern: ^default$
       example: default
-      enum:
-        - default
       type: string
     LocaleCode:
       description: A descriptor for a geographical region by both a language and country code. By combining these two, regional differences in a language can be addressed, such as with the request header parameter `Accept-Language` following [RFC 2616](https://tools.ietf.org/html/rfc2616) & [RFC 1766](https://tools.ietf.org/html/rfc1766). This can also just refer to a language code, also RFC 2616/1766 compliant, as a default if there is no specific match for a country. Finally, can also be used to define default behavior if there is no locale specified.
@@ -2379,24 +2379,11 @@ components:
           type: boolean
       required:
         - code
-    ISOCurrency:
-      pattern: ^[A-Z][A-Z][A-Z]$
-      description: A three letter uppercase currency code conforming to the [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html) standard.
-      example: USD
-      type: string
-    NoValue:
-      default: N/A
-      description: A specialized value indicating the lack of definition of a currency, for example, if the value of the monetary value of the currency is an undefined number.
-      example: N/A
-      enum:
-        - N/A
-      type: string
     CurrencyCode:
       description: A three letter uppercase currency code conforming to the [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html) standard, or the string `N/A` indicating that a currency is not applicable.
+      pattern: ^([A-Z][A-Z][A-Z]|N/A)$
       example: USD
-      oneOf:
-        - $ref: '#/components/schemas/ISOCurrency'
-        - $ref: '#/components/schemas/NoValue'
+      type: string
     CustomerInfo:
       additionalProperties:
         title: Additional Property Support

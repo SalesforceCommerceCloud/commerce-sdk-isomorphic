@@ -3,7 +3,7 @@ info:
   x-api-type: Shopper
   x-api-family: Customer
   title: Shopper Customers
-  version: 1.2.1
+  version: 1.3.2
   description: |-
     [Download API specification](https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-customers/shopper-customers-oas-v1-public.yaml)
 
@@ -13,11 +13,11 @@ info:
 
     ## Authentication & Authorization
 
-    The client requesting the customer information must have access to the Customer and Product List resources. The API requests pass a system-to-system bearer token in the header of the request. For the trusted system API, the trusted client must first authenticate against Account manager to log in on behalf of a customer.
+    The client requesting the customer information must have access to the Customer and Product List resources. The Shopper Customer API requires a shopper access token from the Shopper Login and API Access Service (SLAS).
+
+    You must include the relevant scope(s) in the client ID used to generate the SLAS token. For a full list of permissions, see the [Authorization Scopes Catalog.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/auth-z-scope-catalog.html)
 
     For details on how to request a shopper access token from SLAS, see the guest user flows for [public clients](https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-public-client.html#guest-user) and [private clients](https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-private-client.html#guest-user) in the SLAS guides.
-
-    You must include the relevant scope(s) in the client ID used to generate the SLAS token. For details, see the [Authorization Scopes Catalog.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/auth-z-scope-catalog.html)
 
     ## Use Cases
 
@@ -287,6 +287,7 @@ paths:
         - $ref: '#/components/parameters/customerId'
         - $ref: '#/components/parameters/organizationId'
         - $ref: '#/components/parameters/siteId'
+        - $ref: '#/components/parameters/expandCustomer'
       responses:
         '200':
           description: Success
@@ -297,6 +298,8 @@ paths:
               examples:
                 getCustomerSuccess:
                   $ref: '#/components/examples/getCustomerSuccess'
+                getCustomerSuccessWithSalesforcePayments:
+                  $ref: '#/components/examples/getCustomerSuccessWithSalesforcePayments'
         '400':
           description: |
             CustomerId URL parameter does not match the verified customer represented by the JWT token.
@@ -615,7 +618,7 @@ paths:
           required: false
           schema:
             type: integer
-            format: int64
+            format: int32
             default: 0
             minimum: 0
           description: Used to retrieve the results based on a particular resource offset.
@@ -1746,6 +1749,32 @@ components:
           description: The default payment instrument.
           example: true
       description: Method for customers to pay for the goods purchased on an ecommerce site. Payment methods include - credit card, debit card, bank account, and gift card.
+    CustomerPaymentMethodReference:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The payment method type. It is read only.
+          example: card
+          enum:
+            - card
+            - sepa_debit
+        id:
+          type: string
+          description: The gateway ID for the payment method. It is read only.
+          maxLength: 256
+          example: pm_1234567890
+        last4:
+          maxLength: 4
+          description: The last four digits of the payment method number. It is read only.
+          example: 4242
+          type: string
+        accountId:
+          type: string
+          description: Account identifier
+          example: acct_1RegszI5I22eU0I3
+          minLength: 1
+          maxLength: 100
     Customer:
       description: Person or entity who shops on Commerce Cloud storefronts by creating a shopper account in Commerce Cloud.
       properties:
@@ -1855,6 +1884,11 @@ components:
           items:
             $ref: '#/components/schemas/CustomerPaymentInstrument'
           type: array
+        paymentMethodReferences:
+          description: Payment method reference information for Salesforce Payments.
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerPaymentMethodReference'
         phoneBusiness:
           description: The customer's business phone number.
           example: 555-555-5555
@@ -2270,24 +2304,11 @@ components:
           type: boolean
       required:
         - code
-    ISOCurrency:
-      pattern: ^[A-Z][A-Z][A-Z]$
-      description: A three letter uppercase currency code conforming to the [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html) standard.
-      example: USD
-      type: string
-    NoValue:
-      default: N/A
-      description: A specialized value indicating the lack of definition of a currency, for example, if the value of the monetary value of the currency is an undefined number.
-      example: N/A
-      enum:
-        - N/A
-      type: string
     CurrencyCode:
       description: A three letter uppercase currency code conforming to the [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html) standard, or the string `N/A` indicating that a currency is not applicable.
+      pattern: ^([A-Z][A-Z][A-Z]|N/A)$
       example: USD
-      oneOf:
-        - $ref: '#/components/schemas/ISOCurrency'
-        - $ref: '#/components/schemas/NoValue'
+      type: string
     CustomerInfo:
       additionalProperties:
         title: Additional Property Support
@@ -2526,6 +2547,7 @@ components:
       type: string
     OrderPaymentInstrument:
       description: Document representing an order payment instrument.
+      type: object
       properties:
         amount:
           format: double
@@ -2567,18 +2589,49 @@ components:
               type: string
               maxLength: 256
               example: pi_3N4B2vF0wDjebNCp1234567
-            clientSecret:
-              description: Client secret for payment confirmation. Used primarily by Stripe for client-side payment confirmation.
-              type: string
-              maxLength: 256
-              example: pi_3N4B2vF0wDjebNCp1234567_secret_abc123
             redirectUrl:
               description: Redirect URL for payment methods that require user redirection to complete payment.
               type: string
               format: uri
               maxLength: 2048
               example: https://checkout.stripe.com/pay/cs_test_abc123
-      type: object
+            gateway:
+              description: The payment gateway used to process the payment.
+              example: stripe
+              type: string
+              enum:
+                - stripe
+                - paypal
+                - adyen
+            gatewayProperties:
+              description: The payment gateway specific properties.
+              type: object
+              additionalProperties: false
+              properties:
+                stripe:
+                  description: |
+                    # Stripe specific properties.
+
+                    - setupFutureUsage: Indicates that you intend to make future payments with this payment method.
+                      - **on_session**: The payment method is intended to be used for a future payment on the same website session.
+                      - **off_session**: The payment method is intended to be used for a future payment on a different website session.
+                     - **null**: The payment method is not intended to be used for a future payment.
+                    - clientSecret: Secret for Stripe client-side payment confirmation. Don't store, log, or expose the client secret to anyone other than the customer, and only use it on pages where TLS is enabled.
+                      - type: string
+                      - maxLength: 256
+                      - example: "pi_1J4K5L2eZvKYlo2CyZ8K5L6M_secret_abc123"
+                  type: object
+                  additionalProperties: true
+                paypal:
+                  description: |
+                    # PayPal specific properties.
+                  type: object
+                  additionalProperties: true
+                adyen:
+                  description: |
+                    # Adyen specific properties.
+                  type: object
+                  additionalProperties: true
     ProductItem:
       description: Document representing a product item.
       additionalProperties:
@@ -2707,9 +2760,10 @@ components:
             a particular shipping method. It is read only.
           example: 006490dcc338feeafc71c964bf
           type: string
-        somInfo:
-          description: Information retrieved from Salesforce Order Management (SOM) for the product.
-          $ref: '#/components/schemas/SomInfo'
+        omsData:
+          description: Information retrieved from Order Management (OMS) for the product. Only available in context of an order.
+          allOf:
+            - $ref: '#/components/schemas/OmsProductData'
         tax:
           format: double
           description: The tax for the product item, not including price adjustments. It is read only.
@@ -2962,12 +3016,12 @@ components:
           type: string
       required:
         - id
-    SomInfo:
-      description: "Additional information retrieved from Salesforce Order Management (SOM) \nSee https://developer.salesforce.com/docs/atlas.en-us.order_management_developer_guide.meta/order_management_developer_guide/sforce_api_objects_orderitemsummary.htm for more information."
+    OmsProductData:
+      description: "Additional information retrieved from Order Management (OMS) \nSee https://developer.salesforce.com/docs/atlas.en-us.order_management_developer_guide.meta/order_management_developer_guide/sforce_api_objects_orderitemsummary.htm for more information.\nOnly available in context of an order."
       additionalProperties: false
       properties:
         status:
-          description: Salesforce Order Management (SOM) status
+          description: Order Management (OMS) status
           example: ordered
           enum:
             - ordered
@@ -3467,13 +3521,6 @@ components:
       required:
         - total
       type: object
-    Limit:
-      default: 10
-      minimum: 1
-      format: int32
-      description: Maximum records to retrieve per request, not to exceed the maximum defined. A limit must be at least 1 so at least one record is returned (if any match the criteria).
-      type: integer
-      example: 10
     Total:
       default: 0
       minimum: 0
@@ -3489,9 +3536,10 @@ components:
         - total
       properties:
         limit:
-          maximum: 200
-          allOf:
-            - $ref: '#/components/schemas/Limit'
+          format: int32
+          description: Maximum records to retrieve per request. The limit with its constraints (minimum, maximum, default) is defined by the request parameter `limit` of the endpoint returning this schema.
+          type: integer
+          example: 10
         total:
           $ref: '#/components/schemas/Total'
     Offset:
@@ -3519,6 +3567,78 @@ components:
       maxLength: 50
       type: string
       example: '00000410'
+    OmsShipmentItem:
+      description: Individual item within a shipment
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          description: Unique identifier for the shipment item
+          type: string
+          example: 0OBVF000006603F4AQ
+        productItemId:
+          description: Reference to the product item in the order
+          type: string
+          example: 10uVF0000002fGnYAI
+        quantity:
+          description: Quantity of product items with the referenced productItemId in this shipment
+          type: number
+          format: double
+          example: 2
+    OmsShipment:
+      description: Shipment information from Salesforce Order Management created during fulfillment process. See https://developer.salesforce.com/docs/atlas.en-us.230.0.order_management_developer_guide.meta/order_management_developer_guide/sforce_api_objects_fulfillmentorder.htm for more information.
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          description: Unique identifier for the shipment
+          type: string
+          example: 0OBVF000000003F4AQ
+        status:
+          description: Current status of the shipment
+          type: string
+          example: shipped
+        provider:
+          description: Shipping provider name
+          type: string
+          example: UPS
+        trackingNumber:
+          description: Tracking number for the shipment
+          type: string
+          example: '123456789'
+        trackingUrl:
+          description: URL to track the shipment
+          type: string
+          example: https://www.ups.com/track?loc=en_US&tracknum=123456789
+        expectedDeliveryDate:
+          description: Expected delivery date and time
+          type: string
+          format: date-time
+          example: 2025-11-12T20:00:00.000+0000
+        actualDeliveryDate:
+          description: Actual delivery date and time (null if not yet delivered)
+          type: string
+          format: date-time
+          example: 2025-11-12T20:00:00.000+0000
+        shipmentItems:
+          description: Items included in this shipment
+          type: array
+          items:
+            $ref: '#/components/schemas/OmsShipmentItem'
+    OmsData:
+      description: "Additional information retrieved from Order Management (OMS) \nSee https://developer.salesforce.com/docs/atlas.en-us.order_management_developer_guide.meta/order_management_developer_guide/sforce_api_objects_ordersummary.htm for more information."
+      additionalProperties: false
+      properties:
+        status:
+          description: Current status of the order
+          type: string
+          example: shipped
+        shipments:
+          description: List of shipments associated with the order
+          type: array
+          items:
+            $ref: '#/components/schemas/OmsShipment'
+      type: object
     Order:
       description: Document representing an order.
       type: object
@@ -3735,6 +3855,10 @@ components:
           example: ShoppingSite
           allOf:
             - $ref: '#/components/schemas/SiteId'
+        omsData:
+          description: Information retrieved from Order Management (OMS) for the order.
+          allOf:
+            - $ref: '#/components/schemas/OmsData'
         sourceCode:
           description: The source code assigned to the basket from which this order was created. It is read only.
           example: OUTDOOR1
@@ -4203,6 +4327,13 @@ components:
           type: object
           additionalProperties:
             type: string
+        shippingMethods:
+          description: |-
+            The array of applicable shipping methods for this product. This array can be empty.
+            This property is only returned in context of the 'shipping_methods' expansion.
+          type: array
+          items:
+            $ref: '#/components/schemas/ShippingMethod'
       required:
         - id
       type: object
@@ -5104,6 +5235,33 @@ components:
       schema:
         minLength: 1
         type: string
+    expandCustomer:
+      name: expand
+      in: query
+      description: |-
+        Expands the response with additional customer data.
+        - addresses (Default)
+        - paymentinstruments (Default)
+        - paymentmethodreferences (Requires Salesforce Payments integration; ignored otherwise)
+        - none (Excludes all expansion data)
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+            - none
+            - addresses
+            - paymentinstruments
+            - paymentmethodreferences
+          example:
+            - addresses
+        example:
+          - addresses
+          - paymentinstruments
+          - paymentmethodreferences
+      style: form
+      explode: false
     addressName:
       name: addressName
       in: path
@@ -5145,9 +5303,9 @@ components:
       schema:
         type: string
         enum:
-          - som
-        example: som
-      description: "This parameter enhances the order result with extra data. By using `expand=som`, all orders for the current customer are loaded \ndirectly from Salesforce Order Management (SOM). The system returns the retrieved SOM order data, along with any orders not yet \ntransferred to SOM. If your instance is not integrated with SOM, the `expand=som` command is disregarded.      "
+          - oms
+        example: oms
+      description: "This parameter enhances the order result with extra data. By using `expand=som`, all orders for the current customer are loaded \ndirectly from Salesforce Order Management (SOM). The system returns the retrieved SOM order data, along with any orders not yet \ntransferred to SOM. If your instance is not integrated with SOM, the `expand=som` command is disregarded."
     paymentInstrumentId:
       name: paymentInstrumentId
       in: path
@@ -5331,6 +5489,40 @@ components:
               numberLastDigits: ber2
             paymentInstrumentId: beybQiWcyatEEaaadniwhKxxFl
             paymentMethodId: CREDIT_CARD
+        phoneBusiness: '234560003'
+        phoneHome: '123450003'
+        phoneMobile: '345670003'
+    getCustomerSuccessWithSalesforcePayments:
+      value:
+        addresses:
+          - address1: 10 Presidential Way
+            addressId: me
+            city: Woburn
+            countryCode: US
+            firstName: John
+            fullName: John M. Smith
+            lastName: Smith
+            postalCode: '01827'
+            salutation: Mr.
+            stateCode: MA
+        authType: registered
+        creationDate: '2020-02-14T20:39:53.818Z'
+        customerId: abfTEMDZOgi3JPrkHjv9IhoziM
+        customerNo: '00010009'
+        email: jsmith@demandware.com
+        firstName: John
+        gender: 1
+        lastName: Smith
+        paymentInstruments: []
+        paymentMethodReferences:
+          - type: card
+            id: pm_card_1234567890
+            last4: '4242'
+            accountId: acct_1RegszI5I22eU0I3
+          - type: sepa_debit
+            id: pm_sepa_debit_1234567890
+            last4: '5678'
+            accountId: acct_1RegszI5I22eU0I3
         phoneBusiness: '234560003'
         phoneHome: '123450003'
         phoneMobile: '345670003'

@@ -1,9 +1,9 @@
 {
-  "main": "shopper-orders-oas-v1-public.yaml",
-  "name": "Shopper Orders OAS",
+  "main": "shopper-seo-oas-v1-public.yaml",
+  "name": "Shopper Seo OAS",
   "groupId": "893f605e-10e2-423a-bdb4-f952f56eb6d8",
-  "assetId": "shopper-orders-oas",
-  "version": "1.6.0",
+  "assetId": "shopper-seo-oas",
+  "version": "1.0.17",
   "classifier": "oas",
   "tags": [],
   "descriptorVersion": "1.0.0",

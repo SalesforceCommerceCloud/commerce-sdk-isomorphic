@@ -3,8 +3,68 @@ info:
   x-api-type: Shopper
   x-api-family: Configuration
   title: Shopper Configurations
-  version: 1.0.1
-  description: "[Download API specification](https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-configurations/shopper-configurations-oas-v1-public.yaml)\n\n# API Overview\nIn commerce, there is a need to provide information to the shopper facing application to allow for making decisions on execution.  This is highly cache-able data that rarely changes.  \n\nIt encompasses toggles, preferences, and configuration that allow the application to be reactive to changes performed by the merchant, admin, or support engineer.  \n\n## Use Cases\n1. What is the site name and site status (online / offline)\n2. What is the default and supported currencies\n3. What is the default and supported locales\n4. Which features are enabled\n\n# Example\n\n```\n{\n  \"configurations\":[\n    {\n      \"configurationType\":\"siteConfiguration\",\n      \"id\":\"id\",\n      \"value\":\"TestWapi\"\n    },\n    {\n      \"configurationType\":\"siteConfiguration\",\n      \"id\":\"name\",\n      \"value\":\"Test WAPI\"\n    },\n    {\n      \"configurationType\":\"siteConfiguration\",\n      \"id\":\"status\",\n      \"value\":\"online\"\n    },\n    {\n      \"configurationType\":\"siteConfiguration\",\n      \"id\":\"timezone\",\n      \"value\":\"Etc/UTC\"\n    },\n    {\n      \"configurationType\":\"siteConfiguration\",\n      \"id\":\"timezoneOffset\",\n      \"value\":0\n    },\n    {\n      \"configurationType\":\"siteConfiguration\",\n      \"id\":\"defaultCurrency\",\n      \"value\":\"USD\"\n    },\n    {\n      \"configurationType\":\"siteConfiguration\",\n      \"id\":\"allowedCurrencies\",\n      \"value\":[\n        \"USD\",\n        \"EUR\"\n      ]\n    },\n    {\n      \"configurationType\":\"siteConfiguration\",\n      \"id\":\"defaultLocale\",\n      \"value\":\"default\"\n    },\n    {\n      \"configurationType\":\"siteConfiguration\",\n      \"id\":\"allowedLocales\",\n      \"value\":[\n        {\n          \"country\":\"\",\n          \"default\":true,\n          \"displayCountry\":\"\",\n          \"displayLanguage\":\"\",\n          \"displayName\":\"default\",\n          \"id\":\"default\",\n          \"iso3Country\":\"\",\n          \"iso3Language\":\"\",\n          \"language\":\"\",\n          \"name\":\"default\"\n        },\n        {\n          \"country\":\"DE\",\n          \"default\":false,\n          \"displayCountry\":\"Deutschland\",\n          \"displayLanguage\":\"Deutsch\",\n          \"displayName\":\"Deutsch (Deutschland)\",\n          \"id\":\"de-DE\",\n          \"iso3Country\":\"DEU\",\n          \"iso3Language\":\"deu\",\n          \"language\":\"de\",\n          \"name\":\"German (Germany)\"\n        },\n        {\n          \"country\":\"\",\n          \"default\":false,\n          \"displayCountry\":\"\",\n          \"displayLanguage\":\"Deutsch\",\n          \"displayName\":\"Deutsch\",\n          \"id\":\"de\",\n          \"iso3Country\":\"\",\n          \"iso3Language\":\"deu\",\n          \"language\":\"de\",\n          \"name\":\"German\"\n        },\n        {\n          \"country\":\"US\",\n          \"default\":false,\n          \"displayCountry\":\"United States\",\n          \"displayLanguage\":\"English\",\n          \"displayName\":\"English (United States)\",\n          \"id\":\"en-US\",\n          \"iso3Country\":\"USA\",\n          \"iso3Language\":\"eng\",\n          \"language\":\"en\",\n          \"name\":\"English (United States)\"\n        },\n        {\n          \"country\":\"CA\",\n          \"default\":false,\n          \"displayCountry\":\"Canada\",\n          \"displayLanguage\":\"English\",\n          \"displayName\":\"English (Canada)\",\n          \"id\":\"en-CA\",\n          \"iso3Country\":\"CAN\",\n          \"iso3Language\":\"eng\",\n          \"language\":\"en\",\n          \"name\":\"English (Canada)\"\n        },\n        {\n          \"country\":\"\",\n          \"default\":false,\n          \"displayCountry\":\"\",\n          \"displayLanguage\":\"English\",\n          \"displayName\":\"English\",\n          \"id\":\"en\",\n          \"iso3Country\":\"\",\n          \"iso3Language\":\"eng\",\n          \"language\":\"en\",\n          \"name\":\"English\"\n        },\n        {\n          \"country\":\"\",\n          \"default\":false,\n          \"displayCountry\":\"\",\n          \"displayLanguage\":\"español\",\n          \"displayName\":\"español\",\n          \"id\":\"es\",\n          \"iso3Country\":\"\",\n          \"iso3Language\":\"spa\",\n          \"language\":\"es\",\n          \"name\":\"Spanish\"\n        }\n      ]\n    },\n    {\n      \"configurationType\":\"globalConfiguration\",\n      \"id\":\"SalesforcePaymentsAllowed\",\n      \"value\":true\n    },\n    {\n      \"configurationType\":\"globalConfiguration\",\n      \"id\":\"gcp\",\n      \"value\":\"test-gcp-key\"\n    }\n  ]\n}\n```\n\n### Caching\n\nCaching capabilities are available for the Shopper Configuration APIs. For details, see [Server-Side Web-Tier Caching.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/server-side-web-tier-caching.html)"
+  version: 1.0.2
+  description: |-
+    [Download API specification](https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-configurations/shopper-configurations-oas-v1-public.yaml)
+
+    # API Overview
+
+    The Shopper Configurations API provides cacheable configuration data to shopper-facing applications, enabling them to make decisions based on merchant settings without requiring server-side logic.
+
+    This highly cacheable data encompasses toggles, preferences, and configuration information that allows the application to be reactive to changes performed by the merchant, admin, or support engineer.
+
+    Configuration types include:
+
+    - siteConfiguration: Site-specific settings such as name, status, currencies, and locales
+    - globalConfiguration: Instance-wide settings such as feature flags
+
+    ## Authentication & Authorization
+
+    The Shopper Configuration API requires a shopper access token from the Shopper Login and API Access Service (SLAS).
+
+    You must include `sfcc.shopper-configuations` in the client ID used to generate the SLAS token. For a full list of required permissions, see the [Authorization Scopes Catalog.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/auth-z-scope-catalog.html)
+
+    For details on how to request a shopper access token from SLAS, see the guest user flows for [public clients](https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-public-client.html) and [private clients](https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-private-client.html) in the SLAS guides.
+
+    ## Use Cases
+
+    ### Use Hooks
+    You can extend the Shopper Configurations response with custom data using the `dw.shop.shopper_configuration.modifyGETResponse` hook. This is useful for adding custom site preferences to the response.
+
+    ### Example Hook Implementation
+
+    ```javascript
+    exports.modifyGETResponse = function (configResp) {
+      var customPreference = dw.system.Site.getCurrent().getCustomPreferenceValue(
+        "customerServiceEmail"
+      );
+      configResp.c_customPrefs = {
+        customerServiceEmail: customPreference || "noreply@example.com"
+      };
+    };
+    ```
+
+    For details on hook registration, see [Hook Method Details](https://developer.salesforce.com/docs/commerce/commerce-api/guide/hook-method-details.html).
+
+    ### Site Identification and Availability
+
+    Retrieve the site's display name and current operational status to determine if the storefront is online, offline, or in a maintenance state for shoppers.
+
+    ### Currency Configuration
+
+    Identify the default currency for the site and the list of all supported currencies to ensure correct price rendering and multi-currency support.
+
+    ### Locale and Language Settings
+
+    Access the default locale and the full set of supported locales to localize content, formatting, and language for the shopper's specific region.
+
+    ### Feature Enablement
+
+    View the status of various storefront features and toggles to dynamically enable or disable application logic based on the merchant's active configuration.
+
+    ### Caching
+
+    Caching capabilities are available for the Shopper Configuration APIs. For details, see [Server-Side Web-Tier Caching.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/server-side-web-tier-caching.html)
 servers:
   - url: https://{shortCode}.api.commercecloud.salesforce.com/configuration/shopper-configurations/v1
     variables:
@@ -184,6 +244,55 @@ components:
     ConfigurationsExample:
       value:
         configurations:
+          - id: id
+            value: RefArch
+            configurationType: siteConfiguration
+          - id: name
+            value: Ref Arch
+            configurationType: siteConfiguration
+          - id: status
+            value: online
+            configurationType: siteConfiguration
+          - id: timezone
+            value: Etc/UTC
+            configurationType: siteConfiguration
+          - id: timezoneOffset
+            value: 0
+            configurationType: siteConfiguration
+          - id: defaultCurrency
+            value: USD
+            configurationType: siteConfiguration
+          - id: allowedCurrencies
+            value:
+              - USD
+              - EUR
+            configurationType: siteConfiguration
+          - id: defaultLocale
+            value: en-US
+            configurationType: siteConfiguration
+          - id: allowedLocales
+            value:
+              - id: en-US
+                country: US
+                default: true
+                displayCountry: United States
+                displayLanguage: English
+                displayName: English (United States)
+                iso3Country: USA
+                iso3Language: eng
+                language: en
+                name: English (United States)
+              - id: en-CA
+                country: CA
+                default: false
+                displayCountry: Canada
+                displayLanguage: English
+                displayName: English (Canada)
+                iso3Country: CAN
+                iso3Language: eng
+                language: en
+                name: English (Canada)
+            configurationType: siteConfiguration
           - id: SalesforcePaymentsAllowed
             value: true
             configurationType: globalConfiguration

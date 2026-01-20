@@ -3,7 +3,7 @@ info:
   x-api-type: Shopper
   x-api-family: Site
   title: Shopper SEO
-  version: 1.0.16
+  version: 1.0.17
   description: |-
     [Download API specification](https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-seo/shopper-seo-oas-v1-public.yaml)
 
@@ -15,7 +15,9 @@ info:
 
     The Shopper SEO API requires a shopper access token from the [Shopper Login and API Access Service (SLAS).](https://developer.salesforce.com/docs/commerce/commerce-api/guide/authorization-for-shopper-apis.html)
 
-    You must include the relevant scope(s) in the client ID used to generate the SLAS token. For details, see [Authorization Scopes Catalog.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/auth-z-scope-catalog.html)
+    You must include the relevant scope(s) in the client ID used to generate the SLAS token. For a full list of required permissions, see the [Authorization Scopes Catalog.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/auth-z-scope-catalog.html)
+
+    For details on how to request a shopper access token from SLAS, see the guest user flows for [public clients](https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-public-client.html) and [private clients](https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-private-client.html) in the SLAS guides.
 
     ## Use Cases
 

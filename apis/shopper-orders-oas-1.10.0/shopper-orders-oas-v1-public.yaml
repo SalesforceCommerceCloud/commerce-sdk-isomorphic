@@ -3,7 +3,7 @@ info:
   x-api-type: Shopper
   x-api-family: Checkout
   title: Shopper Orders
-  version: 1.6.0
+  version: 1.10.0
   description: |-
     [Download API specification](https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-orders/shopper-orders-oas-v1-public.yaml)
 
@@ -30,7 +30,7 @@ info:
 
     For details on how to request a shopper access token from SLAS, see the guest user flows for [public clients](https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-public-client.html#guest-user) and [private clients](https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-private-client.html#guest-user) in the SLAS guides.
 
-    You must include the relevant scope(s) in the client ID used to generate the SLAS token. For details, see the [Authorization Scopes Catalog.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/auth-z-scope-catalog.html)
+    You must include `sfcc.shopper-baskets-orders` or `sfcc.shopper-baskets-orders.rw` in the client ID used to generate the SLAS token. For a full list of permissions, see the [Authorization Scopes Catalog.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/auth-z-scope-catalog.html)
 
     ## Use Cases
 
@@ -205,6 +205,74 @@ paths:
         - ShopperTokenTsob:
             - sfcc.shopper-baskets-orders
             - sfcc.shopper-baskets-orders.rw
+  /organizations/{organizationId}/orders/{orderNo}/actions/fail:
+    post:
+      description: |-
+        Fails an unplaced order and optionally reopens the basket when indicated.
+        Creates a HistoryEntry in the failed Order with provided reasonCode.
+      externalDocs:
+        description: Find more info on fail order behavior here
+        url: https://salesforcecommercecloud.github.io/b2c-dev-doc/docs/current/scriptapi/html/index.html?target=class_dw_order_OrderMgr.html#dw_order_OrderMgr_failOrder_Order_Boolean_DetailAnchor
+      operationId: failOrder
+      summary: Fail an Order.
+      parameters:
+        - $ref: '#/components/parameters/organizationId'
+        - $ref: '#/components/parameters/orderNo'
+        - $ref: '#/components/parameters/siteId'
+        - $ref: '#/components/parameters/locale'
+        - $ref: '#/components/parameters/reopenBasket'
+      requestBody:
+        content:
+          application/json:
+            examples:
+              FailOrder:
+                $ref: '#/components/examples/FailOrder'
+            schema:
+              $ref: '#/components/schemas/FailOrderRequest'
+      security:
+        - ShopperToken:
+            - sfcc.shopper-baskets-orders.rw
+      responses:
+        '201':
+          description: |
+            Order failed successfully. No content returned.
+          headers:
+            Location:
+              description: The location for accessing the reopened basket if one exists.
+              schema:
+                type: string
+        '204':
+          description: |
+            Order failed successfully. No content returned.
+        '400':
+          description: |-
+            Possible reasons:
+              - Invalid request parameters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                BadRequest:
+                  $ref: '#/components/examples/BadRequest'
+        '404':
+          description: The order with the given order number is unknown for the shopper.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                OrderNotFound:
+                  $ref: '#/components/examples/OrderNotFound'
+        '409':
+          description: The order is in invalid status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                InvalidStateTransition:
+                  $ref: '#/components/examples/InvalidStateTransition'
   /organizations/{organizationId}/orders/{orderNo}/payment-instruments:
     post:
       description: |-
@@ -524,9 +592,8 @@ components:
     DefaultFallback:
       default: default
       description: A specialized value indicating the system default values for locales.
+      pattern: ^default$
       example: default
-      enum:
-        - default
       type: string
     LocaleCode:
       description: A descriptor for a geographical region by both a language and country code. By combining these two, regional differences in a language can be addressed, such as with the request header parameter `Accept-Language` following [RFC 2616](https://tools.ietf.org/html/rfc2616) & [RFC 1766](https://tools.ietf.org/html/rfc1766). This can also just refer to a language code, also RFC 2616/1766 compliant, as a default if there is no specific match for a country. Finally, can also be used to define default behavior if there is no locale specified.
@@ -732,24 +799,11 @@ components:
           type: boolean
       required:
         - code
-    ISOCurrency:
-      pattern: ^[A-Z][A-Z][A-Z]$
-      description: A three letter uppercase currency code conforming to the [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html) standard.
-      example: USD
-      type: string
-    NoValue:
-      default: N/A
-      description: A specialized value indicating the lack of definition of a currency, for example, if the value of the monetary value of the currency is an undefined number.
-      example: N/A
-      enum:
-        - N/A
-      type: string
     CurrencyCode:
       description: A three letter uppercase currency code conforming to the [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html) standard, or the string `N/A` indicating that a currency is not applicable.
+      pattern: ^([A-Z][A-Z][A-Z]|N/A)$
       example: USD
-      oneOf:
-        - $ref: '#/components/schemas/ISOCurrency'
-        - $ref: '#/components/schemas/NoValue'
+      type: string
     CustomerInfo:
       additionalProperties:
         title: Additional Property Support
@@ -1091,18 +1145,49 @@ components:
               type: string
               maxLength: 256
               example: pi_3N4B2vF0wDjebNCp1234567
-            clientSecret:
-              description: Client secret for payment confirmation. Used primarily by Stripe for client-side payment confirmation.
-              type: string
-              maxLength: 256
-              example: pi_3N4B2vF0wDjebNCp1234567_secret_abc123
             redirectUrl:
               description: Redirect URL for payment methods that require user redirection to complete payment.
               type: string
               format: uri
               maxLength: 2048
               example: https://checkout.stripe.com/pay/cs_test_abc123
-      type: object
+            gateway:
+              description: The payment gateway used to process the payment.
+              example: stripe
+              type: string
+              enum:
+                - stripe
+                - paypal
+                - adyen
+            gatewayProperties:
+              description: The payment gateway specific properties.
+              type: object
+              additionalProperties: false
+              properties:
+                stripe:
+                  description: |
+                    # Stripe specific properties.
+
+                    - setupFutureUsage: Indicates that you intend to make future payments with this payment method.
+                      - **on_session**: The payment method is intended to be used for a future payment on the same website session.
+                      - **off_session**: The payment method is intended to be used for a future payment on a different website session.
+                     - **null**: The payment method is not intended to be used for a future payment.
+                    - clientSecret: Secret for Stripe client-side payment confirmation. Don't store, log, or expose the client secret to anyone other than the customer, and only use it on pages where TLS is enabled.
+                      - type: string
+                      - maxLength: 256
+                      - example: "pi_1J4K5L2eZvKYlo2CyZ8K5L6M_secret_abc123"
+                  type: object
+                  additionalProperties: true
+                paypal:
+                  description: |
+                    # PayPal specific properties.
+                  type: object
+                  additionalProperties: true
+                adyen:
+                  description: |
+                    # Adyen specific properties.
+                  type: object
+                  additionalProperties: true
     ProductItem:
       description: Document representing a product item.
       additionalProperties:
@@ -1231,9 +1316,9 @@ components:
             a particular shipping method. It is read only.
           example: 006490dcc338feeafc71c964bf
           type: string
-        somInfo:
-          description: Information retrieved from Salesforce Order Management (SOM) for the product.
-          $ref: '#/components/schemas/SomInfo'
+        omsData:
+          description: Information retrieved from Order Management (OMS) for the product.
+          $ref: '#/components/schemas/OmsData'
         tax:
           format: double
           description: The tax for the product item, not including price adjustments. It is read only.
@@ -1486,12 +1571,12 @@ components:
           type: string
       required:
         - id
-    SomInfo:
-      description: "Additional information retrieved from Salesforce Order Management (SOM) \nSee https://developer.salesforce.com/docs/atlas.en-us.order_management_developer_guide.meta/order_management_developer_guide/sforce_api_objects_orderitemsummary.htm for more information."
+    OmsData:
+      description: "Additional information retrieved from Order Management (OMS) \nSee https://developer.salesforce.com/docs/atlas.en-us.order_management_developer_guide.meta/order_management_developer_guide/sforce_api_objects_orderitemsummary.htm for more information."
       additionalProperties: false
       properties:
         status:
-          description: Salesforce Order Management (SOM) status
+          description: Order Management (OMS) status
           example: ordered
           enum:
             - ordered
@@ -1960,6 +2045,78 @@ components:
       maxLength: 50
       type: string
       example: '00000410'
+    ShipmentItem:
+      description: Individual item within a shipment
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          description: Unique identifier for the shipment item
+          type: string
+          example: 0OBVF000006603F4AQ
+        productItemId:
+          description: Reference to the product item in the order
+          type: string
+          example: 10uVF0000002fGnYAI
+        quantity:
+          description: Quantity of product items with the referenced productItemId in this shipment
+          type: number
+          format: double
+          example: 2
+    schemas-Shipment:
+      description: Shipment information from Salesforce Order Management created during fulfillment process. See https://developer.salesforce.com/docs/atlas.en-us.230.0.order_management_developer_guide.meta/order_management_developer_guide/sforce_api_objects_fulfillmentorder.htm for more information.
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          description: Unique identifier for the shipment
+          type: string
+          example: 0OBVF000000003F4AQ
+        status:
+          description: Current status of the shipment
+          type: string
+          example: shipped
+        provider:
+          description: Shipping provider name
+          type: string
+          example: UPS
+        trackingNumber:
+          description: Tracking number for the shipment
+          type: string
+          example: '123456789'
+        trackingUrl:
+          description: URL to track the shipment
+          type: string
+          example: https://www.ups.com/track?loc=en_US&tracknum=123456789
+        expectedDeliveryDate:
+          description: Expected delivery date and time
+          type: string
+          format: date-time
+          example: 2025-11-12T20:00:00.000+0000
+        actualDeliveryDate:
+          description: Actual delivery date and time (null if not yet delivered)
+          type: string
+          format: date-time
+          example: 2025-11-12T20:00:00.000+0000
+        shipmentItems:
+          description: Items included in this shipment
+          type: array
+          items:
+            $ref: '#/components/schemas/ShipmentItem'
+    schemas-OmsData:
+      description: "Additional information retrieved from Order Management (OMS) \nSee https://developer.salesforce.com/docs/atlas.en-us.order_management_developer_guide.meta/order_management_developer_guide/sforce_api_objects_ordersummary.htm for more information."
+      additionalProperties: false
+      properties:
+        status:
+          description: Current status of the order
+          type: string
+          example: shipped
+        shipments:
+          description: List of shipments associated with the order
+          type: array
+          items:
+            $ref: '#/components/schemas/schemas-Shipment'
+      type: object
     Order:
       description: Document representing an order.
       type: object
@@ -2176,6 +2333,9 @@ components:
           example: ShoppingSite
           allOf:
             - $ref: '#/components/schemas/SiteId'
+        omsData:
+          description: Information retrieved from Order Management (OMS) for the order.
+          $ref: '#/components/schemas/schemas-OmsData'
         sourceCode:
           description: The source code assigned to the basket from which this order was created. It is read only.
           example: OUTDOOR1
@@ -2269,6 +2429,18 @@ components:
         orderViewCode:
           description: The order view code associated with the order to be looked up.
           type: string
+    FailOrderRequest:
+      description: Document representing a fail order request.
+      type: object
+      properties:
+        reasonCode:
+          description: The reason code for failing the order.
+          enum:
+            - payment_confirm_failure
+            - payment_capture_failure
+            - payment_auth_failure
+          type: string
+          example: payment_confirm_failure
     OrderPaymentCardRequest:
       description: Document representing an order payment card request.
       type: object
@@ -2339,15 +2511,44 @@ components:
           maxLength: 100
           example:
             Amer-Zone: null
-        shippingPreference:
+        gateway:
+          description: The payment gateway used to process the payment.
+          example: stripe
           type: string
-          maxLength: 64
-          description: Shipping preference for PayPal payment processing. Applicable only for basket payment instruments.
           enum:
-            - GET_FROM_FILE
-            - NO_SHIPPING
-            - SET_PROVIDED_ADDRESS
-          example: GET_FROM_FILE
+            - stripe
+            - paypal
+            - adyen
+        gatewayProperties:
+          description: The payment gateway specific properties.
+          type: object
+          additionalProperties: false
+          properties:
+            stripe:
+              description: |
+                # Stripe specific properties.
+
+                - setupFutureUsage: Indicates that you intend to make future payments with this payment method.
+                  - **on_session**: The payment method is intended to be used for a future payment on the same website session.
+                  - **off_session**: The payment method is intended to be used for a future payment on a different website session.
+                  - **null**: The payment method is not intended to be used for a future payment.
+              type: object
+              additionalProperties: true
+            paypal:
+              description: |
+                # PayPal specific properties.
+
+                - shippingPreference: Shipping preference for PayPal payment processing. Applicable only for basket payment instruments.
+                  - **GET_FROM_FILE**
+                  - **NO_SHIPPING**
+                  - **SET_PROVIDED_ADDRESS**
+              type: object
+              additionalProperties: true
+            adyen:
+              description: |
+                # Adyen specific properties.
+              type: object
+              additionalProperties: true
     OrderPaymentInstrumentRequest:
       description: Document representing an order payment instrument request.
       additionalProperties:
@@ -2550,14 +2751,27 @@ components:
       name: expand
       in: query
       required: false
+      style: form
+      explode: false
+      example: oms,oms_shipments
       schema:
-        type: string
-        enum:
-          - som
-        example: som
-      description: |-
-        When "expand=som", Salesforce Order Management (SOM) data is returned if available.
-        If your instance is not integrated with SOM, the `expand=som` command is disregarded.
+        type: array
+        items:
+          type: string
+          enum:
+            - oms
+            - oms_shipments
+          example: oms
+      description: "When you select 'oms' expand, data is loaded from Order Management (OMS), if available. \nWhen OMS data is available, the expand parameter has the following behavior:\n\"expand=oms\": order and related order entities (product & shipping items, delivery groups and price adjustments) are returned.\n\"expand=oms_shipments\": order and fulfillment (shipment) data is returned.\n\"expand=oms,oms_shipments\": order, related order entities and fulfillment (shipment) data are returned.\nIf your instance is not integrated with OMS or the order data is not available, the `expand=oms` command is disregarded."
+    reopenBasket:
+      name: reopenBasket
+      in: query
+      description: "Set to true to reopen basket from the order.\nA basket can only be reopened if no other basket for the customer exists at the moment of the call to fail Order, \nsince a customer is limited to 1 storefront basket at a time."
+      required: false
+      schema:
+        type: boolean
+        default: false
+        example: false
     paymentInstrumentId:
       name: paymentInstrumentId
       in: path
@@ -2897,6 +3111,14 @@ components:
         type: https://api.commercecloud.salesforce.com/documentation/error/v1/errors/order-not-found
         title: Order Not Found
         detail: No order with number '123' was found.
+    FailOrder:
+      value:
+        reasonCode: payment_confirm_failure
+    InvalidStateTransition:
+      value:
+        type: https://api.commercecloud.salesforce.com/documentation/error/v1/errors/order-status-transition
+        title: Order Status Transition
+        detail: The order status change from 'Completed' to 'Failed' for order with number '00000335' isn't supported.
     PaymentInstrumentPost:
       value:
         amount: 700
@@ -3091,6 +3313,10 @@ components:
         paymentReferenceRequest:
           paymentMethodType: card
           zoneId: Amer-Zone
+          gateway: stripe
+          gatewayProperties:
+            stripe:
+              setupFutureUsage: on_session
     examples-PaymentInstrumentPatch:
       value:
         adjustedMerchandizeTotalTax: 30
@@ -3346,7 +3572,11 @@ components:
             paymentMethodId: CREDIT_CARD
             paymentReference:
               paymentReferenceId: pi_1J4K5L2eZvKYlo2CyZ8K5L6M
-              clientSecret: pi_1J4K5L2eZvKYlo2CyZ8K5L6M_secret_abcdef123456
+              gateway: stripe
+              gatewayProperties:
+                stripe:
+                  setupFutureUsage: on_session
+                  clientSecret: pi_1J4K5L2eZvKYlo2CyZ8K5L6M_secret_abcdef123456
         paymentStatus: not_paid
         productItems:
           - adjustedTax: 30
