@@ -548,6 +548,15 @@ export async function loginRegisteredUserB2C(options: {
  * @param options.parameters.userid - User Id for login
  * @param options.parameters.locale - The locale of the template. Not needed for the callback mode
  * @param options.parameters.mode - Medium of sending login token
+ * @param options.parameters.registerCustomer - flag to indicate whether to create B2C new customer profile.
+ * When set to true, creates a new customer profile in B2C Commerce if one doesn't already exist.
+ * Requires last_name and email body parameters unless user_id is an email address.
+ * Optionally accepts first_name and phone_number body parameters.
+ * If the customer profile doesn't exist, it is created when the TOTP is validated via the passwordless/token endpoint.
+ * @param options.parameters.lastName - User last name
+ * @param options.parameters.firstName - User first name
+ * @param options.parameters.email - User email
+ * @param options.parameters.phoneNumber - User phone number
  * @returns Promise of Response
  */
 export async function authorizePasswordless(options: {
