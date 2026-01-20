@@ -244,7 +244,6 @@ describe('Authorize user', () => {
     const unexpectedQueryParams = {
       code_challenge: 'code_challenge',
     };
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     expect(capturedQueryParams).toEqual(
       expect.not.objectContaining(unexpectedQueryParams)
     );

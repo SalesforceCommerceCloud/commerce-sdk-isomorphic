@@ -73,8 +73,8 @@ describe('callCustomEndpoint', () => {
       await callCustomEndpoint({options: copyOptions, clientConfig});
     })
       .rejects.toThrow(
-      'Missing required property needed in options.customApiPathParameters or clientConfig.parameters: endpointPath'
-    )
+        'Missing required property needed in options.customApiPathParameters or clientConfig.parameters: endpointPath'
+      )
       .finally(() => 'resolve promise');
   });
 
