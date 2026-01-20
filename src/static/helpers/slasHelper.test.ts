@@ -244,7 +244,6 @@ describe('Authorize user', () => {
     const unexpectedQueryParams = {
       code_challenge: 'code_challenge',
     };
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     expect(capturedQueryParams).toEqual(
       expect.not.objectContaining(unexpectedQueryParams)
     );
@@ -764,6 +763,57 @@ describe('authorizePasswordless is working', () => {
         channel_id: siteId,
         callback_uri: parametersAuthorizePasswordless.callbackURI,
         usid: parametersAuthorizePasswordless.usid,
+      },
+    };
+    expect(authorizePasswordlessCustomerMock).toBeCalledWith(
+      expectedReqOptions,
+      true
+    );
+  });
+  test('registerCustomer and optional body fields are forwarded correctly', async () => {
+    const mockSlasClient = createMockSlasClient();
+    const {clientId, organizationId, siteId} =
+      mockSlasClient.clientConfig.parameters;
+
+    const parametersAuthorizePasswordless = {
+      callbackURI: 'www.something.com/callback',
+      usid: 'a_usid',
+      userid: 'a_userid',
+      locale: 'a_locale',
+      mode: 'callback',
+      registerCustomer: true,
+      firstName: 'Samantha',
+      lastName: 'Sampleson',
+      email: 'samantha.sampleson@example.com',
+      phoneNumber: '+17776665555',
+    } as const;
+    const authHeaderExpected = `Basic ${slasHelper.stringToBase64(
+      `${clientId}:${credentialsPrivate.clientSecret}`
+    )}`;
+    await slasHelper.authorizePasswordless({
+      slasClient: mockSlasClient,
+      credentials: credentialsPrivate,
+      parameters: parametersAuthorizePasswordless,
+    });
+    const expectedReqOptions = {
+      headers: {
+        Authorization: authHeaderExpected,
+      },
+      parameters: {
+        organizationId,
+        register_customer: 'true',
+      },
+      body: {
+        user_id: parametersAuthorizePasswordless.userid,
+        mode: parametersAuthorizePasswordless.mode,
+        locale: parametersAuthorizePasswordless.locale,
+        channel_id: siteId,
+        callback_uri: parametersAuthorizePasswordless.callbackURI,
+        usid: parametersAuthorizePasswordless.usid,
+        first_name: parametersAuthorizePasswordless.firstName,
+        last_name: parametersAuthorizePasswordless.lastName,
+        email: parametersAuthorizePasswordless.email,
+        phone_number: parametersAuthorizePasswordless.phoneNumber,
       },
     };
     expect(authorizePasswordlessCustomerMock).toBeCalledWith(

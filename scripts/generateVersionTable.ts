@@ -37,6 +37,7 @@ function extractApiVersionsFromDirectory(apisDir: string): ApiVersion[] {
       }
     });
   } catch (error) {
+    // eslint-disable-next-line
     console.error('Error reading APIs directory:', error);
     process.exit(1);
   }
@@ -109,8 +110,10 @@ function updateChangelog(changelogPath: string, versionTable: string) {
     }
 
     fs.writeFileSync(changelogPath, changelogContent, 'utf8');
+    // eslint-disable-next-line
     console.log('✅ Successfully updated CHANGELOG.md with API version table');
   } catch (error) {
+    // eslint-disable-next-line
     console.error('Error updating CHANGELOG.md:', error);
     process.exit(1);
   }
@@ -121,7 +124,9 @@ function main() {
     path.join(__dirname, '../apis')
   );
   const versionTable = generateVersionTable(apiVersions);
+  // eslint-disable-next-line
   console.log('Generated version table:');
+  // eslint-disable-next-line
   console.log(versionTable);
   updateChangelog(path.join(__dirname, '../CHANGELOG.md'), versionTable);
 }

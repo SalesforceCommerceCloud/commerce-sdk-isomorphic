@@ -177,7 +177,7 @@ export function main(): void {
     ? path.resolve(process.env.COMMERCE_SDK_INPUT_DIR)
     : DEFAULT_API_DIRECTORY;
 
-  fs.readdir(apiDirectory, (err: Error, directories: string[]) => {
+  fs.readdir(apiDirectory, (err: Error) => {
     if (err) {
       console.error('Error reading api directory:', err);
       return;
