@@ -3782,6 +3782,10 @@ components:
           description: The payment method ID.
           example: CREDIT_CARD
           type: string
+        paymentReferenceRequest:
+          description: The payment reference request used by Salesforce Payments.
+          allOf:
+            - $ref: '#/components/schemas/SalesforcePaymentsRequest'
     PaymentCardSpec:
       description: Document representing the specification for a payment card.
       type: object
@@ -3966,6 +3970,20 @@ components:
       required:
         - taxes
       additionalProperties: false
+    SalesforcePaymentsRequest:
+      description: Document representing a Salesforce Payments request.
+      type: object
+      properties:
+        paymentMethodType:
+          maxLength: 100
+          description: 'The payment method type (for example: Visa).'
+          example: card
+          type: string
+        zoneId:
+          maxLength: 100
+          description: 'The zone ID.'
+          example: default
+          type: string
   parameters:
     siteId:
       description: The identifier of the site that a request is being made in the context of. Attributes might have site specific values, and some objects may only be assigned to specific sites.

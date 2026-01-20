@@ -1,0 +1,16 @@
+type CommerceSdkKeyMap =
+{{#each children}}
+  | '{{apiName}}'
+{{/each}}
+;
+
+export const sdkImporters: Record<
+  CommerceSdkKeyMap,
+  () => Promise<Record<string, unknown>>
+> = {
+{{#each children}}
+  {{apiName}}: () => import('commerce-sdk-isomorphic/{{directoryName}}'),
+{{/each}}
+};
+
+export type { CommerceSdkKeyMap };

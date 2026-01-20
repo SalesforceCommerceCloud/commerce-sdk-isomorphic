@@ -566,6 +566,11 @@ export async function authorizePasswordless(options: {
     userid: string;
     locale?: string;
     mode: string;
+    registerCustomer?: boolean;
+    lastName?: string;
+    email?: string;
+    firstName?: string;
+    phoneNumber?: string;
   };
 }): Promise<Response> {
   const {slasClient, credentials, parameters} = options;
@@ -597,6 +602,10 @@ export async function authorizePasswordless(options: {
     ...(parameters.usid && {usid: parameters.usid}),
     channel_id: slasClient.clientConfig.parameters.siteId,
     ...(parameters.callbackURI && {callback_uri: parameters.callbackURI}),
+    ...(parameters.lastName && {last_name: parameters.lastName}),
+    ...(parameters.email && {email: parameters.email}),
+    ...(parameters.firstName && {first_name: parameters.firstName}),
+    ...(parameters.phoneNumber && {phone_number: parameters.phoneNumber}),
   };
 
   return slasClient.authorizePasswordlessCustomer(
@@ -606,6 +615,9 @@ export async function authorizePasswordless(options: {
       },
       parameters: {
         organizationId: slasClient.clientConfig.parameters.organizationId,
+        ...(parameters.registerCustomer !== undefined && {
+          register_customer: parameters.registerCustomer ? 'true' : 'false',
+        }),
       },
       body: tokenBody,
     },

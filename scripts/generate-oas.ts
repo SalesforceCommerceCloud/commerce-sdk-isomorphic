@@ -30,6 +30,10 @@ const VERSION_TEMPLATE_LOCATION = path.join(
   __dirname,
   '../templates/version.ts.hbs'
 );
+const IMPORTER_UTIL_TEMPLATE_LOCATION = path.join(
+  __dirname,
+  '../templates/importerUtil.ts.hbs'
+);
 
 function kebabToCamelCase(str: string): string {
   return str.replace(/-([a-z])/g, (match, letter: string) =>
@@ -120,6 +124,14 @@ export function generateIndex(context: {
   fs.writeFileSync(`${TARGET_DIRECTORY}/index.ts`, generatedIndex);
 }
 
+export function generateImporterUtil(context: {
+  children: ApiSpecDetail[];
+}): void {
+  const template = fs.readFileSync(IMPORTER_UTIL_TEMPLATE_LOCATION, 'utf8');
+  const output = Handlebars.compile(template)(context);
+  fs.writeFileSync(`${TARGET_DIRECTORY}/importUtil.ts`, output);
+}
+
 export function generateVersionFile(): void {
   const version = process.env.PACKAGE_VERSION || 'unknown';
   const versionTemplate = fs.readFileSync(VERSION_TEMPLATE_LOCATION, 'utf8');
@@ -205,6 +217,7 @@ export function main(): void {
     });
 
     generateIndex({children: apiSpecDetails});
+    generateImporterUtil({children: apiSpecDetails});
     generateVersionFile();
 
     console.log(

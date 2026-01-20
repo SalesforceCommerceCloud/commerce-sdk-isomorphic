@@ -9,6 +9,7 @@ We welcome contributions to commerce-sdk-isomorphic! To ensure that your contrib
 ## Building
 
 > Recommended: use Yarn 1.x (1.22.22). Newer Yarn versions are not fully supported
+
 > Requirement: Java/JDK must be installed and on your PATH (OpenAPI generation depends on it).
 
 To create the SDK package:
@@ -106,8 +107,18 @@ For guidance on adding new API features or introducing new APIs, see [Adding or 
     ```
 
   - Main OAS file named `<api-name>-oas-v1-public.yaml` (e.g., `shopper-products-oas-v1-public.yaml`)
+- Update `package.json` subpath exports so consumers can import the new API directly. Add a new entry under the top-level `exports` map using lower camel case for the API name, ensuring the path to the `lib` directory is correct:
 
+  Example for a new API named `shopperTest`:
 
+  ```json
+  "exports": {
+    "./shopperTest": {
+      "import": "./lib/shopperTest.js",
+      "require": "./lib/shopperTest.cjs.js"
+    }
+  }
+  ```
 
 ## Usage
 
