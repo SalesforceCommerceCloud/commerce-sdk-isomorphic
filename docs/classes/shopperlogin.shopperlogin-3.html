@@ -141,6 +141,9 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperlogin.shopperlogin-3.html#authenticatecustomer-1" class="tsd-kind-icon">authenticate<wbr>Customer</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperlogin.shopperlogin-3.html#authorizecustomer-1" class="tsd-kind-icon">authorize<wbr>Customer</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperlogin.shopperlogin-3.html#authorizepasswordlesscustomer-1" class="tsd-kind-icon">authorize<wbr>Passwordless<wbr>Customer</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperlogin.shopperlogin-3.html#authorizewebauthnregistration-1" class="tsd-kind-icon">authorize<wbr>Webauthn<wbr>Registration</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperlogin.shopperlogin-3.html#finishwebauthnauthentication-1" class="tsd-kind-icon">finish<wbr>Webauthn<wbr>Authentication</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperlogin.shopperlogin-3.html#finishwebauthnuserregistration-1" class="tsd-kind-icon">finish<wbr>Webauthn<wbr>User<wbr>Registration</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperlogin.shopperlogin-3.html#getaccesstoken-1" class="tsd-kind-icon">get<wbr>Access<wbr>Token</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperlogin.shopperlogin-3.html#getjwksuri-1" class="tsd-kind-icon">get<wbr>Jwks<wbr>Uri</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperlogin.shopperlogin-3.html#getpasswordlessaccesstoken-1" class="tsd-kind-icon">get<wbr>Password<wbr>Less<wbr>Access<wbr>Token</a></li>
@@ -155,6 +158,8 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperlogin.shopperlogin-3.html#logoutcustomer-1" class="tsd-kind-icon">logout<wbr>Customer</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperlogin.shopperlogin-3.html#resetpassword-1" class="tsd-kind-icon">reset<wbr>Password</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperlogin.shopperlogin-3.html#revoketoken-1" class="tsd-kind-icon">revoke<wbr>Token</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperlogin.shopperlogin-3.html#startwebauthnauthentication-1" class="tsd-kind-icon">start<wbr>Webauthn<wbr>Authentication</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="shopperlogin.shopperlogin-3.html#startwebauthnuserregistration-1" class="tsd-kind-icon">start<wbr>Webauthn<wbr>User<wbr>Registration</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -178,7 +183,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:485</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:585</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -200,7 +205,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="clientconfig.clientconfig-1.html" class="tsd-signature-type">ClientConfig</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>baseUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:463</li>
+							<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:558</li>
 						</ul>
 					</aside>
 				</section>
@@ -210,17 +215,17 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Base<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"https://{shortCode}.api.commercecloud.salesforce.com/shopper/auth/v1"</span><span class="tsd-signature-symbol"> = currentBaseUri</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:465</li>
+							<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:560</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="paramkeys" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> param<wbr>Keys</h3>
-					<div class="tsd-signature tsd-kind-icon">param<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>authenticateCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"state"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"scope"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authenticateCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizeCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"scope"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"state"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"ui_locales"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizeCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizePasswordlessCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"callback_uri"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizePasswordlessCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"refresh_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dnt"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getJwksUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getJwksUriRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordLessAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwdless_login_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordLessAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwdless_login_token"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordResetToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"callback_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_name"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordResetTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getSessionBridgeAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dwsid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dwsgst"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dwsrst"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dnt"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getSessionBridgeAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dwsid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"agent_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dnt"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"state"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAuthorizationToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAuthorizationTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedSystemAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"email_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dnt"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedSystemAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getUserInfo<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getUserInfoRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getWellknownOpenidConfiguration<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getWellknownOpenidConfigurationRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>introspectToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token_type_hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>introspectTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>logoutCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"refresh_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>logoutCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"refresh_token"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>resetPassword<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwd_action_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"new_password"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>resetPasswordRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwd_action_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>revokeToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token_type_hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>revokeTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {authenticateCustomer: [&#x27;organizationId&#x27;,&#x27;redirect_uri&#x27;,&#x27;channel_id&#x27;,&#x27;client_id&#x27;,&#x27;response_type&#x27;,&#x27;state&#x27;,&#x27;scope&#x27;,&#x27;usid&#x27;,&#x27;code_challenge&#x27;,],authenticateCustomerRequired: [&#x27;organizationId&#x27;,&#x27;redirect_uri&#x27;,&#x27;channel_id&#x27;,],authorizeCustomer: [&#x27;organizationId&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,&#x27;client_id&#x27;,&#x27;scope&#x27;,&#x27;state&#x27;,&#x27;usid&#x27;,&#x27;hint&#x27;,&#x27;channel_id&#x27;,&#x27;code_challenge&#x27;,&#x27;ui_locales&#x27;,],authorizeCustomerRequired: [&#x27;organizationId&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,&#x27;client_id&#x27;,],authorizePasswordlessCustomer: [&#x27;organizationId&#x27;,&#x27;user_id&#x27;,&#x27;mode&#x27;,&#x27;channel_id&#x27;,&#x27;locale&#x27;,&#x27;usid&#x27;,&#x27;callback_uri&#x27;,],authorizePasswordlessCustomerRequired: [&#x27;organizationId&#x27;,&#x27;user_id&#x27;,&#x27;mode&#x27;,&#x27;channel_id&#x27;,],getAccessToken: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;refresh_token&#x27;,&#x27;code&#x27;,&#x27;usid&#x27;,&#x27;redirect_uri&#x27;,&#x27;code_verifier&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;dnt&#x27;,],getAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,],getJwksUri: [&#x27;organizationId&#x27;,],getJwksUriRequired: [&#x27;organizationId&#x27;,],getPasswordLessAccessToken: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;hint&#x27;,&#x27;pwdless_login_token&#x27;,&#x27;client_id&#x27;,&#x27;code_verifier&#x27;,&#x27;login_id&#x27;,],getPasswordLessAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;hint&#x27;,&#x27;pwdless_login_token&#x27;,],getPasswordResetToken: [&#x27;organizationId&#x27;,&#x27;user_id&#x27;,&#x27;mode&#x27;,&#x27;channel_id&#x27;,&#x27;locale&#x27;,&#x27;client_id&#x27;,&#x27;code_challenge&#x27;,&#x27;callback_uri&#x27;,&#x27;idp_name&#x27;,&#x27;hint&#x27;,],getPasswordResetTokenRequired: [&#x27;organizationId&#x27;,&#x27;user_id&#x27;,&#x27;mode&#x27;,&#x27;channel_id&#x27;,],getSessionBridgeAccessToken: [&#x27;organizationId&#x27;,&#x27;code&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;code_verifier&#x27;,&#x27;dwsid&#x27;,&#x27;grant_type&#x27;,&#x27;login_id&#x27;,&#x27;dwsgst&#x27;,&#x27;dwsrst&#x27;,&#x27;usid&#x27;,&#x27;dnt&#x27;,],getSessionBridgeAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;code&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;code_verifier&#x27;,&#x27;dwsid&#x27;,&#x27;grant_type&#x27;,&#x27;login_id&#x27;,],getTrustedAgentAccessToken: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;code_verifier&#x27;,&#x27;grant_type&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;agent_id&#x27;,&#x27;usid&#x27;,&#x27;dnt&#x27;,&#x27;state&#x27;,],getTrustedAgentAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;code_verifier&#x27;,&#x27;grant_type&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,],getTrustedAgentAuthorizationToken: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,&#x27;code_challenge&#x27;,],getTrustedAgentAuthorizationTokenRequired: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,],getTrustedSystemAccessToken: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;hint&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;usid&#x27;,&#x27;email_id&#x27;,&#x27;dnt&#x27;,],getTrustedSystemAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;hint&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,],getUserInfo: [&#x27;organizationId&#x27;,&#x27;channel_id&#x27;,],getUserInfoRequired: [&#x27;organizationId&#x27;,],getWellknownOpenidConfiguration: [&#x27;organizationId&#x27;,],getWellknownOpenidConfigurationRequired: [&#x27;organizationId&#x27;,],introspectToken: [&#x27;organizationId&#x27;,&#x27;token&#x27;,&#x27;token_type_hint&#x27;,],introspectTokenRequired: [&#x27;organizationId&#x27;,&#x27;token&#x27;,],logoutCustomer: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;refresh_token&#x27;,&#x27;channel_id&#x27;,&#x27;hint&#x27;,],logoutCustomerRequired: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;refresh_token&#x27;,],resetPassword: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;pwd_action_token&#x27;,&#x27;code_verifier&#x27;,&#x27;channel_id&#x27;,&#x27;new_password&#x27;,&#x27;hint&#x27;,],resetPasswordRequired: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;pwd_action_token&#x27;,&#x27;code_verifier&#x27;,&#x27;channel_id&#x27;,],revokeToken: [&#x27;organizationId&#x27;,&#x27;token&#x27;,&#x27;token_type_hint&#x27;,],revokeTokenRequired: [&#x27;organizationId&#x27;,&#x27;token&#x27;,],} as const</span></div>
+					<div class="tsd-signature tsd-kind-icon">param<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>authenticateCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"state"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"scope"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authenticateCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizeCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"scope"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"state"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"ui_locales"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizeCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizePasswordlessCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"register_customer"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"callback_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"last_name"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"email"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"first_name"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"phone_number"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizePasswordlessCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizeWebauthnRegistration<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"callback_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_name"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>authorizeWebauthnRegistrationRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>finishWebauthnAuthentication<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>finishWebauthnAuthenticationRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>finishWebauthnUserRegistration<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>finishWebauthnUserRegistrationRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"refresh_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dnt"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getJwksUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getJwksUriRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordLessAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwdless_login_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordLessAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwdless_login_token"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordResetToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"callback_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_name"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPasswordResetTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getSessionBridgeAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dwsid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dwsgst"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dwsrst"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dnt"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getSessionBridgeAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dwsid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"agent_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dnt"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"state"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAuthorizationToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedAgentAuthorizationTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedSystemAccessToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"email_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dnt"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getTrustedSystemAccessTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"login_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_origin"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getUserInfo<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getUserInfoRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getWellknownOpenidConfiguration<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getWellknownOpenidConfigurationRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>introspectToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token_type_hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>introspectTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>logoutCustomer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"refresh_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>logoutCustomerRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"refresh_token"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>resetPassword<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwd_action_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"new_password"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>resetPasswordRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwd_action_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>revokeToken<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token_type_hint"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>revokeTokenRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>startWebauthnAuthentication<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"tenant_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>startWebauthnAuthenticationRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>startWebauthnUserRegistration<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwd_action_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"display_name"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"nick_name"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>startWebauthnUserRegistrationRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwd_action_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {authenticateCustomer: [&#x27;organizationId&#x27;,&#x27;redirect_uri&#x27;,&#x27;channel_id&#x27;,&#x27;client_id&#x27;,&#x27;response_type&#x27;,&#x27;state&#x27;,&#x27;scope&#x27;,&#x27;usid&#x27;,&#x27;code_challenge&#x27;,],authenticateCustomerRequired: [&#x27;organizationId&#x27;,&#x27;redirect_uri&#x27;,&#x27;channel_id&#x27;,],authorizeCustomer: [&#x27;organizationId&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,&#x27;client_id&#x27;,&#x27;scope&#x27;,&#x27;state&#x27;,&#x27;usid&#x27;,&#x27;hint&#x27;,&#x27;channel_id&#x27;,&#x27;code_challenge&#x27;,&#x27;ui_locales&#x27;,],authorizeCustomerRequired: [&#x27;organizationId&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,&#x27;client_id&#x27;,],authorizePasswordlessCustomer: [&#x27;organizationId&#x27;,&#x27;user_id&#x27;,&#x27;mode&#x27;,&#x27;channel_id&#x27;,&#x27;register_customer&#x27;,&#x27;locale&#x27;,&#x27;usid&#x27;,&#x27;callback_uri&#x27;,&#x27;last_name&#x27;,&#x27;email&#x27;,&#x27;first_name&#x27;,&#x27;phone_number&#x27;,],authorizePasswordlessCustomerRequired: [&#x27;organizationId&#x27;,&#x27;user_id&#x27;,&#x27;mode&#x27;,&#x27;channel_id&#x27;,],authorizeWebauthnRegistration: [&#x27;organizationId&#x27;,&#x27;user_id&#x27;,&#x27;mode&#x27;,&#x27;channel_id&#x27;,&#x27;locale&#x27;,&#x27;client_id&#x27;,&#x27;code_challenge&#x27;,&#x27;callback_uri&#x27;,&#x27;idp_name&#x27;,&#x27;hint&#x27;,],authorizeWebauthnRegistrationRequired: [&#x27;organizationId&#x27;,&#x27;user_id&#x27;,&#x27;mode&#x27;,&#x27;channel_id&#x27;,],finishWebauthnAuthentication: [&#x27;organizationId&#x27;,],finishWebauthnAuthenticationRequired: [&#x27;organizationId&#x27;,],finishWebauthnUserRegistration: [&#x27;organizationId&#x27;,],finishWebauthnUserRegistrationRequired: [&#x27;organizationId&#x27;,],getAccessToken: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;refresh_token&#x27;,&#x27;code&#x27;,&#x27;usid&#x27;,&#x27;redirect_uri&#x27;,&#x27;code_verifier&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;dnt&#x27;,],getAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,],getJwksUri: [&#x27;organizationId&#x27;,],getJwksUriRequired: [&#x27;organizationId&#x27;,],getPasswordLessAccessToken: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;hint&#x27;,&#x27;pwdless_login_token&#x27;,&#x27;client_id&#x27;,&#x27;code_verifier&#x27;,&#x27;login_id&#x27;,],getPasswordLessAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;hint&#x27;,&#x27;pwdless_login_token&#x27;,],getPasswordResetToken: [&#x27;organizationId&#x27;,&#x27;user_id&#x27;,&#x27;mode&#x27;,&#x27;channel_id&#x27;,&#x27;locale&#x27;,&#x27;client_id&#x27;,&#x27;code_challenge&#x27;,&#x27;callback_uri&#x27;,&#x27;idp_name&#x27;,&#x27;hint&#x27;,],getPasswordResetTokenRequired: [&#x27;organizationId&#x27;,&#x27;user_id&#x27;,&#x27;mode&#x27;,&#x27;channel_id&#x27;,],getSessionBridgeAccessToken: [&#x27;organizationId&#x27;,&#x27;code&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;code_verifier&#x27;,&#x27;dwsid&#x27;,&#x27;grant_type&#x27;,&#x27;login_id&#x27;,&#x27;dwsgst&#x27;,&#x27;dwsrst&#x27;,&#x27;usid&#x27;,&#x27;dnt&#x27;,],getSessionBridgeAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;code&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;code_verifier&#x27;,&#x27;dwsid&#x27;,&#x27;grant_type&#x27;,&#x27;login_id&#x27;,],getTrustedAgentAccessToken: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;code_verifier&#x27;,&#x27;grant_type&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;agent_id&#x27;,&#x27;usid&#x27;,&#x27;dnt&#x27;,&#x27;state&#x27;,],getTrustedAgentAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;code_verifier&#x27;,&#x27;grant_type&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,],getTrustedAgentAuthorizationToken: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,&#x27;code_challenge&#x27;,],getTrustedAgentAuthorizationTokenRequired: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;redirect_uri&#x27;,&#x27;response_type&#x27;,],getTrustedSystemAccessToken: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;hint&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;usid&#x27;,&#x27;email_id&#x27;,&#x27;dnt&#x27;,],getTrustedSystemAccessTokenRequired: [&#x27;organizationId&#x27;,&#x27;grant_type&#x27;,&#x27;hint&#x27;,&#x27;login_id&#x27;,&#x27;idp_origin&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,],getUserInfo: [&#x27;organizationId&#x27;,&#x27;channel_id&#x27;,],getUserInfoRequired: [&#x27;organizationId&#x27;,],getWellknownOpenidConfiguration: [&#x27;organizationId&#x27;,],getWellknownOpenidConfigurationRequired: [&#x27;organizationId&#x27;,],introspectToken: [&#x27;organizationId&#x27;,&#x27;token&#x27;,&#x27;token_type_hint&#x27;,],introspectTokenRequired: [&#x27;organizationId&#x27;,&#x27;token&#x27;,],logoutCustomer: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;refresh_token&#x27;,&#x27;channel_id&#x27;,&#x27;hint&#x27;,],logoutCustomerRequired: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;refresh_token&#x27;,],resetPassword: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;pwd_action_token&#x27;,&#x27;channel_id&#x27;,&#x27;code_verifier&#x27;,&#x27;new_password&#x27;,&#x27;hint&#x27;,&#x27;user_id&#x27;,],resetPasswordRequired: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;pwd_action_token&#x27;,&#x27;channel_id&#x27;,],revokeToken: [&#x27;organizationId&#x27;,&#x27;token&#x27;,&#x27;token_type_hint&#x27;,],revokeTokenRequired: [&#x27;organizationId&#x27;,&#x27;token&#x27;,],startWebauthnAuthentication: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;user_id&#x27;,&#x27;tenant_id&#x27;,],startWebauthnAuthenticationRequired: [&#x27;organizationId&#x27;,&#x27;client_id&#x27;,&#x27;channel_id&#x27;,&#x27;user_id&#x27;,],startWebauthnUserRegistration: [&#x27;organizationId&#x27;,&#x27;pwd_action_token&#x27;,&#x27;user_id&#x27;,&#x27;channel_id&#x27;,&#x27;client_id&#x27;,&#x27;display_name&#x27;,&#x27;nick_name&#x27;,],startWebauthnUserRegistrationRequired: [&#x27;organizationId&#x27;,&#x27;pwd_action_token&#x27;,&#x27;user_id&#x27;,&#x27;channel_id&#x27;,],} as const</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:494</li>
+							<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:594</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -239,10 +244,28 @@
 								<h5>authorize<wbr>Customer<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"response_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">]</span></h5>
 							</li>
 							<li class="tsd-parameter">
-								<h5>authorize<wbr>Passwordless<wbr>Customer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"callback_uri"</span><span class="tsd-signature-symbol">]</span></h5>
+								<h5>authorize<wbr>Passwordless<wbr>Customer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"register_customer"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"callback_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"last_name"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"email"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"first_name"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"phone_number"</span><span class="tsd-signature-symbol">]</span></h5>
 							</li>
 							<li class="tsd-parameter">
 								<h5>authorize<wbr>Passwordless<wbr>Customer<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>authorize<wbr>Webauthn<wbr>Registration<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"locale"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_challenge"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"callback_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"idp_name"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>authorize<wbr>Webauthn<wbr>Registration<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"mode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>finish<wbr>Webauthn<wbr>Authentication<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>finish<wbr>Webauthn<wbr>Authentication<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>finish<wbr>Webauthn<wbr>User<wbr>Registration<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>finish<wbr>Webauthn<wbr>User<wbr>Registration<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">]</span></h5>
 							</li>
 							<li class="tsd-parameter">
 								<h5>get<wbr>Access<wbr>Token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"grant_type"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"refresh_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"usid"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"redirect_uri"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"dnt"</span><span class="tsd-signature-symbol">]</span></h5>
@@ -317,16 +340,28 @@
 								<h5>logout<wbr>Customer<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"refresh_token"</span><span class="tsd-signature-symbol">]</span></h5>
 							</li>
 							<li class="tsd-parameter">
-								<h5>reset<wbr>Password<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwd_action_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"new_password"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">]</span></h5>
+								<h5>reset<wbr>Password<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwd_action_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"new_password"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"hint"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">]</span></h5>
 							</li>
 							<li class="tsd-parameter">
-								<h5>reset<wbr>Password<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwd_action_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"code_verifier"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span></h5>
+								<h5>reset<wbr>Password<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwd_action_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span></h5>
 							</li>
 							<li class="tsd-parameter">
 								<h5>revoke<wbr>Token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token_type_hint"</span><span class="tsd-signature-symbol">]</span></h5>
 							</li>
 							<li class="tsd-parameter">
 								<h5>revoke<wbr>Token<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"token"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>start<wbr>Webauthn<wbr>Authentication<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"tenant_id"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>start<wbr>Webauthn<wbr>Authentication<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>start<wbr>Webauthn<wbr>User<wbr>Registration<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwd_action_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"client_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"display_name"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"nick_name"</span><span class="tsd-signature-symbol">]</span></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>start<wbr>Webauthn<wbr>User<wbr>Registration<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"pwd_action_token"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"user_id"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"channel_id"</span><span class="tsd-signature-symbol">]</span></h5>
 							</li>
 						</ul>
 					</div>
@@ -345,7 +380,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:780</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:943</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -381,7 +416,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:821</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:984</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -440,7 +475,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:980</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1143</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -467,7 +502,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1039</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1202</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -510,14 +545,14 @@
 					<a name="authorizepasswordlesscustomer-1" class="tsd-anchor"></a>
 					<h3>authorize<wbr>Passwordless<wbr>Customer</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">authorize<wbr>Passwordless<wbr>Customer<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#authorizepasswordlesscustomerbodytype" class="tsd-signature-type">authorizePasswordlessCustomerBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
-						<li class="tsd-signature tsd-kind-icon">authorize<wbr>Passwordless<wbr>Customer&lt;T&gt;<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#authorizepasswordlesscustomerbodytype" class="tsd-signature-type">authorizePasswordlessCustomerBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, rawResponse<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">T</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">authorize<wbr>Passwordless<wbr>Customer<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#authorizepasswordlesscustomerbodytype" class="tsd-signature-type">authorizePasswordlessCustomerBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>register_customer<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">authorize<wbr>Passwordless<wbr>Customer&lt;T&gt;<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#authorizepasswordlesscustomerbodytype" class="tsd-signature-type">authorizePasswordlessCustomerBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>register_customer<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, rawResponse<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">T</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1260</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1431</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -529,7 +564,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#authorizepasswordlesscustomerbodytype" class="tsd-signature-type">authorizePasswordlessCustomerBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#authorizepasswordlesscustomerbodytype" class="tsd-signature-type">authorizePasswordlessCustomerBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>register_customer<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
 											<p>An object containing the options for this method.</p>
@@ -543,7 +578,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1288</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1468</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -560,7 +595,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#authorizepasswordlesscustomerbodytype" class="tsd-signature-type">authorizePasswordlessCustomerBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#authorizepasswordlesscustomerbodytype" class="tsd-signature-type">authorizePasswordlessCustomerBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>register_customer<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
 											<p>An object containing the options for this method.</p>
@@ -582,6 +617,239 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="authorizewebauthnregistration-1" class="tsd-anchor"></a>
+					<h3>authorize<wbr>Webauthn<wbr>Registration</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">authorize<wbr>Webauthn<wbr>Registration<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#authorizewebauthnregistrationbodytype" class="tsd-signature-type">authorizeWebauthnRegistrationBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">authorize<wbr>Webauthn<wbr>Registration&lt;T&gt;<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#authorizewebauthnregistrationbodytype" class="tsd-signature-type">authorizeWebauthnRegistrationBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, rawResponse<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">T</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1611</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Authorizes a user to register a WebAuthn credential (passkey). This endpoint validates the user&#39;s
+										credentials and creates a password action token that can be used to start the registration process.
+									The token is sent to the user via the specified channel (email or SMS).</p>
+								</div>
+								<p>If you would like to get a raw Response object use the other authorizeWebauthnRegistration function.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#authorizewebauthnregistrationbodytype" class="tsd-signature-type">authorizeWebauthnRegistrationBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>An object containing the options for this method.</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>A promise of type void.</p>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1645</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Authorizes a user to register a WebAuthn credential (passkey). This endpoint validates the user&#39;s
+										credentials and creates a password action token that can be used to start the registration process.
+									The token is sent to the user via the specified channel (email or SMS).</p>
+								</div>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#authorizewebauthnregistrationbodytype" class="tsd-signature-type">authorizeWebauthnRegistrationBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>An object containing the options for this method.</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> rawResponse: <a href="" class="tsd-signature-type">T</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>Set to true to return entire Response object instead of DTO.</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>A promise of type Response if rawResponse is true, a promise of type void otherwise.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="finishwebauthnauthentication-1" class="tsd-anchor"></a>
+					<h3>finish<wbr>Webauthn<wbr>Authentication</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">finish<wbr>Webauthn<wbr>Authentication<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#authenticatefinishrequest" class="tsd-signature-type">AuthenticateFinishRequest</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/shopperlogin.html#authenticateresult" class="tsd-signature-type">AuthenticateResult</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">finish<wbr>Webauthn<wbr>Authentication&lt;T&gt;<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#authenticatefinishrequest" class="tsd-signature-type">AuthenticateFinishRequest</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, rawResponse<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">T</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">AuthenticateResult</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1771</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Completes the WebAuthn authentication process by verifying the assertion from the authenticator.
+									Returns OAuth tokens upon successful authentication.</p>
+								</div>
+								<p>If you would like to get a raw Response object use the other finishWebauthnAuthentication function.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#authenticatefinishrequest" class="tsd-signature-type">AuthenticateFinishRequest</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>An object containing the options for this method.</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/shopperlogin.html#authenticateresult" class="tsd-signature-type">AuthenticateResult</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>A promise of type AuthenticateResult.</p>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1795</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Completes the WebAuthn authentication process by verifying the assertion from the authenticator.
+									Returns OAuth tokens upon successful authentication.</p>
+								</div>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#authenticatefinishrequest" class="tsd-signature-type">AuthenticateFinishRequest</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>An object containing the options for this method.</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> rawResponse: <a href="" class="tsd-signature-type">T</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>Set to true to return entire Response object instead of DTO.</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">AuthenticateResult</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>A promise of type Response if rawResponse is true, a promise of type AuthenticateResult otherwise.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="finishwebauthnuserregistration-1" class="tsd-anchor"></a>
+					<h3>finish<wbr>Webauthn<wbr>User<wbr>Registration</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">finish<wbr>Webauthn<wbr>User<wbr>Registration<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#registrationfinishrequest" class="tsd-signature-type">RegistrationFinishRequest</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">finish<wbr>Webauthn<wbr>User<wbr>Registration&lt;T&gt;<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#registrationfinishrequest" class="tsd-signature-type">RegistrationFinishRequest</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, rawResponse<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">T</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1909</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Completes the WebAuthn registration process by verifying the credential created by the authenticator.
+									Stores the public key and credential information for future authentication.</p>
+								</div>
+								<p>If you would like to get a raw Response object use the other finishWebauthnUserRegistration function.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#registrationfinishrequest" class="tsd-signature-type">RegistrationFinishRequest</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>An object containing the options for this method.</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>A promise of type void.</p>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1933</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Completes the WebAuthn registration process by verifying the credential created by the authenticator.
+									Stores the public key and credential information for future authentication.</p>
+								</div>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#registrationfinishrequest" class="tsd-signature-type">RegistrationFinishRequest</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>An object containing the options for this method.</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> rawResponse: <a href="" class="tsd-signature-type">T</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>Set to true to return entire Response object instead of DTO.</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>A promise of type Response if rawResponse is true, a promise of type void otherwise.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 					<a name="getaccesstoken-1" class="tsd-anchor"></a>
 					<h3>get<wbr>Access<wbr>Token</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
@@ -592,7 +860,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1425</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2068</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -624,7 +892,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1468</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2111</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -679,7 +947,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1603</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2246</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -707,7 +975,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1628</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2271</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -758,7 +1026,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1744</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2387</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -784,7 +1052,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1772</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2415</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -833,7 +1101,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1897</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2540</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -859,7 +1127,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:1928</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2571</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -908,7 +1176,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2068</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2711</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -938,7 +1206,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2109</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2752</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -991,7 +1259,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2250</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2893</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1018,7 +1286,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2284</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2927</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1068,7 +1336,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2427</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3070</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1094,7 +1362,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2476</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3119</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1143,7 +1411,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2687</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3330</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1171,7 +1439,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2724</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3367</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1222,7 +1490,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2849</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3492</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1248,7 +1516,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2871</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3514</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1297,7 +1565,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:2983</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3626</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1323,7 +1591,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3003</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3646</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1372,7 +1640,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3110</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3753</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1398,7 +1666,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3134</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3777</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1447,7 +1715,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3259</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3902</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1475,7 +1743,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3297</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3940</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1526,7 +1794,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3456</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:4100</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1552,7 +1820,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3484</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:4129</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1601,7 +1869,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3604</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:4250</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1627,7 +1895,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:3628</li>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:4274</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1665,6 +1933,160 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="startwebauthnauthentication-1" class="tsd-anchor"></a>
+					<h3>start<wbr>Webauthn<wbr>Authentication</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">start<wbr>Webauthn<wbr>Authentication<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#startwebauthnauthenticationbodytype" class="tsd-signature-type">startWebauthnAuthenticationBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/shopperlogin.html#publickeycredentialrequestoptions" class="tsd-signature-type">PublicKeyCredentialRequestOptions</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">start<wbr>Webauthn<wbr>Authentication&lt;T&gt;<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#startwebauthnauthenticationbodytype" class="tsd-signature-type">startWebauthnAuthenticationBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, rawResponse<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">T</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">PublicKeyCredentialRequestOptions</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:4392</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Starts the WebAuthn authentication process by generating credential request options.
+									Returns the challenge and allowed credentials for the user to authenticate with.</p>
+								</div>
+								<p>If you would like to get a raw Response object use the other startWebauthnAuthentication function.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#startwebauthnauthenticationbodytype" class="tsd-signature-type">startWebauthnAuthenticationBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>An object containing the options for this method.</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/shopperlogin.html#publickeycredentialrequestoptions" class="tsd-signature-type">PublicKeyCredentialRequestOptions</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>A promise of type PublicKeyCredentialRequestOptions.</p>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:4420</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Starts the WebAuthn authentication process by generating credential request options.
+									Returns the challenge and allowed credentials for the user to authenticate with.</p>
+								</div>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#startwebauthnauthenticationbodytype" class="tsd-signature-type">startWebauthnAuthenticationBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>An object containing the options for this method.</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> rawResponse: <a href="" class="tsd-signature-type">T</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>Set to true to return entire Response object instead of DTO.</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">PublicKeyCredentialRequestOptions</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>A promise of type Response if rawResponse is true, a promise of type PublicKeyCredentialRequestOptions otherwise.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="startwebauthnuserregistration-1" class="tsd-anchor"></a>
+					<h3>start<wbr>Webauthn<wbr>User<wbr>Registration</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">start<wbr>Webauthn<wbr>User<wbr>Registration<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#startwebauthnuserregistrationbodytype" class="tsd-signature-type">startWebauthnUserRegistrationBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">start<wbr>Webauthn<wbr>User<wbr>Registration&lt;T&gt;<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#startwebauthnuserregistrationbodytype" class="tsd-signature-type">startWebauthnUserRegistrationBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, rawResponse<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">T</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:4544</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Starts the WebAuthn registration process by generating credential creation options.
+									Returns the challenge and other parameters needed by the authenticator to create a new credential.</p>
+								</div>
+								<p>If you would like to get a raw Response object use the other startWebauthnUserRegistration function.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#startwebauthnuserregistrationbodytype" class="tsd-signature-type">startWebauthnUserRegistrationBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>An object containing the options for this method.</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>A promise of type object.</p>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:4574</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Starts the WebAuthn registration process by generating credential creation options.
+									Returns the challenge and other parameters needed by the authenticator to create a new credential.</p>
+								</div>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>body<span class="tsd-signature-symbol">: </span><a href="../modules/shopperlogin.html#startwebauthnuserregistrationbodytype" class="tsd-signature-type">startWebauthnUserRegistrationBodyType</a><span class="tsd-signature-symbol"> &amp; </span><a href="../modules/helpers.html#customrequestbody-1" class="tsd-signature-type">CustomRequestBody</a><span class="tsd-signature-symbol">; </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>An object containing the options for this method.</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> rawResponse: <a href="" class="tsd-signature-type">T</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>Set to true to return entire Response object instead of DTO.</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>A promise of type Response if rawResponse is true, a promise of type object otherwise.</p>
+						</li>
+					</ul>
+				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Object literals</h2>
@@ -1674,7 +2096,7 @@
 					<div class="tsd-signature tsd-kind-icon">api<wbr>Paths<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:467</li>
+							<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:562</li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -1683,7 +2105,7 @@
 						<div class="tsd-signature tsd-kind-icon">authenticate<wbr>Customer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/login&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:468</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:563</li>
 							</ul>
 						</aside>
 					</section>
@@ -1693,7 +2115,7 @@
 						<div class="tsd-signature tsd-kind-icon">authorize<wbr>Customer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/authorize&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:469</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:564</li>
 							</ul>
 						</aside>
 					</section>
@@ -1703,7 +2125,37 @@
 						<div class="tsd-signature tsd-kind-icon">authorize<wbr>Passwordless<wbr>Customer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/passwordless/login&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:470</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:565</li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="apipaths.authorizewebauthnregistration-2" class="tsd-anchor"></a>
+						<h3>authorize<wbr>Webauthn<wbr>Registration</h3>
+						<div class="tsd-signature tsd-kind-icon">authorize<wbr>Webauthn<wbr>Registration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/webauthn/register/authorize&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:566</li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="apipaths.finishwebauthnauthentication-2" class="tsd-anchor"></a>
+						<h3>finish<wbr>Webauthn<wbr>Authentication</h3>
+						<div class="tsd-signature tsd-kind-icon">finish<wbr>Webauthn<wbr>Authentication<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/webauthn/authenticate/finish&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:567</li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="apipaths.finishwebauthnuserregistration-2" class="tsd-anchor"></a>
+						<h3>finish<wbr>Webauthn<wbr>User<wbr>Registration</h3>
+						<div class="tsd-signature tsd-kind-icon">finish<wbr>Webauthn<wbr>User<wbr>Registration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/webauthn/register/finish&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:568</li>
 							</ul>
 						</aside>
 					</section>
@@ -1713,7 +2165,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Access<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/token&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:471</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:569</li>
 							</ul>
 						</aside>
 					</section>
@@ -1723,7 +2175,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Jwks<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/jwks&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:472</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:570</li>
 							</ul>
 						</aside>
 					</section>
@@ -1733,7 +2185,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Password<wbr>Less<wbr>Access<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/passwordless/token&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:473</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:571</li>
 							</ul>
 						</aside>
 					</section>
@@ -1743,7 +2195,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Password<wbr>Reset<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/password/reset&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:474</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:572</li>
 							</ul>
 						</aside>
 					</section>
@@ -1753,7 +2205,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Session<wbr>Bridge<wbr>Access<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/session-bridge/token&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:475</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:573</li>
 							</ul>
 						</aside>
 					</section>
@@ -1763,7 +2215,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Trusted<wbr>Agent<wbr>Access<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/trusted-agent/token&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:476</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:574</li>
 							</ul>
 						</aside>
 					</section>
@@ -1773,7 +2225,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Trusted<wbr>Agent<wbr>Authorization<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/trusted-agent/authorize&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:477</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:575</li>
 							</ul>
 						</aside>
 					</section>
@@ -1783,7 +2235,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Trusted<wbr>System<wbr>Access<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/trusted-system/token&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:478</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:576</li>
 							</ul>
 						</aside>
 					</section>
@@ -1793,7 +2245,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>User<wbr>Info<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/userinfo&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:479</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:577</li>
 							</ul>
 						</aside>
 					</section>
@@ -1803,7 +2255,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Wellknown<wbr>Openid<wbr>Configuration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/.well-known/openid-configuration&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:480</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:578</li>
 							</ul>
 						</aside>
 					</section>
@@ -1813,7 +2265,7 @@
 						<div class="tsd-signature tsd-kind-icon">introspect<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/introspect&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:481</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:579</li>
 							</ul>
 						</aside>
 					</section>
@@ -1823,7 +2275,7 @@
 						<div class="tsd-signature tsd-kind-icon">logout<wbr>Customer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/logout&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:482</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:580</li>
 							</ul>
 						</aside>
 					</section>
@@ -1833,7 +2285,7 @@
 						<div class="tsd-signature tsd-kind-icon">reset<wbr>Password<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/password/action&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:483</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:581</li>
 							</ul>
 						</aside>
 					</section>
@@ -1843,7 +2295,27 @@
 						<div class="tsd-signature tsd-kind-icon">revoke<wbr>Token<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/revoke&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:484</li>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:582</li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="apipaths.startwebauthnauthentication-2" class="tsd-anchor"></a>
+						<h3>start<wbr>Webauthn<wbr>Authentication</h3>
+						<div class="tsd-signature tsd-kind-icon">start<wbr>Webauthn<wbr>Authentication<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/webauthn/authenticate/start&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:583</li>
+							</ul>
+						</aside>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
+						<a name="apipaths.startwebauthnuserregistration-2" class="tsd-anchor"></a>
+						<h3>start<wbr>Webauthn<wbr>User<wbr>Registration</h3>
+						<div class="tsd-signature tsd-kind-icon">start<wbr>Webauthn<wbr>User<wbr>Registration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/oauth2/webauthn/register/start&quot;</span></div>
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in src/lib/shopperLogin/apis/DefaultApi.ts:584</li>
 							</ul>
 						</aside>
 					</section>
@@ -1904,6 +2376,9 @@
 						<a href="../modules/shopperorders.html">shopper<wbr>Orders</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="../modules/shopperpayments.html">shopper<wbr>Payments</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="../modules/shopperproducts.html">shopper<wbr>Products</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -1955,6 +2430,15 @@
 								<a href="shopperlogin.shopperlogin-3.html#authorizepasswordlesscustomer-1" class="tsd-kind-icon">authorize<wbr>Passwordless<wbr>Customer</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="shopperlogin.shopperlogin-3.html#authorizewebauthnregistration-1" class="tsd-kind-icon">authorize<wbr>Webauthn<wbr>Registration</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="shopperlogin.shopperlogin-3.html#finishwebauthnauthentication-1" class="tsd-kind-icon">finish<wbr>Webauthn<wbr>Authentication</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="shopperlogin.shopperlogin-3.html#finishwebauthnuserregistration-1" class="tsd-kind-icon">finish<wbr>Webauthn<wbr>User<wbr>Registration</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 								<a href="shopperlogin.shopperlogin-3.html#getaccesstoken-1" class="tsd-kind-icon">get<wbr>Access<wbr>Token</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
@@ -1995,6 +2479,12 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
 								<a href="shopperlogin.shopperlogin-3.html#revoketoken-1" class="tsd-kind-icon">revoke<wbr>Token</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="shopperlogin.shopperlogin-3.html#startwebauthnauthentication-1" class="tsd-kind-icon">start<wbr>Webauthn<wbr>Authentication</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="shopperlogin.shopperlogin-3.html#startwebauthnuserregistration-1" class="tsd-kind-icon">start<wbr>Webauthn<wbr>User<wbr>Registration</a>
 							</li>
 							<li class=" tsd-kind-object-literal tsd-parent-kind-class tsd-is-static">
 								<a href="shopperlogin.shopperlogin-3.html#apipaths" class="tsd-kind-icon">api<wbr>Paths</a>
