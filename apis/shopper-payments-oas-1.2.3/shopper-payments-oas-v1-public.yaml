@@ -21,6 +21,7 @@ paths:
       - $ref: '#/components/parameters/currency'
       - $ref: '#/components/parameters/countryCode'
       - $ref: '#/components/parameters/zoneId'
+      - $ref: '#/components/parameters/amount'
     get:
       description: |-
         Retrieves the payment configuration for the organization.
@@ -28,7 +29,9 @@ paths:
         **Parameters:**
         - `siteId`: Required. The site identifier for context-specific configuration
         - `currency`: Required. Three-letter currency code (ISO 4217) for payment method configuration
-        - `countryCode`: Required. Two-letter country code (ISO 3166-1 alpha-2) for country-specific payment configuration
+        - `countryCode`: Optional. Two-letter country code (ISO 3166-1 alpha-2) for country-specific payment configuration
+        - `amount`: Optional. Transaction amount for payment method configuration
+        - `zoneId`: Optional. Payment zone identifier to retrieve zone-specific configuration
 
         **Response Behavior:**
         - Returns payment configuration data when available
@@ -49,8 +52,10 @@ paths:
               examples:
                 stripeConfiguration:
                   $ref: '#/components/examples/PaymentConfigurationGetForStripe'
-                paypalConfiguration:
+                stripeAndPaypalConfiguration:
                   $ref: '#/components/examples/PaymentConfigurationGetForStripeAndPaypal'
+                adyenConfiguration:
+                  $ref: '#/components/examples/PaymentConfigurationGetForAdyen'
                 noDataFound:
                   $ref: '#/components/examples/PaymentConfigurationNoDataFound'
       tags:
@@ -102,6 +107,13 @@ components:
       minLength: 1
       maxLength: 100
       nullable: true
+    Amount:
+      type: number
+      format: double
+      description: The transaction amount.
+      minimum: 0
+      example: 100
+      nullable: true
     PaymentConfiguration:
       type: object
       properties:
@@ -139,42 +151,13 @@ components:
                     description: Account BN code (optional, null if not a PayPal account)
                     example: Example_PPCP
                     maxLength: 100
-                additionalProperties: true
-              gatewayId:
-                type: string
-                description: Gateway identifier
-                example: 0b0SB000000IpdZYAS
-                minLength: 1
-              gatewayResponse:
-                type: object
-                nullable: true
-                description: Gateway response data (optional, can be null)
-                properties:
                   paymentMethods:
-                    type: array
-                    description: Available payment methods from gateway
-                    items:
-                      type: object
-                      properties:
-                        brands:
-                          type: array
-                          description: Supported card brands
-                          items:
-                            type: string
-                            example: visa
-                          example:
-                            - amex
-                            - cup
-                            - diners
-                            - discover
-                            - mc
-                            - visa
-                        type:
-                          type: string
-                          description: Payment method type
-                          example: scheme
+                    type: object
+                    nullable: true
+                    description: Available payment methods from gateway (optional, null if not an Adyen account)
+                    additionalProperties: true
                 additionalProperties: true
-              isLive:
+              live:
                 type: boolean
                 description: Whether the account is in live mode
                 example: false
@@ -184,8 +167,7 @@ components:
                 example: Stripe
             required:
               - accountId
-              - gatewayId
-              - isLive
+              - live
               - vendor
         paymentMethods:
           type: array
@@ -263,6 +245,13 @@ components:
           value: Amer-Zone
       schema:
         $ref: '#/components/schemas/ZoneId'
+    amount:
+      name: amount
+      in: query
+      description: The transaction amount. Optional. Some gateways, such as Adyen, allow for payment methods to be qualified or disqualified based on the amount of the transaction.
+      required: false
+      schema:
+        $ref: '#/components/schemas/Amount'
   examples:
     PaymentConfigurationGetForStripe:
       value:
@@ -271,8 +260,7 @@ components:
           - accountId: acct_1RegszI5I22eU0I3
             config:
               key: pk_test_JsbBx7imKb7n7Xtlb5MH5BNO00ttiURmPV
-            gatewayId: 0b0SB000000IpdZYAS
-            isLive: false
+            live: false
             vendor: Stripe
         paymentMethods:
           - accountId: acct_1RegszI5I22eU0I3
@@ -286,15 +274,13 @@ components:
           - accountId: acct_1RegszI5I22eU0I3
             config:
               key: pk_test_JsbBx7imKb7n7Xtlb5MH5BNO00ttiURmPV
-            gatewayId: 0b0SB000000IpdZYAS
-            isLive: false
+            live: false
             vendor: Stripe
           - accountId: XK92PMVFNRBDG
             config:
               bnCode: SalesforceCommerceCloud_PPCP
               key: AYzMrnD7y4Zc5m5QJZTQ4zPKbP8TMn0r7aStK_3hM9gnaykL-VwK5tGQj4g1y93V6UNvC5j_FZSSa6xpR
-            gatewayId: 0b0SB000000IpdZEU
-            isLive: false
+            live: false
             vendor: Paypal
         paymentMethods:
           - accountId: acct_1RegszI5I22eU0I3
@@ -303,6 +289,31 @@ components:
               - Multistep
           - accountId: XK92PMVFNRBDG
             paymentMethodType: paypal
+            paymentModes:
+              - Multistep
+    PaymentConfigurationGetForAdyen:
+      value:
+        zoneId: Amer-Zone
+        paymentMethodSetAccounts:
+          - accountId: TestAccount941ECOM
+            config:
+              key: test_JE2ML2CMKZHJRL3QWUW4YCE32A3SL3BH
+              paymentMethods:
+                paymentMethods:
+                  - brands:
+                      - amex
+                      - cup
+                      - diners
+                      - discover
+                      - mc
+                      - visa
+                    name: Cards
+                    type: scheme
+            live: false
+            vendor: Adyen
+        paymentMethods:
+          - accountId: TestAccount941ECOM
+            paymentMethodType: card
             paymentModes:
               - Multistep
     PaymentConfigurationNoDataFound:
