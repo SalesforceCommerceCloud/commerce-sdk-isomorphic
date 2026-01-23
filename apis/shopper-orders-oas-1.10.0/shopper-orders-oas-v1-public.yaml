@@ -1104,7 +1104,6 @@ components:
       type: string
     OrderPaymentInstrument:
       description: Document representing an order payment instrument.
-      type: object
       properties:
         amount:
           format: double
@@ -1318,9 +1317,8 @@ components:
           example: 006490dcc338feeafc71c964bf
           type: string
         omsData:
-          description: Information retrieved from Order Management (OMS) for the product. Only available in context of an order.
-          allOf:
-            - $ref: '#/components/schemas/OmsProductData'
+          description: Information retrieved from Order Management (OMS) for the product.
+          $ref: '#/components/schemas/OmsData'
         tax:
           format: double
           description: The tax for the product item, not including price adjustments. It is read only.
@@ -1573,8 +1571,8 @@ components:
           type: string
       required:
         - id
-    OmsProductData:
-      description: "Additional information retrieved from Order Management (OMS) \nSee https://developer.salesforce.com/docs/atlas.en-us.order_management_developer_guide.meta/order_management_developer_guide/sforce_api_objects_orderitemsummary.htm for more information.\nOnly available in context of an order."
+    OmsData:
+      description: "Additional information retrieved from Order Management (OMS) \nSee https://developer.salesforce.com/docs/atlas.en-us.order_management_developer_guide.meta/order_management_developer_guide/sforce_api_objects_orderitemsummary.htm for more information."
       additionalProperties: false
       properties:
         status:
@@ -2047,7 +2045,7 @@ components:
       maxLength: 50
       type: string
       example: '00000410'
-    OmsShipmentItem:
+    ShipmentItem:
       description: Individual item within a shipment
       type: object
       additionalProperties: false
@@ -2065,7 +2063,7 @@ components:
           type: number
           format: double
           example: 2
-    OmsShipment:
+    schemas-Shipment:
       description: Shipment information from Salesforce Order Management created during fulfillment process. See https://developer.salesforce.com/docs/atlas.en-us.230.0.order_management_developer_guide.meta/order_management_developer_guide/sforce_api_objects_fulfillmentorder.htm for more information.
       type: object
       additionalProperties: false
@@ -2104,8 +2102,8 @@ components:
           description: Items included in this shipment
           type: array
           items:
-            $ref: '#/components/schemas/OmsShipmentItem'
-    OmsData:
+            $ref: '#/components/schemas/ShipmentItem'
+    schemas-OmsData:
       description: "Additional information retrieved from Order Management (OMS) \nSee https://developer.salesforce.com/docs/atlas.en-us.order_management_developer_guide.meta/order_management_developer_guide/sforce_api_objects_ordersummary.htm for more information."
       additionalProperties: false
       properties:
@@ -2117,7 +2115,7 @@ components:
           description: List of shipments associated with the order
           type: array
           items:
-            $ref: '#/components/schemas/OmsShipment'
+            $ref: '#/components/schemas/schemas-Shipment'
       type: object
     Order:
       description: Document representing an order.
@@ -2337,8 +2335,7 @@ components:
             - $ref: '#/components/schemas/SiteId'
         omsData:
           description: Information retrieved from Order Management (OMS) for the order.
-          allOf:
-            - $ref: '#/components/schemas/OmsData'
+          $ref: '#/components/schemas/schemas-OmsData'
         sourceCode:
           description: The source code assigned to the basket from which this order was created. It is read only.
           example: OUTDOOR1

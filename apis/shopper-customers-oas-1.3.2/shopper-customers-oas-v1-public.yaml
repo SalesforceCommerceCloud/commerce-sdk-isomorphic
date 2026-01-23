@@ -13,11 +13,11 @@ info:
 
     ## Authentication & Authorization
 
-    The client requesting the customer information must have access to the Customer and Product List resources. The API requests pass a system-to-system bearer token in the header of the request. For the trusted system API, the trusted client must first authenticate against Account manager to log in on behalf of a customer.
+    The client requesting the customer information must have access to the Customer and Product List resources. The Shopper Customer API requires a shopper access token from the Shopper Login and API Access Service (SLAS).
+
+    You must include the relevant scope(s) in the client ID used to generate the SLAS token. For a full list of permissions, see the [Authorization Scopes Catalog.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/auth-z-scope-catalog.html)
 
     For details on how to request a shopper access token from SLAS, see the guest user flows for [public clients](https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-public-client.html#guest-user) and [private clients](https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-private-client.html#guest-user) in the SLAS guides.
-
-    You must include the relevant scope(s) in the client ID used to generate the SLAS token. For details, see the [Authorization Scopes Catalog.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/auth-z-scope-catalog.html)
 
     ## Use Cases
 
@@ -2304,24 +2304,11 @@ components:
           type: boolean
       required:
         - code
-    ISOCurrency:
-      pattern: ^[A-Z][A-Z][A-Z]$
-      description: A three letter uppercase currency code conforming to the [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html) standard.
-      example: USD
-      type: string
-    NoValue:
-      default: N/A
-      description: A specialized value indicating the lack of definition of a currency, for example, if the value of the monetary value of the currency is an undefined number.
-      example: N/A
-      enum:
-        - N/A
-      type: string
     CurrencyCode:
       description: A three letter uppercase currency code conforming to the [ISO 4217](https://www.iso.org/iso-4217-currency-codes.html) standard, or the string `N/A` indicating that a currency is not applicable.
+      pattern: ^([A-Z][A-Z][A-Z]|N/A)$
       example: USD
-      oneOf:
-        - $ref: '#/components/schemas/ISOCurrency'
-        - $ref: '#/components/schemas/NoValue'
+      type: string
     CustomerInfo:
       additionalProperties:
         title: Additional Property Support
@@ -2560,6 +2547,7 @@ components:
       type: string
     OrderPaymentInstrument:
       description: Document representing an order payment instrument.
+      type: object
       properties:
         amount:
           format: double
@@ -2773,8 +2761,9 @@ components:
           example: 006490dcc338feeafc71c964bf
           type: string
         omsData:
-          description: Information retrieved from Order Management (OMS) for the product.
-          $ref: '#/components/schemas/OmsData'
+          description: Information retrieved from Order Management (OMS) for the product. Only available in context of an order.
+          allOf:
+            - $ref: '#/components/schemas/OmsProductData'
         tax:
           format: double
           description: The tax for the product item, not including price adjustments. It is read only.
@@ -3027,8 +3016,8 @@ components:
           type: string
       required:
         - id
-    OmsData:
-      description: "Additional information retrieved from Order Management (OMS) \nSee https://developer.salesforce.com/docs/atlas.en-us.order_management_developer_guide.meta/order_management_developer_guide/sforce_api_objects_orderitemsummary.htm for more information."
+    OmsProductData:
+      description: "Additional information retrieved from Order Management (OMS) \nSee https://developer.salesforce.com/docs/atlas.en-us.order_management_developer_guide.meta/order_management_developer_guide/sforce_api_objects_orderitemsummary.htm for more information.\nOnly available in context of an order."
       additionalProperties: false
       properties:
         status:
@@ -3578,7 +3567,7 @@ components:
       maxLength: 50
       type: string
       example: '00000410'
-    ShipmentItem:
+    OmsShipmentItem:
       description: Individual item within a shipment
       type: object
       additionalProperties: false
@@ -3596,7 +3585,7 @@ components:
           type: number
           format: double
           example: 2
-    schemas-Shipment:
+    OmsShipment:
       description: Shipment information from Salesforce Order Management created during fulfillment process. See https://developer.salesforce.com/docs/atlas.en-us.230.0.order_management_developer_guide.meta/order_management_developer_guide/sforce_api_objects_fulfillmentorder.htm for more information.
       type: object
       additionalProperties: false
@@ -3635,8 +3624,8 @@ components:
           description: Items included in this shipment
           type: array
           items:
-            $ref: '#/components/schemas/ShipmentItem'
-    schemas-OmsData:
+            $ref: '#/components/schemas/OmsShipmentItem'
+    OmsData:
       description: "Additional information retrieved from Order Management (OMS) \nSee https://developer.salesforce.com/docs/atlas.en-us.order_management_developer_guide.meta/order_management_developer_guide/sforce_api_objects_ordersummary.htm for more information."
       additionalProperties: false
       properties:
@@ -3648,7 +3637,7 @@ components:
           description: List of shipments associated with the order
           type: array
           items:
-            $ref: '#/components/schemas/schemas-Shipment'
+            $ref: '#/components/schemas/OmsShipment'
       type: object
     Order:
       description: Document representing an order.
@@ -3868,7 +3857,8 @@ components:
             - $ref: '#/components/schemas/SiteId'
         omsData:
           description: Information retrieved from Order Management (OMS) for the order.
-          $ref: '#/components/schemas/schemas-OmsData'
+          allOf:
+            - $ref: '#/components/schemas/OmsData'
         sourceCode:
           description: The source code assigned to the basket from which this order was created. It is read only.
           example: OUTDOOR1
