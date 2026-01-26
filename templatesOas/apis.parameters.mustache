@@ -2,7 +2,12 @@
 {{! and renders the parameter types for a given operation - query, path, and form body parameters }}
 export type {{nickname}}QueryParameters = {
     {{#queryParams}}
+    {{#uniqueItems}}
+    {{paramName}}{{^required}}?{{/required}}: Array<{{#items}}{{#isEnum}}{{#lambda.titlecase}}{{nickname}}{{/lambda.titlecase}}{{#lambda.titlecase}}{{paramName}}{{/lambda.titlecase}}Enum{{/isEnum}}{{^isEnum}}{{#hasReadOnly}}Omit<{{{dataType}}}, {{#readOnlyVars}}'{{baseName}}'{{^-last}}|{{/-last}}{{/readOnlyVars}}>{{/hasReadOnly}}{{^hasReadOnly}}{{{dataType}}}{{/hasReadOnly}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}}{{/items}}{{^items}}{{#isEnum}}{{#lambda.titlecase}}{{nickname}}{{/lambda.titlecase}}{{#lambda.titlecase}}{{paramName}}{{/lambda.titlecase}}Enum{{/isEnum}}{{^isEnum}}{{#hasReadOnly}}Omit<{{{dataType}}}, {{#readOnlyVars}}'{{baseName}}'{{^-last}}|{{/-last}}{{/readOnlyVars}}>{{/hasReadOnly}}{{^hasReadOnly}}{{{dataType}}}{{/hasReadOnly}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}}{{/items}}>;
+    {{/uniqueItems}}
+    {{^uniqueItems}}
     {{paramName}}{{^required}}?{{/required}}: {{#isEnum}}{{{dataType}}}{{/isEnum}}{{^isEnum}}{{#hasReadOnly}}Omit<{{{dataType}}}, {{#readOnlyVars}}'{{baseName}}'{{^-last}}|{{/-last}}{{/readOnlyVars}}>{{/hasReadOnly}}{{^hasReadOnly}}{{{dataType}}}{{/hasReadOnly}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}};
+    {{/uniqueItems}}
     {{/queryParams}}
 }
 
