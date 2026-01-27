@@ -41,7 +41,12 @@
             {{^isBodyParam}}
             {{^isHeaderParam}}
             {{^isFormParam}}
+                {{#uniqueItems}}
+                {{paramName}}{{^required}}?{{/required}}: Array<{{#items}}{{#isEnum}}{{#lambda.titlecase}}{{nickname}}{{/lambda.titlecase}}{{#lambda.titlecase}}{{paramName}}{{/lambda.titlecase}}Enum{{/isEnum}}{{^isEnum}}{{^isDateTime}}{{^isDate}}{{{dataType}}}{{/isDate}}{{/isDateTime}}{{#isDateTime}}string{{/isDateTime}}{{#isDate}}string{{/isDate}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}}{{/items}}{{^items}}{{#isEnum}}{{#lambda.titlecase}}{{nickname}}{{/lambda.titlecase}}{{#lambda.titlecase}}{{paramName}}{{/lambda.titlecase}}Enum{{/isEnum}}{{^isEnum}}{{^isDateTime}}{{^isDate}}{{{dataType}}}{{/isDate}}{{/isDateTime}}{{#isDateTime}}string{{/isDateTime}}{{#isDate}}string{{/isDate}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}}{{/items}}>;
+                {{/uniqueItems}}
+                {{^uniqueItems}}
                 {{paramName}}{{^required}}?{{/required}}: {{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{^isDateTime}}{{^isDate}}{{{dataType}}}{{/isDate}}{{/isDateTime}}{{#isDateTime}}string{{/isDateTime}}{{#isDate}}string{{/isDate}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}};
+                {{/uniqueItems}}
             {{/isFormParam}}
             {{/isHeaderParam}}
             {{/isBodyParam}}
@@ -110,7 +115,12 @@
                 {{^isBodyParam}}
                 {{^isHeaderParam}}
                 {{^isFormParam}}
+                {{#uniqueItems}}
+                {{paramName}}{{^required}}?{{/required}}: Array<{{#items}}{{#isEnum}}{{#lambda.titlecase}}{{nickname}}{{/lambda.titlecase}}{{#lambda.titlecase}}{{paramName}}{{/lambda.titlecase}}Enum{{/isEnum}}{{^isEnum}}{{^isDateTime}}{{^isDate}}{{{dataType}}}{{/isDate}}{{/isDateTime}}{{#isDateTime}}string{{/isDateTime}}{{#isDate}}string{{/isDate}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}}{{/items}}{{^items}}{{#isEnum}}{{#lambda.titlecase}}{{nickname}}{{/lambda.titlecase}}{{#lambda.titlecase}}{{paramName}}{{/lambda.titlecase}}Enum{{/isEnum}}{{^isEnum}}{{^isDateTime}}{{^isDate}}{{{dataType}}}{{/isDate}}{{/isDateTime}}{{#isDateTime}}string{{/isDateTime}}{{#isDate}}string{{/isDate}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}}{{/items}}>;
+                {{/uniqueItems}}
+                {{^uniqueItems}}
                 {{paramName}}{{^required}}?{{/required}}: {{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{^isDateTime}}{{^isDate}}{{{dataType}}}{{/isDate}}{{/isDateTime}}{{#isDateTime}}string{{/isDateTime}}{{#isDate}}string{{/isDate}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}};
+                {{/uniqueItems}}
                 {{/isFormParam}}
                 {{/isHeaderParam}}
                 {{/isBodyParam}}
@@ -180,7 +190,12 @@
                 {{^isBodyParam}}
                 {{^isHeaderParam}}
                 {{^isFormParam}}
+                {{#uniqueItems}}
+                {{paramName}}{{^required}}?{{/required}}: Array<{{#items}}{{#isEnum}}{{#lambda.titlecase}}{{nickname}}{{/lambda.titlecase}}{{#lambda.titlecase}}{{paramName}}{{/lambda.titlecase}}Enum{{/isEnum}}{{^isEnum}}{{^isDateTime}}{{^isDate}}{{{dataType}}}{{/isDate}}{{/isDateTime}}{{#isDateTime}}string{{/isDateTime}}{{#isDate}}string{{/isDate}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}}{{/items}}{{^items}}{{#isEnum}}{{#lambda.titlecase}}{{nickname}}{{/lambda.titlecase}}{{#lambda.titlecase}}{{paramName}}{{/lambda.titlecase}}Enum{{/isEnum}}{{^isEnum}}{{^isDateTime}}{{^isDate}}{{{dataType}}}{{/isDate}}{{/isDateTime}}{{#isDateTime}}string{{/isDateTime}}{{#isDate}}string{{/isDate}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}}{{/items}}>;
+                {{/uniqueItems}}
+                {{^uniqueItems}}
                 {{paramName}}{{^required}}?{{/required}}: {{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{^isDateTime}}{{^isDate}}{{{dataType}}}{{/isDate}}{{/isDateTime}}{{#isDateTime}}string{{/isDateTime}}{{#isDate}}string{{/isDate}}{{#isNullable}} | null{{/isNullable}}{{/isEnum}};
+                {{/uniqueItems}}
                 {{/isFormParam}}
                 {{/isHeaderParam}}
                 {{/isBodyParam}}

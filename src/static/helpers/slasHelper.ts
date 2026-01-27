@@ -548,6 +548,15 @@ export async function loginRegisteredUserB2C(options: {
  * @param options.parameters.userid - User Id for login
  * @param options.parameters.locale - The locale of the template. Not needed for the callback mode
  * @param options.parameters.mode - Medium of sending login token
+ * @param options.parameters.registerCustomer - flag to indicate whether to create B2C new customer profile.
+ * When set to true, creates a new customer profile in B2C Commerce if one doesn't already exist.
+ * Requires last_name and email body parameters unless user_id is an email address.
+ * Optionally accepts first_name and phone_number body parameters.
+ * If the customer profile doesn't exist, it is created when the TOTP is validated via the passwordless/token endpoint.
+ * @param options.parameters.lastName - User last name
+ * @param options.parameters.firstName - User first name
+ * @param options.parameters.email - User email
+ * @param options.parameters.phoneNumber - User phone number
  * @returns Promise of Response
  */
 export async function authorizePasswordless(options: {
@@ -566,6 +575,11 @@ export async function authorizePasswordless(options: {
     userid: string;
     locale?: string;
     mode: string;
+    registerCustomer?: boolean;
+    lastName?: string;
+    email?: string;
+    firstName?: string;
+    phoneNumber?: string;
   };
 }): Promise<Response> {
   const {slasClient, credentials, parameters} = options;
@@ -597,6 +611,10 @@ export async function authorizePasswordless(options: {
     ...(parameters.usid && {usid: parameters.usid}),
     channel_id: slasClient.clientConfig.parameters.siteId,
     ...(parameters.callbackURI && {callback_uri: parameters.callbackURI}),
+    ...(parameters.lastName && {last_name: parameters.lastName}),
+    ...(parameters.email && {email: parameters.email}),
+    ...(parameters.firstName && {first_name: parameters.firstName}),
+    ...(parameters.phoneNumber && {phone_number: parameters.phoneNumber}),
   };
 
   return slasClient.authorizePasswordlessCustomer(
@@ -606,6 +624,9 @@ export async function authorizePasswordless(options: {
       },
       parameters: {
         organizationId: slasClient.clientConfig.parameters.organizationId,
+        ...(parameters.registerCustomer !== undefined && {
+          register_customer: parameters.registerCustomer ? 'true' : 'false',
+        }),
       },
       body: tokenBody,
     },
