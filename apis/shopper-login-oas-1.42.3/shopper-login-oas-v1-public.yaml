@@ -3,7 +3,7 @@ info:
   x-api-type: Shopper
   x-api-family: Shopper
   title: Shopper Login
-  version: 1.42.2
+  version: 1.42.3
   description: |-
     [Download API specification](https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-login/shopper-login-oas-v1-public.yaml)
 
@@ -2604,7 +2604,7 @@ components:
             - email
         locale:
           type: string
-          description: The locale of the template. Not needed for the `callback` mode
+          description: The locale of the template. Required when the mode is `email` or `sms`.
           example: en-us
         usid:
           type: string
@@ -3031,7 +3031,7 @@ components:
           example: RefArch
         locale:
           type: string
-          description: The locale of the template.
+          description: The locale of the template. Required when the mode is `email` or `sms`.
           example: en-us
         client_id:
           maxLength: 40
@@ -3362,7 +3362,6 @@ components:
       required:
         - client_id
         - channel_id
-        - user_id
       properties:
         tenant_id:
           type: string
