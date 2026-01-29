@@ -3,7 +3,7 @@ info:
   x-api-type: Shopper
   x-api-family: Shopper
   title: Shopper Login
-  version: 1.42.3
+  version: 1.43.0
   description: |-
     [Download API specification](https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-login/shopper-login-oas-v1-public.yaml)
 
@@ -892,7 +892,7 @@ paths:
                 type: string
   /organizations/{organizationId}/oauth2/session-bridge/token:
     post:
-      summary: Get a shopper JWT access token for a registered customer using session bridging.
+      summary: Get a shopper JWT access token for a customer using session bridging.
       description: |-
         For public client ID requests, you must set the grant_type to `session_bridge`.
 
@@ -2642,6 +2642,11 @@ components:
           type: string
           description: "The user's phone number. Optional when `register_customer` is `true`. \nThe `phone_number` parameter is not used when `register_customer` parameter is not added or is `false`."
           example: 17776665555
+        customer_no:
+          maxLength: 100
+          type: string
+          description: "The customer number assigned to the shopper profile when `register_customer` is set to `true`. \nIf the `customer_no` already exists, the request fails. \nThe `customer_no` parameter is optional and only used when `register_customer` is set to `true`."
+          example: 123456789
       description: A request for a passwordless login token. This is only available for registered users using B2C Commerce.
     TokenType:
       type: string
