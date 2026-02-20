@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v5.1.0
+
+### Enchancements
+
+- Allow developers to pass in custom fetch implementation via `clientConfig` [#XXX](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/246)
+
 ## v5.0.0
 
 ### API Versions
