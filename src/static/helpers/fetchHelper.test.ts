@@ -138,6 +138,26 @@ describe('doFetch', () => {
       expect.objectContaining(clientConfig.fetchOptions)
     );
   });
+
+  test('uses fetch from clientConfig if provided', async () => {
+    nock(basePath).post(endpointPath).query(true).reply(200, responseBody);
+
+    const spy = jest.spyOn(global, 'fetch');
+    const environmentFetchSpy = jest.spyOn(environment, 'fetch');
+
+    const clientConfigCopy = {
+      ...clientConfig,
+      fetch,
+    };
+
+    await doFetch(url, options, clientConfigCopy, false);
+    expect(spy).toBeCalledTimes(1);
+    expect(environmentFetchSpy).not.toBeCalled();
+    expect(spy).toBeCalledWith(
+      expect.any(String),
+      expect.objectContaining(clientConfig.fetchOptions)
+    );
+  });
 });
 
 describe('encodeSCAPISpecialCharacters', () => {

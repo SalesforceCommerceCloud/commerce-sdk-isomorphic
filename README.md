@@ -223,6 +223,45 @@ await helpers.callCustomEndpoint({
 
 For more documentation about this helper function, please refer to the [commerce-sdk-isomorphic docs](https://salesforcecommercecloud.github.io/commerce-sdk-isomorphic/modules/helpers.html).
 
+#### Custom Fetch function
+
+You can provide your own custom fetch function to intercept, log, or modify all SDK requests. This is useful for:
+- **Request/Response Logging**: Track all API calls for debugging and monitoring
+- **Request Interception**: Add custom headers, modify request URLs, or implement custom retry logic
+- **Error Handling**: Add custom error processing or transformation before responses reach your application
+- **Performance Monitoring**: Measure request/response times and track API performance metrics
+
+**Example with Logging:**
+```javascript
+// Custom fetch function with detailed logging
+const customFetch = async (url, options) => {
+  console.log(`[SDK Request] ${options?.method || 'GET'} ${url}`);
+  console.log('[SDK Request Headers]', options?.headers);
+  if (options?.body) {
+    console.log('[SDK Request Body]', options.body);
+  }
+  
+  const startTime = Date.now();
+  const response = await fetch(url, options);
+  const duration = Date.now() - startTime;
+  
+  console.log(`[SDK Response] ${response.status} ${response.statusText} (${duration}ms)`);
+  console.log('[SDK Response Headers]', Object.fromEntries(response.headers.entries()));
+  
+  return response;
+};
+
+const config = {
+  parameters: {
+    clientId: '<your-client-id>',
+    organizationId: '<your-org-id>',
+    shortCode: '<your-short-code>',
+    siteId: '<your-site-id>',
+  },
+  fetch: customFetch,
+};
+```
+
 #### Encoding special characters
 
 The SDK currently single encodes special characters for query parameters in UTF-8 format based on SCAPI guidelines. However, the SDK does NOT encode path parameters, and will require the developer to encode any path parameters with special characters.

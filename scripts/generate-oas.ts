@@ -83,7 +83,10 @@ export function getAPIDetailsFromExchange(directory: string): ApiSpecDetail {
     return {
       filepath: path.join(directory, exchangeConfig.main),
       filename: exchangeConfig.main,
-      directoryName: resolveDirectoryName(exchangeConfig.assetId.replace('-oas', ''), exchangeConfig.apiVersion),
+      directoryName: resolveDirectoryName(
+        exchangeConfig.assetId.replace('-oas', ''),
+        exchangeConfig.apiVersion
+      ),
       name:
         exchangeConfig.apiVersion === 'v2'
           ? `${exchangeConfig.name} V2`
@@ -99,7 +102,10 @@ export function getAPIDetailsFromExchange(directory: string): ApiSpecDetail {
  */
 export function generateSDKs(apiSpecDetail: ApiSpecDetail): void {
   const {filepath, name, directoryName} = apiSpecDetail;
-  if (fs.statSync(filepath).isFile() && (filepath.includes('shopper') || filepath.includes('auth'))) {
+  if (
+    fs.statSync(filepath).isFile() &&
+    (filepath.includes('shopper') || filepath.includes('auth'))
+  ) {
     try {
       console.log(`Generating SDK for ${name}`);
       const outputDir = `${TARGET_DIRECTORY}/${directoryName}`;
