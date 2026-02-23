@@ -51,7 +51,10 @@ export const doFetch = async <Params extends BaseUriParameters>(
     method: options?.method ?? 'GET',
   };
 
-  const response = await fetch(url, requestOptions);
+  // Use fetch from clientConfig, otherwise fallback to fetch implementation in environment.ts
+  const fetcher = clientConfig?.fetch || fetch;
+
+  const response = await fetcher(url, requestOptions);
   if (rawResponse) {
     return response;
   }
