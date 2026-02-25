@@ -276,6 +276,44 @@ yarn install commerce-sdk-isomorphic</code></pre>
   clientConfig,
 });</code></pre>
 				<p>For more documentation about this helper function, please refer to the <a href="https://salesforcecommercecloud.github.io/commerce-sdk-isomorphic/modules/helpers.html">commerce-sdk-isomorphic docs</a>.</p>
+				<a href="#custom-fetch-function" id="custom-fetch-function" style="color: inherit; text-decoration: none;">
+					<h4>Custom Fetch function</h4>
+				</a>
+				<p>You can provide your own custom fetch function to intercept, log, or modify all SDK requests. This is useful for:</p>
+				<ul>
+					<li><strong>Request/Response Logging</strong>: Track all API calls for debugging and monitoring</li>
+					<li><strong>Request Interception</strong>: Add custom headers, modify request URLs, or implement custom retry logic</li>
+					<li><strong>Error Handling</strong>: Add custom error processing or transformation before responses reach your application</li>
+					<li><strong>Performance Monitoring</strong>: Measure request/response times and track API performance metrics</li>
+				</ul>
+				<p><strong>Example with Logging:</strong></p>
+				<pre><code class="language-javascript"><span class="hljs-comment">// Custom fetch function with detailed logging</span>
+<span class="hljs-keyword">const</span> customFetch = <span class="hljs-keyword">async</span> (url, options) =&gt; {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`[SDK Request] <span class="hljs-subst">${options?.method || <span class="hljs-string">&#x27;GET&#x27;</span>}</span> <span class="hljs-subst">${url}</span>`</span>);
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;[SDK Request Headers]&#x27;</span>, options?.headers);
+  <span class="hljs-keyword">if</span> (options?.body) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;[SDK Request Body]&#x27;</span>, options.body);
+  }
+
+  <span class="hljs-keyword">const</span> startTime = <span class="hljs-built_in">Date</span>.now();
+  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> fetch(url, options);
+  <span class="hljs-keyword">const</span> duration = <span class="hljs-built_in">Date</span>.now() - startTime;
+
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`[SDK Response] <span class="hljs-subst">${response.status}</span> <span class="hljs-subst">${response.statusText}</span> (<span class="hljs-subst">${duration}</span>ms)`</span>);
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;[SDK Response Headers]&#x27;</span>, <span class="hljs-built_in">Object</span>.fromEntries(response.headers.entries()));
+
+  <span class="hljs-keyword">return</span> response;
+};
+
+<span class="hljs-keyword">const</span> config = {
+  <span class="hljs-attr">parameters</span>: {
+    <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;&lt;your-client-id&gt;&#x27;</span>,
+    <span class="hljs-attr">organizationId</span>: <span class="hljs-string">&#x27;&lt;your-org-id&gt;&#x27;</span>,
+    <span class="hljs-attr">shortCode</span>: <span class="hljs-string">&#x27;&lt;your-short-code&gt;&#x27;</span>,
+    <span class="hljs-attr">siteId</span>: <span class="hljs-string">&#x27;&lt;your-site-id&gt;&#x27;</span>,
+  },
+  <span class="hljs-attr">fetch</span>: customFetch,
+};</code></pre>
 				<a href="#encoding-special-characters" id="encoding-special-characters" style="color: inherit; text-decoration: none;">
 					<h4>Encoding special characters</h4>
 				</a>

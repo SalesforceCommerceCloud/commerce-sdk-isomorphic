@@ -51,11 +51,21 @@ export function resolveApiName(name: string, version: string): string {
     apiName = 'ShopperSEO';
   } else if (name === 'Shopper Context OAS') {
     apiName = 'ShopperContexts';
+  } else if (name === 'Auth OAS') {
+    apiName = 'ShopperLogin';
   } else {
     apiName = name.replace(/\s+/g, '').replace('OAS', '');
   }
 
   return version !== 'v1' ? apiName + version.toUpperCase() : apiName;
+}
+
+function resolveDirectoryName(name: string, version?: string): string {
+  let currentName = name;
+  if (name === 'auth') {
+    currentName = 'shopperLogin';
+  }
+  return kebabToCamelCase(appendVersionIfV2(currentName, version || ''));
 }
 
 /**
@@ -73,11 +83,9 @@ export function getAPIDetailsFromExchange(directory: string): ApiSpecDetail {
     return {
       filepath: path.join(directory, exchangeConfig.main),
       filename: exchangeConfig.main,
-      directoryName: kebabToCamelCase(
-        appendVersionIfV2(
-          exchangeConfig.assetId.replace('-oas', ''),
-          exchangeConfig.apiVersion
-        )
+      directoryName: resolveDirectoryName(
+        exchangeConfig.assetId.replace('-oas', ''),
+        exchangeConfig.apiVersion
       ),
       name:
         exchangeConfig.apiVersion === 'v2'
@@ -94,7 +102,10 @@ export function getAPIDetailsFromExchange(directory: string): ApiSpecDetail {
  */
 export function generateSDKs(apiSpecDetail: ApiSpecDetail): void {
   const {filepath, name, directoryName} = apiSpecDetail;
-  if (fs.statSync(filepath).isFile() && filepath.includes('shopper')) {
+  if (
+    fs.statSync(filepath).isFile() &&
+    (filepath.includes('shopper') || filepath.includes('auth'))
+  ) {
     try {
       console.log(`Generating SDK for ${name}`);
       const outputDir = `${TARGET_DIRECTORY}/${directoryName}`;

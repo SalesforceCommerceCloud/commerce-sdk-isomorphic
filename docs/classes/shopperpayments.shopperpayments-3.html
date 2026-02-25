@@ -80,51 +80,30 @@
 					<a href="#api-overview" id="api-overview" style="color: inherit; text-decoration: none;">
 						<h1>API Overview</h1>
 					</a>
-					<p>Use the Shopper Payments API to retrieve payment configuration information for organizations in the B2C Commerce system.</p>
-					<p>The Shopper Payments API provides access to comprehensive payment configuration data, including payment processor settings, gateway configurations, and payment method details.</p>
+					<p>Use the Shopper Payments API to:</p>
+					<ul>
+						<li>Retrieve payment configuration information for storefronts when Salesforce Payments is enabled.</li>
+					</ul>
+					<p>The API returns the available payment methods, merchant account details, and payment gateway configurations for a specific payment zone site assignment.</p>
+					<p>The response includes:</p>
+					<ul>
+						<li>Zone ID: The unique identifier for the Payments zone.</li>
+						<li>Payment Method Set Accounts: List of configured payment processor accounts with API keys, vendor information (Stripe, Adyen, PayPal, etc.), and live/test mode indicators.</li>
+						<li>Payment Methods: List of available payment methods with their associated accounts, payment method types, and supported payment modes.</li>
+					</ul>
 					<a href="#authentication-amp-authorization" id="authentication-amp-authorization" style="color: inherit; text-decoration: none;">
 						<h2>Authentication &amp; Authorization</h2>
 					</a>
-					<p>The client requesting payment configuration information must have access to the <code>/payment-configuration</code> resource. The Shopper Payments API requires a shopper access token from the Shopper Login and API Access Service (SLAS).</p>
+					<p>The client requesting payment configuration must have access to the <code>/payment-configuration</code> resource. The Shopper Payments API requires a shopper access token from the Shopper Login and API Access Service (SLAS).</p>
 					<p>For details on how to request a shopper access token from SLAS, see the guest user flows for <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-public-client.html#guest-user">public clients</a> and <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-private-client.html#guest-user">private clients</a> in the SLAS guides.</p>
-					<p>You must include <code>sfcc.shopper-baskets-orders</code> or <code>sfcc.shopper-baskets-orders.rw</code> in the client ID used to generate the token. For a full list of permissions, see the <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/auth-z-scope-catalog.html">Authorization Scopes Catalog.</a></p>
+					<p>You must include <code>sfcc.shopper-baskets-orders</code>, <code>sfcc.shopper-baskets-orders.rw</code>, or <code>sfcc.shopper-standard</code> in the client ID used to generate the SLAS token. For a full list of permissions, see the <a href="https://developer.salesforce.com/docs/commerce/commerce-api/guide/auth-z-scope-catalog.html">Authorization Scopes Catalog.</a></p>
 					<a href="#use-cases" id="use-cases" style="color: inherit; text-decoration: none;">
 						<h2>Use Cases</h2>
 					</a>
-					<a href="#payment-method-discovery" id="payment-method-discovery" style="color: inherit; text-decoration: none;">
-						<h3>Payment Method Discovery</h3>
+					<a href="#retrieve-payment-configuration" id="retrieve-payment-configuration" style="color: inherit; text-decoration: none;">
+						<h3>Retrieve Payment Configuration</h3>
 					</a>
-					<p>Retrieve available payment methods and their capabilities for dynamic payment form generation.</p>
-					<ul>
-						<li>Payment Method Set Information: Access details about configured payment method set accounts.</li>
-						<li>Payment Methods: Supported payment method types (card, paypal, applepay, etc.), available payment modes for each method, and account associations.</li>
-						<li>Active Gateways: Return detailed payment method information including supported card brands.</li>
-					</ul>
-					<a href="#gateway-status-monitoring" id="gateway-status-monitoring" style="color: inherit; text-decoration: none;">
-						<h3>Gateway Status Monitoring</h3>
-					</a>
-					<p>Check the status and configuration of payment gateways and processors.</p>
-					<ul>
-						<li>Gateway Response Data: Retrieve payment processor gateway information and supported payment methods.</li>
-						<li>Payment Method Set Accounts: Account identifiers and configurations, payment processor API keys and settings, gateway identifiers and response data, live/test mode indicators, and vendor information (Stripe, Adyen, PayPal, etc.).</li>
-						<li>Inactive/Pending Gateways: Might return null gateway response data.</li>
-						<li>Multiple Vendors: Support for different payment processors with vendor-specific configurations.</li>
-					</ul>
-					<a href="#payment-flow-configuration" id="payment-flow-configuration" style="color: inherit; text-decoration: none;">
-						<h3>Payment Flow Configuration</h3>
-					</a>
-					<p>Determine supported payment modes (multi-step vs express) for different payment methods.</p>
-					<ul>
-						<li>Payment Modes Configuration: View supported payment modes (Multistep, Express) for each payment method.</li>
-						<li>Configuration Settings: Multi-step checkout enablement status, express checkout enablement status, automatic card capture settings, zone identification, saved payment method configuration, and merchant account identification.</li>
-					</ul>
-					<a href="#sdk-version-management" id="sdk-version-management" style="color: inherit; text-decoration: none;">
-						<h3>SDK Version Management</h3>
-					</a>
-					<p>Ensure compatibility by checking the current SDK version requirements.</p>
-					<ul>
-						<li>SDK Version Information: Get the current SDK version being used.*<br /></li>
-					</ul>
+					<p>Retrieve payment configuration settings for Stripe, PayPal, and Adyen based on the payment methods enabled in the merchant&#39;s payment zone site. This includes API keys, vendor details, and live/test mode status. Specify a zone via <code>zoneId</code> or use <code>currency</code> and <code>countryCode</code> for automatic resolution.*<br /></p>
 					<p>Simple example:</p>
 					<pre><code class="language-typescript">  <span class="hljs-keyword">import</span> { ShopperPayments } <span class="hljs-keyword">from</span> <span class="hljs-string">&quot;commerce-sdk-isomorphic&quot;</span>;
 
@@ -204,7 +183,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperPayments/apis/PaymentConfigurationApi.ts:135</li>
+									<li>Defined in src/lib/shopperPayments/apis/PaymentConfigurationApi.ts:120</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -226,7 +205,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<wbr>Config<span class="tsd-signature-symbol">:</span> <a href="clientconfig.clientconfig-1.html" class="tsd-signature-type">ClientConfig</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-symbol">{ </span>baseUri<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperPayments/apis/PaymentConfigurationApi.ts:129</li>
+							<li>Defined in src/lib/shopperPayments/apis/PaymentConfigurationApi.ts:114</li>
 						</ul>
 					</aside>
 				</section>
@@ -236,24 +215,24 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Base<wbr>Uri<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"https://{shortCode}.api.commercecloud.salesforce.com/checkout/shopper-payments/v1"</span><span class="tsd-signature-symbol"> = currentBaseUri</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperPayments/apis/PaymentConfigurationApi.ts:131</li>
+							<li>Defined in src/lib/shopperPayments/apis/PaymentConfigurationApi.ts:116</li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
 					<a name="paramkeys" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> param<wbr>Keys</h3>
-					<div class="tsd-signature tsd-kind-icon">param<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>getPaymentConfiguration<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"currency"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"countryCode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"zoneId"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPaymentConfigurationRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"currency"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {getPaymentConfiguration: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,&#x27;currency&#x27;,&#x27;countryCode&#x27;,&#x27;zoneId&#x27;,],getPaymentConfigurationRequired: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,&#x27;currency&#x27;,],} as const</span></div>
+					<div class="tsd-signature tsd-kind-icon">param<wbr>Keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>getPaymentConfiguration<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"currency"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"countryCode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"zoneId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"amount"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">; </span>getPaymentConfigurationRequired<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"currency"</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {getPaymentConfiguration: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,&#x27;currency&#x27;,&#x27;countryCode&#x27;,&#x27;zoneId&#x27;,&#x27;amount&#x27;,],getPaymentConfigurationRequired: [&#x27;organizationId&#x27;,&#x27;siteId&#x27;,&#x27;currency&#x27;,],} as const</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperPayments/apis/PaymentConfigurationApi.ts:144</li>
+							<li>Defined in src/lib/shopperPayments/apis/PaymentConfigurationApi.ts:129</li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
 							<li class="tsd-parameter">
-								<h5>get<wbr>Payment<wbr>Configuration<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"currency"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"countryCode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"zoneId"</span><span class="tsd-signature-symbol">]</span></h5>
+								<h5>get<wbr>Payment<wbr>Configuration<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"currency"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"countryCode"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"zoneId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"amount"</span><span class="tsd-signature-symbol">]</span></h5>
 							</li>
 							<li class="tsd-parameter">
 								<h5>get<wbr>Payment<wbr>Configuration<wbr>Required<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">"organizationId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"siteId"</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">"currency"</span><span class="tsd-signature-symbol">]</span></h5>
@@ -268,14 +247,14 @@
 					<a name="getpaymentconfiguration-1" class="tsd-anchor"></a>
 					<h3>get<wbr>Payment<wbr>Configuration</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Payment<wbr>Configuration<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>countryCode<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>currency<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>zoneId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/shopperpayments.html#paymentconfiguration" class="tsd-signature-type">PaymentConfiguration</a><span class="tsd-signature-symbol">&gt;</span></li>
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Payment<wbr>Configuration&lt;T&gt;<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>countryCode<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>currency<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>zoneId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, rawResponse<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">T</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">PaymentConfiguration</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Payment<wbr>Configuration<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>amount<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>countryCode<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>currency<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>zoneId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/shopperpayments.html#paymentconfiguration" class="tsd-signature-type">PaymentConfiguration</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Payment<wbr>Configuration&lt;T&gt;<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>amount<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>countryCode<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>currency<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>zoneId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span>, rawResponse<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">T</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">Response</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">PaymentConfiguration</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperPayments/apis/PaymentConfigurationApi.ts:185</li>
+									<li>Defined in src/lib/shopperPayments/apis/PaymentConfigurationApi.ts:174</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -286,7 +265,9 @@
 								<ul>
 									<li><code>siteId</code>: Required. The site identifier for context-specific configuration</li>
 									<li><code>currency</code>: Required. Three-letter currency code (ISO 4217) for payment method configuration</li>
-									<li><code>countryCode</code>: Required. Two-letter country code (ISO 3166-1 alpha-2) for country-specific payment configuration</li>
+									<li><code>countryCode</code>: Optional. Two-letter country code (ISO 3166-1 alpha-2) for country-specific payment configuration</li>
+									<li><code>amount</code>: Optional. Transaction amount for payment method configuration</li>
+									<li><code>zoneId</code>: Optional. Payment zone identifier to retrieve zone-specific configuration</li>
 								</ul>
 								<p><em>Response Behavior:*</em></p>
 								<ul>
@@ -298,7 +279,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>countryCode<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>currency<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>zoneId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>amount<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>countryCode<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>currency<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>zoneId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
 											<p>An object containing the options for this method.</p>
@@ -312,7 +293,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in src/lib/shopperPayments/apis/PaymentConfigurationApi.ts:222</li>
+									<li>Defined in src/lib/shopperPayments/apis/PaymentConfigurationApi.ts:215</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -323,7 +304,9 @@
 								<ul>
 									<li><code>siteId</code>: Required. The site identifier for context-specific configuration</li>
 									<li><code>currency</code>: Required. Three-letter currency code (ISO 4217) for payment method configuration</li>
-									<li><code>countryCode</code>: Required. Two-letter country code (ISO 3166-1 alpha-2) for country-specific payment configuration</li>
+									<li><code>countryCode</code>: Optional. Two-letter country code (ISO 3166-1 alpha-2) for country-specific payment configuration</li>
+									<li><code>amount</code>: Optional. Transaction amount for payment method configuration</li>
+									<li><code>zoneId</code>: Optional. Payment zone identifier to retrieve zone-specific configuration</li>
 								</ul>
 								<p><em>Response Behavior:*</em></p>
 								<ul>
@@ -340,7 +323,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>countryCode<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>currency<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>zoneId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../modules/helpers.html#requireparametersunlessallareoptional-1" class="tsd-signature-type">RequireParametersUnlessAllAreOptional</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>headers<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>parameters<span class="tsd-signature-symbol">?: </span><a href="../modules/helpers.html#compositeparameters-1" class="tsd-signature-type">CompositeParameters</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>amount<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">; </span>countryCode<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>currency<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>organizationId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>siteId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>zoneId<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> &amp; </span><a href="../interfaces/helpers.queryparameters-1.html" class="tsd-signature-type">QueryParameters</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">ConfigParameters</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
 											<p>An object containing the options for this method.</p>
@@ -370,7 +353,7 @@
 					<div class="tsd-signature tsd-kind-icon">api<wbr>Paths<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in src/lib/shopperPayments/apis/PaymentConfigurationApi.ts:133</li>
+							<li>Defined in src/lib/shopperPayments/apis/PaymentConfigurationApi.ts:118</li>
 						</ul>
 					</aside>
 					<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-object-literal">
@@ -379,7 +362,7 @@
 						<div class="tsd-signature tsd-kind-icon">get<wbr>Payment<wbr>Configuration<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;/organizations/{organizationId}/payment-configuration&quot;</span></div>
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in src/lib/shopperPayments/apis/PaymentConfigurationApi.ts:134</li>
+								<li>Defined in src/lib/shopperPayments/apis/PaymentConfigurationApi.ts:119</li>
 							</ul>
 						</aside>
 					</section>
@@ -468,6 +451,12 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
+						<a href="../modules/shopperpayments.html#errorresponse" class="tsd-kind-icon">Error<wbr>Response</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module">
+						<a href="../modules/shopperpayments.html#errorresponse-1" class="tsd-kind-icon">Error<wbr>Response</a>
+					</li>
+					<li class=" tsd-kind-reference tsd-parent-kind-module">
 						<a href="../modules/shopperpayments.html#paymentconfiguration" class="tsd-kind-icon">Payment<wbr>Configuration</a>
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
@@ -484,18 +473,6 @@
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
 						<a href="../modules/shopperpayments.html#paymentconfigurationpaymentmethodsetaccountsinnerconfig-1" class="tsd-kind-icon">Payment<wbr>Configuration<wbr>Payment<wbr>Method<wbr>Set<wbr>Accounts<wbr>Inner<wbr>Config</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/shopperpayments.html#paymentconfigurationpaymentmethodsetaccountsinnergatewayresponse" class="tsd-kind-icon">Payment<wbr>Configuration<wbr>Payment<wbr>Method<wbr>Set<wbr>Accounts<wbr>Inner<wbr>Gateway<wbr>Response</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/shopperpayments.html#paymentconfigurationpaymentmethodsetaccountsinnergatewayresponse-1" class="tsd-kind-icon">Payment<wbr>Configuration<wbr>Payment<wbr>Method<wbr>Set<wbr>Accounts<wbr>Inner<wbr>Gateway<wbr>Response</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/shopperpayments.html#paymentconfigurationpaymentmethodsetaccountsinnergatewayresponsepaymentmethodsinner" class="tsd-kind-icon">Payment<wbr>Configuration<wbr>Payment<wbr>Method<wbr>Set<wbr>Accounts<wbr>Inner<wbr>Gateway<wbr>Response<wbr>Payment<wbr>Methods<wbr>Inner</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="../modules/shopperpayments.html#paymentconfigurationpaymentmethodsetaccountsinnergatewayresponsepaymentmethodsinner-1" class="tsd-kind-icon">Payment<wbr>Configuration<wbr>Payment<wbr>Method<wbr>Set<wbr>Accounts<wbr>Inner<wbr>Gateway<wbr>Response<wbr>Payment<wbr>Methods<wbr>Inner</a>
 					</li>
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
 						<a href="../modules/shopperpayments.html#paymentconfigurationpaymentmethodsinner" class="tsd-kind-icon">Payment<wbr>Configuration<wbr>Payment<wbr>Methods<wbr>Inner</a>
@@ -570,6 +547,9 @@
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/shopperpayments.html#errorresponse-2" class="tsd-kind-icon">Error<wbr>Response</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
 						<a href="../modules/shopperpayments.html#paymentconfiguration-2" class="tsd-kind-icon">Payment<wbr>Configuration</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
@@ -577,12 +557,6 @@
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
 						<a href="../modules/shopperpayments.html#paymentconfigurationpaymentmethodsetaccountsinnerconfig-2" class="tsd-kind-icon">Payment<wbr>Configuration<wbr>Payment<wbr>Method<wbr>Set<wbr>Accounts<wbr>Inner<wbr>Config</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/shopperpayments.html#paymentconfigurationpaymentmethodsetaccountsinnergatewayresponse-2" class="tsd-kind-icon">Payment<wbr>Configuration<wbr>Payment<wbr>Method<wbr>Set<wbr>Accounts<wbr>Inner<wbr>Gateway<wbr>Response</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/shopperpayments.html#paymentconfigurationpaymentmethodsetaccountsinnergatewayresponsepaymentmethodsinner-2" class="tsd-kind-icon">Payment<wbr>Configuration<wbr>Payment<wbr>Method<wbr>Set<wbr>Accounts<wbr>Inner<wbr>Gateway<wbr>Response<wbr>Payment<wbr>Methods<wbr>Inner</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
 						<a href="../modules/shopperpayments.html#paymentconfigurationpaymentmethodsinner-2" class="tsd-kind-icon">Payment<wbr>Configuration<wbr>Payment<wbr>Methods<wbr>Inner</a>
