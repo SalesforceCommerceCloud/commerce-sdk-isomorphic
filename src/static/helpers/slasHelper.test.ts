@@ -53,13 +53,63 @@ const parameters = {
 const url =
   'https://localhost:3000/callback?usid=048adcfb-aa93-4978-be9e-09cb569fdcb9&code=J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o';
 
+const createMockResponse = (
+  body: unknown,
+  setCookieHeaders?: string[]
+): Response =>
+  ({
+    ok: true,
+    status: 200,
+    text: jest.fn().mockResolvedValue(JSON.stringify(body)),
+    headers: {
+      get: jest.fn((name: string) =>
+        name === 'set-cookie' && setCookieHeaders
+          ? setCookieHeaders.join(', ')
+          : null
+      ),
+      getSetCookie: setCookieHeaders
+        ? jest.fn(() => setCookieHeaders)
+        : undefined,
+    },
+  } as unknown as Response);
+
+// Simulates the middleware stripping tokens from the body and setting them as httpOnly cookies
+const strippedTokenResponse = {
+  id_token: 'id_token',
+  expires_in: 0,
+  refresh_token_expires_in: 0,
+  token_type: 'Bearer',
+  usid: 'usid',
+  customer_id: 'customer_id',
+  enc_user_id: 'enc_user_id',
+};
+
+const mockSetCookieHeaders = [
+  'cc-at_site_id=access_token; Path=/; HttpOnly; Secure; SameSite=lax',
+  'cc-nx-g_site_id=refresh_token; Path=/; HttpOnly; Secure; SameSite=lax',
+  'idp_access_token_site_id=idp; Path=/; HttpOnly; Secure; SameSite=lax',
+];
+
 const authenticateCustomerMock = jest.fn(() => ({url}));
 
+// Returns parsed TokenResponse directly (enableHttpOnlySessionCookies=false)
 const getAccessTokenMock = jest.fn(() => expectedTokenResponse);
+
+// Simulates httpOnly mode: returns raw Response with tokens stripped
+// from body and placed in Set-Cookie headers (enableHttpOnlySessionCookies=true)
+const getAccessTokenMockHttpOnlySessionCookies = jest.fn(() =>
+  createMockResponse(strippedTokenResponse, mockSetCookieHeaders)
+);
+
 const logoutCustomerMock = jest.fn(() => expectedTokenResponse);
 const generateCodeChallengeMock = jest.fn(() => 'code_challenge');
 const authorizePasswordlessCustomerMock = jest.fn();
-const getPasswordLessAccessTokenMock = jest.fn();
+
+const getPasswordLessAccessTokenMock = jest.fn(() => expectedTokenResponse);
+
+const getPasswordLessAccessTokenMockHttpOnlySessionCookies = jest.fn(() =>
+  createMockResponse(strippedTokenResponse, mockSetCookieHeaders)
+);
 
 const createMockSlasClient = () =>
   ({
@@ -77,6 +127,32 @@ const createMockSlasClient = () =>
     generateCodeChallenge: generateCodeChallengeMock,
     authorizePasswordlessCustomer: authorizePasswordlessCustomerMock,
     getPasswordLessAccessToken: getPasswordLessAccessTokenMock,
+  } as unknown as ShopperLogin<{
+    shortCode: string;
+    organizationId: string;
+    clientId: string;
+    siteId: string;
+  }>);
+
+// Mock client for httpOnly session cookies tests.
+// Uses mocks that return raw Response with tokens in Set-Cookie headers.
+const createMockSlasClientHttpOnlySessionCookies = () =>
+  ({
+    clientConfig: {
+      parameters: {
+        shortCode: 'short_code',
+        organizationId: 'organization_id',
+        clientId: 'client_id',
+        siteId: 'site_id',
+      },
+    },
+    authenticateCustomer: authenticateCustomerMock,
+    getAccessToken: getAccessTokenMockHttpOnlySessionCookies,
+    logoutCustomer: logoutCustomerMock,
+    generateCodeChallenge: generateCodeChallengeMock,
+    authorizePasswordlessCustomer: authorizePasswordlessCustomerMock,
+    getPasswordLessAccessToken:
+      getPasswordLessAccessTokenMockHttpOnlySessionCookies,
   } as unknown as ShopperLogin<{
     shortCode: string;
     organizationId: string;
@@ -724,7 +800,7 @@ describe('Registered B2C user flow', () => {
       credentials,
       parameters: registeredUserFlowParams,
     });
-    expect(accessToken).toStrictEqual(expectedTokenResponse);
+    expect(accessToken).toBe(expectedTokenResponse);
   });
 });
 
@@ -968,7 +1044,7 @@ describe('getPasswordLessAccessToken is working', () => {
 });
 
 describe('Refresh Token', () => {
-  test('refreshes the token with slas public client', () => {
+  test('refreshes the token with slas public client', async () => {
     const expectedBody = {
       body: {
         client_id: 'client_id',
@@ -978,7 +1054,7 @@ describe('Refresh Token', () => {
         dnt: 'false',
       },
     };
-    const token = slasHelper.refreshAccessToken({
+    const token = await slasHelper.refreshAccessToken({
       slasClient: createMockSlasClient(),
       parameters,
     });
@@ -986,7 +1062,7 @@ describe('Refresh Token', () => {
     expect(token).toStrictEqual(expectedTokenResponse);
   });
 
-  test('refreshes the token with slas private client', () => {
+  test('refreshes the token with slas private client', async () => {
     const expectedReqOpts = {
       headers: {
         Authorization: `Basic ${stringToBase64(
@@ -1001,7 +1077,7 @@ describe('Refresh Token', () => {
         dnt: 'false',
       },
     };
-    const token = slasHelper.refreshAccessToken({
+    const token = await slasHelper.refreshAccessToken({
       slasClient: createMockSlasClient(),
       parameters,
       credentials: {
@@ -1032,5 +1108,240 @@ describe('Logout', () => {
     });
     expect(logoutCustomerMock).toBeCalledWith(expectedOptions);
     expect(token).toStrictEqual(expectedTokenResponse);
+  });
+});
+
+describe('httpOnly session cookies', () => {
+  test('loginGuestUser extracts tokens from Set-Cookie headers', async () => {
+    const mockSlasClient = createMockSlasClientHttpOnlySessionCookies();
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .get(`/shopper/auth/v1/organizations/${organizationId}/oauth2/authorize`)
+      .query(true)
+      .reply(303, {response_body: 'response_body'}, {location: url});
+
+    const accessToken = await slasHelper.loginGuestUser({
+      slasClient: mockSlasClient,
+      parameters: {
+        redirectURI: 'redirect_uri',
+      },
+      enableHttpOnlySessionCookies: true,
+    });
+    expect(getAccessTokenMockHttpOnlySessionCookies).toBeCalledWith(
+      expect.any(Object),
+      true
+    );
+    expect(accessToken.access_token).toBe('access_token');
+    expect(accessToken.refresh_token).toBe('refresh_token');
+    expect(accessToken.idp_access_token).toBe('idp');
+  });
+
+  test('loginGuestUserPrivate extracts tokens from Set-Cookie headers', async () => {
+    const accessToken = await slasHelper.loginGuestUserPrivate({
+      slasClient: createMockSlasClientHttpOnlySessionCookies(),
+      parameters: {},
+      credentials: {clientSecret: 'slas_private_secret'},
+      enableHttpOnlySessionCookies: true,
+    });
+    expect(getAccessTokenMockHttpOnlySessionCookies).toBeCalledWith(
+      expect.any(Object),
+      true
+    );
+    expect(accessToken.access_token).toBe('access_token');
+    expect(accessToken.refresh_token).toBe('refresh_token');
+  });
+
+  test('refreshAccessToken extracts tokens from Set-Cookie headers', async () => {
+    const token = await slasHelper.refreshAccessToken({
+      slasClient: createMockSlasClientHttpOnlySessionCookies(),
+      parameters: {
+        refreshToken: 'refresh_token',
+        dnt: false,
+      },
+      enableHttpOnlySessionCookies: true,
+    });
+    expect(getAccessTokenMockHttpOnlySessionCookies).toBeCalledWith(
+      expect.any(Object),
+      true
+    );
+    expect(token.access_token).toBe('access_token');
+    expect(token.refresh_token).toBe('refresh_token');
+  });
+
+  test('refreshAccessToken with private client extracts tokens from Set-Cookie headers', async () => {
+    const token = await slasHelper.refreshAccessToken({
+      slasClient: createMockSlasClientHttpOnlySessionCookies(),
+      parameters: {
+        refreshToken: 'refresh_token',
+        dnt: false,
+      },
+      credentials: {clientSecret: 'slas_private_secret'},
+      enableHttpOnlySessionCookies: true,
+    });
+    expect(getAccessTokenMockHttpOnlySessionCookies).toBeCalledWith(
+      expect.any(Object),
+      true
+    );
+    expect(token.access_token).toBe('access_token');
+    expect(token.refresh_token).toBe('refresh_token');
+  });
+
+  test('loginIDPUser with private client extracts tokens from Set-Cookie headers', async () => {
+    const accessToken = await slasHelper.loginIDPUser({
+      slasClient: createMockSlasClientHttpOnlySessionCookies(),
+      credentials: {clientSecret: credentialsPrivate.clientSecret},
+      parameters: {
+        redirectURI: 'redirect_uri',
+        code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
+        usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
+        dnt: false,
+      },
+      enableHttpOnlySessionCookies: true,
+    });
+    expect(getAccessTokenMockHttpOnlySessionCookies).toBeCalledWith(
+      expect.any(Object),
+      true
+    );
+    expect(accessToken.access_token).toBe('access_token');
+    expect(accessToken.refresh_token).toBe('refresh_token');
+    expect(accessToken.idp_access_token).toBe('idp');
+  });
+
+  test('loginIDPUser with public client extracts tokens from Set-Cookie headers', async () => {
+    const accessToken = await slasHelper.loginIDPUser({
+      slasClient: createMockSlasClientHttpOnlySessionCookies(),
+      credentials: {codeVerifier: 'code_verifier'},
+      parameters: {
+        redirectURI: 'redirect_uri',
+        code: 'J2lHm0cgXmnXpwDhjhLoyLJBoUAlBfxDY-AhjqGMC-o',
+        usid: '048adcfb-aa93-4978-be9e-09cb569fdcb9',
+        dnt: false,
+      },
+      enableHttpOnlySessionCookies: true,
+    });
+    expect(getAccessTokenMockHttpOnlySessionCookies).toBeCalledWith(
+      expect.any(Object),
+      true
+    );
+    expect(accessToken.access_token).toBe('access_token');
+    expect(accessToken.refresh_token).toBe('refresh_token');
+  });
+
+  test('loginRegisteredUserB2C with public client extracts tokens from Set-Cookie headers', async () => {
+    const mockSlasClient = createMockSlasClientHttpOnlySessionCookies();
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .post(`/shopper/auth/v1/organizations/${organizationId}/oauth2/login`)
+      .reply(303, {response_body: 'response_body'}, {location: url});
+
+    const accessToken = await slasHelper.loginRegisteredUserB2C({
+      slasClient: mockSlasClient,
+      credentials,
+      parameters: {
+        redirectURI: 'redirect_uri',
+        dnt: false,
+      },
+      enableHttpOnlySessionCookies: true,
+    });
+    expect(getAccessTokenMockHttpOnlySessionCookies).toBeCalledWith(
+      expect.any(Object),
+      true
+    );
+    expect(accessToken.access_token).toBe('access_token');
+    expect(accessToken.refresh_token).toBe('refresh_token');
+  });
+
+  test('loginRegisteredUserB2C with private client extracts tokens from Set-Cookie headers', async () => {
+    const mockSlasClient = createMockSlasClientHttpOnlySessionCookies();
+    const {shortCode, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    nock(`https://${shortCode}.api.commercecloud.salesforce.com`)
+      .post(`/shopper/auth/v1/organizations/${organizationId}/oauth2/login`)
+      .reply(303, {response_body: 'response_body'}, {location: url});
+
+    const accessToken = await slasHelper.loginRegisteredUserB2C({
+      slasClient: mockSlasClient,
+      credentials: credentialsPrivate,
+      parameters: {
+        redirectURI: 'redirect_uri',
+        dnt: false,
+      },
+      enableHttpOnlySessionCookies: true,
+    });
+    expect(getAccessTokenMockHttpOnlySessionCookies).toBeCalledWith(
+      expect.any(Object),
+      true
+    );
+    expect(accessToken.access_token).toBe('access_token');
+    expect(accessToken.refresh_token).toBe('refresh_token');
+  });
+
+  test('getPasswordLessAccessToken extracts tokens from Set-Cookie headers', async () => {
+    const token = await slasHelper.getPasswordLessAccessToken({
+      slasClient: createMockSlasClientHttpOnlySessionCookies(),
+      credentials: {clientSecret: 'slas_private_secret'},
+      parameters: {
+        pwdlessLoginToken: 'pwdless_token',
+      },
+      enableHttpOnlySessionCookies: true,
+    });
+    expect(getPasswordLessAccessTokenMockHttpOnlySessionCookies).toBeCalledWith(
+      expect.any(Object),
+      true
+    );
+    expect(token.access_token).toBe('access_token');
+    expect(token.refresh_token).toBe('refresh_token');
+  });
+
+  test('does not extract tokens from Set-Cookie headers on browser (isBrowser=true)', async () => {
+    // Re-import slasHelper with isBrowser mocked to true
+    jest.resetModules();
+    // Provide btoa for the browser mock since stringToBase64 uses it when isBrowser=true
+    global.btoa = (str: string) => Buffer.from(str).toString('base64');
+    jest.doMock('./environment', () => ({isBrowser: true}));
+
+    // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+    const browserSlasHelper = require('./slasHelper') as typeof slasHelper;
+
+    // Mock client that returns stripped body + Set-Cookie headers
+    const mockGetAccessToken = jest.fn(() =>
+      createMockResponse(strippedTokenResponse, mockSetCookieHeaders)
+    );
+    const mockSlasClient = {
+      clientConfig: {
+        parameters: {
+          shortCode: 'short_code',
+          organizationId: 'organization_id',
+          clientId: 'client_id',
+          siteId: 'site_id',
+        },
+      },
+      getAccessToken: mockGetAccessToken,
+    } as unknown as ShopperLogin<{
+      shortCode: string;
+      organizationId: string;
+      clientId: string;
+      siteId: string;
+    }>;
+
+    const accessToken = await browserSlasHelper.loginGuestUserPrivate({
+      slasClient: mockSlasClient,
+      parameters: {},
+      credentials: {clientSecret: 'slas_private_secret'},
+      enableHttpOnlySessionCookies: true,
+    });
+
+    // On browser: tokens should NOT be extracted from Set-Cookie headers
+    // The stripped body is returned as-is (browser relies on httpOnly cookies)
+    expect(accessToken.access_token).toBeUndefined();
+    expect(accessToken.refresh_token).toBeUndefined();
+    expect(accessToken.customer_id).toBe('customer_id');
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    delete global.btoa;
+    jest.restoreAllMocks();
   });
 });
