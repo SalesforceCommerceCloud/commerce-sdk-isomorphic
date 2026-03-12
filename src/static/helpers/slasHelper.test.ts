@@ -62,13 +62,9 @@ const createMockResponse = (
     status: 200,
     text: jest.fn().mockResolvedValue(JSON.stringify(body)),
     headers: {
-      get: jest.fn((name: string) =>
-        name === 'set-cookie' && setCookieHeaders
-          ? setCookieHeaders.join(', ')
-          : null
-      ),
-      getSetCookie: setCookieHeaders
-        ? jest.fn(() => setCookieHeaders)
+      get: jest.fn(() => null),
+      raw: setCookieHeaders
+        ? jest.fn(() => ({'set-cookie': setCookieHeaders}))
         : undefined,
     },
   } as unknown as Response);

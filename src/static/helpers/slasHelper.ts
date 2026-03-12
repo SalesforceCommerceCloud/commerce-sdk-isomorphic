@@ -90,14 +90,11 @@ const parseTokenResponseWithHttpOnlySessionCookies = async (
   }
 
   // Server-side + httpOnly enabled: restore tokens from Set-Cookie headers
-  // getSetCookie() is the standard API but may not exist in older runtimes
-  const {getSetCookie} = response.headers as unknown as {
-    getSetCookie?: () => string[];
+  // node-fetch's Headers has a raw() method that returns individual Set-Cookie headers as an array
+  const headers = response.headers as Headers & {
+    raw?: () => Record<string, string[]>;
   };
-  const setCookieHeaders: string[] =
-    getSetCookie?.call(response.headers) ??
-    response.headers.get('set-cookie')?.split(/,(?=\s*\w+=)/) ??
-    [];
+  const setCookieHeaders: string[] = headers.raw?.()?.['set-cookie'] ?? [];
 
   const cookieTokens = extractTokensFromSetCookieHeader(
     setCookieHeaders,
