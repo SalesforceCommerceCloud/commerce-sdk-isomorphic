@@ -404,14 +404,16 @@ export async function loginIDPUser(options: {
     ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),
     ...(parameters.usid && {usid: parameters.usid}),
   };
-  const opts: Parameters<typeof slasClient.getAccessToken>[0] = {body: tokenBody};
-  if (credentials.clientSecret) {
-    opts.headers = {
-      Authorization: `Basic ${stringToBase64(
-        `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
-      )}`,
-    };
-  }
+  const opts = {
+    body: tokenBody,
+    ...(credentials.clientSecret && {
+      headers: {
+        Authorization: `Basic ${stringToBase64(
+          `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
+        )}`,
+      },
+    }),
+  };
 
   if (enableHttpOnlySessionCookies) {
     return getAccessTokenHttpOnly(slasClient, opts);
@@ -643,14 +645,16 @@ export async function loginRegisteredUserB2C(options: {
     usid: authResponse.usid,
     ...(dnt !== undefined && {dnt: dnt.toString()}),
   };
-  const opts: Parameters<typeof slasClient.getAccessToken>[0] = {body: tokenBody};
-  if (credentials.clientSecret) {
-    opts.headers = {
-      Authorization: `Basic ${stringToBase64(
-        `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
-      )}`,
-    };
-  }
+  const opts = {
+    body: tokenBody,
+    ...(credentials.clientSecret && {
+      headers: {
+        Authorization: `Basic ${stringToBase64(
+          `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
+        )}`,
+      },
+    }),
+  };
 
   if (enableHttpOnlySessionCookies) {
     return getAccessTokenHttpOnly(slasClient, opts);
@@ -877,14 +881,16 @@ export async function refreshAccessToken(options: {
     ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),
   };
 
-  const opts: Parameters<typeof slasClient.getAccessToken>[0] = {body};
-  if (credentials?.clientSecret) {
-    opts.headers = {
-      Authorization: `Basic ${stringToBase64(
-        `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
-      )}`,
-    };
-  }
+  const opts = {
+    body,
+    ...(credentials?.clientSecret && {
+      headers: {
+        Authorization: `Basic ${stringToBase64(
+          `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
+        )}`,
+      },
+    }),
+  };
 
   if (enableHttpOnlySessionCookies) {
     return getAccessTokenHttpOnly(slasClient, opts);
