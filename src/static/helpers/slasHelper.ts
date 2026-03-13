@@ -74,18 +74,16 @@ const extractTokensFromSetCookieHeader = (
  * via httpOnly cookies automatically).
  * @param response - The raw Response from a SLAS token endpoint
  * @param siteId - The site ID used as the cookie suffix
- * @param enableHttpOnlySessionCookies - Whether httpOnly session cookies mode is enabled
  * @returns A complete TokenResponse
  */
 const parseTokenResponseWithHttpOnlySessionCookies = async (
   response: Response,
-  siteId: string,
-  enableHttpOnlySessionCookies = false
+  siteId: string
 ): Promise<TokenResponse> => {
   const text = await response.text();
   const body = (text ? JSON.parse(text) : {}) as TokenResponse;
 
-  if (!enableHttpOnlySessionCookies || isBrowser) {
+  if (isBrowser) {
     return body;
   }
 
@@ -402,8 +400,7 @@ export async function loginIDPUser(options: {
       const response = await slasClient.getAccessToken(optionsToken, true);
       return parseTokenResponseWithHttpOnlySessionCookies(
         response,
-        slasClient.clientConfig.parameters.siteId,
-        enableHttpOnlySessionCookies
+        slasClient.clientConfig.parameters.siteId
       );
     }
     return slasClient.getAccessToken(optionsToken);
@@ -413,8 +410,7 @@ export async function loginIDPUser(options: {
     const response = await slasClient.getAccessToken({body: tokenBody}, true);
     return parseTokenResponseWithHttpOnlySessionCookies(
       response,
-      slasClient.clientConfig.parameters.siteId,
-      enableHttpOnlySessionCookies
+      slasClient.clientConfig.parameters.siteId
     );
   }
   return slasClient.getAccessToken({body: tokenBody});
@@ -480,8 +476,7 @@ export async function loginGuestUserPrivate(options: {
     const response = await slasClient.getAccessToken(opts, true);
     return parseTokenResponseWithHttpOnlySessionCookies(
       response,
-      slasClient.clientConfig.parameters.siteId,
-      enableHttpOnlySessionCookies
+      slasClient.clientConfig.parameters.siteId
     );
   }
   return slasClient.getAccessToken(opts);
@@ -547,8 +542,7 @@ export async function loginGuestUser(options: {
     const response = await slasClient.getAccessToken({body: tokenBody}, true);
     return parseTokenResponseWithHttpOnlySessionCookies(
       response,
-      slasClient.clientConfig.parameters.siteId,
-      enableHttpOnlySessionCookies
+      slasClient.clientConfig.parameters.siteId
     );
   }
   return slasClient.getAccessToken({body: tokenBody});
@@ -670,8 +664,7 @@ export async function loginRegisteredUserB2C(options: {
       const tokenResponse = await slasClient.getAccessToken(optionsToken, true);
       return parseTokenResponseWithHttpOnlySessionCookies(
         tokenResponse,
-        slasClient.clientConfig.parameters.siteId,
-        enableHttpOnlySessionCookies
+        slasClient.clientConfig.parameters.siteId
       );
     }
     return slasClient.getAccessToken(optionsToken);
@@ -684,8 +677,7 @@ export async function loginRegisteredUserB2C(options: {
     );
     return parseTokenResponseWithHttpOnlySessionCookies(
       tokenResponse,
-      slasClient.clientConfig.parameters.siteId,
-      enableHttpOnlySessionCookies
+      slasClient.clientConfig.parameters.siteId
     );
   }
   return slasClient.getAccessToken({body: tokenBody});
@@ -864,8 +856,7 @@ export async function getPasswordLessAccessToken(options: {
     );
     return parseTokenResponseWithHttpOnlySessionCookies(
       response,
-      slasClient.clientConfig.parameters.siteId,
-      enableHttpOnlySessionCookies
+      slasClient.clientConfig.parameters.siteId
     );
   }
   return slasClient.getPasswordLessAccessToken({
@@ -932,8 +923,7 @@ export async function refreshAccessToken(options: {
       const response = await slasClient.getAccessToken(opts, true);
       return parseTokenResponseWithHttpOnlySessionCookies(
         response,
-        slasClient.clientConfig.parameters.siteId,
-        enableHttpOnlySessionCookies
+        slasClient.clientConfig.parameters.siteId
       );
     }
     return slasClient.getAccessToken(opts);
@@ -943,8 +933,7 @@ export async function refreshAccessToken(options: {
     const response = await slasClient.getAccessToken({body}, true);
     return parseTokenResponseWithHttpOnlySessionCookies(
       response,
-      slasClient.clientConfig.parameters.siteId,
-      enableHttpOnlySessionCookies
+      slasClient.clientConfig.parameters.siteId
     );
   }
   return slasClient.getAccessToken({body});
