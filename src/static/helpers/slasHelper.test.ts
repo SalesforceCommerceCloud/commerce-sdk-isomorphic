@@ -949,6 +949,27 @@ describe('authorizePasswordless is working', () => {
     );
   });
 
+  test('Throw when required userid missing', async () => {
+    const mockSlasClient = createMockSlasClient();
+    const parametersAuthorizePasswordless = {
+      callbackURI: 'www.something.com/callback',
+      usid: 'a_usid',
+      locale: 'a_locale',
+      mode: 'callback',
+    };
+    await expect(
+      slasHelper.authorizePasswordless({
+        slasClient: mockSlasClient,
+        credentials: credentialsPrivate,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore intentionally missing userid
+        parameters: parametersAuthorizePasswordless,
+      })
+    ).rejects.toThrow(
+      'Required argument userid is not provided through parameters'
+    );
+  });
+
   test('Throw when clientSecret is missing', async () => {
     const mockSlasClient = createMockSlasClient();
     const parametersAuthorizePasswordless = {
@@ -1035,6 +1056,34 @@ describe('getPasswordLessAccessToken is working', () => {
       })
     ).rejects.toThrow(
       'Required argument organizationId is not provided through clientConfig.parameters.organizationId'
+    );
+  });
+
+  test('Throw when clientSecret is missing', async () => {
+    const mockSlasClient = createMockSlasClient();
+    await expect(
+      slasHelper.getPasswordLessAccessToken({
+        slasClient: mockSlasClient,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore intentionally missing clientSecret
+        credentials: {},
+        parameters: {pwdlessLoginToken: '123456'},
+      })
+    ).rejects.toThrow('Required argument client secret is not provided');
+  });
+
+  test('Throw when pwdlessLoginToken is missing', async () => {
+    const mockSlasClient = createMockSlasClient();
+    await expect(
+      slasHelper.getPasswordLessAccessToken({
+        slasClient: mockSlasClient,
+        credentials: credentialsPrivate,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore intentionally missing pwdlessLoginToken
+        parameters: {},
+      })
+    ).rejects.toThrow(
+      'Required argument pwdlessLoginToken is not provided through parameters'
     );
   });
 });
@@ -1339,5 +1388,41 @@ describe('httpOnly session cookies', () => {
     // @ts-ignore
     delete global.btoa;
     jest.restoreAllMocks();
+  });
+
+  test('throws ResponseError when httpOnly raw response is not ok', async () => {
+    const mockGetAccessToken = jest.fn(() => ({
+      ok: false,
+      status: 401,
+      text: jest.fn().mockResolvedValue('Unauthorized'),
+      headers: {
+        get: jest.fn(() => null),
+      },
+    }));
+    const mockSlasClient = {
+      clientConfig: {
+        parameters: {
+          shortCode: 'short_code',
+          organizationId: 'organization_id',
+          clientId: 'client_id',
+          siteId: 'site_id',
+        },
+      },
+      getAccessToken: mockGetAccessToken,
+    } as unknown as ShopperLogin<{
+      shortCode: string;
+      organizationId: string;
+      clientId: string;
+      siteId: string;
+    }>;
+
+    await expect(
+      slasHelper.loginGuestUserPrivate({
+        slasClient: mockSlasClient,
+        parameters: {},
+        credentials: {clientSecret: 'slas_private_secret'},
+        enableHttpOnlySessionCookies: true,
+      })
+    ).rejects.toThrow(ResponseError);
   });
 });
