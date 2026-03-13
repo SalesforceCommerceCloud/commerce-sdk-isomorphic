@@ -76,10 +76,13 @@ const extractTokensFromSetCookieHeader = (
  * @param siteId - The site ID used as the cookie suffix
  * @returns A complete TokenResponse
  */
-const parseTokenResponseWithHttpOnlySessionCookies = async (
+const parseTokenResponseHttpOnly = async (
   response: Response,
   siteId: string
 ): Promise<TokenResponse> => {
+  if (!response.ok) {
+    throw new ResponseError(response);
+  }
   const text = await response.text();
   const body = (text ? JSON.parse(text) : {}) as TokenResponse;
 
@@ -88,17 +91,34 @@ const parseTokenResponseWithHttpOnlySessionCookies = async (
   }
 
   // Server-side + httpOnly enabled: restore tokens from Set-Cookie headers
-  // node-fetch's Headers has a raw() method that returns individual Set-Cookie headers as an array
+  // Native fetch uses getSetCookie(); node-fetch polyfill uses raw()['set-cookie']
   const headers = response.headers as Headers & {
+    getSetCookie?: () => string[];
     raw?: () => Record<string, string[]>;
   };
-  const setCookieHeaders: string[] = headers.raw?.()?.['set-cookie'] ?? [];
+  const setCookieHeaders: string[] =
+    headers.getSetCookie?.() ?? headers.raw?.()?.['set-cookie'] ?? [];
 
   const cookieTokens = extractTokensFromSetCookieHeader(
     setCookieHeaders,
     siteId
   );
   return {...body, ...cookieTokens};
+};
+
+/**
+ * Calls slasClient.getAccessToken with rawResponse=true and parses the
+ * HttpOnly session cookie response.
+ */
+const getAccessTokenHttpOnly = async (
+  slasClient: ShopperLogin<{shortCode: string; organizationId: string; clientId: string; siteId: string}>,
+  opts: Parameters<typeof slasClient.getAccessToken>[0]
+): Promise<TokenResponse> => {
+  const response = await slasClient.getAccessToken(opts, true);
+  return parseTokenResponseHttpOnly(
+    response,
+    slasClient.clientConfig.parameters.siteId
+  );
 };
 
 export const stringToBase64 = isBrowser
@@ -384,36 +404,19 @@ export async function loginIDPUser(options: {
     ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),
     ...(parameters.usid && {usid: parameters.usid}),
   };
-  // Using slas private client
+  const opts: Parameters<typeof slasClient.getAccessToken>[0] = {body: tokenBody};
   if (credentials.clientSecret) {
-    const authHeaderIdSecret = `Basic ${stringToBase64(
-      `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
-    )}`;
-
-    const optionsToken = {
-      headers: {
-        Authorization: authHeaderIdSecret,
-      },
-      body: tokenBody,
+    opts.headers = {
+      Authorization: `Basic ${stringToBase64(
+        `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
+      )}`,
     };
-    if (enableHttpOnlySessionCookies) {
-      const response = await slasClient.getAccessToken(optionsToken, true);
-      return parseTokenResponseWithHttpOnlySessionCookies(
-        response,
-        slasClient.clientConfig.parameters.siteId
-      );
-    }
-    return slasClient.getAccessToken(optionsToken);
   }
-  // default is to use slas public client
+
   if (enableHttpOnlySessionCookies) {
-    const response = await slasClient.getAccessToken({body: tokenBody}, true);
-    return parseTokenResponseWithHttpOnlySessionCookies(
-      response,
-      slasClient.clientConfig.parameters.siteId
-    );
+    return getAccessTokenHttpOnly(slasClient, opts);
   }
-  return slasClient.getAccessToken({body: tokenBody});
+  return slasClient.getAccessToken(opts);
 }
 
 /**
@@ -473,11 +476,7 @@ export async function loginGuestUserPrivate(options: {
   };
 
   if (enableHttpOnlySessionCookies) {
-    const response = await slasClient.getAccessToken(opts, true);
-    return parseTokenResponseWithHttpOnlySessionCookies(
-      response,
-      slasClient.clientConfig.parameters.siteId
-    );
+    return getAccessTokenHttpOnly(slasClient, opts);
   }
   return slasClient.getAccessToken(opts);
 }
@@ -539,11 +538,7 @@ export async function loginGuestUser(options: {
   };
 
   if (enableHttpOnlySessionCookies) {
-    const response = await slasClient.getAccessToken({body: tokenBody}, true);
-    return parseTokenResponseWithHttpOnlySessionCookies(
-      response,
-      slasClient.clientConfig.parameters.siteId
-    );
+    return getAccessTokenHttpOnly(slasClient, {body: tokenBody});
   }
   return slasClient.getAccessToken({body: tokenBody});
 }
@@ -610,7 +605,7 @@ export async function loginRegisteredUserB2C(options: {
     `${credentials.username}:${credentials.password}`
   )}`;
   const {dnt, usid, redirectURI} = parameters;
-  const opts = {
+  const authCustomerOpts = {
     headers: {
       Authorization: authorization,
     },
@@ -627,7 +622,7 @@ export async function loginRegisteredUserB2C(options: {
     },
   };
 
-  const response = await slasClientCopy.authenticateCustomer(opts, true);
+  const response = await slasClientCopy.authenticateCustomer(authCustomerOpts, true);
   const redirectUrlString = response.headers?.get('location') || response.url;
   const redirectUrl = new URL(redirectUrlString);
   const searchParams = Object.fromEntries(redirectUrl.searchParams.entries());
@@ -648,39 +643,19 @@ export async function loginRegisteredUserB2C(options: {
     usid: authResponse.usid,
     ...(dnt !== undefined && {dnt: dnt.toString()}),
   };
-  // using slas private client
+  const opts: Parameters<typeof slasClient.getAccessToken>[0] = {body: tokenBody};
   if (credentials.clientSecret) {
-    const authHeaderIdSecret = `Basic ${stringToBase64(
-      `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
-    )}`;
-
-    const optionsToken = {
-      headers: {
-        Authorization: authHeaderIdSecret,
-      },
-      body: tokenBody,
+    opts.headers = {
+      Authorization: `Basic ${stringToBase64(
+        `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
+      )}`,
     };
-    if (enableHttpOnlySessionCookies) {
-      const tokenResponse = await slasClient.getAccessToken(optionsToken, true);
-      return parseTokenResponseWithHttpOnlySessionCookies(
-        tokenResponse,
-        slasClient.clientConfig.parameters.siteId
-      );
-    }
-    return slasClient.getAccessToken(optionsToken);
   }
-  // default is to use slas public client
+
   if (enableHttpOnlySessionCookies) {
-    const tokenResponse = await slasClient.getAccessToken(
-      {body: tokenBody},
-      true
-    );
-    return parseTokenResponseWithHttpOnlySessionCookies(
-      tokenResponse,
-      slasClient.clientConfig.parameters.siteId
-    );
+    return getAccessTokenHttpOnly(slasClient, opts);
   }
-  return slasClient.getAccessToken({body: tokenBody});
+  return slasClient.getAccessToken(opts);
 }
 
 /** Function to send passwordless login token
@@ -841,25 +816,7 @@ export async function getPasswordLessAccessToken(options: {
     code_verifier: codeVerifier,
     ...(parameters.dnt && {dnt: parameters.dnt}),
   };
-  if (enableHttpOnlySessionCookies) {
-    const response = await slasClient.getPasswordLessAccessToken(
-      {
-        headers: {
-          Authorization: authHeaderIdSecret,
-        },
-        parameters: {
-          organizationId: slasClient.clientConfig.parameters.organizationId,
-        },
-        body: tokenBody,
-      },
-      true
-    );
-    return parseTokenResponseWithHttpOnlySessionCookies(
-      response,
-      slasClient.clientConfig.parameters.siteId
-    );
-  }
-  return slasClient.getPasswordLessAccessToken({
+  const requestOptions = {
     headers: {
       Authorization: authHeaderIdSecret,
     },
@@ -867,7 +824,18 @@ export async function getPasswordLessAccessToken(options: {
       organizationId: slasClient.clientConfig.parameters.organizationId,
     },
     body: tokenBody,
-  });
+  };
+  if (enableHttpOnlySessionCookies) {
+    const response = await slasClient.getPasswordLessAccessToken(
+      requestOptions,
+      true
+    );
+    return parseTokenResponseHttpOnly(
+      response,
+      slasClient.clientConfig.parameters.siteId
+    );
+  }
+  return slasClient.getPasswordLessAccessToken(requestOptions);
 }
 
 /**
@@ -909,34 +877,19 @@ export async function refreshAccessToken(options: {
     ...(parameters.dnt !== undefined && {dnt: parameters.dnt.toString()}),
   };
 
-  if (credentials && credentials.clientSecret) {
-    const authorization = `Basic ${stringToBase64(
-      `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
-    )}`;
-    const opts = {
-      headers: {
-        Authorization: authorization,
-      },
-      body,
+  const opts: Parameters<typeof slasClient.getAccessToken>[0] = {body};
+  if (credentials?.clientSecret) {
+    opts.headers = {
+      Authorization: `Basic ${stringToBase64(
+        `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
+      )}`,
     };
-    if (enableHttpOnlySessionCookies) {
-      const response = await slasClient.getAccessToken(opts, true);
-      return parseTokenResponseWithHttpOnlySessionCookies(
-        response,
-        slasClient.clientConfig.parameters.siteId
-      );
-    }
-    return slasClient.getAccessToken(opts);
   }
 
   if (enableHttpOnlySessionCookies) {
-    const response = await slasClient.getAccessToken({body}, true);
-    return parseTokenResponseWithHttpOnlySessionCookies(
-      response,
-      slasClient.clientConfig.parameters.siteId
-    );
+    return getAccessTokenHttpOnly(slasClient, opts);
   }
-  return slasClient.getAccessToken({body});
+  return slasClient.getAccessToken(opts);
 }
 
 /**
