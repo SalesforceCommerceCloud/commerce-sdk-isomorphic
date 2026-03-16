@@ -796,7 +796,7 @@ describe('Registered B2C user flow', () => {
       credentials,
       parameters: registeredUserFlowParams,
     });
-    expect(accessToken).toStrictEqual(expectedTokenResponse);
+    expect(accessToken).toBe(expectedTokenResponse);
   });
 });
 
