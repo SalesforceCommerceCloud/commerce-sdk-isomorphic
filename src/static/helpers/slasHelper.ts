@@ -111,7 +111,12 @@ const parseTokenResponseHttpOnly = async (
  * HttpOnly session cookie response.
  */
 const getAccessTokenHttpOnly = async (
-  slasClient: ShopperLogin<{shortCode: string; organizationId: string; clientId: string; siteId: string}>,
+  slasClient: ShopperLogin<{
+    shortCode: string;
+    organizationId: string;
+    clientId: string;
+    siteId: string;
+  }>,
   opts: Parameters<typeof slasClient.getAccessToken>[0]
 ): Promise<TokenResponse> => {
   const response = await slasClient.getAccessToken(opts, true);
@@ -624,7 +629,10 @@ export async function loginRegisteredUserB2C(options: {
     },
   };
 
-  const response = await slasClientCopy.authenticateCustomer(authCustomerOpts, true);
+  const response = await slasClientCopy.authenticateCustomer(
+    authCustomerOpts,
+    true
+  );
   const redirectUrlString = response.headers?.get('location') || response.url;
   const redirectUrl = new URL(redirectUrlString);
   const searchParams = Object.fromEntries(redirectUrl.searchParams.entries());
