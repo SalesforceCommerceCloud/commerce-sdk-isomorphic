@@ -1,0 +1,179 @@
+openapi: 3.0.3
+info:
+  x-api-type: Shopper
+  x-api-family: Shopper
+  title: Shopper Agents
+  version: 1.2.0-master-b185
+  description: "# API Overview\nThis REST API initializes an Agentforce session when a new session starts.\n\n## Authentication & Authorization\nThe Shopper Agent API requires a shopper access token from the Shopper Login and API Access Service (SLAS).\n\nYou must include the relevant scope(s) in the client ID used to generate the SLAS token.\n\n- `sfcc.shopper-agents.rw`: Required for initializing shopper agent session (POST operations).\n\nFor a full list of required permissions, see the [Authorization Scopes Catalog.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/auth-z-scope-catalog.html)\n\nFor details on how to request a shopper access token from SLAS, see the guest user flows for [public clients](https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-public-client.html) and [private clients](https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas-private-client.html) in the SLAS guides. \n\n\n## Use Cases\n\n### Shopper Agent Initialization\n\nWhen a new agentic session starts, you receive a session initialization key. Include that key in the request to initialize the Agentforce session.\n\n**Flow:**\n\n1. Obtain a `sessionInitKey` from a supported service.\n2. Initialize an agent session using the previously obtained `sessionInitKey`.\n\n### sessionInitKey\n\n`sessionInitKey` is the session initialization identifier that is obtained when an Agentforce session starts.\n\n\nThe request body must include the `sessionInitKey` field. Missing or invalid `sessionInitKey` results in `INVALID_REQUEST_PARAMETERS` (400)."
+servers:
+  - url: https://{shortCode}.api.commercecloud.salesforce.com/shopper/shopper-agents/v1
+    variables:
+      shortCode:
+        default: shortCode
+paths:
+  /organizations/{organizationId}/session/init:
+    post:
+      summary: Initializes an Agentforce session.
+      description: The request body must include the sessionInitKey field. Missing or invalid sessionInitKey information results in INVALID_REQUEST_PARAMETERS (400).
+      operationId: postSessionInit
+      parameters:
+        - $ref: '#/components/parameters/organizationId'
+        - $ref: '#/components/parameters/siteId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SessionInitRequest'
+            examples:
+              ShopperAgentsSessionInitRequest:
+                $ref: '#/components/examples/ShopperAgentsSessionInitRequest'
+      responses:
+        '202':
+          description: Accepted (initialization successful; no response body)
+        '400':
+          description: Validation Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                ValidationError:
+                  $ref: '#/components/examples/ValidationError'
+        '401':
+          description: Unauthorized (invalid or expired token)
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Unauthorized:
+                  $ref: '#/components/examples/InvalidBasicAuth'
+        '500':
+          description: Unexpected server-side exception during SLAS authentication
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                ReadError:
+                  $ref: '#/components/examples/InternalServerError'
+      security:
+        - ShopperToken:
+            - sfcc.shopper-agents.rw
+components:
+  securitySchemes:
+    ShopperToken:
+      type: oauth2
+      description: "ShopperToken authentication follows the authorization code grant flow, as defined by the OAuth 2.1 standard. Depending on the type of OAuth client (public or private), this authorization flow has further requirements. \nFor a detailed description of the authorization flow, see the [SLAS overview](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary).\nA shopper token allows you to access the B2C Commerce Shopper API endpoints. \n"
+      flows:
+        clientCredentials:
+          tokenUrl: https://{shortCode}.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/{organizationId}/oauth2/token
+          scopes:
+            sfcc.shopper-agents.rw: Allows read/write operations on shopper agents.
+        authorizationCode:
+          authorizationUrl: https://{short-code}.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/{organizationId}/oauth2/authorize
+          tokenUrl: https://{short-code}.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/{organizationId}/oauth2/token
+          scopes:
+            sfcc.shopper-agents.rw: Allows read/write operations on shopper agents
+  schemas:
+    OrganizationId:
+      description: An identifier for the organization the request is being made by
+      example: f_ecom_zzxy_prd
+      type: string
+      minLength: 1
+      maxLength: 32
+    SiteId:
+      minLength: 1
+      maxLength: 32
+      description: The identifier of the site that a request is being made in the context of. Attributes might have site specific values, and some objects may only be assigned to specific sites
+      example: RefArch
+      type: string
+    SessionInitRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        sessionInitKey:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: The session initialization key that is is obtained when beginning an Agentforce session, and is then used to initialize the session.
+          example: aPrx.0rn0R1k7G.PtUUXh6S90_rMvqsYhpDZlNpyYsLsTm8KYLodM3flsRBbCD
+    ErrorResponse:
+      type: object
+      additionalProperties: true
+      properties:
+        title:
+          description: "A short, human-readable summary of the problem\ntype.  It will not change from occurrence to occurrence of the \nproblem, except for purposes of localization\n"
+          type: string
+          maxLength: 256
+          example: You do not have enough credit
+        type:
+          description: |
+            A URI reference [RFC3986] that identifies the
+            problem type.  This specification encourages that, when
+            dereferenced, it provide human-readable documentation for the
+            problem type (e.g., using HTML [W3C.REC-html5-20141028]).  When
+            this member is not present, its value is assumed to be
+            "about:blank". It accepts relative URIs; this means
+            that they must be resolved relative to the document's base URI, as
+            per [RFC3986], Section 5.
+          type: string
+          maxLength: 2048
+          example: NotEnoughMoney
+        detail:
+          description: A human-readable explanation specific to this occurrence of the problem.
+          type: string
+          example: Your current balance is 30, but that costs 50
+        instance:
+          description: |
+            A URI reference that identifies the specific
+            occurrence of the problem.  It may or may not yield further
+            information if dereferenced.  It accepts relative URIs; this means
+            that they must be resolved relative to the document's base URI, as
+            per [RFC3986], Section 5.
+          type: string
+          maxLength: 2048
+          example: /account/12345/msgs/abc
+      required:
+        - title
+        - type
+        - detail
+  parameters:
+    organizationId:
+      description: An identifier for the organization the request is being made by
+      name: organizationId
+      in: path
+      required: true
+      example: f_ecom_zzxy_prd
+      schema:
+        $ref: '#/components/schemas/OrganizationId'
+    siteId:
+      description: The identifier of the site that a request is being made in the context of. Attributes might have site specific values, and some objects may only be assigned to specific sites.
+      name: siteId
+      in: query
+      required: true
+      examples:
+        SiteId:
+          value: RefArch
+      schema:
+        $ref: '#/components/schemas/SiteId'
+  examples:
+    ShopperAgentsSessionInitRequest:
+      value:
+        sessionInitKey: aPrx.0rn0R1k7G.PtUUXh6S90_rMvqsYhpDZlNpyYsLsTm8KYLodM3flsRBbCD
+    ValidationError:
+      value:
+        title: Validation Error
+        type: https://api.commercecloud.salesforce.com/documentation/error/v1/errors/validation
+        detail: Unable to validate post body.
+    InvalidBasicAuth:
+      value:
+        title: Invalid Basic Authentication
+        type: https://api.commercecloud.salesforce.com/documentation/error/v1/errors/unauthorized
+        detail: Your access token is invalid or expired and can’t be used to identify a user.
+    InternalServerError:
+      value:
+        title: Internal Server Error
+        type: https://api.commercecloud.salesforce.com/documentation/error/v1/errors/internal-server-error
+        detail: Unexpected server-side exception during SLAS authentication.
