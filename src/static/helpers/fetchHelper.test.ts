@@ -8,6 +8,8 @@ import nock from 'nock';
 import {Response} from 'node-fetch';
 import * as environment from './environment';
 import ClientConfig from '../clientConfig';
+import MaintenanceError from '../maintenanceError';
+import ResponseError from '../responseError';
 import {doFetch, encodeSCAPISpecialCharacters} from './fetchHelper';
 
 describe('doFetch', () => {
@@ -157,6 +159,140 @@ describe('doFetch', () => {
       expect.any(String),
       expect.objectContaining(clientConfig.fetchOptions)
     );
+  });
+
+  describe('maintenance header check', () => {
+    test('throws MaintenanceError when sfdc_maintenance header is "system"', async () => {
+      nock(basePath)
+        .post(endpointPath)
+        .query({siteId: 'site_id'})
+        .reply(200, responseBody, {sfdc_maintenance: 'system'});
+
+      const copyClientConfig = {...clientConfig, throwOnMaintenanceHeader: true};
+
+      try {
+        await doFetch(url, options, copyClientConfig);
+        fail('Expected MaintenanceError to be thrown');
+      } catch (error) {
+        expect(error).toBeInstanceOf(MaintenanceError);
+        if (error instanceof MaintenanceError) {
+          expect(error.message).toBe('Service unavailable due to system maintenance');
+        }
+      }
+    });
+
+    test('throws MaintenanceError when sfdc_maintenance header is "site"', async () => {
+      nock(basePath)
+        .post(endpointPath)
+        .query({siteId: 'site_id'})
+        .reply(200, responseBody, {sfdc_maintenance: 'site'});
+
+      const copyClientConfig = {...clientConfig, throwOnMaintenanceHeader: true};
+
+      try {
+        await doFetch(url, options, copyClientConfig);
+        fail('Expected MaintenanceError to be thrown');
+      } catch (error) {
+        expect(error).toBeInstanceOf(MaintenanceError);
+        if (error instanceof MaintenanceError) {
+          expect(error.message).toBe('Service unavailable due to site maintenance');
+        }
+      }
+    });
+
+    test('does not throw when sfdc_maintenance header has different value', async () => {
+      nock(basePath)
+        .post(endpointPath)
+        .query({siteId: 'site_id'})
+        .reply(200, responseBody, {sfdc_maintenance: 'other'});
+
+      const copyClientConfig = {...clientConfig, throwOnMaintenanceHeader: true};
+      const data = await doFetch(url, options, copyClientConfig);
+      expect(data).toEqual(responseBody);
+    });
+
+    test('does not throw when throwOnMaintenanceHeader is false', async () => {
+      nock(basePath)
+        .post(endpointPath)
+        .query({siteId: 'site_id'})
+        .reply(200, responseBody, {sfdc_maintenance: 'system'});
+
+      const copyClientConfig = {...clientConfig, throwOnMaintenanceHeader: false};
+      const data = await doFetch(url, options, copyClientConfig);
+      expect(data).toEqual(responseBody);
+    });
+
+    test('does not throw when throwOnMaintenanceHeader is not set', async () => {
+      nock(basePath)
+        .post(endpointPath)
+        .query({siteId: 'site_id'})
+        .reply(200, responseBody, {sfdc_maintenance: 'system'});
+
+      const data = await doFetch(url, options, clientConfig);
+      expect(data).toEqual(responseBody);
+    });
+
+    test('throws MaintenanceError even when rawResponse is true', async () => {
+      nock(basePath)
+        .post(endpointPath)
+        .query({siteId: 'site_id'})
+        .reply(200, responseBody, {sfdc_maintenance: 'system'});
+
+      const copyClientConfig = {...clientConfig, throwOnMaintenanceHeader: true};
+
+      try {
+        await doFetch(url, options, copyClientConfig, true);
+        fail('Expected MaintenanceError to be thrown');
+      } catch (error) {
+        expect(error).toBeInstanceOf(MaintenanceError);
+      }
+    });
+
+    test('MaintenanceError contains correct properties', async () => {
+      nock(basePath)
+        .post(endpointPath)
+        .query({siteId: 'site_id'})
+        .reply(200, responseBody, {sfdc_maintenance: 'site'});
+
+      const copyClientConfig = {...clientConfig, throwOnMaintenanceHeader: true};
+
+      try {
+        await doFetch(url, options, copyClientConfig);
+        fail('Expected MaintenanceError to be thrown');
+      } catch (error) {
+        expect(error).toBeInstanceOf(MaintenanceError);
+        if (error instanceof MaintenanceError) {
+          expect(error.status).toBe(503);
+          expect(error.maintenanceType).toBe('site');
+          expect(error.name).toBe('MaintenanceError');
+          expect(error.response).toBeInstanceOf(Response);
+        }
+      }
+    });
+
+    test('throws MaintenanceError before throwOnBadResponse', async () => {
+      nock(basePath)
+        .post(endpointPath)
+        .query({siteId: 'site_id'})
+        .reply(400, responseBody, {sfdc_maintenance: 'system'});
+
+      const copyClientConfig = {
+        ...clientConfig,
+        throwOnMaintenanceHeader: true,
+        throwOnBadResponse: true,
+      };
+
+      try {
+        await doFetch(url, options, copyClientConfig);
+        fail('Expected MaintenanceError to be thrown');
+      } catch (error) {
+        expect(error).toBeInstanceOf(MaintenanceError);
+        expect(error).not.toBeInstanceOf(ResponseError);
+        if (error instanceof Error) {
+          expect(error.message).not.toContain('400 Bad Request');
+        }
+      }
+    });
   });
 });
 

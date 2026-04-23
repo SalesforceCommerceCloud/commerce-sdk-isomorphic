@@ -11,3 +11,4 @@ export * from './slasHelper';
 export * from './types';
 export * from './customApi';
 export * from './fetchHelper';
+export {default as MaintenanceError} from '../maintenanceError';
