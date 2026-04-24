@@ -1,6 +1,6 @@
 {
   "name": "commerce-sdk-isomorphic",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "private": false,
   "description": "Salesforce Commerce SDK Isomorphic",
   "bugs": {
@@ -181,7 +181,7 @@
   "bundlesize": [
     {
       "path": "lib/**/*.js",
-      "maxSize": "58 kB"
+      "maxSize": "59 kB"
     },
     {
       "path": "commerce-sdk-isomorphic-with-deps.tgz",

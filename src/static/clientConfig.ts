@@ -41,6 +41,7 @@ export interface ClientConfigInit<Params extends BaseUriParameters> {
     headers: {[key: string]: string}
   ) => Required<FetchOptions>['body'];
   throwOnBadResponse?: boolean;
+  throwOnMaintenanceHeader?: boolean;
 }
 
 /**
@@ -67,6 +68,8 @@ export default class ClientConfig<Params extends BaseUriParameters>
 
   public throwOnBadResponse: boolean;
 
+  public throwOnMaintenanceHeader: boolean;
+
   constructor(config: ClientConfigInit<Params>) {
     this.headers = {...config.headers};
     this.parameters = {...config.parameters};
@@ -89,6 +92,7 @@ export default class ClientConfig<Params extends BaseUriParameters>
       this.proxy = config.proxy;
     }
     this.throwOnBadResponse = !!config.throwOnBadResponse;
+    this.throwOnMaintenanceHeader = !!config.throwOnMaintenanceHeader;
 
     this.fetch = config.fetch;
   }

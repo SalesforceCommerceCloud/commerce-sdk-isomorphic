@@ -138,6 +138,40 @@ try {
 }
 ```
 
+#### `throwOnMaintenanceHeader`
+
+When `true`, the SDK automatically detects maintenance mode by checking the `sfdc_maintenance` response header. If the header value is `'system'` or `'site'`, the SDK throws a `MaintenanceError` with status 503. This is useful for handling scheduled maintenance windows and displaying appropriate messaging to users. By default, this flag is `false` for backwards compatibility.
+
+```js
+import {ShopperProducts, helpers} from 'commerce-sdk-isomorphic';
+const {MaintenanceError} = helpers;
+
+const config = {
+  throwOnMaintenanceHeader: true,
+  // rest of the config object...
+};
+
+const shopperProducts = new ShopperProducts(config);
+
+// in an async function
+try {
+  const product = await shopperProducts.getProduct({
+    parameters: {id: 'product-id'},
+  });
+} catch (e) {
+  if (e instanceof MaintenanceError) {
+    console.log(`Service in maintenance: ${e.maintenanceType}`); // 'system' or 'site'
+    console.log(`Status: ${e.status}`); // 503
+    // Display maintenance page to user
+  } else {
+    // Handle other errors
+    console.error('API error:', e);
+  }
+}
+```
+
+**Note:** The maintenance check occurs before other error handling and applies even when using `rawResponse: true`.
+
 #### Additional Config Settings
 
 * `headers`: Headers to include with API requests.

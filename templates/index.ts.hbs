@@ -11,7 +11,9 @@ export type {
 // Can't currently use `export from` with default exports
 import ClientConfig from "./clientConfig";
 import TemplateURL from "./templateUrl";
-export { ClientConfig, TemplateURL };
+import ResponseError from "./responseError";
+import MaintenanceError from "./maintenanceError";
+export { ClientConfig, TemplateURL, ResponseError, MaintenanceError };
 
 import * as helpers from "./helpers";
 export { helpers };
