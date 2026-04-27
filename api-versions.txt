@@ -1,4 +1,4 @@
-# APIs for ECOM v26.3
+# APIs for ECOM v26.5
 # Formally Shopper Login
 auth-oas-v1=1.46.0
 shopper-baskets-oas-v1=1.11.0
