@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v5.2.0
+## v5.2.1
 
 ### API Versions
 
@@ -26,6 +26,31 @@
 ### Enhancements
 
 - Add automatic maintenance mode detection via `throwOnMaintenanceHeader` client config option. When enabled, the SDK throws `MaintenanceError` (503) if the server responds with `sfdc_maintenance` header set to `'system'` or `'site'`. This feature is opt-in and fully backward compatible.
+
+
+## v5.2.0
+
+### API Versions
+
+| API Name | API Version |
+|----------|-------------|
+| shopper-login | 1.46.0 |
+| shopper-baskets | 1.11.0 |
+| shopper-baskets | 2.5.1 |
+| shopper-configurations | 1.2.0 |
+| shopper-consents | 1.1.4 |
+| shopper-context | 1.1.3 |
+| shopper-customers | 1.7.0 |
+| shopper-experience | 1.3.0 |
+| shopper-gift-certificates | 1.2.0 |
+| shopper-orders | 1.12.1 |
+| shopper-payments | 1.4.0 |
+| shopper-products | 1.3.0 |
+| shopper-promotions | 1.2.0 |
+| shopper-search | 1.8.0 |
+| shopper-seo | 1.0.17 |
+| shopper-stores | 1.2.0 |
+
 
 ## v5.1.0
 
