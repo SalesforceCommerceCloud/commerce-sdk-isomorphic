@@ -12,8 +12,8 @@
 | shopper-configurations | 1.2.0 |
 | shopper-consents | 1.1.4 |
 | shopper-context | 1.1.3 |
-| shopper-customers | 1.6.1 |
-| shopper-experience | 1.2.1 |
+| shopper-customers | 1.7.0 |
+| shopper-experience | 1.3.0 |
 | shopper-gift-certificates | 1.2.0 |
 | shopper-orders | 1.12.1 |
 | shopper-payments | 1.4.0 |
