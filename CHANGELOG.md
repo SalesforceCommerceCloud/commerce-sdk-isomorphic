@@ -2,6 +2,8 @@
 
 ## v5.3.0
 
+_ECOM v26.6_
+
 ### API Versions
 
 | API Name | API Version |
