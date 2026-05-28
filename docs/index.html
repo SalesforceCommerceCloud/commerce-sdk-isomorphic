@@ -197,6 +197,36 @@ yarn install commerce-sdk-isomorphic</code></pre>
   <span class="hljs-built_in">console</span>.log(error);
   <span class="hljs-comment">// error is the JSON object - {error: &quot;,,,&quot;}</span>
 }</code></pre>
+				<a href="#throwonmaintenanceheader" id="throwonmaintenanceheader" style="color: inherit; text-decoration: none;">
+					<h4><code>throwOnMaintenanceHeader</code></h4>
+				</a>
+				<p>When <code>true</code>, the SDK automatically detects maintenance mode by checking the <code>sfdc_maintenance</code> response header. If the header value is <code>&#39;system&#39;</code> or <code>&#39;site&#39;</code>, the SDK throws a <code>MaintenanceError</code> with status 503. This is useful for handling scheduled maintenance windows and displaying appropriate messaging to users. By default, this flag is <code>false</code> for backwards compatibility.</p>
+				<pre><code class="language-js"><span class="hljs-keyword">import</span> {ShopperProducts, helpers} <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;commerce-sdk-isomorphic&#x27;</span>;
+<span class="hljs-keyword">const</span> {MaintenanceError} = helpers;
+
+<span class="hljs-keyword">const</span> config = {
+  <span class="hljs-attr">throwOnMaintenanceHeader</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-comment">// rest of the config object...</span>
+};
+
+<span class="hljs-keyword">const</span> shopperProducts = <span class="hljs-keyword">new</span> ShopperProducts(config);
+
+<span class="hljs-comment">// in an async function</span>
+<span class="hljs-keyword">try</span> {
+  <span class="hljs-keyword">const</span> product = <span class="hljs-keyword">await</span> shopperProducts.getProduct({
+    <span class="hljs-attr">parameters</span>: {<span class="hljs-attr">id</span>: <span class="hljs-string">&#x27;product-id&#x27;</span>},
+  });
+} <span class="hljs-keyword">catch</span> (e) {
+  <span class="hljs-keyword">if</span> (e <span class="hljs-keyword">instanceof</span> MaintenanceError) {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Service in maintenance: <span class="hljs-subst">${e.maintenanceType}</span>`</span>); <span class="hljs-comment">// &#x27;system&#x27; or &#x27;site&#x27;</span>
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Status: <span class="hljs-subst">${e.status}</span>`</span>); <span class="hljs-comment">// 503</span>
+    <span class="hljs-comment">// Display maintenance page to user</span>
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-comment">// Handle other errors</span>
+    <span class="hljs-built_in">console</span>.error(<span class="hljs-string">&#x27;API error:&#x27;</span>, e);
+  }
+}</code></pre>
+				<p><strong>Note:</strong> The maintenance check occurs before other error handling and applies even when using <code>rawResponse: true</code>.</p>
 				<a href="#additional-config-settings" id="additional-config-settings" style="color: inherit; text-decoration: none;">
 					<h4>Additional Config Settings</h4>
 				</a>
@@ -393,7 +423,13 @@ yarn install commerce-sdk-isomorphic</code></pre>
 						<a href="modules/helpers.html">helpers</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="modules/maintenanceerror.html">maintenance<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="modules/responseerror.html">response<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/shopperavailability.html">shopper<wbr>Availability</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/shopperbaskets.html">shopper<wbr>Baskets</a>
