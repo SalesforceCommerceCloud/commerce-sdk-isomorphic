@@ -11,6 +11,15 @@
     "url": "git+https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic.git"
   },
   "license": "BSD-3-Clause",
+  "exports": {
+    ".": {
+      "types": "./lib/index.cjs.d.ts",
+      "import": "./lib/index.esm.js",
+      "require": "./lib/index.cjs.js"
+    },
+    "./lib/*": "./lib/*",
+    "./package.json": "./package.json"
+  },
   "main": "lib/index.cjs.js",
   "module": "lib/index.esm.js",
   "style": "lib/default.css",
@@ -40,7 +49,8 @@
     "renderTemplates": "PACKAGE_VERSION=$(node -p \"require('./package.json').version\") ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' ./scripts/generate-oas.ts",
     "start": "HTTPS=true react-scripts start",
     "pretest": "yarn run lint && yarn run lint:style && depcheck && yarn run check:size",
-    "test": "yarn run check:types && yarn run test:unit && CI=true yarn run test:react",
+    "test": "yarn run check:types && yarn run test:unit && yarn run test:exports && CI=true yarn run test:react",
+    "test:exports": "node --test src/test/packageExports.mjs",
     "test:react": "react-scripts test --env=jest-environment-jsdom-sixteen src/environment",
     "test:unit": "jest --coverage --testPathIgnorePatterns node_modules src/environment --silent",
     "updateApis": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' scripts/updateApis.ts && yarn diffApis"

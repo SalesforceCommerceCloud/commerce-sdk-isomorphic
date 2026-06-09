@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v5.4.0
+
+### Enhancements
+
+- Support named imports via the package `exports` field, e.g. `import { ShopperLogin } from 'commerce-sdk-isomorphic'`, for bundlers and tooling that resolve `exports`. The existing default-import-and-destructure form is unchanged and fully backward compatible. [#286](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/286)
+
 ## v5.3.0
 
 _ECOM v26.6_
