@@ -5,13 +5,12 @@ on:
     types: [closed]
     branches: [main]
 
-permissions:
-  contents: write
-
 jobs:
   tag-and-release:
     if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.title, 'Release v')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -65,9 +64,9 @@ jobs:
           fi
 
           {
-            echo "notes<<EOF_NOTES"
+            echo "notes<<RELEASE_NOTES_b3c1f8a4_DELIM"
             echo "$NOTES"
-            echo "EOF_NOTES"
+            echo "RELEASE_NOTES_b3c1f8a4_DELIM"
           } >> "$GITHUB_OUTPUT"
 
       - id: tag-exists

@@ -65,7 +65,7 @@ exit $ec
     }).toString();
     result.ok = true;
   } catch (err) {
-    result.stdout = (err.stdout?.toString() ?? '') + (err.log?.toString() ?? '');
+    result.stdout = (err.stdout?.toString() ?? '') + (err.stderr?.toString() ?? '');
   }
   const parts = result.stdout.split('---OUTPUT---');
   result.output = (parts[1] ?? '').trim();
@@ -91,8 +91,8 @@ function runNotesExtract({version, changelog}) {
     _CHANGELOG: changelog,
   });
   if (!r.ok) return {ok: false, log: r.stdout};
-  const match = r.output.match(/notes<<EOF_NOTES\n([\s\S]*?)\nEOF_NOTES/);
-  return {ok: true, notes: match ? match[1] : ''};
+  const match = r.output.match(/notes<<(\S+)\n([\s\S]*?)\n\1/);
+  return {ok: true, notes: match ? match[2] : ''};
 }
 
 const goodPackageJson = JSON.stringify({version: '5.3.0'});
@@ -168,6 +168,16 @@ test('version resolution rejects extra prose between version and ECOM', () => {
 test('version resolution rejects truncated semver', () => {
   const r = runVersionResolve({
     prTitle: 'Release v5.3 for ECOM v26.6',
+    packageJson: goodPackageJson,
+    changelog: goodChangelog,
+  });
+  assert.equal(r.ok, false);
+  assert.match(r.log, /PR title does not match release format/);
+});
+
+test('version resolution rejects a product-prefixed title', () => {
+  const r = runVersionResolve({
+    prTitle: '[Iso SDK] Release v5.3.0 for ECOM v26.6',
     packageJson: goodPackageJson,
     changelog: goodChangelog,
   });
