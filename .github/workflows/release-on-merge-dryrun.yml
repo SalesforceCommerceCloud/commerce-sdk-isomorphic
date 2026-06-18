@@ -1,0 +1,90 @@
+name: Release on merge (dry run)
+
+on:
+  push:
+    branches: [ju/auto-release-on-merge-W-23051165]
+  workflow_dispatch:
+    inputs:
+      pr_title:
+        description: 'Synthetic PR title to test the gate'
+        required: true
+        type: string
+      package_version:
+        description: 'package.json version to test against (overrides actual)'
+        required: false
+        type: string
+        default: ''
+
+jobs:
+  resolve-and-extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - id: version
+        name: Resolve version and cross-check sources
+        env:
+          PR_TITLE: ${{ inputs.pr_title }}
+          OVERRIDE_VERSION: ${{ inputs.package_version }}
+        run: |
+          set -euo pipefail
+
+          if [[ ! "$PR_TITLE" =~ ^Release\ v([0-9]+\.[0-9]+\.[0-9]+)\ for\ ECOM\ v[0-9]+(\.[0-9]+)?(\ \(@W-[0-9]+@\))?$ ]]; then
+            echo "::error::PR title does not match release format: $PR_TITLE"
+            exit 1
+          fi
+          TITLE_VERSION="${BASH_REMATCH[1]}"
+
+          if [[ -n "$OVERRIDE_VERSION" ]]; then
+            PKG_VERSION="$OVERRIDE_VERSION"
+          else
+            PKG_VERSION=$(node -p "require('./package.json').version")
+          fi
+
+          CHANGELOG_VERSION=$(awk '/^## v[0-9]+\.[0-9]+\.[0-9]+/ { sub(/^## v/, ""); print; exit }' CHANGELOG.md)
+
+          if [[ "$TITLE_VERSION" != "$PKG_VERSION" || "$PKG_VERSION" != "$CHANGELOG_VERSION" ]]; then
+            echo "::error::Version mismatch across sources"
+            echo "  PR title:      $TITLE_VERSION"
+            echo "  package.json:  $PKG_VERSION"
+            echo "  CHANGELOG.md:  $CHANGELOG_VERSION"
+            exit 1
+          fi
+
+          echo "version=v$TITLE_VERSION" >> "$GITHUB_OUTPUT"
+          echo "Resolved release version: v$TITLE_VERSION"
+
+      - id: notes
+        name: Extract release notes from CHANGELOG
+        env:
+          VER: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+
+          NOTES=$(awk -v ver="$VER" '
+            $0 == "## " ver { found=1; next }
+            found && /^## v/ { exit }
+            found { print }
+          ' CHANGELOG.md | awk 'NF{p=1} p' | awk '{lines[NR]=$0} END{for(i=NR;i>0;i--){if(lines[i]!=""){last=i;break}} for(i=1;i<=last;i++) print lines[i]}')
+
+          if [[ -z "$NOTES" ]]; then
+            echo "::error::No CHANGELOG section found for $VER"
+            exit 1
+          fi
+
+          {
+            echo "notes<<RELEASE_NOTES_b3c1f8a4_DELIM"
+            echo "$NOTES"
+            echo "RELEASE_NOTES_b3c1f8a4_DELIM"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Echo extracted notes
+        env:
+          VER: ${{ steps.version.outputs.version }}
+          NOTES: ${{ steps.notes.outputs.notes }}
+        run: |
+          echo "::group::Resolved $VER"
+          echo "$NOTES"
+          echo "::endgroup::"
