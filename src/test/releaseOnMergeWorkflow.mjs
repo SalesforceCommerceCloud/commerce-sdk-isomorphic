@@ -7,7 +7,7 @@
 
 /*
  * Locks the load-bearing pure-logic surfaces of
- * `.github/workflows/release-on-merge.yml`: the PR-title regex that gates the
+ * `.github/workflows/release-on-merge.yml`: the head-ref regex that gates the
  * workflow, and the awk pipeline that extracts release notes from CHANGELOG.md.
  *
  * The test extracts each step's full `run: |` block straight from the YAML and
@@ -73,9 +73,9 @@ exit $ec
   return result;
 }
 
-function runVersionResolve({prTitle, packageJson, changelog}) {
+function runVersionResolve({headRef, packageJson, changelog}) {
   const r = runScriptInSandbox(versionResolveScript, {
-    PR_TITLE: prTitle,
+    HEAD_REF: headRef,
     _PKG_JSON: packageJson,
     _CHANGELOG: changelog,
   });
@@ -105,9 +105,9 @@ const goodChangelog = `# CHANGELOG
 - Added a thing.
 `;
 
-test('version resolution accepts the canonical release-PR title with GUS suffix', () => {
+test('version resolution accepts the canonical release-vX.Y.Z branch', () => {
   const r = runVersionResolve({
-    prTitle: 'Release v5.3.0 for ECOM v26.6 (@W-12345678@)',
+    headRef: 'release/v5.3.0',
     packageJson: goodPackageJson,
     changelog: goodChangelog,
   });
@@ -115,79 +115,79 @@ test('version resolution accepts the canonical release-PR title with GUS suffix'
   assert.equal(r.version, 'v5.3.0');
 });
 
-test('version resolution accepts a release-PR title without the GUS suffix', () => {
+test('version resolution rejects a release branch missing the v prefix', () => {
   const r = runVersionResolve({
-    prTitle: 'Release v5.3.0 for ECOM v26.6',
-    packageJson: goodPackageJson,
-    changelog: goodChangelog,
-  });
-  assert.equal(r.ok, true, r.log);
-  assert.equal(r.version, 'v5.3.0');
-});
-
-test('version resolution accepts a single-component ECOM minor', () => {
-  const r = runVersionResolve({
-    prTitle: 'Release v5.3.0 for ECOM v27',
-    packageJson: goodPackageJson,
-    changelog: goodChangelog,
-  });
-  assert.equal(r.ok, true, r.log);
-  assert.equal(r.version, 'v5.3.0');
-});
-
-test('version resolution rejects the legacy Release/<date> format', () => {
-  const r = runVersionResolve({
-    prTitle: 'Release/20260119 5.0.0 preview - for ECOM 26.2',
+    headRef: 'release/5.3.0',
     packageJson: goodPackageJson,
     changelog: goodChangelog,
   });
   assert.equal(r.ok, false);
-  assert.match(r.log, /PR title does not match release format/);
+  assert.match(r.log, /Branch name does not match release format/);
 });
 
-test('version resolution rejects pre-release semver suffixes', () => {
+test('version resolution rejects pre-release semver suffixes in the branch', () => {
   const r = runVersionResolve({
-    prTitle: 'Release v5.3.0-rc.1 for ECOM v26.6',
+    headRef: 'release/v5.3.0-rc.1',
     packageJson: goodPackageJson,
     changelog: goodChangelog,
   });
   assert.equal(r.ok, false);
-  assert.match(r.log, /PR title does not match release format/);
+  assert.match(r.log, /Branch name does not match release format/);
 });
 
-test('version resolution rejects extra prose between version and ECOM', () => {
+test('version resolution rejects a release branch with a trailing path segment', () => {
   const r = runVersionResolve({
-    prTitle: 'Release v5.3.0 — WIP for ECOM v26.6',
+    headRef: 'release/v5.3.0/foo',
     packageJson: goodPackageJson,
     changelog: goodChangelog,
   });
   assert.equal(r.ok, false);
-  assert.match(r.log, /PR title does not match release format/);
+  assert.match(r.log, /Branch name does not match release format/);
 });
 
-test('version resolution rejects truncated semver', () => {
+test('version resolution rejects truncated semver in the branch', () => {
   const r = runVersionResolve({
-    prTitle: 'Release v5.3 for ECOM v26.6',
+    headRef: 'release/v5.3',
     packageJson: goodPackageJson,
     changelog: goodChangelog,
   });
   assert.equal(r.ok, false);
-  assert.match(r.log, /PR title does not match release format/);
+  assert.match(r.log, /Branch name does not match release format/);
 });
 
-test('version resolution rejects a product-prefixed title', () => {
+test('version resolution rejects the legacy date-suffix branch format', () => {
   const r = runVersionResolve({
-    prTitle: '[Iso SDK] Release v5.3.0 for ECOM v26.6',
+    headRef: 'release/20260119',
     packageJson: goodPackageJson,
     changelog: goodChangelog,
   });
   assert.equal(r.ok, false);
-  assert.match(r.log, /PR title does not match release format/);
+  assert.match(r.log, /Branch name does not match release format/);
 });
 
-test('version resolution fails when package.json disagrees with the title', () => {
+test('version resolution rejects a same-day re-cut suffix', () => {
   const r = runVersionResolve({
-    prTitle: 'Release v5.3.0 for ECOM v26.6',
+    headRef: 'release/v5.3.0-2',
+    packageJson: goodPackageJson,
+    changelog: goodChangelog,
+  });
+  assert.equal(r.ok, false);
+  assert.match(r.log, /Branch name does not match release format/);
+});
+
+test('version resolution rejects a non-release branch name', () => {
+  const r = runVersionResolve({
+    headRef: 'ju/something-W-12345678',
+    packageJson: goodPackageJson,
+    changelog: goodChangelog,
+  });
+  assert.equal(r.ok, false);
+  assert.match(r.log, /Branch name does not match release format/);
+});
+
+test('version resolution fails when package.json disagrees with the branch', () => {
+  const r = runVersionResolve({
+    headRef: 'release/v5.3.0',
     packageJson: JSON.stringify({version: '5.4.0'}),
     changelog: goodChangelog,
   });
@@ -195,9 +195,9 @@ test('version resolution fails when package.json disagrees with the title', () =
   assert.match(r.log, /Version mismatch across sources/);
 });
 
-test('version resolution fails when CHANGELOG.md disagrees with the title', () => {
+test('version resolution fails when CHANGELOG.md disagrees with the branch', () => {
   const r = runVersionResolve({
-    prTitle: 'Release v5.3.0 for ECOM v26.6',
+    headRef: 'release/v5.3.0',
     packageJson: goodPackageJson,
     changelog: '# CHANGELOG\n\n## v5.4.0\n\n- Different.\n',
   });
