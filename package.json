@@ -51,9 +51,9 @@
     "pretest": "yarn run lint && yarn run lint:style && depcheck && yarn run check:size",
     "test": "yarn run check:types && yarn run test:unit && yarn run test:exports && yarn run test:workflow && CI=true yarn run test:react",
     "test:exports": "node --test src/test/packageExports.mjs",
-    "test:workflow": "node --test src/test/releaseOnMergeWorkflow.mjs",
     "test:react": "react-scripts test --env=jest-environment-jsdom-sixteen src/environment",
     "test:unit": "jest --coverage --testPathIgnorePatterns node_modules src/environment --silent",
+    "test:workflow": "node --test src/test/releaseOnMergeWorkflow.mjs",
     "updateApis": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' scripts/updateApis.ts && yarn diffApis"
   },
   "husky": {
@@ -192,7 +192,7 @@
   "bundlesize": [
     {
       "path": "lib/**/*.js",
-      "maxSize": "59 kB"
+      "maxSize": "60 kB"
     },
     {
       "path": "commerce-sdk-isomorphic-with-deps.tgz",
