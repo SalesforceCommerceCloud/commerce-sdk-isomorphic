@@ -47,12 +47,34 @@ In practice, we recommend:
 
 In the next major version release, the SDK will encode special characters (UTF-8 based on SCAPI guidelines) in path parameters by default. Please see the [Encoding special characters](#encoding-special-characters) section for more details.
 
+### Migration off node-fetch
+
+`node-fetch@2` is maintenance-only, and the upstream Node.js fix for the keep-alive regression (see [Node.js version compatibility](#nodejs-version-compatibility)) works around but does not remove the underlying `node-fetch` heuristic. A future release will replace `node-fetch` on the server path with the Node.js built-in `fetch` (available in Node 18 and later, which the SDK's current `^20.x`/`^22.x` requirement already satisfies). This will change how custom `agent` options work (built-in `fetch` is backed by undici and does not accept an `http.Agent`/`https.Agent`), and continue to honor a caller-supplied fetch via the [`fetch` client-config option](#custom-fetch-function).
+
 ## Getting Started
 
 ### Requirements
 
 - Node `^20.x` or `^22.x`
 - The SDK requires B2C Commerce API (SCAPI) to be configured. For more info see [Getting started with SCAPI](https://developer.salesforce.com/docs/commerce/commerce-api/guide/get-started.html).
+
+### Node.js version compatibility
+
+A regression in Node.js 24.17.0 and 22.23.0 caused libraries built on `node-fetch@2` to throw false `ERR_STREAM_PREMATURE_CLOSE` ("Premature close") errors when reusing keep-alive connections under load. The security fix in those releases added a listener to the socket `'data'` event, which `node-fetch@2` misreads as a truncated response ([nodejs/node#63989](https://github.com/nodejs/node/issues/63989)). It is most likely to surface on gzip-compressed, chunked responses such as large SCAPI product or search payloads.
+
+> **Note:** commerce-sdk-isomorphic **is** affected on the server (Node.js) path, because it makes HTTP requests using `node-fetch@2`. Browser builds use the platform `fetch` and are not affected. (The companion [Commerce SDK](https://github.com/SalesforceCommerceCloud/commerce-sdk), whose HTTP layer is `make-fetch-happen`, is not affected.)
+
+To resolve it, upgrade to a Node.js release that contains the [upstream fix](https://github.com/nodejs/node/pull/64004): on the 24.x line use 24.18.0 or later (avoid 24.17.0); on the 22.x line use 22.23.1 or later (avoid 22.23.0). Versions before the regression (24.16.0 and earlier, 22.22.x and earlier) do not have this bug, but they also predate the security fix it shipped alongside, so upgrade forward rather than downgrading.
+
+If you cannot change your Node.js version, avoid enabling keep-alive on the agent you pass through [`fetchOptions`](#fetch-options) (the bug only occurs when a pooled socket is reused). This removes connection pooling and adds a TLS handshake per request.
+
+Newer "Current"-line releases (Node 26.x) that shipped the same security patch are affected as well. As of June 24, 2026 no fixed 26.x release had shipped; check the [Node 26.x changelog](https://github.com/nodejs/node/blob/main/doc/changelogs/CHANGELOG_V26.md) for a release that contains the [upstream fix](https://github.com/nodejs/node/pull/64004). For production, prefer an LTS line (24.x or 22.x) on the fixed versions above.
+
+References:
+
+- Regression: [nodejs/node#63989](https://github.com/nodejs/node/issues/63989) · Upstream fix: [nodejs/node#64004](https://github.com/nodejs/node/pull/64004)
+- Fixed releases: [v24.18.0](https://github.com/nodejs/node/releases/tag/v24.18.0), [v22.23.1](https://github.com/nodejs/node/releases/tag/v22.23.1)
+- Underlying `node-fetch` issue (open): [node-fetch#1767](https://github.com/node-fetch/node-fetch/issues/1767)
 
 ### Installation
 
