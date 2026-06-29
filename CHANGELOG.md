@@ -2,6 +2,31 @@
 
 ## v5.4.0
 
+_ECOM v26.7_
+
+### API Versions
+
+| API Name | API Version |
+|----------|-------------|
+| shopper-login | 1.50.0 |
+| shopper-availability | 1.2.0 |
+| shopper-baskets | 1.11.0 |
+| shopper-baskets | 2.9.0 |
+| shopper-configurations | 1.2.0 |
+| shopper-consents | 1.1.4 |
+| shopper-context | 1.1.3 |
+| shopper-customers | 1.8.0 |
+| shopper-experience | 1.5.2 |
+| shopper-gift-certificates | 1.2.0 |
+| shopper-orders | 1.15.0 |
+| shopper-payments | 1.4.0 |
+| shopper-products | 1.10.1 |
+| shopper-promotions | 1.2.0 |
+| shopper-search | 1.10.0 |
+| shopper-seo | 1.0.17 |
+| shopper-stores | 1.2.0 |
+
+
 ### Enhancements
 
 - Support named imports via the package `exports` field, e.g. `import { ShopperLogin } from 'commerce-sdk-isomorphic'`, for bundlers and tooling that resolve `exports`. The existing default-import-and-destructure form is unchanged and fully backward compatible. [#286](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/286)
