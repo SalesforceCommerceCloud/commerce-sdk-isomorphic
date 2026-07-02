@@ -19,6 +19,14 @@ type BrowserRequestInit = RequestInit;
 export type FetchOptions = NodeRequestInit & BrowserRequestInit;
 
 /**
+ * A function that can be used to fetch data from an API
+ */
+export type FetchFunction = (
+  input: RequestInfo,
+  init?: FetchOptions | undefined
+) => Promise<Response>;
+
+/**
  * Base options that can be passed to the `ClientConfig` class.
  */
 export interface ClientConfigInit<Params extends BaseUriParameters> {
@@ -27,17 +35,14 @@ export interface ClientConfigInit<Params extends BaseUriParameters> {
   headers?: {[key: string]: string};
   parameters: Params;
   fetchOptions?: FetchOptions;
+  fetch?: FetchFunction;
   transformRequest?: (
     data: unknown,
     headers: {[key: string]: string}
   ) => Required<FetchOptions>['body'];
   throwOnBadResponse?: boolean;
+  throwOnMaintenanceHeader?: boolean;
 }
-
-export type FetchFunction = (
-  input: RequestInfo,
-  init?: FetchOptions | undefined
-) => Promise<Response>;
 
 /**
  * Configuration parameters common to Commerce SDK clients
@@ -55,11 +60,15 @@ export default class ClientConfig<Params extends BaseUriParameters>
 
   public fetchOptions: FetchOptions;
 
+  public fetch?: FetchFunction;
+
   public transformRequest: NonNullable<
     ClientConfigInit<Params>['transformRequest']
   >;
 
   public throwOnBadResponse: boolean;
+
+  public throwOnMaintenanceHeader: boolean;
 
   constructor(config: ClientConfigInit<Params>) {
     this.headers = {...config.headers};
@@ -83,6 +92,9 @@ export default class ClientConfig<Params extends BaseUriParameters>
       this.proxy = config.proxy;
     }
     this.throwOnBadResponse = !!config.throwOnBadResponse;
+    this.throwOnMaintenanceHeader = !!config.throwOnMaintenanceHeader;
+
+    this.fetch = config.fetch;
   }
 
   static readonly defaults: Pick<

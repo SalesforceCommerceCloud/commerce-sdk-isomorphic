@@ -1,9 +1,9 @@
 {
-  "main": "shopper-agents-oas-v1-public.yaml",
-  "name": "Shopper Agents OAS",
+  "main": "shopper-experience-oas-v1-public.yaml",
+  "name": "Shopper Experience OAS",
   "groupId": "893f605e-10e2-423a-bdb4-f952f56eb6d8",
-  "assetId": "shopper-agents-oas",
-  "version": "1.2.0-master-b185",
+  "assetId": "shopper-experience-oas",
+  "version": "1.5.2",
   "classifier": "oas",
   "tags": [],
   "descriptorVersion": "1.0.0",

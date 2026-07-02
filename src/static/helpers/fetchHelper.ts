@@ -8,6 +8,7 @@ import {BodyInit} from 'node-fetch';
 import {BaseUriParameters} from '.';
 import type {FetchOptions} from '../clientConfig';
 import ResponseError from '../responseError';
+import MaintenanceError from '../maintenanceError';
 import {fetch} from './environment';
 import {ClientConfigInit} from '../clientConfig';
 
@@ -51,7 +52,19 @@ export const doFetch = async <Params extends BaseUriParameters>(
     method: options?.method ?? 'GET',
   };
 
-  const response = await fetch(url, requestOptions);
+  // Use fetch from clientConfig, otherwise fallback to fetch implementation in environment.ts
+  const fetcher = clientConfig?.fetch || fetch;
+
+  const response = await fetcher(url, requestOptions);
+
+  // Check for maintenance header before processing response
+  if (clientConfig?.throwOnMaintenanceHeader) {
+    const maintenanceHeader = response.headers.get('sfdc_maintenance');
+    if (maintenanceHeader === 'system' || maintenanceHeader === 'site') {
+      throw new MaintenanceError(response, maintenanceHeader);
+    }
+  }
+
   if (rawResponse) {
     return response;
   }

@@ -1,5 +1,169 @@
 # CHANGELOG
 
+## v5.4.0
+
+_ECOM v26.7_
+
+### API Versions
+
+| API Name | API Version |
+|----------|-------------|
+| shopper-login | 1.50.0 |
+| shopper-availability | 1.2.0 |
+| shopper-baskets | 1.11.0 |
+| shopper-baskets | 2.9.0 |
+| shopper-configurations | 1.2.0 |
+| shopper-consents | 1.1.4 |
+| shopper-context | 1.1.3 |
+| shopper-customers | 1.8.0 |
+| shopper-experience | 1.5.2 |
+| shopper-gift-certificates | 1.2.0 |
+| shopper-orders | 1.15.0 |
+| shopper-payments | 1.4.0 |
+| shopper-products | 1.10.1 |
+| shopper-promotions | 1.2.0 |
+| shopper-search | 1.10.0 |
+| shopper-seo | 1.0.17 |
+| shopper-stores | 1.2.0 |
+
+
+### Enhancements
+
+- Support named imports via the package `exports` field, e.g. `import { ShopperLogin } from 'commerce-sdk-isomorphic'`, for bundlers and tooling that resolve `exports`. The existing default-import-and-destructure form is unchanged and fully backward compatible. [#286](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/286)
+
+## v5.3.0
+
+_ECOM v26.6_
+
+### API Versions
+
+| API Name | API Version |
+|----------|-------------|
+| shopper-login | 1.48.0 |
+| shopper-availability | 1.1.0 |
+| shopper-baskets | 1.11.0 |
+| shopper-baskets | 2.5.1 |
+| shopper-configurations | 1.2.0 |
+| shopper-consents | 1.1.4 |
+| shopper-context | 1.1.3 |
+| shopper-customers | 1.8.0 |
+| shopper-experience | 1.4.1 |
+| shopper-gift-certificates | 1.2.0 |
+| shopper-orders | 1.12.1 |
+| shopper-payments | 1.4.0 |
+| shopper-products | 1.5.1 |
+| shopper-promotions | 1.2.0 |
+| shopper-search | 1.9.0 |
+| shopper-seo | 1.0.17 |
+| shopper-stores | 1.2.0 |
+
+
+### Enhancements
+
+- Add Shopper Availability API (`shopperAvailability`).
+
+## v5.2.1
+
+### API Versions
+
+| API Name | API Version |
+|----------|-------------|
+| shopper-login | 1.46.0 |
+| shopper-baskets | 1.11.0 |
+| shopper-baskets | 2.5.1 |
+| shopper-configurations | 1.2.0 |
+| shopper-consents | 1.1.4 |
+| shopper-context | 1.1.3 |
+| shopper-customers | 1.7.0 |
+| shopper-experience | 1.3.0 |
+| shopper-gift-certificates | 1.2.0 |
+| shopper-orders | 1.12.1 |
+| shopper-payments | 1.4.0 |
+| shopper-products | 1.3.0 |
+| shopper-promotions | 1.2.0 |
+| shopper-search | 1.8.0 |
+| shopper-seo | 1.0.17 |
+| shopper-stores | 1.2.0 |
+
+### Enhancements
+
+- Add automatic maintenance mode detection via `throwOnMaintenanceHeader` client config option. When enabled, the SDK throws `MaintenanceError` (503) if the server responds with `sfdc_maintenance` header set to `'system'` or `'site'`. This feature is opt-in and fully backward compatible.
+
+
+## v5.2.0
+
+### API Versions
+
+| API Name | API Version |
+|----------|-------------|
+| shopper-login | 1.46.0 |
+| shopper-baskets | 1.11.0 |
+| shopper-baskets | 2.5.1 |
+| shopper-configurations | 1.2.0 |
+| shopper-consents | 1.1.4 |
+| shopper-context | 1.1.3 |
+| shopper-customers | 1.7.0 |
+| shopper-experience | 1.3.0 |
+| shopper-gift-certificates | 1.2.0 |
+| shopper-orders | 1.12.1 |
+| shopper-payments | 1.4.0 |
+| shopper-products | 1.3.0 |
+| shopper-promotions | 1.2.0 |
+| shopper-search | 1.8.0 |
+| shopper-seo | 1.0.17 |
+| shopper-stores | 1.2.0 |
+
+
+## v5.1.0
+
+### API Versions
+
+| API Name | API Version |
+|----------|-------------|
+| shopper-login | 1.46.0 |
+| shopper-baskets | 1.11.0 |
+| shopper-baskets | 2.5.1 |
+| shopper-configurations | 1.2.0 |
+| shopper-consents | 1.1.4 |
+| shopper-context | 1.1.3 |
+| shopper-customers | 1.6.1 |
+| shopper-experience | 1.2.1 |
+| shopper-gift-certificates | 1.2.0 |
+| shopper-orders | 1.12.1 |
+| shopper-payments | 1.4.0 |
+| shopper-products | 1.3.0 |
+| shopper-promotions | 1.2.0 |
+| shopper-search | 1.8.0 |
+| shopper-seo | 1.0.17 |
+| shopper-stores | 1.2.0 |
+
+### Enchancements
+
+- Allow developers to pass in custom fetch implementation via `clientConfig` [#272](https://github.com/SalesforceCommerceCloud/commerce-sdk-isomorphic/pull/272)
+
+## v5.0.0
+
+### API Versions
+
+| API Name | API Version |
+|----------|-------------|
+| shopper-baskets | 1.9.4 |
+| shopper-baskets | 2.3.3 |
+| shopper-configurations | 1.0.2 |
+| shopper-consents | 1.1.4 |
+| shopper-context | 1.1.3 |
+| shopper-customers | 1.3.2 |
+| shopper-experience | 1.1.2 |
+| shopper-gift-certificates | 1.0.29 |
+| shopper-login | 1.42.2 |
+| shopper-orders | 1.10.0 |
+| shopper-payments | 1.2.3 |
+| shopper-products | 1.1.3 |
+| shopper-promotions | 1.0.39 |
+| shopper-search | 1.5.4 |
+| shopper-seo | 1.0.17 |
+| shopper-stores | 1.0.19 |
+
 ## v4.2.0
 
 ### API Versions

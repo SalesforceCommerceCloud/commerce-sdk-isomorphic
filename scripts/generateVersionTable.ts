@@ -51,7 +51,11 @@ function generateVersionTable(apiVersions: ApiVersion[]): string {
   table += '|----------|-------------|\n';
 
   apiVersions.forEach(api => {
-    table += `| ${api.name} | ${api.version} |\n`;
+    let displayName = api.name;
+    if (api.name === 'auth') {
+      displayName = 'shopper-login';
+    }
+    table += `| ${displayName} | ${api.version} |\n`;
   });
 
   return table;
