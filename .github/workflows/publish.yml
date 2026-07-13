@@ -1,20 +1,36 @@
 name: Publish to NPM
 
 on:
-  release:
-    types: [published] 
+  pull_request:
+    types: [closed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing release tag to re-publish (e.g. v5.5.0)'
+        required: true
+        type: string
+
 jobs:
   publish-to-npm:
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.pull_request.merged == true &&
+       startsWith(github.event.pull_request.head.ref, 'release/v'))
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.event.pull_request.merge_commit_sha }}
+      - uses: actions/setup-node@v4
         with:
           node-version: '22.x'
           registry-url: 'https://registry.npmjs.org'
       - run: yarn install
       - run: yarn run renderTemplates
-      - run: yarn build:lib 
+      - run: yarn build:lib
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
