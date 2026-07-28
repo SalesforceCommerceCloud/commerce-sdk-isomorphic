@@ -3,7 +3,7 @@ info:
   x-api-type: Shopper
   x-api-family: Checkout
   title: Shopper Orders
-  version: 1.15.0
+  version: 1.17.1
   description: |-
     [Download API specification](https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-orders/shopper-orders-oas-v1-public.yaml)
 
@@ -224,7 +224,7 @@ paths:
         Retrieve order details using non-token identifiers or an authenticated shopper session.
 
         The endpoint distinguishes between two levels of access:
-            - Full access: Granted using shopper authentication or an OrderViewCode paired with email or phone information. Returns the complete order graph.
+            - Full access: Granted using shopper authentication, an OrderViewCode, or a time-limited access code. The OrderViewCode and access code are both passed in the `orderViewCode` request-body field; the server distinguishes them by format. Returns the complete order graph.
             - Partial access: Granted using a billing PostalCode paired with email or phone information. Filters sensitive data and Personally Identifiable Information (PII).
       operationId: guestOrderLookup
       summary: Retrieve order information using a combination of non-token identifying factors.
@@ -240,6 +240,8 @@ paths:
             examples:
               OrderLookUp:
                 $ref: '#/components/examples/OrderLookup'
+              OrderLookUpWithAccessCode:
+                $ref: '#/components/examples/OrderLookupWithAccessCode'
             schema:
               $ref: '#/components/schemas/OrderLookupRequest'
       responses:
@@ -268,8 +270,9 @@ paths:
         '404':
           description: |-
             Order was not found. Possible reasons:
-            - the order with the given order no is unknown.
+            - the order with the given order number is unknown.
             - the combination of identifying information you provided, such as email or postal code, does not match the order record.
+            - the provided access code is invalid or has expired.
           content:
             application/problem+json:
               schema:
@@ -370,11 +373,14 @@ paths:
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
       requestBody:
+        required: true
         content:
           application/json:
             examples:
               OmsCancelOrder:
                 $ref: '#/components/examples/OmsCancelOrder'
+              OmsCancelOrderWithAccessCode:
+                $ref: '#/components/examples/OmsCancelOrderWithAccessCode'
             schema:
               $ref: '#/components/schemas/OmsCancelOrderRequest'
       responses:
@@ -390,7 +396,10 @@ paths:
         '400':
           $ref: '#/components/responses/400OmsCancelBadRequest'
         '404':
-          description: The order with the given order number is unknown.
+          description: |-
+            Order was not found. Possible reasons:
+            - the order with the given order number is unknown.
+            - the provided access code is invalid or has expired.
           content:
             application/problem+json:
               schema:
@@ -421,11 +430,14 @@ paths:
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
       requestBody:
+        required: true
         content:
           application/json:
             examples:
               OmsReturnOrder:
                 $ref: '#/components/examples/OmsReturnOrder'
+              OmsReturnOrderWithAccessCode:
+                $ref: '#/components/examples/OmsReturnOrderWithAccessCode'
             schema:
               $ref: '#/components/schemas/OmsReturnOrderRequest'
       responses:
@@ -441,7 +453,10 @@ paths:
         '400':
           $ref: '#/components/responses/400OmsReturnBadRequest'
         '404':
-          description: The order with the given order number is unknown.
+          description: |-
+            Order was not found. Possible reasons:
+            - the order with the given order number is unknown.
+            - the provided access code is invalid or has expired.
           content:
             application/problem+json:
               schema:
@@ -453,6 +468,53 @@ paths:
           $ref: '#/components/responses/409OmsReturnConflict'
       security:
         - ShopperToken:
+            - sfcc.shopper-baskets-orders.rw
+            - sfcc.shopper-standard
+  /organizations/{organizationId}/orders/{orderNo}/actions/request-access-code:
+    post:
+      description: |-
+        Generates a time-limited access code and delivers it via email to the address associated with the order. The shopper can then use this
+        code with the lookup, cancel, and return endpoints to access the order without the original session.
+
+        The generated code is valid for 15 minutes. Too many incorrect access attempts invalidate the code early, but the 15-minute
+        cooldown remains — a new code cannot be generated until the original validity period has elapsed, even if the code was invalidated early.
+
+        The endpoint always returns 202 — whether the order and email combination is valid, and whether a new code was
+        generated. This uniform response prevents enumeration of valid orders and avoids revealing cooldown state to callers.
+      operationId: requestOrderAccessCode
+      summary: Request a time-limited access code for a guest order.
+      x-extensionPoints:
+        - phase: service-logic
+          name: sfcc.app.order.sendOrderAccessCode
+          description: Invoked to send the access code via email when the order number and email combination is valid.
+          arguments:
+            - $ref: '#/components/schemas/Order'
+            - $ref: '#/components/schemas/OrderAccessCode'
+      parameters:
+        - $ref: '#/components/parameters/organizationId'
+        - $ref: '#/components/parameters/orderNo'
+        - $ref: '#/components/parameters/siteId'
+        - $ref: '#/components/parameters/locale'
+        - $ref: '#/components/parameters/expandOms'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            examples:
+              RequestOrderAccessCode:
+                $ref: '#/components/examples/RequestOrderAccessCode'
+            schema:
+              $ref: '#/components/schemas/RequestOrderAccessCodeRequest'
+      responses:
+        '202':
+          description: |-
+            Accepted. Always returned, regardless of whether the order and email combination is valid, to prevent enumeration of valid orders.
+            If the combination is valid, a new access code is generated and delivered via email.
+        '400':
+          $ref: '#/components/responses/400RequestAccessCodeBadRequest'
+      security:
+        - ShopperToken:
+            - sfcc.shopper-baskets-orders
             - sfcc.shopper-baskets-orders.rw
             - sfcc.shopper-standard
   /organizations/{organizationId}/orders/{orderNo}/payment-instruments:
@@ -1791,6 +1853,20 @@ components:
       description: Document representing a basket product item.
       allOf:
         - $ref: '#/components/schemas/ProductItem'
+    DeliveryWindow:
+      description: The range describing when an item is expected to be delivered. Both bounds are RFC 3339 date-time timestamps. The API preserves sub-day precision end-to-end.
+      type: object
+      properties:
+        startAt:
+          description: The earliest expected delivery time, as an RFC 3339 date-time.
+          example: '2026-04-30T14:00:00Z'
+          type: string
+          format: date-time
+        endAt:
+          description: The latest expected delivery time, as an RFC 3339 date-time.
+          example: '2026-04-30T18:00:00Z'
+          type: string
+          format: date-time
     ShipmentId:
       minLength: 1
       type: string
@@ -1829,6 +1905,10 @@ components:
           The type will reject any property that does not fit this pattern, only allowing additional properties beginning with the known prefix.
         example: c_trackingId
       properties:
+        deliveryWindow:
+          description: The estimated delivery window for this shipping method. The sfcc.app.shipping.quote hook populates this value. The response omits this field if the hook doesn't return a delivery window.
+          allOf:
+            - $ref: '#/components/schemas/DeliveryWindow'
         description:
           description: The localized description of the shipping method.
           example: Order received within 7-10 business days
@@ -1845,6 +1925,11 @@ components:
           description: The localized name of the shipping method.
           example: Ground
           type: string
+        orderCutoffAt:
+          description: The timestamp by which an order must be placed for the deliveryWindow to apply, as an RFC 3339 date-time. The sfcc.app.shipping.quote hook populates this value. The response omits this field if the hook doesn't return a cutoff time.
+          example: '2026-04-27T14:00:00Z'
+          type: string
+          format: date-time
         price:
           format: double
           description: |-
@@ -1885,6 +1970,10 @@ components:
           description: The total tax on shipping charges in the shipment, including shipping price adjustments. It is read only.
           example: 0.3
           type: number
+        deliveryWindow:
+          description: 'The estimated delivery window for the shipment. The sfcc.app.shipping.calculate hook populates this value from the selected shipping method. The response omits this field if the hook doesn''t return a delivery window. This field is reserved for future use and will be supported in an upcoming release. '
+          allOf:
+            - $ref: '#/components/schemas/DeliveryWindow'
         gift:
           description: A flag indicating whether the shipment is a gift. It is read only.
           example: true
@@ -1900,6 +1989,11 @@ components:
             shipping. It is read only.
           example: 4.95
           type: number
+        orderCutoffAt:
+          description: 'The timestamp by which an order must be placed for the deliveryWindow to apply, as an RFC 3339 date-time. The sfcc.app.shipping.calculate hook populates this value from the selected shipping method. The response omits this field if the hook doesn''t return a cutoff time. This field is reserved for future use and will be supported in an upcoming release. '
+          example: '2026-04-27T14:00:00Z'
+          type: string
+          format: date-time
         productSubTotal:
           format: double
           description: |-
@@ -2043,6 +2137,96 @@ components:
           description: The tax rate applicable to this product line item. For a 10% tax rate, the value is 0.1. It is read only.
           type: number
       type: object
+    PromotionLink:
+      description: Document representing a promotion link.
+      additionalProperties:
+        title: Additional Property Support
+        description: |-
+          This type supports additional properties passed along with the defined properties of this API.
+          To indicate that the properties were defined and expected to be handled as additional properties, they are expected to be prefixed with a `c_`.
+          The type will reject any property that does not fit this pattern, only allowing additional properties beginning with the known prefix.
+        example: c_trackingId
+      type: object
+      properties:
+        promotionId:
+          description: The unique id of the promotion.
+          example: 10off100
+          type: string
+          minLength: 1
+          maxLength: 256
+        name:
+          description: The localized name of the promotion.
+          example: 10% off $100 orders
+          type: string
+          minLength: 1
+          maxLength: 256
+        calloutMsg:
+          description: The localized call-out message of the promotion.
+          example: Spend $10 more to save 10%!
+          type: string
+          minLength: 1
+          maxLength: 256
+        title:
+          description: The link title.
+          example: 10% off $100 orders
+          type: string
+          minLength: 1
+          maxLength: 256
+        link:
+          description: The URL addressing the promotion.
+          example: /s/SiteGenesis/promotion?id=10off100
+          type: string
+          minLength: 1
+          maxLength: 2048
+    ApproachingDiscount:
+      description: Document representing an approaching discount for a basket. Contains information about promotions the customer is close to qualifying for.
+      additionalProperties:
+        title: Additional Property Support
+        description: |-
+          This type supports additional properties passed along with the defined properties of this API.
+          To indicate that the properties were defined and expected to be handled as additional properties, they are expected to be prefixed with a `c_`.
+          The type will reject any property that does not fit this pattern, only allowing additional properties beginning with the known prefix.
+        example: c_trackingId
+      type: object
+      properties:
+        type:
+          description: The type of approaching discount (order-level or shipping-level).
+          example: order
+          enum:
+            - order
+            - shipping
+          type: string
+        conditionThreshold:
+          format: double
+          description: The total amount needed to receive the discount.
+          example: 100
+          type: number
+        merchandiseTotal:
+          format: double
+          description: The amount the customer basket contributes towards the purchase condition.
+          example: 90
+          type: number
+        discount:
+          description: The applied discount when the order meets the threshold.
+          allOf:
+            - $ref: '#/components/schemas/Discount'
+        promotionLink:
+          description: Document representing a promotion link.
+          allOf:
+            - $ref: '#/components/schemas/PromotionLink'
+        shipmentId:
+          description: The unique id of the shipment the discount relates to. Only applicable when type = shipping.
+          example: me
+          type: string
+          minLength: 1
+          maxLength: 256
+        shippingMethods:
+          description: The shipping methods the promotion relates to. Only applicable when type = shipping.
+          type: array
+          items:
+            $ref: '#/components/schemas/ShippingMethod'
+      required:
+        - type
     Basket:
       description: Document representing a basket.
       additionalProperties:
@@ -2235,6 +2419,11 @@ components:
           description: If the created basket is a temporary basket, this is set to true. Otherwise, it is set to false.
           example: true
           type: boolean
+        approachingDiscounts:
+          description: A list of approaching discount objects for the basket. The list includes both order-level and shipping-level promotions. This field is only included when the expand query parameter contains 'approaching_discounts'.
+          type: array
+          items:
+            $ref: '#/components/schemas/ApproachingDiscount'
       type: object
     OrderNo:
       description: The order number
@@ -2754,6 +2943,15 @@ components:
             - payment_auth_failure
           type: string
           example: payment_confirm_failure
+    OrderAccessCode:
+      description: |-
+        A time-limited access code that serves as an alternative access grant for guest shoppers who have lost their original session.
+        The code is generated by calling the `requestOrderAccessCode` endpoint, which delivers it via email to the address on the order.
+        The shopper provides this code to authorize the request. The code is valid for 15 minutes after generation.
+      type: string
+      pattern: ^\d{6}$
+      maxLength: 6
+      example: '847291'
     OmsCancelOrderRequest:
       description: |-
         Document representing a request to cancel an order that is integrated with Order Management (OMS).
@@ -2768,6 +2966,8 @@ components:
           type: string
           maxLength: 256
           example: Not specified
+        orderAccessCode:
+          $ref: '#/components/schemas/OrderAccessCode'
     InvalidReasonCodeErrorResponse:
       allOf:
         - $ref: '#/components/schemas/ErrorResponse'
@@ -2830,6 +3030,8 @@ components:
           minItems: 1
           items:
             $ref: '#/components/schemas/OmsReturnProductItem'
+        orderAccessCode:
+          $ref: '#/components/schemas/OrderAccessCode'
     UnknownProductItemIdsErrorResponse:
       allOf:
         - $ref: '#/components/schemas/ErrorResponse'
@@ -2889,6 +3091,22 @@ components:
           type: string
           maxLength: 256
           example: '00000335'
+    RequestOrderAccessCodeRequest:
+      description: Represents a request to generate a time-limited access code for a guest order.
+      type: object
+      additionalProperties: false
+      required:
+        - email
+      properties:
+        email:
+          description: The email address of the shopper. Must match the email address associated with the order for a code to be generated and sent.
+          type: string
+          maxLength: 256
+          example: shopper@example.com
+    InvalidAccessCodeRequestErrorResponse:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+      description: Indicates that the request to generate an access code is invalid, for example, because the email field is missing or empty.
     OrderPaymentCardRequest:
       description: Document representing an order payment card request.
       type: object
@@ -3258,6 +3476,21 @@ components:
         type: boolean
         default: false
         example: false
+    expandOms:
+      name: expand
+      in: query
+      required: false
+      style: form
+      explode: false
+      example: oms
+      schema:
+        type: array
+        items:
+          type: string
+          enum:
+            - oms
+          example: oms
+      description: "When you specify `expand=oms`, the integrated Order Management System (OMS) is included during the email validation. \nIf your instance isn't integrated with OMS or the order data isn't available, B2C Commerce ignores the `expand=oms` parameter."
     paymentInstrumentId:
       name: paymentInstrumentId
       in: path
@@ -3380,8 +3613,12 @@ components:
         shipments:
           - adjustedMerchandizeTotalTax: 37
             adjustedShippingTotalTax: 0.5
+            deliveryWindow:
+              startAt: '2026-05-04T14:00:00Z'
+              endAt: '2026-05-07T22:00:00Z'
             gift: false
             merchandizeTotalTax: 30
+            orderCutoffAt: '2026-04-27T14:00:00Z'
             productSubTotal: 599.97
             productTotal: 599.97
             shipmentId: me
@@ -3401,6 +3638,10 @@ components:
               id: '001'
               name: Ground
               price: 15.99
+              deliveryWindow:
+                startAt: '2026-05-04T14:00:00Z'
+                endAt: '2026-05-07T22:00:00Z'
+              orderCutoffAt: '2026-04-27T14:00:00Z'
             shippingStatus: not_shipped
             shippingTotal: 15.99
             shippingTotalTax: 0.8
@@ -3561,8 +3802,12 @@ components:
         shipments:
           - adjustedMerchandizeTotalTax: 37
             adjustedShippingTotalTax: 0.5
+            deliveryWindow:
+              startAt: '2026-05-04T14:00:00Z'
+              endAt: '2026-05-07T22:00:00Z'
             gift: false
             merchandizeTotalTax: 30
+            orderCutoffAt: '2026-04-27T14:00:00Z'
             productSubTotal: 599.97
             productTotal: 599.97
             shipmentId: me
@@ -3582,6 +3827,10 @@ components:
               id: '001'
               name: Ground
               price: 15.99
+              deliveryWindow:
+                startAt: '2026-05-04T14:00:00Z'
+                endAt: '2026-05-07T22:00:00Z'
+              orderCutoffAt: '2026-04-27T14:00:00Z'
             shippingStatus: not_shipped
             shippingTotal: 15.99
             shippingTotalTax: 0.8
@@ -3608,6 +3857,9 @@ components:
       value:
         email: no-reply@salesforce.com
         orderViewCode: YGXrGbZWlr29tIsGnYgR5o_8OxBMXWigevx1WD0X1Hc
+    OrderLookupWithAccessCode:
+      value:
+        orderViewCode: '847291'
     OrderPartialAccess:
       value:
         adjustedMerchandizeTotalTax: 30
@@ -3731,6 +3983,10 @@ components:
     OmsCancelOrder:
       value:
         reason: Wrong item
+    OmsCancelOrderWithAccessCode:
+      value:
+        reason: Wrong item
+        orderAccessCode: '847291'
     OmsReturnOrder:
       value:
         productItems:
@@ -3740,6 +3996,16 @@ components:
           - itemId: 11uVF0000045W0BYAU
             quantity: 1
             reason: Defect
+    OmsReturnOrderWithAccessCode:
+      value:
+        productItems:
+          - itemId: 10uVF0000003W0BYAU
+            quantity: 1
+            reason: Does not fit
+        orderAccessCode: '847291'
+    RequestOrderAccessCode:
+      value:
+        email: shopper@example.com
     PaymentInstrumentPost:
       value:
         amount: 700
@@ -3877,8 +4143,12 @@ components:
         shipments:
           - adjustedMerchandizeTotalTax: 37
             adjustedShippingTotalTax: 0.5
+            deliveryWindow:
+              startAt: '2026-05-04T14:00:00Z'
+              endAt: '2026-05-07T22:00:00Z'
             gift: false
             merchandizeTotalTax: 30
+            orderCutoffAt: '2026-04-27T14:00:00Z'
             productSubTotal: 599.97
             productTotal: 599.97
             shipmentId: me
@@ -3898,6 +4168,10 @@ components:
               id: '001'
               name: Ground
               price: 15.99
+              deliveryWindow:
+                startAt: '2026-05-04T14:00:00Z'
+                endAt: '2026-05-07T22:00:00Z'
+              orderCutoffAt: '2026-04-27T14:00:00Z'
             shippingStatus: not_shipped
             shippingTotal: 15.99
             shippingTotalTax: 0.8
@@ -4062,8 +4336,12 @@ components:
         shipments:
           - adjustedMerchandizeTotalTax: 37
             adjustedShippingTotalTax: 0.5
+            deliveryWindow:
+              startAt: '2026-05-04T14:00:00Z'
+              endAt: '2026-05-07T22:00:00Z'
             gift: false
             merchandizeTotalTax: 30
+            orderCutoffAt: '2026-04-27T14:00:00Z'
             productSubTotal: 599.97
             productTotal: 599.97
             shipmentId: me
@@ -4083,6 +4361,10 @@ components:
               id: '001'
               name: Ground
               price: 15.99
+              deliveryWindow:
+                startAt: '2026-05-04T14:00:00Z'
+                endAt: '2026-05-07T22:00:00Z'
+              orderCutoffAt: '2026-04-27T14:00:00Z'
             shippingStatus: not_shipped
             shippingTotal: 15.99
             shippingTotalTax: 0.8
@@ -4391,6 +4673,11 @@ components:
         type: https://api.commercecloud.salesforce.com/documentation/error/v1/errors/order-return-failed
         detail: Order '00000335' cannot be returned.
         title: Order Return Failed
+    InvalidAccessCodeRequestErrorResponseExample:
+      value:
+        type: https://api.commercecloud.salesforce.com/documentation/error/v1/errors/invalid-access-code-request
+        detail: The access code request is invalid.
+        title: Invalid Access Code Request
   responses:
     409OmsNotActive:
       description: Order Management (OMS) is not active for this site.
@@ -4466,3 +4753,14 @@ components:
               $ref: '#/components/examples/OrderReturnFailedErrorResponseExample'
             OmsNotActiveErrorResponseExample:
               $ref: '#/components/examples/OmsNotActiveErrorResponseExample'
+    400RequestAccessCodeBadRequest:
+      description: |-
+        The access code request is invalid. Possible reasons:
+        - The email field is missing or empty.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/InvalidAccessCodeRequestErrorResponse'
+          examples:
+            InvalidAccessCodeRequestErrorResponseExample:
+              $ref: '#/components/examples/InvalidAccessCodeRequestErrorResponseExample'
