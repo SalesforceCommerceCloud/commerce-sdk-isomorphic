@@ -3,7 +3,7 @@ info:
   x-api-type: Shopper
   x-api-family: Checkout
   title: Shopper Baskets
-  version: 2.9.0
+  version: 2.11.1
   description: |-
     [Download API specification](https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-baskets-v2/shopper-baskets-oas-v2-public.yaml)
 
@@ -585,6 +585,22 @@ paths:
               description: The pre-existing storefront basket (source); null if no pre-existing basket exists.
             - name: dw.order.Basket
               description: The promoted basket (survivor).
+        - phase: before
+          name: sfcc.checkout.shopper-baskets.v2.baskets.basketId.actions.promote.beforePOST
+          description: Called before promoting the temporary basket. The default implementation does nothing.
+          arguments:
+            - $ref: '#/components/parameters/basketId'
+        - phase: after
+          name: sfcc.checkout.shopper-baskets.v2.baskets.basketId.actions.promote.afterPOST
+          description: Called after promoting the temporary basket. The default implementation calls the calculate hook, which recalculates the promoted basket.
+          arguments:
+            - name: dw.order.Basket
+              description: The basket that was promoted.
+        - phase: modifyResponse
+          name: sfcc.checkout.shopper-baskets.v2.baskets.basketId.actions.promote.modifyPOSTResponse
+          description: Called to modify the basket returned in the response after promotion. The default implementation does nothing.
+          arguments:
+            - $ref: '#/components/schemas/Basket'
       parameters:
         - $ref: '#/components/parameters/overrideExisting'
         - $ref: '#/components/parameters/merge'
@@ -3424,6 +3440,20 @@ components:
       description: Document representing a basket product item.
       allOf:
         - $ref: '#/components/schemas/ProductItem'
+    DeliveryWindow:
+      description: The range describing when an item is expected to be delivered. Both bounds are RFC 3339 date-time timestamps. The API preserves sub-day precision end-to-end.
+      type: object
+      properties:
+        startAt:
+          description: The earliest expected delivery time, as an RFC 3339 date-time.
+          example: '2026-04-30T14:00:00Z'
+          type: string
+          format: date-time
+        endAt:
+          description: The latest expected delivery time, as an RFC 3339 date-time.
+          example: '2026-04-30T18:00:00Z'
+          type: string
+          format: date-time
     ShipmentId:
       minLength: 1
       type: string
@@ -3462,6 +3492,10 @@ components:
           The type will reject any property that does not fit this pattern, only allowing additional properties beginning with the known prefix.
         example: c_trackingId
       properties:
+        deliveryWindow:
+          description: The estimated delivery window for this shipping method. The sfcc.app.shipping.quote hook populates this value. The response omits this field if the hook doesn't return a delivery window.
+          allOf:
+            - $ref: '#/components/schemas/DeliveryWindow'
         description:
           description: The localized description of the shipping method.
           example: Order received within 7-10 business days
@@ -3478,6 +3512,11 @@ components:
           description: The localized name of the shipping method.
           example: Ground
           type: string
+        orderCutoffAt:
+          description: The timestamp by which an order must be placed for the deliveryWindow to apply, as an RFC 3339 date-time. The sfcc.app.shipping.quote hook populates this value. The response omits this field if the hook doesn't return a cutoff time.
+          example: '2026-04-27T14:00:00Z'
+          type: string
+          format: date-time
         price:
           format: double
           description: |-
@@ -3518,6 +3557,10 @@ components:
           description: The total tax on shipping charges in the shipment, including shipping price adjustments. It is read only.
           example: 0.3
           type: number
+        deliveryWindow:
+          description: 'The estimated delivery window for the shipment. The sfcc.app.shipping.calculate hook populates this value from the selected shipping method. The response omits this field if the hook doesn''t return a delivery window. This field is reserved for future use and will be supported in an upcoming release. '
+          allOf:
+            - $ref: '#/components/schemas/DeliveryWindow'
         gift:
           description: A flag indicating whether the shipment is a gift. It is read only.
           example: true
@@ -3533,6 +3576,11 @@ components:
             shipping. It is read only.
           example: 4.95
           type: number
+        orderCutoffAt:
+          description: 'The timestamp by which an order must be placed for the deliveryWindow to apply, as an RFC 3339 date-time. The sfcc.app.shipping.calculate hook populates this value from the selected shipping method. The response omits this field if the hook doesn''t return a cutoff time. This field is reserved for future use and will be supported in an upcoming release. '
+          example: '2026-04-27T14:00:00Z'
+          type: string
+          format: date-time
         productSubTotal:
           format: double
           description: |-
@@ -4884,8 +4932,12 @@ components:
         shipments:
           - adjustedMerchandizeTotalTax: 30
             adjustedShippingTotalTax: 0.8
+            deliveryWindow:
+              startAt: '2026-05-04T14:00:00Z'
+              endAt: '2026-05-07T22:00:00Z'
             gift: false
             merchandizeTotalTax: 30
+            orderCutoffAt: '2026-04-27T14:00:00Z'
             productSubTotal: 599.97
             productTotal: 599.97
             shipmentId: me
@@ -4905,6 +4957,10 @@ components:
               id: '001'
               name: Ground
               price: 15.99
+              deliveryWindow:
+                startAt: '2026-05-04T14:00:00Z'
+                endAt: '2026-05-07T22:00:00Z'
+              orderCutoffAt: '2026-04-27T14:00:00Z'
             shippingStatus: not_shipped
             shippingTotal: 15.99
             shippingTotalTax: 0.8
@@ -7211,10 +7267,18 @@ components:
             id: '001'
             name: Ground
             price: 15.99
+            deliveryWindow:
+              startAt: '2026-05-04T14:00:00Z'
+              endAt: '2026-05-07T22:00:00Z'
+            orderCutoffAt: '2026-04-27T14:00:00Z'
           - description: Order received in 2 business days
             id: '002'
             name: 2-Day Express
             price: 20.99
+            deliveryWindow:
+              startAt: '2026-04-29T14:00:00Z'
+              endAt: '2026-04-29T22:00:00Z'
+            orderCutoffAt: '2026-04-27T14:00:00Z'
           - description: Order received the next business day
             id: '003'
             name: Overnight

@@ -3,7 +3,7 @@ info:
   x-api-type: Shopper
   x-api-family: Experience
   title: Shopper Experience
-  version: 1.5.2
+  version: 1.6.0
   description: |-
     [Download API specification](https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-experience/shopper-experience-oas-v1-public.yaml)
 
@@ -123,6 +123,7 @@ paths:
         - $ref: '#/components/parameters/parameters'
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
+        - $ref: '#/components/parameters/personalized'
       responses:
         '200':
           description: Success.
@@ -170,6 +171,7 @@ paths:
         - $ref: '#/components/parameters/parameters'
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
+        - $ref: '#/components/parameters/personalized'
       responses:
         '200':
           description: Success.
@@ -284,6 +286,7 @@ paths:
         - $ref: '#/components/parameters/contentId'
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
+        - $ref: '#/components/parameters/personalized'
       responses:
         '200':
           description: Success.
@@ -317,6 +320,7 @@ paths:
         - $ref: '#/components/parameters/contentIds'
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
+        - $ref: '#/components/parameters/personalized'
       responses:
         '200':
           description: Success.
@@ -352,6 +356,7 @@ paths:
         - $ref: '#/components/parameters/contentSearchSort'
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
+        - $ref: '#/components/parameters/personalized'
         - name: limit
           in: query
           required: false
@@ -405,6 +410,7 @@ paths:
         - $ref: '#/components/parameters/levels'
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
+        - $ref: '#/components/parameters/personalized'
       responses:
         '200':
           description: Success
@@ -451,6 +457,7 @@ paths:
         - $ref: '#/components/parameters/levels'
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
+        - $ref: '#/components/parameters/personalized'
       responses:
         '200':
           description: Success
@@ -1351,6 +1358,18 @@ components:
           value: US
       schema:
         $ref: '#/components/schemas/LocaleCode'
+    personalized:
+      description: |-
+        Controls whether personalization is applied to the response. Set to `none` to opt out of personalized response handling so the response is safe to cache at the CDN layer.
+
+        When set to `none`, the server skips applying personalization to the response.
+      name: personalized
+      in: query
+      schema:
+        type: string
+        enum:
+          - none
+        example: none
     pageId:
       name: pageId
       in: path
@@ -1829,12 +1848,12 @@ components:
       value:
         type: https://api.commercecloud.salesforce.com/documentation/error/v1/errors/unauthorized
         title: Unauthorized
-        detail: Your access token is invalid or expired and can’t be used to identify a user.
+        detail: Unauthorized request
     ForbiddenExample:
       value:
         type: https://api.commercecloud.salesforce.com/documentation/error/v1/errors/forbidden
         title: Forbidden
-        detail: Your access token is valid, but you don’t have the required permissions to access the resource.
+        detail: Access to requested resource forbidden
     ContentFolderNotFound:
       value:
         title: Folder Not Found

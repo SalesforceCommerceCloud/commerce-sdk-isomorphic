@@ -1,5 +1,31 @@
 # CHANGELOG
 
+## v5.5.0
+
+_ECOM v26.8_
+
+### API Versions
+
+| API Name | API Version |
+|----------|-------------|
+| shopper-login | 1.50.0 |
+| shopper-availability | 1.3.0 |
+| shopper-baskets | 1.11.0 |
+| shopper-baskets | 2.11.1 |
+| shopper-configurations | 1.3.0 |
+| shopper-consents | 1.1.4 |
+| shopper-context | 1.1.3 |
+| shopper-customers | 1.8.0 |
+| shopper-experience | 1.6.0 |
+| shopper-gift-certificates | 1.2.0 |
+| shopper-orders | 1.17.1 |
+| shopper-payments | 1.4.0 |
+| shopper-products | 1.11.1 |
+| shopper-promotions | 1.3.0 |
+| shopper-search | 1.10.0 |
+| shopper-seo | 1.2.0 |
+| shopper-stores | 1.3.0 |
+
 ## v5.4.0
 
 _ECOM v26.7_

@@ -3,7 +3,7 @@ info:
   x-api-type: Shopper
   x-api-family: Product
   title: Shopper Products
-  version: 1.10.1
+  version: 1.11.1
   description: |-
     [Download API specification](https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-products/shopper-products-oas-v1-public.yaml)
 
@@ -162,6 +162,7 @@ paths:
         - $ref: '#/components/parameters/select'
         - $ref: '#/components/parameters/locale'
         - $ref: '#/components/parameters/currency'
+        - $ref: '#/components/parameters/personalized'
       responses:
         '200':
           description: Success.
@@ -204,6 +205,7 @@ paths:
         - $ref: '#/components/parameters/currency'
         - $ref: '#/components/parameters/locale'
         - $ref: '#/components/parameters/siteId'
+        - $ref: '#/components/parameters/personalized'
       responses:
         '200':
           description: Success.
@@ -261,6 +263,7 @@ paths:
         - $ref: '#/components/parameters/variationAttribute'
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
+        - $ref: '#/components/parameters/personalized'
       x-extensionPoints:
         - phase: before
           name: sfcc.product.shopper-products.v1.products.productId.images.beforeGET
@@ -334,6 +337,7 @@ paths:
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
         - $ref: '#/components/parameters/currency'
+        - $ref: '#/components/parameters/personalized'
       responses:
         '200':
           description: Success.
@@ -393,6 +397,7 @@ paths:
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
         - $ref: '#/components/parameters/currency'
+        - $ref: '#/components/parameters/personalized'
       responses:
         '200':
           description: Success.
@@ -439,6 +444,7 @@ paths:
         - $ref: '#/components/parameters/levels'
         - $ref: '#/components/parameters/locale'
         - $ref: '#/components/parameters/siteId'
+        - $ref: '#/components/parameters/personalized'
       responses:
         '200':
           description: Success.
@@ -476,6 +482,7 @@ paths:
         - $ref: '#/components/parameters/levels'
         - $ref: '#/components/parameters/locale'
         - $ref: '#/components/parameters/siteId'
+        - $ref: '#/components/parameters/personalized'
       responses:
         '200':
           description: Success.
@@ -1869,6 +1876,18 @@ components:
           value: USD
       schema:
         $ref: '#/components/schemas/CurrencyCode'
+    personalized:
+      description: |-
+        Controls whether personalization is applied to the response. Set to `none` to opt out of personalized response handling so the response is safe to cache at the CDN layer.
+
+        When set to `none`, the server skips applying personalization to the response.
+      name: personalized
+      in: query
+      schema:
+        type: string
+        enum:
+          - none
+        example: none
     id:
       name: id
       description: The ID of the requested product.
@@ -2028,7 +2047,7 @@ components:
       value:
         type: https://api.commercecloud.salesforce.com/documentation/error/v1/errors/unauthorized
         title: Unauthorized
-        detail: Your access token is invalid or expired and can’t be used to identify a user.
+        detail: Unauthorized request
     GetProductResponseExample:
       value:
         brand: Apple

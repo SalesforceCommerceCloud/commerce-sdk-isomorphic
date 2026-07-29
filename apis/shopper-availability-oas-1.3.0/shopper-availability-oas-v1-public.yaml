@@ -3,7 +3,7 @@ info:
   x-api-type: Shopper
   x-api-family: Product
   title: Shopper Availability
-  version: 1.2.0
+  version: 1.3.0
   description: |-
     [Download API specification](https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-availability/shopper-availability-oas-v1-public.yaml)
 
@@ -44,6 +44,7 @@ servers:
   - url: https://{shortCode}.api.commercecloud.salesforce.com/product/shopper-availability/v1
     variables:
       shortCode:
+        description: An eight-character string assigned to a realm for routing purposes. See [Base URL and Request Formation.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/base-url.html)
         default: shortCode
 paths:
   /organizations/{organizationId}/availability:
@@ -62,6 +63,7 @@ paths:
         - $ref: '#/components/parameters/inventoryIds'
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/expand'
+        - $ref: '#/components/parameters/personalized'
       x-extensionPoints:
         - phase: before
           name: sfcc.product.shopper-availability.v1.availability.beforeGET
@@ -108,7 +110,7 @@ components:
       description: |
         ShopperToken authentication follows the authorization code grant flow, as defined by the OAuth 2.1 standard. Depending on the type of OAuth client (public or private), this authorization flow has further requirements.
         For a detailed description of the authorization flow, see the [SLAS overview](https://developer.salesforce.com/docs/commerce/commerce-api/references?meta=shopper-login:Summary).
-        A shopper token allows you to access the Shopper API endpoints of both OCAPI and the B2C Commerce API. These endpoints can be used to build headless storefronts and other applications.
+        A shopper token allows you to access the Shopper API endpoints of both the Open Commerce API (OCAPI) and the B2C Commerce API. These endpoints can be used to build headless storefronts and other applications.
         The `ShopperToken` security scheme is a parent of other security schemes, such as `ShopperTokenTsob`. A Shopper API endpoint can require a specific child scheme (`ShopperTokenTsob`, for example) that cannot be accessed with a regular shopper token.
       flows:
         clientCredentials:
@@ -117,8 +119,8 @@ components:
             sfcc.shopper-availability: scope granting read-access to shopper availability endpoints
             sfcc.shopper-standard: standard aggregated scope granting read-access to a curated set of shopper endpoints
         authorizationCode:
-          authorizationUrl: https://{short-code}.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/{organizationId}/oauth2/authorize
-          tokenUrl: https://{short-code}.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/{organizationId}/oauth2/token
+          authorizationUrl: https://{shortCode}.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/{organizationId}/oauth2/authorize
+          tokenUrl: https://{shortCode}.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/{organizationId}/oauth2/token
           scopes:
             sfcc.shopper-availability: scope granting read-access to shopper availability endpoints
             sfcc.shopper-standard: standard aggregated scope granting read-access to a curated set of shopper endpoints
@@ -338,6 +340,18 @@ components:
         example:
           - variations
           - set_products
+    personalized:
+      description: |-
+        Controls whether personalization is applied to the response. Set to `none` to opt out of personalized response handling so the response is safe to cache at the CDN layer.
+
+        When set to `none`, the server skips applying personalization to the response.
+      name: personalized
+      in: query
+      schema:
+        type: string
+        enum:
+          - none
+        example: none
   examples:
     GetAvailabilityResponseExample:
       value:
@@ -409,7 +423,7 @@ components:
       value:
         type: https://api.commercecloud.salesforce.com/documentation/error/v1/errors/unauthorized
         title: Unauthorized
-        detail: Your access token is invalid or expired and can’t be used to identify a user.
+        detail: Unauthorized request
   responses:
     401unauthorized:
       description: Your access token is invalid or expired and can’t be used to identify a user.
