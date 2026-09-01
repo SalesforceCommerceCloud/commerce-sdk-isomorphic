@@ -54,7 +54,8 @@
     "test:react": "react-scripts test --env=jest-environment-jsdom-sixteen src/environment",
     "test:unit": "jest --coverage --testPathIgnorePatterns node_modules src/environment --silent",
     "test:workflow": "node --test src/test/releaseOnMergeWorkflow.mjs src/test/publishAutoTriggerWorkflow.mjs",
-    "updateApis": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' scripts/updateApis.ts && yarn diffApis"
+    "updateApis": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' scripts/updateApis.ts && yarn diffApis",
+    "updateApisFromEcom": "ts-node --compiler-options '{\"module\": \"commonjs\", \"target\": \"ES6\" }' scripts/updateApisFromEcom.ts && yarn diffApis"
   },
   "husky": {
     "hooks": {
@@ -122,6 +123,7 @@
     "@babel/preset-react": "7.18.6",
     "@babel/preset-typescript": "^7.18.6",
     "@commerce-apps/raml-toolkit": "^0.8.0",
+    "@redocly/cli": "^1.34.5",
     "@rollup/plugin-babel": "5.3.1",
     "@rollup/plugin-commonjs": "13.0.2",
     "@rollup/plugin-node-resolve": "8.4.0",
