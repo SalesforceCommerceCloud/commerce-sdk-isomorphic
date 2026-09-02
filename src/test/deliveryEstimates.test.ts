@@ -11,6 +11,30 @@ describe('ShopperDeliveryEstimates', () => {
   beforeEach(nock.cleanAll);
 
   it('serializes the delivery-estimates request parameters and headers', async () => {
+    const response = {
+      productDeliveryEstimates: [
+        {
+          productId: 'sku-a',
+          destination: {
+            postalCode: '94105',
+            countryCode: 'US',
+          },
+          shippingOptions: [
+            {
+              shippingMethodId: 'GroundShipping',
+              deliveryWindow: {
+                startAt: '2026-04-30T14:00:00Z',
+                endAt: '2026-04-30T18:00:00Z',
+              },
+            },
+            {
+              shippingMethodId: 'OvernightShipping',
+              nonDeliverableReason: 'INSUFFICIENT_INVENTORY',
+            },
+          ],
+        },
+      ],
+    };
     const scope = nock('https://SHORT_CODE.api.commercecloud.salesforce.com', {
       reqheaders: {
         authorization: 'Bearer token',
@@ -30,30 +54,7 @@ describe('ShopperDeliveryEstimates', () => {
         countryCode: 'US',
         personalized: 'none',
       })
-      .reply(200, {
-        productDeliveryEstimates: [
-          {
-            productId: 'sku-a',
-            destination: {
-              postalCode: '94105',
-              countryCode: 'US',
-            },
-            shippingOptions: [
-              {
-                shippingMethodId: 'GroundShipping',
-                deliveryWindow: {
-                  startAt: '2026-04-30T14:00:00Z',
-                  endAt: '2026-04-30T18:00:00Z',
-                },
-              },
-              {
-                shippingMethodId: 'OvernightShipping',
-                nonDeliverableReason: 'INSUFFICIENT_INVENTORY',
-              },
-            ],
-          },
-        ],
-      });
+      .reply(200, response);
 
     const client = new ShopperDeliveryEstimates({
       parameters: {
@@ -68,7 +69,7 @@ describe('ShopperDeliveryEstimates', () => {
       throwOnBadResponse: true,
     });
 
-    await client.getDeliveryEstimates({
+    const result = await client.getDeliveryEstimates({
       parameters: {
         productIds: ['sku-a'],
         postalCode: '94105',
@@ -82,6 +83,7 @@ describe('ShopperDeliveryEstimates', () => {
       },
     });
 
+    expect(result).toEqual(response);
     expect(scope.isDone()).toBe(true);
   });
 });
