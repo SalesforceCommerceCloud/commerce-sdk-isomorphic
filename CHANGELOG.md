@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v5.7.0
+
+_ECOM v26.9_
+
+### API Versions
+
+| API Name | API Version |
+|----------|-------------|
+| shopper-delivery-estimates | 1.2.0 |
+
 ## v5.6.0
 
 _ECOM v26.9_
