@@ -86,4 +86,46 @@ describe('ShopperDeliveryEstimates', () => {
     expect(result).toEqual(response);
     expect(scope.isDone()).toBe(true);
   });
+
+  it('throws on a delivery-estimates error response when configured', async () => {
+    const scope = nock('https://SHORT_CODE.api.commercecloud.salesforce.com')
+      .get(
+        '/product/shopper-delivery-estimates/v1/organizations/ORGANIZATION_ID/delivery-estimates'
+      )
+      .query({
+        siteId: 'SITE_ID',
+        productIds: 'sku-a',
+        postalCode: '94105',
+        countryCode: 'US',
+      })
+      .reply(
+        400,
+        {
+          title: 'Bad Request',
+          type: 'https://api.commercecloud.salesforce.com/documentation/error/v1/errors/validation',
+          detail: "The 'postalCode' parameter is required.",
+        },
+        {'content-type': 'application/problem+json'}
+      );
+
+    const client = new ShopperDeliveryEstimates({
+      parameters: {
+        shortCode: 'SHORT_CODE',
+        organizationId: 'ORGANIZATION_ID',
+        siteId: 'SITE_ID',
+      },
+      throwOnBadResponse: true,
+    });
+
+    const result = client.getDeliveryEstimates({
+      parameters: {
+        productIds: ['sku-a'],
+        postalCode: '94105',
+        countryCode: 'US',
+      },
+    });
+
+    await expect(result).rejects.toEqual(new Error('400 Bad Request'));
+    expect(scope.isDone()).toBe(true);
+  });
 });
