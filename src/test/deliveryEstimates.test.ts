@@ -30,7 +30,30 @@ describe('ShopperDeliveryEstimates', () => {
         countryCode: 'US',
         personalized: 'none',
       })
-      .reply(200, {productDeliveryEstimates: []});
+      .reply(200, {
+        productDeliveryEstimates: [
+          {
+            productId: 'sku-a',
+            destination: {
+              postalCode: '94105',
+              countryCode: 'US',
+            },
+            shippingOptions: [
+              {
+                shippingMethodId: 'GroundShipping',
+                deliveryWindow: {
+                  startAt: '2026-04-30T14:00:00Z',
+                  endAt: '2026-04-30T18:00:00Z',
+                },
+              },
+              {
+                shippingMethodId: 'OvernightShipping',
+                nonDeliverableReason: 'INSUFFICIENT_INVENTORY',
+              },
+            ],
+          },
+        ],
+      });
 
     const client = new ShopperDeliveryEstimates({
       parameters: {
