@@ -1,5 +1,41 @@
 # CHANGELOG
 
+## v5.7.0
+
+_ECOM v26.10_
+
+### API Versions
+
+| API Name | API Version |
+|----------|-------------|
+| shopper-login | 1.50.0 |
+| shopper-availability | 1.4.2 |
+| shopper-baskets | 1.12.2 |
+| shopper-baskets | 2.13.4 |
+| shopper-configurations | 1.4.2 |
+| shopper-consents | 1.2.2 |
+| shopper-context | 1.1.4 |
+| shopper-customers | 1.10.1 |
+| shopper-delivery-estimates | 1.2.2 |
+| shopper-experience | 1.7.2 |
+| shopper-gift-certificates | 1.3.2 |
+| shopper-orders | 1.22.4 |
+| shopper-payments | 1.7.2 |
+| shopper-products | 1.13.0 |
+| shopper-promotions | 1.4.2 |
+| shopper-search | 1.15.2 |
+| shopper-seo | 1.3.1 |
+| shopper-stores | 1.4.2 |
+
+### Enhancements
+
+- Add Shopper Delivery Estimates API (`shopperDeliveryEstimates`).
+
+### Breaking Changes
+
+- The Shopper Payments `POST /organizations/{organizationId}/payment-instruments/balance` request now requires `provider` and `providerProperties`.
+- The Shopper Payments `POST /organizations/{organizationId}/payment-instruments/balance` request now requires a non-empty `paymentMethodId` and no longer accepts `giftCard`.
+
 ## v5.6.0
 
 _ECOM v26.9_
