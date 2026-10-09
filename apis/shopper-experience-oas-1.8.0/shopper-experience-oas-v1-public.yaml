@@ -3,7 +3,7 @@ info:
   x-api-type: Shopper
   x-api-family: Experience
   title: Shopper Experience
-  version: 1.7.2
+  version: 1.8.0
   description: |-
     [Download API specification](https://developer.salesforce.com/static/commercecloud/commerce-api/shopper-experience/shopper-experience-oas-v1-public.yaml)
 
@@ -124,6 +124,7 @@ paths:
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
         - $ref: '#/components/parameters/sfdcUsid'
+        - $ref: '#/components/parameters/sfdcDwDnt'
         - $ref: '#/components/parameters/personalized'
         - $ref: '#/components/parameters/sfdcShopperContext'
       responses:
@@ -178,6 +179,7 @@ paths:
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
         - $ref: '#/components/parameters/sfdcUsid'
+        - $ref: '#/components/parameters/sfdcDwDnt'
         - $ref: '#/components/parameters/personalized'
         - $ref: '#/components/parameters/sfdcShopperContext'
       responses:
@@ -238,6 +240,7 @@ paths:
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
         - $ref: '#/components/parameters/sfdcUsid'
+        - $ref: '#/components/parameters/sfdcDwDnt'
         - $ref: '#/components/parameters/personalized'
         - $ref: '#/components/parameters/sfdcShopperContext'
       responses:
@@ -305,6 +308,7 @@ paths:
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
         - $ref: '#/components/parameters/sfdcUsid'
+        - $ref: '#/components/parameters/sfdcDwDnt'
         - $ref: '#/components/parameters/personalized'
         - $ref: '#/components/parameters/sfdcShopperContext'
       responses:
@@ -343,6 +347,7 @@ paths:
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
         - $ref: '#/components/parameters/sfdcUsid'
+        - $ref: '#/components/parameters/sfdcDwDnt'
         - $ref: '#/components/parameters/personalized'
         - $ref: '#/components/parameters/sfdcShopperContext'
       responses:
@@ -402,6 +407,7 @@ paths:
             minimum: 0
           description: Used to retrieve the results based on a particular resource offset.
         - $ref: '#/components/parameters/sfdcUsid'
+        - $ref: '#/components/parameters/sfdcDwDnt'
         - $ref: '#/components/parameters/personalized'
         - $ref: '#/components/parameters/sfdcShopperContext'
       responses:
@@ -441,6 +447,7 @@ paths:
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
         - $ref: '#/components/parameters/sfdcUsid'
+        - $ref: '#/components/parameters/sfdcDwDnt'
         - $ref: '#/components/parameters/personalized'
         - $ref: '#/components/parameters/sfdcShopperContext'
       responses:
@@ -492,6 +499,7 @@ paths:
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
         - $ref: '#/components/parameters/sfdcUsid'
+        - $ref: '#/components/parameters/sfdcDwDnt'
         - $ref: '#/components/parameters/personalized'
         - $ref: '#/components/parameters/sfdcShopperContext'
       responses:
@@ -522,6 +530,52 @@ paths:
             - sfcc.shopper-experience.folders
         - ShopperClientContextToken:
             - sfcc.shopper-experience.folders
+  /organizations/{organizationId}/preview-context/apply:
+    post:
+      summary: Apply a shareable storefront preview context to the caller's shopper session.
+      description: |
+        Applies a shareable storefront preview context to the shopper session resolved from the caller's `ShopperToken`. The server verifies the signed `token`, decodes the enclosed shopper context claims (customer group, effective date, source code, custom qualifiers), and writes them to the shopper session so that subsequent storefront requests reflect the preview facets.
+
+        **Important**:
+        - The `token` is expected to be minted by the Business Manager share endpoint. Signature and expiry are enforced server-side.
+        - The target shopper session is identified by the caller's `ShopperToken`; callers cannot apply to another shopper's session.
+      operationId: applyPreviewContext
+      parameters:
+        - $ref: '#/components/parameters/organizationId'
+        - $ref: '#/components/parameters/siteId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreviewContextApplyRequest'
+            examples:
+              PreviewContextApplyRequest:
+                $ref: '#/components/examples/PreviewContextApplyRequest'
+      responses:
+        '204':
+          description: No Content. The preview context was successfully applied to the shopper session.
+        '400':
+          description: |
+            Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                PreviewContextBadRequest:
+                  $ref: '#/components/examples/PreviewContextBadRequest'
+                PreviewContextInvalid:
+                  $ref: '#/components/examples/PreviewContextInvalid'
+        '401':
+          $ref: '#/components/responses/401unauthorized'
+        '403':
+          $ref: '#/components/responses/403forbidden'
+      security:
+        - ShopperToken:
+            - sfcc.shopper-experience
+        - ShopperClientContextToken:
+            - sfcc.shopper-experience
   /organizations/{organizationId}/qualifiers/resolve:
     post:
       summary: Resolve qualifiers for customer groups, campaign promotions, and data binding contexts.
@@ -540,6 +594,7 @@ paths:
         - $ref: '#/components/parameters/siteId'
         - $ref: '#/components/parameters/locale'
         - $ref: '#/components/parameters/sfdcUsid'
+        - $ref: '#/components/parameters/sfdcDwDnt'
         - $ref: '#/components/parameters/sfdcShopperContext'
       requestBody:
         required: true
@@ -1257,6 +1312,18 @@ components:
         - type
         - id
       type: object
+    PreviewContextApplyRequest:
+      additionalProperties: false
+      properties:
+        token:
+          title: Preview Context Token
+          description: The signed preview context token minted by the Business Manager share endpoint.
+          type: string
+          maxLength: 8192
+          example: eyJhbGciOiJIUzI1NiIsImtpZCI6IkNVUiJ9.MOCK.SIG
+      required:
+        - token
+      type: object
     QualifierResolveRequest:
       description: Request body for resolving customer group qualifications, campaign promotion eligibility, and data bindings. All fields are optional. An empty body is valid and returns an empty response.
       properties:
@@ -1543,8 +1610,27 @@ components:
         type: string
         format: uuid
         example: 550e8400-e29b-41d4-a716-446655440000
+    sfdcDwDnt:
+      description: |-
+        Do Not Track header for privacy preferences.
+        Used with endpoints secured with ShopperClientContextToken.
+        If this header is not passed with endpoints secured with ShopperClientContextToken default value of 0 will be used.
+      name: sfdc_dw_dnt
+      in: header
+      required: false
+      schema:
+        type: string
+        enum:
+          - '0'
+          - '1'
+        example: '1'
     personalized:
-      description: Controls whether personalization is applied to the response. When set to `none`, the server skips applying personalization to the response.
+      description: |-
+        Controls whether personalization is applied to the response. Set to `none` to opt out of personalized response handling so the response is safe to cache at the CDN layer.
+
+        When set to `none`, the server skips applying personalization to the response.
+
+        Setting `personalized=none` is necessary but not sufficient for CDN caching: a response is only cached when the endpoint is also cacheable in the [server-side web-tier cache](https://developer.salesforce.com/docs/commerce/commerce-api/guide/server-side-web-tier-caching.html), subject to its TTLs and invalidation. A call that is uncacheable in the web tier is not cached at the CDN either. See [CDN caching](https://developer.salesforce.com/docs/commerce/commerce-api/guide/cdn-caching.html).
       name: personalized
       in: query
       schema:
@@ -1967,6 +2053,21 @@ components:
             pageDescription: SEO description for category folder
             pageKeywords: category, products, listing
             folders: []
+    PreviewContextApplyRequest:
+      value:
+        token: eyJhbGciOiJIUzI1NiIsImtpZCI6IkNVUiJ9.MOCK.SIG
+    PreviewContextBadRequest:
+      value:
+        title: Bad Request
+        type: https://api.commercecloud.salesforce.com/documentation/error/v1/errors/bad-request
+        detail: The 'token' field is required.
+        parameter: token
+    PreviewContextInvalid:
+      value:
+        title: Bad Request
+        type: https://api.commercecloud.salesforce.com/documentation/error/v1/errors/bad-request
+        detail: The provided preview context token is invalid or cannot be applied.
+        parameter: token
     QualifierResolveRequest:
       value:
         customerGroups:
