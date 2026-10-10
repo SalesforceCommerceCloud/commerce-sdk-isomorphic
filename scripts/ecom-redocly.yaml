@@ -1,0 +1,6 @@
+# Stock Redocly config used only to bundle ECOM specs for SDK generation.
+# The in-repo ECOM `.redocly.yaml` extends a ruleset vendored under ECOM's
+# buildSrc that is not part of the OAS source subtree we check out. A spec
+# consumer only needs `$ref` resolution, so we bundle with lint disabled.
+rules:
+  no-unresolved-refs: error
