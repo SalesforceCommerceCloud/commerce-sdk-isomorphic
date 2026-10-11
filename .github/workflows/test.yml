@@ -30,4 +30,19 @@ jobs:
         if: ${{ steps.cache-nodemodules.outputs.cache-hit != 'true' }}
       - run: yarn run renderTemplates
       - run: yarn build:lib
+      - name: Log bundle sizes
+        run: |
+          echo "::group::Bundle sizes for lib/ directory"
+          echo "Individual file sizes:"
+          ls -lh lib/*.js | awk '{printf "  %-50s %10s\n", $9, $5}'
+          echo ""
+          echo "Summary by file type:"
+          echo "  ESM files:"
+          du -ch lib/*.js | grep -v '\.cjs\.js' | tail -1 | awk '{printf "    Total: %s\n", $1}'
+          echo "  CJS files:"
+          du -ch lib/*.cjs.js 2>/dev/null | tail -1 | awk '{printf "    Total: %s\n", $1}' || echo "    Total: 0"
+          echo ""
+          echo "Total lib/ directory size:"
+          du -sh lib | awk '{printf "  %s\n", $1}'
+          echo "::endgroup::"
       - run: yarn test
