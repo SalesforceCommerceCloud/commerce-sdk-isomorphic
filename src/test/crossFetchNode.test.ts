@@ -7,7 +7,12 @@
 
 import nock from 'nock';
 import {FetchOptions} from '../lib/clientConfig';
-import {ClientConfigInit, ShopperCustomers, ShopperSearch} from '../lib';
+import {
+  ClientConfigInit,
+  ShopperCustomers,
+  ShopperLogin,
+  ShopperSearch,
+} from '../lib';
 import config from '../environment/config';
 
 type TestConfigParameters = typeof config.parameters;
@@ -322,6 +327,31 @@ test('handle void methods', async () => {
       resetToken: 'R1e2s3e4t5T6o7k8e9n0',
       login: 'janedoe@test.com',
       newPassword: 'p@assword2',
+    },
+  });
+  expect(response).toBeUndefined();
+});
+
+test('resetPassword (SLAS) sends user_id and channel_id without ts-ignore', async () => {
+  nock('https://localhost:3000')
+    .post(
+      `/shopper/auth/v1/organizations/${config.parameters.organizationId}/oauth2/password/action`
+    )
+    .reply(200);
+
+  const clientConfig: ClientConfigInit<TestConfigParameters> = {
+    ...config,
+    throwOnBadResponse: true,
+  };
+  const client = new ShopperLogin(clientConfig);
+  const response = await client.resetPassword({
+    body: {
+      client_id: config.parameters.clientId,
+      pwd_action_token: 'R1e2s3e4t5T6o7k8e9n0',
+      new_password: 'p@assword2',
+      channel_id: config.parameters.siteId,
+      hint: 'cross_device',
+      user_id: 'janedoe@test.com',
     },
   });
   expect(response).toBeUndefined();

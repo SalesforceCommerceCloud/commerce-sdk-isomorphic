@@ -4456,6 +4456,11 @@ components:
             The ID used by the shopper for password token request. When provided, login_id must exactly match the ID used during passwordless login.
             ex. If passwordless login used `samantha.sampleson@example.com`, but the passwordless login token request provides `sam.sampleson@example.com`, the request fails due to mismatch.
           example: samantha.sampleson@example.com
+        channel_id:
+          maxLength: 100
+          type: string
+          description: The channel that the request is for. For a B2C Commerce request, this is analogous to the site ID.
+          example: RefArch
       description: A request for an access token using a passwordless token.
     TokenActionRequest:
       required:

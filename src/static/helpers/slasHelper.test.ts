@@ -1028,6 +1028,43 @@ describe('getPasswordLessAccessToken is working', () => {
     };
     expect(getPasswordLessAccessTokenMock).toBeCalledWith(expectedReqOptions);
   });
+  test('Sends login_id and channel_id when provided', async () => {
+    const mockSlasClient = createMockSlasClient();
+    const {clientId, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    const parametersPasswordlessToken = {
+      pwdlessLoginToken: '123456',
+      dnt: '1',
+      loginId: 'samantha.sampleson@example.com',
+      channelId: 'RefArch',
+    };
+    const authHeaderExpected = `Basic ${slasHelper.stringToBase64(
+      `${clientId}:${credentialsPrivate.clientSecret}`
+    )}`;
+    await slasHelper.getPasswordLessAccessToken({
+      slasClient: mockSlasClient,
+      credentials: credentialsPrivate,
+      parameters: parametersPasswordlessToken,
+    });
+    const expectedReqOptions = {
+      headers: {
+        Authorization: authHeaderExpected,
+      },
+      parameters: {
+        organizationId,
+      },
+      body: {
+        dnt: parametersPasswordlessToken.dnt,
+        code_verifier: expect.stringMatching(/./) as string,
+        grant_type: 'client_credentials',
+        hint: 'pwdless_login',
+        pwdless_login_token: parametersPasswordlessToken.pwdlessLoginToken,
+        login_id: parametersPasswordlessToken.loginId,
+        channel_id: parametersPasswordlessToken.channelId,
+      },
+    };
+    expect(getPasswordLessAccessTokenMock).toBeCalledWith(expectedReqOptions);
+  });
   test('Throw when required parameters missing', async () => {
     const mockSlasClient = {
       clientConfig: {
