@@ -832,7 +832,7 @@ export async function getPasswordLessAccessToken(options: {
     code_verifier: codeVerifier,
     ...(parameters.dnt && {dnt: parameters.dnt}),
     ...(parameters.loginId && {login_id: parameters.loginId}),
-    ...(parameters.channelId && {channel_id: parameters.channelId}),
+    channel_id: parameters.channelId ?? slasClient.clientConfig.parameters.siteId,
   };
   const requestOptions = {
     headers: {

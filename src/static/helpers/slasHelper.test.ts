@@ -997,7 +997,8 @@ describe('authorizePasswordless is working', () => {
 describe('getPasswordLessAccessToken is working', () => {
   test('Correct parameters are used to call SLAS Client helper', async () => {
     const mockSlasClient = createMockSlasClient();
-    const {clientId, organizationId} = mockSlasClient.clientConfig.parameters;
+    const {clientId, organizationId, siteId} =
+      mockSlasClient.clientConfig.parameters;
 
     const parametersPasswordlessToken = {
       pwdlessLoginToken: '123456',
@@ -1024,6 +1025,7 @@ describe('getPasswordLessAccessToken is working', () => {
         grant_type: 'client_credentials',
         hint: 'pwdless_login',
         pwdless_login_token: parametersPasswordlessToken.pwdlessLoginToken,
+        channel_id: siteId,
       },
     };
     expect(getPasswordLessAccessTokenMock).toBeCalledWith(expectedReqOptions);
