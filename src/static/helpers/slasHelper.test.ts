@@ -1003,6 +1003,8 @@ describe('getPasswordLessAccessToken is working', () => {
     const parametersPasswordlessToken = {
       pwdlessLoginToken: '123456',
       dnt: '1',
+      loginId: 'samantha.sampleson@example.com',
+      channelId: siteId,
     };
     const authHeaderExpected = `Basic ${slasHelper.stringToBase64(
       `${clientId}:${credentialsPrivate.clientSecret}`
@@ -1025,7 +1027,8 @@ describe('getPasswordLessAccessToken is working', () => {
         grant_type: 'client_credentials',
         hint: 'pwdless_login',
         pwdless_login_token: parametersPasswordlessToken.pwdlessLoginToken,
-        channel_id: siteId,
+        login_id: parametersPasswordlessToken.loginId,
+        channel_id: parametersPasswordlessToken.channelId,
       },
     };
     expect(getPasswordLessAccessTokenMock).toBeCalledWith(expectedReqOptions);
@@ -1086,6 +1089,8 @@ describe('getPasswordLessAccessToken is working', () => {
     const parametersPasswordlessToken = {
       pwdlessLoginToken: '123456',
       dnt: '1',
+      loginId: 'samantha.sampleson@example.com',
+      channelId: 'RefArch',
     };
     await expect(
       slasHelper.getPasswordLessAccessToken({
@@ -1106,7 +1111,11 @@ describe('getPasswordLessAccessToken is working', () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore intentionally missing clientSecret
         credentials: {},
-        parameters: {pwdlessLoginToken: '123456'},
+        parameters: {
+          pwdlessLoginToken: '123456',
+          loginId: 'samantha.sampleson@example.com',
+          channelId: 'RefArch',
+        },
       })
     ).rejects.toThrow('Required argument client secret is not provided');
   });
@@ -1368,6 +1377,8 @@ describe('httpOnly session cookies', () => {
       credentials: {clientSecret: 'slas_private_secret'},
       parameters: {
         pwdlessLoginToken: 'pwdless_token',
+        loginId: 'samantha.sampleson@example.com',
+        channelId: 'site_id',
       },
       enableHttpOnlySessionCookies: true,
     });
