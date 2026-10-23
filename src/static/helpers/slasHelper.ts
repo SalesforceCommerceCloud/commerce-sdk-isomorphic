@@ -796,8 +796,8 @@ export async function getPasswordLessAccessToken(options: {
   parameters: {
     pwdlessLoginToken: string;
     dnt?: string;
-    loginId?: string;
-    channelId?: string;
+    loginId: string;
+    channelId: string;
   };
   enableHttpOnlySessionCookies?: boolean;
 }): Promise<TokenResponse> {

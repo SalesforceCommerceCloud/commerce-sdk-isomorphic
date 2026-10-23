@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v5.8.0
+## v6.0.0
 
 _ECOM v26.11_
 
@@ -27,9 +27,12 @@ _ECOM v26.11_
 | shopper-seo | 1.3.1 |
 | shopper-stores | 1.4.2 |
 
+### Breaking Changes
+
+- `helpers.getPasswordLessAccessToken` now requires `loginId` and `channelId`. They are sent as `login_id` and `channel_id` on the passwordless `/oauth2/token` request. `channel_id` is always included: the provided `channelId`, or `clientConfig.parameters.siteId` when `channelId` is absent.
+
 ### Enhancements
 
-- `helpers.getPasswordLessAccessToken` accepts optional `loginId` and `channelId` parameters, sent as `login_id` and `channel_id` on the passwordless `/oauth2/token` request when provided. Omitting them keeps prior behavior unchanged.
 - The passwordless `/oauth2/token` request body type now also exposes `channel_id`, matching the existing `user_id`/`channel_id` fields already supported on the `resetPassword` `/oauth2/password/action` request body, so callers can set these fields without a `@ts-ignore`.
 
 ## v5.7.0
