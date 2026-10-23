@@ -997,11 +997,14 @@ describe('authorizePasswordless is working', () => {
 describe('getPasswordLessAccessToken is working', () => {
   test('Correct parameters are used to call SLAS Client helper', async () => {
     const mockSlasClient = createMockSlasClient();
-    const {clientId, organizationId} = mockSlasClient.clientConfig.parameters;
+    const {clientId, organizationId, siteId} =
+      mockSlasClient.clientConfig.parameters;
 
     const parametersPasswordlessToken = {
       pwdlessLoginToken: '123456',
       dnt: '1',
+      loginId: 'samantha.sampleson@example.com',
+      channelId: siteId,
     };
     const authHeaderExpected = `Basic ${slasHelper.stringToBase64(
       `${clientId}:${credentialsPrivate.clientSecret}`
@@ -1024,6 +1027,45 @@ describe('getPasswordLessAccessToken is working', () => {
         grant_type: 'client_credentials',
         hint: 'pwdless_login',
         pwdless_login_token: parametersPasswordlessToken.pwdlessLoginToken,
+        login_id: parametersPasswordlessToken.loginId,
+        channel_id: parametersPasswordlessToken.channelId,
+      },
+    };
+    expect(getPasswordLessAccessTokenMock).toBeCalledWith(expectedReqOptions);
+  });
+  test('Sends login_id and channel_id when provided', async () => {
+    const mockSlasClient = createMockSlasClient();
+    const {clientId, organizationId} = mockSlasClient.clientConfig.parameters;
+
+    const parametersPasswordlessToken = {
+      pwdlessLoginToken: '123456',
+      dnt: '1',
+      loginId: 'samantha.sampleson@example.com',
+      channelId: 'RefArch',
+    };
+    const authHeaderExpected = `Basic ${slasHelper.stringToBase64(
+      `${clientId}:${credentialsPrivate.clientSecret}`
+    )}`;
+    await slasHelper.getPasswordLessAccessToken({
+      slasClient: mockSlasClient,
+      credentials: credentialsPrivate,
+      parameters: parametersPasswordlessToken,
+    });
+    const expectedReqOptions = {
+      headers: {
+        Authorization: authHeaderExpected,
+      },
+      parameters: {
+        organizationId,
+      },
+      body: {
+        dnt: parametersPasswordlessToken.dnt,
+        code_verifier: expect.stringMatching(/./) as string,
+        grant_type: 'client_credentials',
+        hint: 'pwdless_login',
+        pwdless_login_token: parametersPasswordlessToken.pwdlessLoginToken,
+        login_id: parametersPasswordlessToken.loginId,
+        channel_id: parametersPasswordlessToken.channelId,
       },
     };
     expect(getPasswordLessAccessTokenMock).toBeCalledWith(expectedReqOptions);
@@ -1047,6 +1089,8 @@ describe('getPasswordLessAccessToken is working', () => {
     const parametersPasswordlessToken = {
       pwdlessLoginToken: '123456',
       dnt: '1',
+      loginId: 'samantha.sampleson@example.com',
+      channelId: 'RefArch',
     };
     await expect(
       slasHelper.getPasswordLessAccessToken({
@@ -1067,7 +1111,11 @@ describe('getPasswordLessAccessToken is working', () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore intentionally missing clientSecret
         credentials: {},
-        parameters: {pwdlessLoginToken: '123456'},
+        parameters: {
+          pwdlessLoginToken: '123456',
+          loginId: 'samantha.sampleson@example.com',
+          channelId: 'RefArch',
+        },
       })
     ).rejects.toThrow('Required argument client secret is not provided');
   });
@@ -1329,6 +1377,8 @@ describe('httpOnly session cookies', () => {
       credentials: {clientSecret: 'slas_private_secret'},
       parameters: {
         pwdlessLoginToken: 'pwdless_token',
+        loginId: 'samantha.sampleson@example.com',
+        channelId: 'site_id',
       },
       enableHttpOnlySessionCookies: true,
     });

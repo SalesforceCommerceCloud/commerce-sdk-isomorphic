@@ -1,5 +1,40 @@
 # CHANGELOG
 
+## v6.0.0
+
+_ECOM v26.11_
+
+### API Versions
+
+| API Name | API Version |
+|----------|-------------|
+| shopper-login | 1.50.0 |
+| shopper-availability | 1.4.2 |
+| shopper-baskets | 1.12.2 |
+| shopper-baskets | 2.13.4 |
+| shopper-configurations | 1.4.2 |
+| shopper-consents | 1.2.2 |
+| shopper-context | 1.1.4 |
+| shopper-customers | 1.10.1 |
+| shopper-delivery-estimates | 1.2.2 |
+| shopper-experience | 1.8.0 |
+| shopper-gift-certificates | 1.3.2 |
+| shopper-orders | 1.22.4 |
+| shopper-payments | 1.7.2 |
+| shopper-products | 1.13.0 |
+| shopper-promotions | 1.4.2 |
+| shopper-search | 1.15.2 |
+| shopper-seo | 1.3.1 |
+| shopper-stores | 1.4.2 |
+
+### Breaking Changes
+
+- `helpers.getPasswordLessAccessToken` now requires `loginId` and `channelId`. They are sent as `login_id` and `channel_id` on the passwordless `/oauth2/token` request. `channel_id` is always included: the provided `channelId`, or `clientConfig.parameters.siteId` when `channelId` is absent.
+
+### Enhancements
+
+- The passwordless `/oauth2/token` request body type now also exposes `channel_id`, matching the existing `user_id`/`channel_id` fields already supported on the `resetPassword` `/oauth2/password/action` request body, so callers can set these fields without a `@ts-ignore`.
+
 ## v5.7.0
 
 _ECOM v26.10_
