@@ -38,6 +38,12 @@ export const fetch: FetchFunction = (() => {
     throw new Error(
       'Bad environment: it is not a node environment but fetch is not defined'
     );
-
-  return globalObject.fetch;
+  let lazyFetch: FetchFunction;
+  const browserFetch: FetchFunction = (...args) => {
+    if (!lazyFetch) {
+      lazyFetch = globalObject.fetch;
+    }
+    return lazyFetch.apply(globalObject, args);
+  };
+  return browserFetch;
 })();
