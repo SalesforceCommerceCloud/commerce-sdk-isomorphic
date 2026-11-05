@@ -1,14 +1,12 @@
 # CHANGELOG
 
-## v6.0.0
-
-_ECOM v26.11_
+## v5.8.0
 
 ### API Versions
 
 | API Name | API Version |
 |----------|-------------|
-| shopper-login | 1.50.0 |
+| shopper-login | 1.51.0 |
 | shopper-availability | 1.4.2 |
 | shopper-baskets | 1.12.2 |
 | shopper-baskets | 2.13.4 |
@@ -29,11 +27,9 @@ _ECOM v26.11_
 
 ### Breaking Changes
 
-- `helpers.getPasswordLessAccessToken` now requires `loginId` and `channelId`. They are sent as `login_id` and `channel_id` on the passwordless `/oauth2/token` request. `channel_id` is always included: the provided `channelId`, or `clientConfig.parameters.siteId` when `channelId` is absent.
-
-### Enhancements
-
-- The passwordless `/oauth2/token` request body type now also exposes `channel_id`, matching the existing `user_id`/`channel_id` fields already supported on the `resetPassword` `/oauth2/password/action` request body, so callers can set these fields without a `@ts-ignore`.
+- `helpers.getPasswordLessAccessToken` now requires `loginId` and `channelId`. They are sent as `login_id` and `channel_id` on the Shopper Login `POST /organizations/{organizationId}/oauth2/passwordless/token` request. `channelId` is no longer defaulted from `clientConfig.parameters.siteId`; pass it explicitly.
+- The Shopper Login `POST /organizations/{organizationId}/oauth2/passwordless/token` request body type now requires `login_id` and `channel_id`.
+- The Shopper Login `POST /organizations/{organizationId}/oauth2/password/action` request body type (`resetPassword`) now requires `user_id`.
 
 ## v5.7.0
 

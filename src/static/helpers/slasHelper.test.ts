@@ -1033,6 +1033,26 @@ describe('getPasswordLessAccessToken is working', () => {
     };
     expect(getPasswordLessAccessTokenMock).toBeCalledWith(expectedReqOptions);
   });
+  test('Sends login_id as provided even when it is an empty string', async () => {
+    const mockSlasClient = createMockSlasClient();
+    await slasHelper.getPasswordLessAccessToken({
+      slasClient: mockSlasClient,
+      credentials: credentialsPrivate,
+      parameters: {
+        pwdlessLoginToken: '123456',
+        loginId: '',
+        channelId: 'RefArch',
+      },
+    });
+    expect(getPasswordLessAccessTokenMock).toBeCalledWith(
+      expect.objectContaining({
+        body: expect.objectContaining({
+          login_id: '',
+          channel_id: 'RefArch',
+        }) as unknown,
+      })
+    );
+  });
   test('Sends login_id and channel_id when provided', async () => {
     const mockSlasClient = createMockSlasClient();
     const {clientId, organizationId} = mockSlasClient.clientConfig.parameters;
