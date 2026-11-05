@@ -29,6 +29,12 @@
 
 **This release contains breaking changes to TypeScript signatures and to the SLAS request bodies, but it is published as a minor version (5.8.0), not a major.** Shopper Login (SLAS) now requires `login_id` and `channel_id` on the passwordless token request and `user_id` on the password reset request. Applications that call the affected helper or methods without these values will fail to type-check, and at runtime SLAS will reject the request. If you depend on this package with a caret range (`^5.x`), a routine install will pick up this release. **Pin to an exact version and follow the migration steps below before upgrading.**
 
+**Why this is a minor release (5.8.0) and not a major**
+
+These changes follow a required change in the Shopper Login (SLAS) service. They are not a redesign of the SDK. The SDK's public API is otherwise unchanged. We version the SDK to track the Commerce APIs it wraps, and API-driven breaking changes have shipped in minor releases before (for example, the Shopper Payments balance request changes in v5.7.0). We reserve major versions for changes to how the SDK itself is structured or used.
+
+We recognize that a breaking change in a minor release is unexpected under strict semver. Because of that, we recommend pinning `commerce-sdk-isomorphic` to an exact version rather than a `^` range, and upgrading deliberately using the migration steps below.
+
 - `helpers.getPasswordLessAccessToken` now requires `loginId` and `channelId`. They are sent as `login_id` and `channel_id` on the Shopper Login `POST /organizations/{organizationId}/oauth2/passwordless/token` request. `channelId` is no longer defaulted from `clientConfig.parameters.siteId`; pass it explicitly. An empty-string `loginId` is now sent as-is instead of being omitted.
 - The Shopper Login `POST /organizations/{organizationId}/oauth2/passwordless/token` request body type now requires `login_id` and `channel_id`.
 - The Shopper Login `POST /organizations/{organizationId}/oauth2/password/action` request body type (`resetPassword`) now requires `user_id`.
