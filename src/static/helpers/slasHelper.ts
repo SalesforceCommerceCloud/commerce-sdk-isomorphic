@@ -820,6 +820,16 @@ export async function getPasswordLessAccessToken(options: {
       'Required argument pwdlessLoginToken is not provided through parameters'
     );
   }
+  if (!parameters.loginId) {
+    throw new Error(
+      'Required argument loginId is not provided through parameters'
+    );
+  }
+  if (!parameters.channelId) {
+    throw new Error(
+      'Required argument channelId is not provided through parameters'
+    );
+  }
   const codeVerifier = createCodeVerifier();
   const authHeaderIdSecret = `Basic ${stringToBase64(
     `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`

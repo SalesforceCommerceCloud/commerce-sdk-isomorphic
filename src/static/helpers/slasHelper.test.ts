@@ -1033,25 +1033,21 @@ describe('getPasswordLessAccessToken is working', () => {
     };
     expect(getPasswordLessAccessTokenMock).toBeCalledWith(expectedReqOptions);
   });
-  test('Sends login_id as provided even when it is an empty string', async () => {
-    const mockSlasClient = createMockSlasClient();
-    await slasHelper.getPasswordLessAccessToken({
-      slasClient: mockSlasClient,
-      credentials: credentialsPrivate,
-      parameters: {
-        pwdlessLoginToken: '123456',
-        loginId: '',
-        channelId: 'RefArch',
-      },
-    });
-    expect(getPasswordLessAccessTokenMock).toBeCalledWith(
-      expect.objectContaining({
-        body: expect.objectContaining({
-          login_id: '',
-          channel_id: 'RefArch',
-        }) as unknown,
+  test.each([
+    ['loginId', {loginId: '', channelId: 'RefArch'}],
+    ['channelId', {loginId: 'samantha.sampleson@example.com', channelId: ''}],
+  ])('Throws when %s is empty', async (missingParameter, ids) => {
+    getPasswordLessAccessTokenMock.mockClear();
+    await expect(
+      slasHelper.getPasswordLessAccessToken({
+        slasClient: createMockSlasClient(),
+        credentials: credentialsPrivate,
+        parameters: {pwdlessLoginToken: '123456', ...ids},
       })
+    ).rejects.toThrow(
+      `Required argument ${missingParameter} is not provided through parameters`
     );
+    expect(getPasswordLessAccessTokenMock).not.toBeCalled();
   });
   test('Sends login_id and channel_id when provided', async () => {
     const mockSlasClient = createMockSlasClient();

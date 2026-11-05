@@ -35,7 +35,7 @@ These changes follow a required change in the Shopper Login (SLAS) service. They
 
 We recognize that a breaking change in a minor release is unexpected under strict semver. Because of that, we recommend pinning `commerce-sdk-isomorphic` to an exact version rather than a `^` range, and upgrading deliberately using the migration steps below.
 
-- `helpers.getPasswordLessAccessToken` now requires `loginId` and `channelId`. They are sent as `login_id` and `channel_id` on the Shopper Login `POST /organizations/{organizationId}/oauth2/passwordless/token` request. `channelId` is no longer defaulted from `clientConfig.parameters.siteId`; pass it explicitly. An empty-string `loginId` is now sent as-is instead of being omitted.
+- `helpers.getPasswordLessAccessToken` now requires `loginId` and `channelId`. They are sent as `login_id` and `channel_id` on the Shopper Login `POST /organizations/{organizationId}/oauth2/passwordless/token` request. `channelId` is no longer defaulted from `clientConfig.parameters.siteId`; pass it explicitly. `loginId` and `channelId` must be non-empty; the helper throws otherwise.
 - The Shopper Login `POST /organizations/{organizationId}/oauth2/passwordless/token` request body type now requires `login_id` and `channel_id`.
 - The Shopper Login `POST /organizations/{organizationId}/oauth2/password/action` request body type (`resetPassword`) now requires `user_id`.
 
