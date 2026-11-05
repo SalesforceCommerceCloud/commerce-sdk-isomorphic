@@ -25,11 +25,53 @@
 | shopper-seo | 1.3.1 |
 | shopper-stores | 1.4.2 |
 
-### Breaking Changes
+### :warning: BREAKING CHANGES :warning:
 
-- `helpers.getPasswordLessAccessToken` now requires `loginId` and `channelId`. They are sent as `login_id` and `channel_id` on the Shopper Login `POST /organizations/{organizationId}/oauth2/passwordless/token` request. `channelId` is no longer defaulted from `clientConfig.parameters.siteId`; pass it explicitly.
+**This release contains breaking changes to TypeScript signatures and to the SLAS request bodies, but it is published as a minor version (5.8.0), not a major.** Shopper Login (SLAS) now requires `login_id` and `channel_id` on the passwordless token request and `user_id` on the password reset request. Applications that call the affected helper or methods without these values will fail to type-check, and at runtime SLAS will reject the request. If you depend on this package with a caret range (`^5.x`), a routine install will pick up this release. **Pin to an exact version and follow the migration steps below before upgrading.**
+
+- `helpers.getPasswordLessAccessToken` now requires `loginId` and `channelId`. They are sent as `login_id` and `channel_id` on the Shopper Login `POST /organizations/{organizationId}/oauth2/passwordless/token` request. `channelId` is no longer defaulted from `clientConfig.parameters.siteId`; pass it explicitly. An empty-string `loginId` is now sent as-is instead of being omitted.
 - The Shopper Login `POST /organizations/{organizationId}/oauth2/passwordless/token` request body type now requires `login_id` and `channel_id`.
 - The Shopper Login `POST /organizations/{organizationId}/oauth2/password/action` request body type (`resetPassword`) now requires `user_id`.
+
+#### Migration
+
+`helpers.getPasswordLessAccessToken`: add `loginId` (the same ID the shopper used when requesting the passwordless login, which `helpers.authorizePasswordless` takes as `userid`) and `channelId` (your site ID, which is what was previously used implicitly).
+
+```ts
+// Before
+await helpers.getPasswordLessAccessToken({
+  slasClient,
+  credentials: {clientSecret},
+  parameters: {pwdlessLoginToken},
+});
+
+// After
+await helpers.getPasswordLessAccessToken({
+  slasClient,
+  credentials: {clientSecret},
+  parameters: {
+    pwdlessLoginToken,
+    loginId: userid, // must exactly match the ID used in authorizePasswordless
+    channelId: siteId, // previously defaulted from clientConfig.parameters.siteId
+  },
+});
+```
+
+`resetPassword`: include `user_id` in the request body alongside the fields you already send.
+
+```ts
+// Before
+await slasClient.resetPassword(
+  {parameters: {organizationId}, body: {pwd_action_token, channel_id, client_id, new_password}}
+);
+
+// After
+await slasClient.resetPassword(
+  {parameters: {organizationId}, body: {pwd_action_token, channel_id, client_id, new_password, user_id}}
+);
+```
+
+Direct callers of the generated passwordless token method must add `login_id` and `channel_id` to the body in the same way.
 
 ## v5.7.0
 
