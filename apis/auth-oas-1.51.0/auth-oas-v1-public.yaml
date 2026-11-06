@@ -3,7 +3,7 @@ info:
   x-api-type: Shopper
   x-api-family: Shopper
   title: Auth
-  version: 1.50.0
+  version: 1.51.0
   description: |-
     [Download API specification](https://developer.salesforce.com/static/commercecloud/commerce-api/auth/auth-oas-v1-public.yaml)
 
@@ -14,10 +14,25 @@ info:
     **Important:** Before using this API, see [Authorization for Shopper APIs](https://developer.salesforce.com/docs/commerce/commerce-api/guide/authorization-for-shopper-apis.html) in the Get Started guides and the more detailed [SLAS guides](https://developer.salesforce.com/docs/commerce/commerce-api/guide/slas.html) for instructions on setting up a SLAS client, obtaining credentials, as well as flow and use case information.
 
     For load shedding and rate limiting information, see [Load Shedding and Rate Limiting.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/throttle-rates.html)
+
+    ## Response Details
+
+    ### Timeouts
+
+    Shopper API requests must respond within 10 seconds, including any hook execution. If a response exceeds this threshold, an HTTP 504 status code is returned. For details, see [Timeouts and Limits.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/timeouts-limits.html)
+
+    ### Error Handling
+
+    Error responses follow the [RFC 7807](https://datatracker.ietf.org/doc/html/rfc7807) problem detail format. To trace errors, include a `correlation-id` header in your request — the response returns it as `x-correlation-id`. For details, see [HTTP Status Codes and Errors.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/error-response-codes.html)
+
+    ## Related APIs
+
+    - [SLAS Admin API](https://developer.salesforce.com/docs/commerce/commerce-api/references/auth-admin?meta=Summary) — Manage SLAS tenants, clients, and identity providers.
 servers:
   - url: https://{shortCode}.api.commercecloud.salesforce.com/shopper/auth/v1
     variables:
       shortCode:
+        description: An eight-character string assigned to a realm for routing purposes. See [Base URL and Request Formation.](https://developer.salesforce.com/docs/commerce/commerce-api/guide/base-url.html)
         default: shortCode
 paths:
   /organizations/{organizationId}/oauth2/login:
@@ -3563,8 +3578,8 @@ components:
             sfcc.ta_ext_on_behalf_of: Trusted Agent External On Behalf Of scope
             sfcc.ts_ext_on_behalf_of: Trusted System External On Behalf Of scope
         authorizationCode:
-          authorizationUrl: https://{short-code}.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/{organizationId}/oauth2/authorize
-          tokenUrl: https://{short-code}.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/{organizationId}/oauth2/token
+          authorizationUrl: https://{shortCode}.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/{organizationId}/oauth2/authorize
+          tokenUrl: https://{shortCode}.api.commercecloud.salesforce.com/shopper/auth/v1/organizations/{organizationId}/oauth2/token
           scopes:
             sfcc.pwdless_login: Passwordless Login scope
             sfcc.session_bridge: Session Bridge scope
@@ -3639,7 +3654,7 @@ components:
       name: hint
       in: query
       description: |-
-        `hint=all-sessions` logs out all sessions and invalidates all refresh tokens for a shopper with the same SLAS user ID.
+        `hint=all-sessions` logs out all sessions and invalidates all refresh tokens for a shopper with the same SLAS user ID. Starting in B2C Commerce 26.8, it also invalidates all access tokens issued prior to invoking logout for that shopper.
         This only works within the same session type. Sessions created through different authentication methods (/authorize vs. Trusted System On Behalf) are treated as separate sessions. To invalidate tokens with different SLAS User IDs, you must make explicit logout calls with each token.
         A shopper authenticated via both /authorize and TSOB has two separate sessions. You will need two logout calls (one per token) to fully log them out.
 
@@ -3671,11 +3686,12 @@ components:
       required: true
       schema:
         type: string
-        description: Response Type
+        description: The OAuth response type.
         enum:
           - code
     scope:
       name: scope
+      description: The OAuth scopes to include in the token.
       in: query
       required: false
       schema:
@@ -4370,6 +4386,7 @@ components:
         - channel_id
         - client_id
         - pwd_action_token
+        - user_id
       type: object
       properties:
         client_id:
@@ -4408,7 +4425,7 @@ components:
         user_id:
           maxLength: 128
           type: string
-          description: User ID for logging in. This is the id that is used to log into SFCC. Required only when hint is provided.
+          description: User ID for logging in. This is the id that is used to log into SFCC.
           example: samantha.sampleson@example.com
       description: A request for creating a new password using the password action token.
     PasswordLessLoginTokenRequest:
@@ -4416,6 +4433,8 @@ components:
         - grant_type
         - hint
         - pwdless_login_token
+        - channel_id
+        - login_id
       type: object
       properties:
         grant_type:
@@ -4449,18 +4468,18 @@ components:
 
             The `code_verifier` should be a high entropy cryptographically random string with a minimum of 43 characters and a maximum of 128 characters.
           example: Ar0lAwU_jsuA~ZXX8-JnMbZFxrnDot2OtgLEi1kOT_FxD6Bo0EQDbbrvoym9xHvatNGnNzrObLJeK6e4U9m4pveRMbdwNGa4jwiAlKGvijVn0PW0hqb03_w1gQE00wTo
+        channel_id:
+          maxLength: 100
+          type: string
+          description: The channel (B2C Commerce site) that the user is associated with.
+          example: RefArch
         login_id:
           maxLength: 128
           type: string
           description: |-
-            The ID used by the shopper for password token request. When provided, login_id must exactly match the ID used during passwordless login.
+            The ID used by the shopper for password token request. The login_id must exactly match the ID used during passwordless login.
             ex. If passwordless login used `samantha.sampleson@example.com`, but the passwordless login token request provides `sam.sampleson@example.com`, the request fails due to mismatch.
           example: samantha.sampleson@example.com
-        channel_id:
-          maxLength: 100
-          type: string
-          description: The channel that the request is for. For a B2C Commerce request, this is analogous to the site ID.
-          example: RefArch
       description: A request for an access token using a passwordless token.
     TokenActionRequest:
       required:
@@ -4862,6 +4881,21 @@ components:
           maxLength: 8
           description: The signature counter for replay attack prevention
           example: '42'
+        createdTime:
+          type: string
+          format: date-time
+          description: The date and time when this credential was registered
+          example: '2024-03-15T10:30:00.000Z'
+        lastUsed:
+          type: string
+          format: date-time
+          description: The date and time when this credential was last used for authentication
+          example: '2024-03-20T14:45:00.000Z'
+        uses:
+          type: integer
+          format: int32
+          description: The number of times this credential has been used for authentication
+          example: 5
     PasskeyUser:
       type: object
       description: Represents a passkey user with their associated credentials

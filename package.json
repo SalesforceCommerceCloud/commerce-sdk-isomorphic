@@ -1,6 +1,6 @@
 {
   "name": "commerce-sdk-isomorphic",
-  "version": "6.0.0",
+  "version": "5.8.0",
   "private": false,
   "description": "Salesforce Commerce SDK Isomorphic",
   "bugs": {

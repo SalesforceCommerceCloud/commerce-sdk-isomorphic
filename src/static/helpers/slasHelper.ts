@@ -779,8 +779,8 @@ export async function authorizePasswordless(options: {
  * @param options.parameters.callbackURI? - URI to send the passwordless login token to. Must be listed in your SLAS configuration. Required when mode is callback
  * @param options.parameters.pwdlessLoginToken - Passwordless login token
  * @param options.parameters.dnt? - Optional parameter to enable Do Not Track (DNT) for the user.
- * @param options.parameters.loginId? - The ID used by the shopper for the password token request. When provided, must exactly match the ID used during passwordless login.
- * @param options.parameters.channelId? - The channel that the request is for. Analogous to the site ID.
+ * @param options.parameters.loginId - The ID used by the shopper for the password token request. Must exactly match the ID used during passwordless login.
+ * @param options.parameters.channelId - The channel that the request is for. Analogous to the site ID.
  * @returns Promise of Response or Object
  */
 export async function getPasswordLessAccessToken(options: {
@@ -820,6 +820,16 @@ export async function getPasswordLessAccessToken(options: {
       'Required argument pwdlessLoginToken is not provided through parameters'
     );
   }
+  if (!parameters.loginId) {
+    throw new Error(
+      'Required argument loginId is not provided through parameters'
+    );
+  }
+  if (!parameters.channelId) {
+    throw new Error(
+      'Required argument channelId is not provided through parameters'
+    );
+  }
   const codeVerifier = createCodeVerifier();
   const authHeaderIdSecret = `Basic ${stringToBase64(
     `${slasClient.clientConfig.parameters.clientId}:${credentials.clientSecret}`
@@ -831,9 +841,8 @@ export async function getPasswordLessAccessToken(options: {
     pwdless_login_token: parameters.pwdlessLoginToken,
     code_verifier: codeVerifier,
     ...(parameters.dnt && {dnt: parameters.dnt}),
-    ...(parameters.loginId && {login_id: parameters.loginId}),
-    channel_id:
-      parameters.channelId ?? slasClient.clientConfig.parameters.siteId,
+    login_id: parameters.loginId,
+    channel_id: parameters.channelId,
   };
   const requestOptions = {
     headers: {

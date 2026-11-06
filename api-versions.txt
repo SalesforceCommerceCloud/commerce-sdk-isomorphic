@@ -1,6 +1,7 @@
 # APIs for ECOM v26.10
 # Formally Shopper Login
-auth-oas-v1=1.50.0
+# auth-oas-v1 1.51.0 is a MANUAL update: apis/auth-oas-1.51.0/auth-oas-v1-public.yaml was supplied by hand, NOT downloaded from Exchange. The Exchange 1.51.0 lacks required channel_id/login_id on passwordless/token. Do not run updateApis for this line; replace with the published asset once Exchange has it.
+auth-oas-v1=1.51.0
 shopper-availability-oas-v1=1.4.2
 shopper-baskets-oas-v1=1.12.2
 shopper-baskets-oas-v2=2.13.4
