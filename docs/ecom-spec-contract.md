@@ -47,6 +47,32 @@ a plain `https://<host>/<org>/<repo>.git` URL in `ECOM_REPO_URL` authenticates w
 developer's existing git credentials. Running the update in CI would need a runner inside the
 network plus a read-only credential for the ECOM repo.
 
+## Releasing for an ECOM version
+
+Each SDK release targets one ECOM release. Specs for that release come from the ECOM branch
+`release.XX.Y`, which `updateApisFromEcom` derives from the `api-versions.txt` header.
+
+1. **Set the target.** Change the header to `# APIs for ECOM vXX.Y` (for example `v27.1`,
+   later `v27.2`). The ref becomes `release.27.1`, then `release.27.2`.
+2. **Check the ref exists and carries the specs.** Run `git ls-remote "$ECOM_REPO_URL" release.XX.Y`;
+   it must print a line. If the branch is missing, the update fails with git's
+   `couldn't find remote ref` error. A branch that exists can still lack the OAS tree: the
+   update then stages nothing, so confirm the next step's count.
+3. **Until the release branch carries the specs,** set `ECOM_OAS_REF=master` in `.env`.
+   Remove it as soon as the branch does. A leftover override silently pulls `master` for a
+   release that should come from its branch.
+4. **Run `yarn updateApisFromEcom` and read the log.** `Resolved <ref> to ECOM commit <sha>`
+   must name the ref you intend (`release.XX.Y`, not `master`). The number of staged APIs
+   must equal the number of keys in `api-versions.txt`.
+5. **Update the allow-list if the API set changed.** Add a `<assetId>-vN` key for a new API or
+   a new major version of one. The value after `=` is no longer read; the SDK and the
+   CHANGELOG version table take versions from the staged specs, so a stale value there does
+   not change what ships.
+6. **Record provenance in the release PR:** the ref and commit SHA from the log. A patched
+   ECOM release branch moves, and the SHA is what makes the release reproducible.
+7. **Patch releases of the same ECOM release** re-run the same steps against the same
+   branch; any spec changes arrive through `info.version`.
+
 ## Measured result (master @ 86ee0fab, 2026-11-10)
 
 - All 17 allow-listed APIs were discovered, bundled and staged. None were missing.
