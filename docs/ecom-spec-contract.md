@@ -40,12 +40,12 @@ The consumer bundles with stock Redocly (`scripts/ecom-redocly.yaml`) and synthe
 resolve an artifact. The version comes from each spec's `info.version`.
 
 ### Auth
-Fetching is an HTTPS sparse, shallow `git fetch` against the ECOM remote. Run it locally:
-the ECOM host is only reachable from inside the company network, and a GitHub-hosted runner
-fails with `Could not resolve host`, so a CI secret cannot work there. Credentials go in
-`ECOM_REPO_URL` (`https://<user>:<token>@<host>/<org>/<repo>.git`) in the local `.env`. Use a
-fine-grained token limited to the ECOM repo with read-only Contents access. Running the update
-in CI would need a runner inside the network.
+Fetching is an HTTPS sparse, shallow `git fetch` against the ECOM remote. Run it locally: the
+ECOM host is only reachable from inside the company network, and a GitHub-hosted runner fails
+with `Could not resolve host`, so a CI secret cannot work there. Locally no token is needed:
+a plain `https://<host>/<org>/<repo>.git` URL in `ECOM_REPO_URL` authenticates with the
+developer's existing git credentials. Running the update in CI would need a runner inside the
+network plus a read-only credential for the ECOM repo.
 
 ## Measured result (master @ 86ee0fab, 2026-11-10)
 
