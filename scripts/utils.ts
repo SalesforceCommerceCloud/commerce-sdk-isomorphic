@@ -47,6 +47,28 @@ export function removeInternalOas(directoryPath: string, depth = 0): void {
 }
 
 /**
+ * Extracts the ECOM release (e.g. "26.11") from the `# APIs for ECOM v26.11`
+ * header of api-versions.txt content.
+ * @throws if the header is missing, since the ECOM ref cannot be derived without it
+ */
+export function parseEcomVersion(apiVersionsContent: string): string {
+  const match = /^#\s*APIs for ECOM v(\d+\.\d+)\s*$/m.exec(apiVersionsContent);
+  if (!match) {
+    throw new Error(
+      'api-versions.txt is missing the "# APIs for ECOM vXX.Y" header'
+    );
+  }
+  return match[1];
+}
+
+/**
+ * Maps an ECOM release to the git branch that carries its OAS sources.
+ */
+export function ecomRefForVersion(ecomVersion: string): string {
+  return `release.${ecomVersion}`;
+}
+
+/**
  * Reads the API versions from the api-versions.txt file
  * @returns Array of { apiName, version } objects
  */
