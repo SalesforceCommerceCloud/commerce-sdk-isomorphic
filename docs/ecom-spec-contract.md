@@ -14,10 +14,8 @@ Both values are required environment variables and the script fails if either is
 | `ECOM_OAS_ROOT` | Path of the SCAPI OAS source tree inside that repo |
 | `ECOM_OAS_REF` | Optional. Overrides the ref derived from `api-versions.txt` |
 
-Locally, export them in your shell. In CI they are stored as GitHub Actions secrets (not
-plain variables, so they are masked in logs). Workflows triggered from forks do not receive
-secrets, so the update job must only run from maintainer-triggered events such as a
-schedule or `workflow_dispatch`.
+Put them in a local `.env` at the repo root (gitignored; copy `.env.example`), the same way
+the Anypoint credentials were provided before. `updateApisFromEcom` loads it with `dotenv`.
 
 ## Decisions
 
@@ -42,9 +40,12 @@ The consumer bundles with stock Redocly (`scripts/ecom-redocly.yaml`) and synthe
 resolve an artifact. The version comes from each spec's `info.version`.
 
 ### Auth
-Fetching is an HTTPS sparse, shallow `git fetch` against the ECOM remote. It works locally
-with a developer's existing git credentials. CI runs on public GitHub, so it needs a
-credential that can read the ECOM repo, stored as a secret. That is not wired up yet.
+Fetching is an HTTPS sparse, shallow `git fetch` against the ECOM remote. Run it locally:
+the ECOM host is only reachable from inside the company network, and a GitHub-hosted runner
+fails with `Could not resolve host`, so a CI secret cannot work there. Credentials go in
+`ECOM_REPO_URL` (`https://<user>:<token>@<host>/<org>/<repo>.git`) in the local `.env`. Use a
+fine-grained token limited to the ECOM repo with read-only Contents access. Running the update
+in CI would need a runner inside the network.
 
 ## Measured result (master @ 86ee0fab, 2026-11-10)
 

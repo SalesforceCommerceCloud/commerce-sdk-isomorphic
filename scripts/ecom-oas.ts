@@ -29,10 +29,12 @@ import {API_VERSIONS_FILE, ecomRefForVersion, parseEcomVersion} from './utils';
 
 /**
  * Where the specs live is supplied by the environment rather than committed: this
- * repo is public and the ECOM remote is internal. CI provides these as secrets.
+ * repo is public and the ECOM remote is internal. Developers keep them in a local,
+ * gitignored `.env`. Values are trimmed because a pasted credential URL commonly
+ * carries a trailing newline that git rejects.
  */
 function requireEnv(name: string): string {
-  const value = process.env[name];
+  const value = process.env[name]?.trim();
   if (!value) {
     throw new Error(
       `${name} is not set. It must point at the ECOM source; see docs/ecom-spec-contract.md.`
@@ -53,8 +55,9 @@ export const getEcomOasRoot = (): string => requireEnv('ECOM_OAS_ROOT');
  * `ECOM_OAS_REF` (e.g. "master") to read unreleased specs instead.
  */
 export function resolveEcomOasRef(): string {
-  if (process.env.ECOM_OAS_REF) {
-    return process.env.ECOM_OAS_REF;
+  const override = process.env.ECOM_OAS_REF?.trim();
+  if (override) {
+    return override;
   }
   return ecomRefForVersion(
     parseEcomVersion(fs.readFileSync(API_VERSIONS_FILE, 'utf-8'))

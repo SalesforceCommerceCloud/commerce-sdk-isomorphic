@@ -8,6 +8,7 @@
 import {execSync} from 'child_process';
 import path from 'path';
 import fs from 'fs-extra';
+import dotenv from 'dotenv';
 import {
   fetchEcomOasTree,
   discoverEcomApis,
@@ -17,6 +18,8 @@ import {
   resolveEcomOasRef,
 } from './ecom-oas';
 import {readApiVersions, removeInternalOas} from './utils';
+
+dotenv.config();
 
 // Where the reshaped, generator-ready API directories land - same as the
 // Anypoint path, so `renderTemplates` is identical regardless of source.
