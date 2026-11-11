@@ -50,17 +50,19 @@ export const getEcomRepoUrl = (): string => requireEnv('ECOM_REPO_URL');
 export const getEcomOasRoot = (): string => requireEnv('ECOM_OAS_ROOT');
 
 /**
- * Which ref to pull specs from: the release branch matching the ECOM version in
- * api-versions.txt, so a given SDK release is reproducible and patchable. Set
- * `ECOM_OAS_REF` (e.g. "master") to read unreleased specs instead.
+ * Which ref to pull specs from, most specific first: `ECOM_OAS_REF` (e.g. "master"
+ * for unreleased specs), then the explicit `ecomVersion`, then the ECOM version in
+ * api-versions.txt. Release branches keep a given SDK release reproducible and
+ * patchable.
  */
-export function resolveEcomOasRef(): string {
+export function resolveEcomOasRef(ecomVersion?: string): string {
   const override = process.env.ECOM_OAS_REF?.trim();
   if (override) {
     return override;
   }
   return ecomRefForVersion(
-    parseEcomVersion(fs.readFileSync(API_VERSIONS_FILE, 'utf-8'))
+    ecomVersion ??
+      parseEcomVersion(fs.readFileSync(API_VERSIONS_FILE, 'utf-8'))
   );
 }
 

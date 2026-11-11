@@ -6,7 +6,13 @@
  */
 import fs from 'fs-extra';
 import path from 'path';
-import {ecomRefForVersion, parseEcomVersion, readApiVersions} from './utils';
+import {
+  ecomRefForVersion,
+  parseEcomVersion,
+  parseEcomVersionArg,
+  readApiVersions,
+  setEcomVersionHeader,
+} from './utils';
 
 jest.mock('fs-extra');
 const mockedFs = fs as jest.Mocked<typeof fs>;
@@ -100,5 +106,49 @@ describe('parseEcomVersion', () => {
 describe('ecomRefForVersion', () => {
   it('maps a release to its branch', () => {
     expect(ecomRefForVersion('27.1')).toBe('release.27.1');
+  });
+});
+
+describe('parseEcomVersionArg', () => {
+  it('reads the space-separated form', () => {
+    expect(parseEcomVersionArg(['--ecom-version', '27.1'])).toBe('27.1');
+  });
+
+  it('reads the equals form', () => {
+    expect(parseEcomVersionArg(['--ecom-version=27.2'])).toBe('27.2');
+  });
+
+  it('returns undefined when the flag is absent', () => {
+    expect(parseEcomVersionArg(['--other', 'x'])).toBeUndefined();
+  });
+
+  it.each([['27'], ['v27.1'], ['27.1.0'], ['master']])(
+    'rejects the malformed version %s',
+    value => {
+      expect(() => parseEcomVersionArg(['--ecom-version', value])).toThrow(
+        'must look like 27.1'
+      );
+    }
+  );
+
+  it('rejects a flag with no value', () => {
+    expect(() => parseEcomVersionArg(['--ecom-version'])).toThrow(
+      'must look like 27.1'
+    );
+  });
+});
+
+describe('setEcomVersionHeader', () => {
+  it('replaces the version and keeps every other line', () => {
+    const before = '# APIs for ECOM v26.9\n# note\nfoo-oas-v1=1.0.0\n';
+    expect(setEcomVersionHeader(before, '27.1')).toBe(
+      '# APIs for ECOM v27.1\n# note\nfoo-oas-v1=1.0.0\n'
+    );
+  });
+
+  it('throws when the header is missing', () => {
+    expect(() => setEcomVersionHeader('foo-oas-v1=1.0.0', '27.1')).toThrow(
+      'missing the "# APIs for ECOM vXX.Y" header'
+    );
   });
 });
