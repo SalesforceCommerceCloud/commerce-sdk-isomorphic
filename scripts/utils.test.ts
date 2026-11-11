@@ -6,7 +6,7 @@
  */
 import fs from 'fs-extra';
 import path from 'path';
-import {readApiVersions} from './utils';
+import {ecomRefForVersion, parseEcomVersion, readApiVersions} from './utils';
 
 jest.mock('fs-extra');
 const mockedFs = fs as jest.Mocked<typeof fs>;
@@ -80,5 +80,25 @@ shopper-payments-oas-v1=1.1.0
       {apiName: 'shopper-baskets-oas-v1', version: '1.9.0'},
       {apiName: 'shopper-baskets-oas-v2', version: '2.1.0'},
     ]);
+  });
+});
+
+describe('parseEcomVersion', () => {
+  it('extracts the release from the header', () => {
+    expect(parseEcomVersion('# APIs for ECOM v26.11\nfoo-oas-v1=1.0.0')).toBe(
+      '26.11'
+    );
+  });
+
+  it('throws when the header is missing', () => {
+    expect(() => parseEcomVersion('foo-oas-v1=1.0.0')).toThrow(
+      'missing the "# APIs for ECOM vXX.Y" header'
+    );
+  });
+});
+
+describe('ecomRefForVersion', () => {
+  it('maps a release to its branch', () => {
+    expect(ecomRefForVersion('27.1')).toBe('release.27.1');
   });
 });
