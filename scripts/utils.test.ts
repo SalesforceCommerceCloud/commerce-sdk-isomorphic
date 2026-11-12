@@ -10,6 +10,7 @@ import {
   ecomRefForVersion,
   parseEcomVersion,
   parseEcomVersionArg,
+  parseSingleApiArgs,
   readApiVersions,
   setEcomVersionHeader,
 } from './utils';
@@ -17,57 +18,43 @@ import {
 jest.mock('fs-extra');
 const mockedFs = fs as jest.Mocked<typeof fs>;
 const mockApiVersionsFile = path.join(__dirname, '../api-versions.txt');
-const mockApiVersionsContent = `shopper-baskets-oas-v1=1.9.0
-shopper-baskets-oas-v2=2.1.0
-shopper-payments-oas-v1=1.1.0`;
 
 describe('readApiVersions', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockedFs.existsSync.mockReturnValue(true);
-    mockedFs.readFileSync.mockReturnValue(mockApiVersionsContent);
   });
 
   afterEach(() => {
     jest.restoreAllMocks();
   });
 
-  it('should read and parse api-versions.txt correctly', () => {
-    const result = readApiVersions();
+  it('reads each key and its bundle location, skipping comments and blanks', () => {
+    mockedFs.readFileSync.mockReturnValue(`# APIs for ECOM v27.1
+shopper-baskets-oas-v1=shopper/checkout/shopper-baskets/v1
 
-    expect(mockedFs.existsSync).toHaveBeenCalledWith(mockApiVersionsFile);
+  shopper-baskets-oas-v2 = shopper/checkout/shopper-baskets/v2
+auth-oas-v1=shopper/shopper/auth/v1
+`);
+
+    expect(readApiVersions()).toEqual([
+      {
+        apiName: 'shopper-baskets-oas-v1',
+        bundlePath: 'shopper/checkout/shopper-baskets/v1',
+      },
+      {
+        apiName: 'shopper-baskets-oas-v2',
+        bundlePath: 'shopper/checkout/shopper-baskets/v2',
+      },
+      {apiName: 'auth-oas-v1', bundlePath: 'shopper/shopper/auth/v1'},
+    ]);
     expect(mockedFs.readFileSync).toHaveBeenCalledWith(
       mockApiVersionsFile,
       'utf-8'
     );
-    expect(result).toEqual([
-      {apiName: 'shopper-baskets-oas-v1', version: '1.9.0'},
-      {apiName: 'shopper-baskets-oas-v2', version: '2.1.0'},
-      {apiName: 'shopper-payments-oas-v1', version: '1.1.0'},
-    ]);
   });
 
-  it('should filter out empty lines and comments', () => {
-    const contentWithComments = `# This is a comment
-shopper-baskets-oas-v1=1.9.0
-
-shopper-baskets-oas-v2=2.1.0
-# Another comment
-shopper-payments-oas-v1=1.1.0
-
-`;
-    mockedFs.readFileSync.mockReturnValue(contentWithComments);
-
-    const result = readApiVersions();
-
-    expect(result).toEqual([
-      {apiName: 'shopper-baskets-oas-v1', version: '1.9.0'},
-      {apiName: 'shopper-baskets-oas-v2', version: '2.1.0'},
-      {apiName: 'shopper-payments-oas-v1', version: '1.1.0'},
-    ]);
-  });
-
-  it('should throw error when file does not exist', () => {
+  it('throws when the file does not exist', () => {
     mockedFs.existsSync.mockReturnValue(false);
 
     expect(() => readApiVersions()).toThrow(
@@ -75,17 +62,20 @@ shopper-payments-oas-v1=1.1.0
     );
   });
 
-  it('should handle whitespace around api names and versions', () => {
-    const contentWithWhitespace = `shopper-baskets-oas-v1  =  1.9.0
-  shopper-baskets-oas-v2=2.1.0  `;
-    mockedFs.readFileSync.mockReturnValue(contentWithWhitespace);
+  it.each([
+    ['a missing location', 'shopper-baskets-oas-v1='],
+    ['a semantic version', 'shopper-baskets-oas-v1=1.12.0'],
+    ['a parent-directory segment', 'shopper-baskets-oas-v1=../shopper/v1'],
+    ['an absolute path', 'shopper-baskets-oas-v1=/shopper/checkout/v1'],
+    ['a shell metacharacter', 'shopper-baskets-oas-v1=shopper/a;b/v1'],
+    [
+      'a version that differs from the key',
+      'shopper-baskets-oas-v1=shopper/checkout/shopper-baskets/v2',
+    ],
+  ])('rejects %s', (_label, line) => {
+    mockedFs.readFileSync.mockReturnValue(line);
 
-    const result = readApiVersions();
-
-    expect(result).toEqual([
-      {apiName: 'shopper-baskets-oas-v1', version: '1.9.0'},
-      {apiName: 'shopper-baskets-oas-v2', version: '2.1.0'},
-    ]);
+    expect(() => readApiVersions()).toThrow('shopper-baskets-oas-v1');
   });
 });
 
@@ -150,5 +140,70 @@ describe('setEcomVersionHeader', () => {
     expect(() => setEcomVersionHeader('foo-oas-v1=1.0.0', '27.1')).toThrow(
       'missing the "# APIs for ECOM vXX.Y" header'
     );
+  });
+});
+
+describe('parseSingleApiArgs', () => {
+  it('returns undefined when neither flag is present', () => {
+    expect(parseSingleApiArgs(['--ecom-version', '27.1'])).toBeUndefined();
+  });
+
+  it('reads one api and a ref in the space-separated form', () => {
+    expect(
+      parseSingleApiArgs([
+        '--api',
+        'shopper-baskets-oas-v1',
+        '--ref',
+        'my-branch',
+      ])
+    ).toEqual({apis: ['shopper-baskets-oas-v1'], ref: 'my-branch'});
+  });
+
+  it('reads the equals form and repeated --api', () => {
+    expect(
+      parseSingleApiArgs([
+        '--api=shopper-baskets-oas-v1',
+        '--api',
+        'shopper-baskets-oas-v2',
+        '--ref=abc123',
+      ])
+    ).toEqual({
+      apis: ['shopper-baskets-oas-v1', 'shopper-baskets-oas-v2'],
+      ref: 'abc123',
+    });
+  });
+
+  it('rejects --api without --ref', () => {
+    expect(() => parseSingleApiArgs(['--api', 'a-oas-v1'])).toThrow(
+      '--api requires --ref'
+    );
+  });
+
+  it('rejects --ref without --api', () => {
+    expect(() => parseSingleApiArgs(['--ref', 'master'])).toThrow(
+      '--ref requires at least one --api'
+    );
+  });
+
+  it('rejects a flag with no value', () => {
+    expect(() => parseSingleApiArgs(['--api', '--ref', 'master'])).toThrow(
+      '--api needs a value'
+    );
+    expect(() => parseSingleApiArgs(['--api', 'a-oas-v1', '--ref'])).toThrow(
+      '--ref needs a value'
+    );
+  });
+
+  it('rejects combining with --ecom-version', () => {
+    expect(() =>
+      parseSingleApiArgs([
+        '--api',
+        'a-oas-v1',
+        '--ref',
+        'master',
+        '--ecom-version',
+        '27.1',
+      ])
+    ).toThrow('cannot be combined with --ecom-version');
   });
 });

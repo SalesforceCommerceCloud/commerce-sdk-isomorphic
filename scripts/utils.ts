@@ -104,6 +104,51 @@ export function parseEcomVersionArg(argv: string[]): string | undefined {
   return value;
 }
 
+export type SingleApiSelection = {apis: string[]; ref: string};
+
+function readFlagValues(argv: string[], flag: string): string[] {
+  const values: string[] = [];
+  argv.forEach((arg, index) => {
+    if (arg.startsWith(`${flag}=`)) {
+      values.push(arg.slice(flag.length + 1));
+    } else if (arg === flag) {
+      const next = argv[index + 1];
+      if (!next || next.startsWith('--')) {
+        throw new Error(`${flag} needs a value`);
+      }
+      values.push(next);
+    }
+  });
+  return values;
+}
+
+/**
+ * Reads `--api <key> [--api <key>...] --ref <git ref>` from the command line, which
+ * selects a partial update of just the named APIs from an arbitrary ECOM ref.
+ * @returns the selection, or undefined when neither flag is present
+ * @throws if only one of the flags is given, a value is missing, or it is combined
+ * with `--ecom-version` (a release refresh and a partial update are different modes)
+ */
+export function parseSingleApiArgs(
+  argv: string[]
+): SingleApiSelection | undefined {
+  const apis = readFlagValues(argv, '--api');
+  const refs = readFlagValues(argv, '--ref');
+  if (apis.length === 0 && refs.length === 0) {
+    return undefined;
+  }
+  if (apis.length === 0) {
+    throw new Error('--ref requires at least one --api');
+  }
+  if (refs.length === 0) {
+    throw new Error('--api requires --ref');
+  }
+  if (parseEcomVersionArg(argv) !== undefined) {
+    throw new Error('--api/--ref cannot be combined with --ecom-version');
+  }
+  return {apis, ref: refs[refs.length - 1]};
+}
+
 /**
  * Maps an ECOM release to the git branch that carries its OAS sources.
  */
@@ -111,11 +156,21 @@ export function ecomRefForVersion(ecomVersion: string): string {
   return `release.${ecomVersion}`;
 }
 
+// `<type>/<family>/<api>/vN` under the ECOM bundles directory. Restricting the
+// characters keeps the value safe to hand to `git sparse-checkout` and stops it
+// pointing outside the bundles directory.
+const BUNDLE_PATH = /^[a-z0-9_-]+(\/[a-z0-9_-]+){2}\/v\d+$/;
+
+export type AllowListedApi = {apiName: string; bundlePath: string};
+
 /**
- * Reads the API versions from the api-versions.txt file
- * @returns Array of { apiName, version } objects
+ * Reads api-versions.txt: one `<assetId>-vN=<type>/<family>/<api>/vN` line per API
+ * the SDK ships. The key is the SDK's name for the API, the value is where ECOM
+ * publishes its bundle, so updates fetch exactly those directories.
+ * @throws if the file is missing or a line's location is malformed or names a
+ * different major version than its key
  */
-export function readApiVersions(): Array<{apiName: string; version: string}> {
+export function readApiVersions(): AllowListedApi[] {
   if (!fs.existsSync(API_VERSIONS_FILE)) {
     throw new Error(`API versions file not found at: ${API_VERSIONS_FILE}`);
   }
@@ -123,9 +178,21 @@ export function readApiVersions(): Array<{apiName: string; version: string}> {
   const content = fs.readFileSync(API_VERSIONS_FILE, 'utf-8');
   return content
     .split('\n')
-    .filter(line => line.trim() && !line.startsWith('#'))
+    .filter(line => line.trim() && !line.trim().startsWith('#'))
     .map(line => {
-      const [apiName, version] = line.split('=').map(s => s.trim());
-      return {apiName, version};
+      const [apiName, bundlePath = ''] = line.split('=').map(s => s.trim());
+      const keyVersion = /-(v\d+)$/.exec(apiName)?.[1];
+      if (
+        !BUNDLE_PATH.test(bundlePath) ||
+        !keyVersion ||
+        !bundlePath.endsWith(`/${keyVersion}`)
+      ) {
+        throw new Error(
+          `api-versions.txt: ${apiName} must map to its ECOM bundle location, <type>/<family>/<api>/${
+            keyVersion ?? 'vN'
+          }, received "${bundlePath}"`
+        );
+      }
+      return {apiName, bundlePath};
     });
 }

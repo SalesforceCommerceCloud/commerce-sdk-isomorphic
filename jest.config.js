@@ -12,7 +12,6 @@ module.exports = {
     'scripts/**/*.{js,jsx,ts,tsx}',
     '!scripts/generate.ts',
     '!scripts/updateApis.ts',
-    '!scripts/updateApisFromEcom.ts',
     '!scripts/ecom-oas.ts',
     '!scripts/utils.ts',
     '!scripts/generateVersionTable.ts',
