@@ -208,20 +208,24 @@ describe('loadBundledApi', () => {
     ).toThrow('internal-only');
   });
 
-  it("refuses an artifact path outside the API's own bundle directory", () => {
-    writeBundle({
-      artifacts: {
-        public: {
-          path: `shopper/checkout/shopper-orders/v1/${publicFile}`,
-          sha256: 'x',
-        },
-      },
-    });
+  it.each([
+    ['another directory', `shopper/checkout/shopper-orders/v1/${publicFile}`],
+    [
+      'a parent-directory segment',
+      `${bundlePath}/../../shopper-orders/v1/${publicFile}`,
+    ],
+  ])(
+    "refuses an artifact path outside the API's own bundle directory: %s",
+    (_label, artifactPath) => {
+      writeBundle({
+        artifacts: {public: {path: artifactPath, sha256: 'x'}},
+      });
 
-    expect(() =>
-      loadBundledApi(bundlesRoot, 'shopper-baskets-oas-v1', bundlePath)
-    ).toThrow(`outside ${bundlePath}`);
-  });
+      expect(() =>
+        loadBundledApi(bundlesRoot, 'shopper-baskets-oas-v1', bundlePath)
+      ).toThrow(`outside ${bundlePath}`);
+    }
+  );
 
   it('refuses a schema version that is not semantic', () => {
     writeBundle({schemaVersion: undefined});

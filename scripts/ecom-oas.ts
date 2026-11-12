@@ -87,10 +87,10 @@ export function fetchEcomBundles(
 
   git('init', '-q');
   git('remote', 'add', 'origin', repoUrl);
-  git('sparse-checkout', 'init', '--cone');
   git(
     'sparse-checkout',
     'set',
+    '--cone',
     ...bundlePaths.map(bundlePath => `${bundlesRoot}/${bundlePath}`)
   );
   // blob:none downloads only the files the sparse checkout needs; a plain shallow
@@ -100,7 +100,7 @@ export function fetchEcomBundles(
     git('fetch', '--depth', '1', '--filter=blob:none', 'origin', '--', ref);
   } catch {
     throw new Error(
-      `Could not fetch ${ref} from ECOM (git output above). Check the branch, tag or full 40-character commit SHA exists; a release branch may not be cut yet.`
+      `Could not fetch ${ref} from ECOM (git output above). Check you can reach ECOM and that the branch, tag or full 40-character commit SHA exists; a release branch may not be cut yet.`
     );
   }
   git('checkout', '-q', 'FETCH_HEAD');
@@ -169,7 +169,8 @@ export function loadBundledApi(
 
   // Only the API's own directory is checked out, and the folder name in `apis/`
   // embeds the schema version, so both must be what the manifest claims.
-  if (!artifact.path.startsWith(`${bundlePath}/`)) {
+  // Normalized first so a `..` segment cannot climb out of the API's directory.
+  if (!path.posix.normalize(artifact.path).startsWith(`${bundlePath}/`)) {
     throw new Error(
       `${apiName}: manifest points its public bundle outside ${bundlePath}: ${artifact.path}`
     );

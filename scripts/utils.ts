@@ -11,7 +11,9 @@ export const API_VERSIONS_FILE = path.join(__dirname, '../api-versions.txt');
 const MISSING_HEADER_MESSAGE =
   'api-versions.txt is missing the "# APIs for ECOM vXX.Y" header';
 
-const ECOM_VERSION_HEADER = /^#\s*APIs for ECOM v(\d+\.\d+)\s*$/m;
+// `[ \t]*` rather than `\s*` before `$`: with the `m` flag `\s` also matches newlines,
+// so a rewrite would swallow the line break after the header.
+const ECOM_VERSION_HEADER = /^#[ \t]*APIs for ECOM v(\d+\.\d+)[ \t]*$/m;
 
 /**
  * Extracts the ECOM release (e.g. "26.11") from the `# APIs for ECOM v26.11`
@@ -152,8 +154,8 @@ export type AllowListedApi = {apiName: string; bundlePath: string};
  * Reads api-versions.txt: one `<assetId>-vN=<type>/<family>/<api>/vN` line per API
  * the SDK ships. The key is the SDK's name for the API, the value is where ECOM
  * publishes its bundle, so updates fetch exactly those directories.
- * @throws if the file is missing or a line's location is malformed or names a
- * different major version than its key
+ * @throws if the file is missing, a key or location appears twice, or a line's
+ * location is malformed or names a different major version than its key
  */
 export function readApiVersions(): AllowListedApi[] {
   if (!fs.existsSync(API_VERSIONS_FILE)) {
@@ -161,7 +163,7 @@ export function readApiVersions(): AllowListedApi[] {
   }
 
   const content = fs.readFileSync(API_VERSIONS_FILE, 'utf-8');
-  return content
+  const apis = content
     .split('\n')
     .filter(line => line.trim() && !line.trim().startsWith('#'))
     .map(line => {
@@ -180,4 +182,17 @@ export function readApiVersions(): AllowListedApi[] {
       }
       return {apiName, bundlePath};
     });
+
+  // A repeated key would silently drop a line, and a repeated location would stage two
+  // keys into the same `apis/` folder.
+  (['apiName', 'bundlePath'] as const).forEach(field => {
+    const seen = new Set<string>();
+    apis.forEach(api => {
+      if (seen.has(api[field])) {
+        throw new Error(`api-versions.txt lists ${api[field]} more than once`);
+      }
+      seen.add(api[field]);
+    });
+  });
+  return apis;
 }

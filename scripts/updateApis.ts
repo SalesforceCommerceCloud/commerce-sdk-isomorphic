@@ -48,8 +48,8 @@ const ECOM_CHECKOUT_PATH = path.join(__dirname, '../temp/ecom-oas');
  *   from any ECOM ref, and every other folder in `apis/` is left untouched.
  *
  * Output is built in a staging directory and copied into `apis/` only once every
- * fetch and check has succeeded, so those failures never touch `apis/`. The final
- * copy is not atomic; if it is interrupted, restore `apis/` from git or `temp/oldApis`.
+ * fetch and check has succeeded, so those failures never touch `apis/`. If the final
+ * copy fails, `apis/` is restored from the backup in `temp/oldApis`.
  */
 function updateApis(): void {
   const argv = process.argv.slice(2);
@@ -119,17 +119,29 @@ function updateApis(): void {
     fs.ensureDirSync(PRODUCTION_API_PATH);
     fs.copySync(PRODUCTION_API_PATH, OLD_APIS_PATH);
 
-    if (partial) {
-      requested.forEach(key => {
-        findApiFolders(PRODUCTION_API_PATH, key).forEach(dir =>
-          fs.removeSync(dir)
-        );
-      });
-    } else {
-      fs.emptyDirSync(PRODUCTION_API_PATH);
+    try {
+      if (partial) {
+        requested.forEach(key => {
+          findApiFolders(PRODUCTION_API_PATH, key).forEach(dir =>
+            fs.removeSync(dir)
+          );
+        });
+      } else {
+        fs.emptyDirSync(PRODUCTION_API_PATH);
+      }
+      fs.copySync(STAGED_APIS_PATH, PRODUCTION_API_PATH);
+    } catch (error) {
+      console.error('Restoring apis/ from temp/oldApis...');
+      fs.removeSync(PRODUCTION_API_PATH);
+      fs.copySync(OLD_APIS_PATH, PRODUCTION_API_PATH);
+      throw error;
     }
-    fs.copySync(STAGED_APIS_PATH, PRODUCTION_API_PATH);
 
+    if (!partial && process.env.ECOM_OAS_REF?.trim()) {
+      console.warn(
+        `WARNING: ECOM_OAS_REF=${ref} overrode the release branch, so these specs are not from the ECOM release named in api-versions.txt. Unset it before a release.`
+      );
+    }
     if (ecomVersion) {
       fs.writeFileSync(
         API_VERSIONS_FILE,
@@ -139,11 +151,6 @@ function updateApis(): void {
         )
       );
       console.log(`Set the api-versions.txt header to ECOM v${ecomVersion}`);
-      if (process.env.ECOM_OAS_REF?.trim()) {
-        console.warn(
-          `WARNING: ECOM_OAS_REF=${ref} overrode release.${ecomVersion}, so these specs are not from the ECOM v${ecomVersion} release branch.`
-        );
-      }
     }
 
     console.log('\nECOM API update completed successfully');
@@ -160,13 +167,23 @@ try {
   updateApis();
   // Run here rather than chained in package.json: yarn appends command-line
   // arguments to the end of the script string, so `--ecom-version` would reach
-  // diffApis instead of this script. A non-zero exit means differences were found.
+  // diffApis instead of this script. diffApis exits 1 when it finds differences, which
+  // is the expected outcome of an update; anything else means the diff itself failed.
   const diff = spawnSync('yarn', ['diffApis'], {stdio: 'inherit'});
-  console.log(
-    `diffApis exited ${String(
-      diff.status
-    )}; non-zero means differences were found, see temp/diffApis.txt`
-  );
+  if (diff.status === 0 || diff.status === 1) {
+    console.log(
+      `diffApis ${
+        diff.status === 0 ? 'found no differences' : 'found differences'
+      }, see temp/diffApis.txt`
+    );
+  } else {
+    console.error(
+      `diffApis failed (exit ${String(
+        diff.status
+      )}); apis/ is updated but not diffed`
+    );
+    process.exit(1);
+  }
 } catch (error) {
   console.error('Unhandled error:', error);
   process.exit(1);

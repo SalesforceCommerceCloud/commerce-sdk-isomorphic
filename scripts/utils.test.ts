@@ -78,6 +78,25 @@ auth-oas-v1=shopper/shopper/auth/v1
 
     expect(() => readApiVersions()).toThrow('shopper-baskets-oas-v1');
   });
+
+  it.each([
+    [
+      'a repeated key',
+      'shopper-baskets-oas-v1=shopper/checkout/shopper-baskets/v1\nshopper-baskets-oas-v1=shopper/checkout/baskets/v1',
+      'shopper-baskets-oas-v1',
+    ],
+    [
+      'a repeated location',
+      'shopper-baskets-oas-v1=shopper/checkout/shopper-baskets/v1\nbaskets-oas-v1=shopper/checkout/shopper-baskets/v1',
+      'shopper/checkout/shopper-baskets/v1',
+    ],
+  ])('rejects %s', (_label, content, repeated) => {
+    mockedFs.readFileSync.mockReturnValue(content);
+
+    expect(() => readApiVersions()).toThrow(
+      `api-versions.txt lists ${repeated} more than once`
+    );
+  });
 });
 
 describe('parseEcomVersion', () => {
@@ -134,6 +153,13 @@ describe('setEcomVersionHeader', () => {
     const before = '# APIs for ECOM v26.9\n# note\nfoo-oas-v1=1.0.0\n';
     expect(setEcomVersionHeader(before, '27.1')).toBe(
       '# APIs for ECOM v27.1\n# note\nfoo-oas-v1=1.0.0\n'
+    );
+  });
+
+  it('keeps the line break when a blank line follows the header', () => {
+    const before = '# APIs for ECOM v26.9\n\nfoo-oas-v1=1.0.0\n';
+    expect(setEcomVersionHeader(before, '27.1')).toBe(
+      '# APIs for ECOM v27.1\n\nfoo-oas-v1=1.0.0\n'
     );
   });
 

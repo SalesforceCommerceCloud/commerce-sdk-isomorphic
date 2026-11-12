@@ -23,16 +23,17 @@ Put them in a local `.env` at the repo root (gitignored; copy `.env.example`). `
 ## Usage
 
 `yarn updateApis` has two modes. Both fetch the listed bundles from ECOM, rebuild the generator input in
-`apis/`, and then run `yarn diffApis` (a non-zero exit there means differences were found,
-see `temp/diffApis.txt`). Output is built in `temp/stagedApis` and copied into `apis/` only
-after every fetch and check succeeds, so a failed fetch or check leaves `apis/` as it was.
-The previous contents are kept in `temp/oldApis`; if the final copy itself is interrupted,
-restore `apis/` from git or from there.
+`apis/`, and then run `yarn diffApis`, which writes its report to `temp/diffApis.txt`. The
+run fails if the diff itself fails, but not when it finds differences. Output is built in
+`temp/stagedApis` and copied into `apis/` only after every fetch and check succeeds, so a
+failed fetch or check leaves `apis/` as it was. The previous contents are kept in
+`temp/oldApis`, and `apis/` is restored from there if the final copy fails.
 
 Each API's bundle is checked before anything is staged. The run fails if the ref has no
 `manifest.json` at the API's location, the manifest names a different API or major version,
-the API is internal-only, or the bundle's SHA-256 does not match the manifest (ECOM's bundles
-were not regenerated after a source change).
+the API is internal-only, the manifest points outside the API's location, or the bundle's
+SHA-256 does not match the manifest (ECOM's bundles were not regenerated after a source
+change). `api-versions.txt` itself must not list a key or a location twice.
 
 ### Refresh every API for an ECOM release
 
@@ -41,9 +42,9 @@ yarn updateApis                       # release named by the api-versions.txt he
 yarn updateApis --ecom-version 27.1   # release.27.1, and rewrites the header to v27.1
 ```
 
-Precedence for the ref: `ECOM_OAS_REF`, then `--ecom-version`, then the header. If
-`ECOM_OAS_REF` overrides `--ecom-version` the script warns, because the header would then
-claim a release the specs did not come from.
+Precedence for the ref: `ECOM_OAS_REF`, then `--ecom-version`, then the header. Whenever
+`ECOM_OAS_REF` is set the script warns, because the header then names a release the specs
+did not come from.
 
 ### Update only some APIs, from any ref (for API developers)
 
