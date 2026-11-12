@@ -20,7 +20,7 @@ import {
   parseEcomVersionArg,
   parseSingleApiArgs,
   readApiVersions,
-  removeInternalOas,
+  rejectUnknownArgs,
   setEcomVersionHeader,
 } from './utils';
 
@@ -47,11 +47,13 @@ const ECOM_CHECKOUT_PATH = path.join(__dirname, '../temp/ecom-oas');
  * - Partial update (`--api <key> --ref <ref>`): only the named APIs are refreshed,
  *   from any ECOM ref, and every other folder in `apis/` is left untouched.
  *
- * Output is built in a staging directory and copied into `apis/` only once the whole
- * run has succeeded, so a failure or an interrupt never leaves `apis/` half-written.
+ * Output is built in a staging directory and copied into `apis/` only once every
+ * fetch and check has succeeded, so those failures never touch `apis/`. The final
+ * copy is not atomic; if it is interrupted, restore `apis/` from git or `temp/oldApis`.
  */
 function updateApis(): void {
   const argv = process.argv.slice(2);
+  rejectUnknownArgs(argv);
   const ecomVersion = parseEcomVersionArg(argv);
   const partial = parseSingleApiArgs(argv);
   const allowList = new Map(
@@ -156,8 +158,6 @@ function updateApis(): void {
 
 try {
   updateApis();
-  removeInternalOas(OLD_APIS_PATH);
-  removeInternalOas(PRODUCTION_API_PATH);
   // Run here rather than chained in package.json: yarn appends command-line
   // arguments to the end of the script string, so `--ecom-version` would reach
   // diffApis instead of this script. A non-zero exit means differences were found.

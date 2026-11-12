@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import crypto from 'crypto';
-import {execSync} from 'child_process';
+import {execFileSync} from 'child_process';
 import path from 'path';
 import fs from 'fs-extra';
 import {API_VERSIONS_FILE, ecomRefForVersion, parseEcomVersion} from './utils';
@@ -79,26 +79,31 @@ export function fetchEcomBundles(
   fs.removeSync(targetDir);
   fs.ensureDirSync(targetDir);
 
-  const run = (cmd: string): void => {
-    execSync(cmd, {cwd: targetDir, stdio: 'inherit'});
+  // Arguments are passed as an array, not a shell string, so a ref or URL can never
+  // be split or interpreted by a shell.
+  const git = (...args: string[]): void => {
+    execFileSync('git', args, {cwd: targetDir, stdio: 'inherit'});
   };
 
-  run('git init -q');
-  run(`git remote add origin ${repoUrl}`);
-  run('git sparse-checkout init --cone');
-  run(
-    `git sparse-checkout set ${bundlePaths
-      .map(bundlePath => `${bundlesRoot}/${bundlePath}`)
-      .join(' ')}`
+  git('init', '-q');
+  git('remote', 'add', 'origin', repoUrl);
+  git('sparse-checkout', 'init', '--cone');
+  git(
+    'sparse-checkout',
+    'set',
+    ...bundlePaths.map(bundlePath => `${bundlesRoot}/${bundlePath}`)
   );
+  // blob:none downloads only the files the sparse checkout needs; a plain shallow
+  // fetch would transfer every file in the monorepo at that commit. `--` stops a
+  // ref that starts with a dash from being read as an option.
   try {
-    run(`git fetch --depth 1 origin ${ref}`);
+    git('fetch', '--depth', '1', '--filter=blob:none', 'origin', '--', ref);
   } catch {
     throw new Error(
-      `Could not fetch ${ref} from ECOM (git output above). Check the branch, tag or commit exists; a release branch may not be cut yet.`
+      `Could not fetch ${ref} from ECOM (git output above). Check the branch, tag or full 40-character commit SHA exists; a release branch may not be cut yet.`
     );
   }
-  run('git checkout -q FETCH_HEAD');
+  git('checkout', '-q', 'FETCH_HEAD');
 
   const bundlesPath = path.join(targetDir, bundlesRoot);
   if (!fs.existsSync(bundlesPath)) {
@@ -112,9 +117,9 @@ export function fetchEcomBundles(
 type BundleManifest = {
   apiName: string;
   apiVersion: string;
-  schemaVersion: string;
+  schemaVersion?: string;
   internalOnly: boolean;
-  artifacts: {public?: {path: string; sha256: string}};
+  artifacts?: {public?: {path: string; sha256: string}};
 };
 
 export type BundledApi = {
@@ -155,10 +160,24 @@ export function loadBundledApi(
     );
   }
 
-  const artifact = manifest.artifacts.public;
+  const artifact = manifest.artifacts?.public;
   if (manifest.internalOnly || !artifact) {
     throw new Error(
       `${apiName} is internal-only in ECOM and has no public bundle to ship`
+    );
+  }
+
+  // Only the API's own directory is checked out, and the folder name in `apis/`
+  // embeds the schema version, so both must be what the manifest claims.
+  if (!artifact.path.startsWith(`${bundlePath}/`)) {
+    throw new Error(
+      `${apiName}: manifest points its public bundle outside ${bundlePath}: ${artifact.path}`
+    );
+  }
+  const {schemaVersion = ''} = manifest;
+  if (!/^\d+\.\d+\.\d+$/.test(schemaVersion)) {
+    throw new Error(
+      `${apiName}: manifest has no semantic schema version, received "${schemaVersion}"`
     );
   }
 
@@ -176,7 +195,7 @@ export function loadBundledApi(
   return {
     assetId,
     apiVersion: manifest.apiVersion,
-    version: manifest.schemaVersion,
+    version: schemaVersion,
     // Same "<Title Case> OAS" names Exchange used, which resolveApiName in
     // generate-oas.ts maps to SDK class names.
     name: `${manifest.apiName

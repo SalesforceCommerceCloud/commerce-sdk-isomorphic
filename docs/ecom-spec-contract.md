@@ -25,8 +25,9 @@ Put them in a local `.env` at the repo root (gitignored; copy `.env.example`). `
 `yarn updateApis` has two modes. Both fetch the listed bundles from ECOM, rebuild the generator input in
 `apis/`, and then run `yarn diffApis` (a non-zero exit there means differences were found,
 see `temp/diffApis.txt`). Output is built in `temp/stagedApis` and copied into `apis/` only
-after the whole run succeeds, so a failed or interrupted run leaves `apis/` as it was. The
-previous contents are kept in `temp/oldApis`.
+after every fetch and check succeeds, so a failed fetch or check leaves `apis/` as it was.
+The previous contents are kept in `temp/oldApis`; if the final copy itself is interrupted,
+restore `apis/` from git or from there.
 
 Each API's bundle is checked before anything is staged. The run fails if the ref has no
 `manifest.json` at the API's location, the manifest names a different API or major version,
@@ -57,12 +58,15 @@ tag or commit SHA) and run:
 yarn updateApis --api shopper-baskets-oas-v1 --ref my-feature-branch
 ```
 
-- `--ref` is a branch, tag or commit SHA. A branch is the usual choice. The spec's
+- `--ref` is a branch, tag or full 40-character commit SHA (abbreviated SHAs cannot be
+  fetched). A branch is the usual choice. The spec's
   `info.version` is only a label inside whatever the ref contains, so the ref, not a
   version number, is what selects the spec.
 - `--api` takes the `<assetId>-vN` key and can be repeated. The key must already be in
   `api-versions.txt`; add it there first for a new API.
 - `--api` and `--ref` must be given together and cannot be combined with `--ecom-version`.
+  Any other argument, including a mistyped flag, fails the run instead of falling back to a
+  full refresh.
 - Only the named APIs are rebuilt. The old folder for each (found by the `assetId` and
   `apiVersion` in its `exchange.json`, since folder names embed the spec version) is
   replaced, and every other folder in `apis/` is untouched. The header is not rewritten.

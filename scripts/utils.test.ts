@@ -12,6 +12,7 @@ import {
   parseEcomVersionArg,
   parseSingleApiArgs,
   readApiVersions,
+  rejectUnknownArgs,
   setEcomVersionHeader,
 } from './utils';
 
@@ -206,4 +207,26 @@ describe('parseSingleApiArgs', () => {
       ])
     ).toThrow('cannot be combined with --ecom-version');
   });
+});
+
+describe('rejectUnknownArgs', () => {
+  it.each([
+    [[]],
+    [['--ecom-version', '27.1']],
+    [['--api', 'a-oas-v1', '--api=b-oas-v1', '--ref', 'my-branch']],
+  ])('accepts known flags and their values: %j', argv => {
+    expect(() => rejectUnknownArgs(argv)).not.toThrow();
+  });
+
+  it.each([
+    [['--apis', 'a-oas-v1', '--ref', 'my-branch'], '--apis'],
+    [['--ecom-verison', '27.1'], '--ecom-verison'],
+    [['a-oas-v1'], 'a-oas-v1'],
+    [['--ref', 'my-branch', 'extra'], 'extra'],
+  ])(
+    'rejects a mistyped or stray argument so it cannot fall through to a full refresh: %j',
+    (argv, bad) => {
+      expect(() => rejectUnknownArgs(argv)).toThrow(`Unknown argument ${bad}`);
+    }
+  );
 });

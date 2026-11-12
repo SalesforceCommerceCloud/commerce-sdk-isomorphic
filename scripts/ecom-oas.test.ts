@@ -208,6 +208,29 @@ describe('loadBundledApi', () => {
     ).toThrow('internal-only');
   });
 
+  it("refuses an artifact path outside the API's own bundle directory", () => {
+    writeBundle({
+      artifacts: {
+        public: {
+          path: `shopper/checkout/shopper-orders/v1/${publicFile}`,
+          sha256: 'x',
+        },
+      },
+    });
+
+    expect(() =>
+      loadBundledApi(bundlesRoot, 'shopper-baskets-oas-v1', bundlePath)
+    ).toThrow(`outside ${bundlePath}`);
+  });
+
+  it('refuses a schema version that is not semantic', () => {
+    writeBundle({schemaVersion: undefined});
+
+    expect(() =>
+      loadBundledApi(bundlesRoot, 'shopper-baskets-oas-v1', bundlePath)
+    ).toThrow('schema version');
+  });
+
   it('fails when the public bundle does not match its recorded hash', () => {
     writeBundle();
     fs.appendFileSync(path.join(bundlesRoot, bundlePath, publicFile), 'x');

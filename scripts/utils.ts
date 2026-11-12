@@ -4,48 +4,12 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-/* eslint-disable no-console */
 import path from 'path';
 import fs from 'fs-extra';
 
 export const API_VERSIONS_FILE = path.join(__dirname, '../api-versions.txt');
 const MISSING_HEADER_MESSAGE =
   'api-versions.txt is missing the "# APIs for ECOM vXX.Y" header';
-
-/**
- * Recursively removes all files ending in '-internal.yaml' from a directory and its subdirectories
- * @param directoryPath - The path to the directory to process
- * @param depth - The depth of the directory to process, we limit the depth to 3 to avoid infinite recursion
- */
-export function removeInternalOas(directoryPath: string, depth = 0): void {
-  if (depth > 3) {
-    console.warn(
-      `Reached maximum depth (${depth}) for directory: ${directoryPath}`
-    );
-    return;
-  }
-
-  if (!fs.existsSync(directoryPath)) {
-    console.warn(`Directory does not exist: ${directoryPath}`);
-    return;
-  }
-
-  const items = fs.readdirSync(directoryPath);
-
-  items.forEach(item => {
-    const fullPath = path.join(directoryPath, item);
-    const stat = fs.statSync(fullPath);
-
-    if (stat.isDirectory()) {
-      // Recursively process subdirectories
-      removeInternalOas(fullPath, depth + 1);
-    } else if (stat.isFile() && item.endsWith('-internal.yaml')) {
-      // Remove internal files
-      fs.removeSync(fullPath);
-      console.log(`Removed internal file: ${fullPath}`);
-    }
-  });
-}
 
 const ECOM_VERSION_HEADER = /^#\s*APIs for ECOM v(\d+\.\d+)\s*$/m;
 
@@ -147,6 +111,27 @@ export function parseSingleApiArgs(
     throw new Error('--api/--ref cannot be combined with --ecom-version');
   }
   return {apis, ref: refs[refs.length - 1]};
+}
+
+const KNOWN_FLAGS = ['--ecom-version', '--api', '--ref'];
+
+/**
+ * Fails on any argument that is not a known flag or a known flag's value. Without
+ * this, a mistyped `--apis` or `--ecom-verison` would be ignored and the run would
+ * fall through to a full refresh that replaces every API in `apis/`.
+ */
+export function rejectUnknownArgs(argv: string[]): void {
+  argv.forEach((arg, index) => {
+    const isKnownFlag = KNOWN_FLAGS.some(
+      flag => arg === flag || arg.startsWith(`${flag}=`)
+    );
+    const isFlagValue = index > 0 && KNOWN_FLAGS.includes(argv[index - 1]);
+    if (!isKnownFlag && !isFlagValue) {
+      throw new Error(
+        `Unknown argument ${arg}; expected ${KNOWN_FLAGS.join(', ')}`
+      );
+    }
+  });
 }
 
 /**
