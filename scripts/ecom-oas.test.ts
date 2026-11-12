@@ -8,7 +8,13 @@ import os from 'os';
 import path from 'path';
 import fs from 'fs-extra';
 import crypto from 'crypto';
-import {findApiFolders, loadBundledApi, resolveEcomOasRef} from './ecom-oas';
+import {
+  findApiFolders,
+  getEcomBundlesRoot,
+  loadBundledApi,
+  resolveEcomOasRef,
+} from './ecom-oas';
+import {readApiVersions} from './utils';
 
 describe('resolveEcomOasRef', () => {
   const originalRef = process.env.ECOM_OAS_REF;
@@ -17,7 +23,7 @@ describe('resolveEcomOasRef', () => {
     delete process.env.ECOM_OAS_REF;
     jest
       .spyOn(fs, 'readFileSync')
-      .mockReturnValue('# APIs for ECOM v26.9\nfoo-oas-v1=1.0.0');
+      .mockReturnValue('# APIs for ECOM v26.9\nfoo-oas-v1=shopper/foo/foo/v1');
   });
 
   afterEach(() => {
@@ -40,6 +46,39 @@ describe('resolveEcomOasRef', () => {
   it('prefers ECOM_OAS_REF over both', () => {
     process.env.ECOM_OAS_REF = ' master ';
     expect(resolveEcomOasRef('27.1')).toBe('master');
+  });
+});
+
+describe('getEcomBundlesRoot', () => {
+  const original = process.env.ECOM_BUNDLES_ROOT;
+
+  afterEach(() => {
+    if (original === undefined) {
+      delete process.env.ECOM_BUNDLES_ROOT;
+    } else {
+      process.env.ECOM_BUNDLES_ROOT = original;
+    }
+  });
+
+  it('trims whitespace and trailing slashes so sparse-checkout paths join cleanly', () => {
+    process.env.ECOM_BUNDLES_ROOT = ' some/bundles//\n';
+    expect(getEcomBundlesRoot()).toBe('some/bundles');
+  });
+
+  it('fails with a pointer to the docs when unset', () => {
+    delete process.env.ECOM_BUNDLES_ROOT;
+    expect(() => getEcomBundlesRoot()).toThrow('ECOM_BUNDLES_ROOT is not set');
+  });
+});
+
+describe('committed api-versions.txt', () => {
+  it('maps every API to a bundle location exactly once', () => {
+    const apis = readApiVersions();
+    expect(apis.length).toBeGreaterThan(0);
+    expect(new Set(apis.map(({apiName}) => apiName)).size).toBe(apis.length);
+    expect(new Set(apis.map(({bundlePath}) => bundlePath)).size).toBe(
+      apis.length
+    );
   });
 });
 
