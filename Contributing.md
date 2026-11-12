@@ -41,20 +41,12 @@ $ yarn test
 ### Merging to `preview`
 
 ### Updating APIs
-Update the version file in `api-versions.txt` to the version you want to test or add a new API. Use the API version from your API release or branch build.
+API specs come from the bundles the ECOM monorepo commits for each API. Setup (a local `.env` with the ECOM location) and the full contract are in [docs/ecom-spec-contract.md](docs/ecom-spec-contract.md); copy `.env.example` to start.
 
-To add a new API:
+- **Refresh every API for an ECOM release:** `yarn updateApis --ecom-version 27.1`. This pulls the `release.27.1` branch and rewrites the `# APIs for ECOM vXX.Y` header in `api-versions.txt`.
+- **Test one API from your ECOM branch:** `yarn updateApis --api shopper-baskets-oas-v1 --ref my-feature-branch`. Only that API in `apis/` changes. `--ref` can be a branch, tag, or commit SHA. Your branch must carry a regenerated, committed bundle for the API; a change to the spec sources alone is not picked up (see [docs/ecom-spec-contract.md](docs/ecom-spec-contract.md)).
 
-1. Edit `api-versions.txt` and add a new line following the existing format:
-  - `<api-asset-id-with-version-suffix>=<semantic-version>`
-  - Example:
-
-   ```
-   shopper-newfeature-oas-v1=1.0.0
-   ```
-
-2. Run:
-  - `yarn updateApis` to download the API OAS into `apis/` directory
+To add a new API, add a `<api-asset-id-with-version-suffix>=<bundle location>` line to `api-versions.txt`, where the location is the API's directory under the ECOM bundles directory (for example `shopper-newfeature-oas-v1=shopper/<family>/shopper-newfeature/v1`), then run one of the commands above. The key is the allow-list of APIs the SDK ships.
 
 #### Update and Check SDK before merging:
 
