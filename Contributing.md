@@ -41,7 +41,7 @@ $ yarn test
 ### Merging to `preview`
 
 ### Updating APIs
-API specs come from the bundles the ECOM monorepo commits for each API. Setup (a local `.env` with the ECOM location) and the full contract are in [docs/ecom-spec-contract.md](docs/ecom-spec-contract.md); copy `.env.example` to start.
+API specs come from the bundles the ECOM monorepo commits for each API. Setup (a local `.env` with the ECOM location) and the full contract are in [docs/ecom-spec-contract.md](docs/ecom-spec-contract.md); copy `.env.example` to start. The ECOM values are internal and not in this repo; ask the SDK maintainers for them. Updating APIs needs network access to ECOM, so it runs locally, not in CI.
 
 - **Refresh every API for an ECOM release:** `yarn updateApis --ecom-version 27.1`. This pulls the `release.27.1` branch and rewrites the `# APIs for ECOM vXX.Y` header in `api-versions.txt`.
 - **Test one API from your ECOM branch:** `yarn updateApis --api shopper-baskets-oas-v1 --ref my-feature-branch`. Only that API in `apis/` changes. `--ref` can be a branch, tag, or full commit SHA. Your branch must carry a regenerated, committed bundle for the API; a change to the spec sources alone is not picked up (see [docs/ecom-spec-contract.md](docs/ecom-spec-contract.md)).
