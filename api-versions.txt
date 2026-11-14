@@ -1,6 +1,7 @@
-# APIs for ECOM v26.9
+# APIs for ECOM v26.10
 # <assetId>-vN=<location of the API's bundle in ECOM, <type>/<family>/<api>/vN>
 # auth-oas-v1 was formerly Shopper Login
+# auth-oas-v1: apis/auth-oas-1.51.0 was supplied by hand because ECOM's auth bundle does not yet require channel_id and login_id on passwordless/token. A full refresh would replace it with that bundle, so until ECOM catches up, update other APIs with --api instead.
 auth-oas-v1=shopper/shopper/auth/v1
 shopper-availability-oas-v1=shopper/product/shopper-availability/v1
 shopper-baskets-oas-v1=shopper/checkout/shopper-baskets/v1
@@ -9,6 +10,7 @@ shopper-configurations-oas-v1=shopper/configuration/shopper-configurations/v1
 shopper-consents-oas-v1=shopper/shopper/shopper-consents/v1
 shopper-context-oas-v1=shopper/shopper/shopper-context/v1
 shopper-customers-oas-v1=shopper/customer/shopper-customers/v1
+shopper-delivery-estimates-oas-v1=shopper/product/shopper-delivery-estimates/v1
 shopper-experience-oas-v1=shopper/experience/shopper-experience/v1
 shopper-gift-certificates-oas-v1=shopper/pricing/shopper-gift-certificates/v1
 shopper-orders-oas-v1=shopper/checkout/shopper-orders/v1

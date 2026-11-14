@@ -1,5 +1,120 @@
 # CHANGELOG
 
+## v5.8.0
+
+### API Versions
+
+| API Name | API Version |
+|----------|-------------|
+| shopper-login | 1.51.0 |
+| shopper-availability | 1.4.2 |
+| shopper-baskets | 1.12.2 |
+| shopper-baskets | 2.13.4 |
+| shopper-configurations | 1.4.2 |
+| shopper-consents | 1.2.2 |
+| shopper-context | 1.1.4 |
+| shopper-customers | 1.10.1 |
+| shopper-delivery-estimates | 1.2.2 |
+| shopper-experience | 1.8.0 |
+| shopper-gift-certificates | 1.3.2 |
+| shopper-orders | 1.22.4 |
+| shopper-payments | 1.7.2 |
+| shopper-products | 1.13.0 |
+| shopper-promotions | 1.4.2 |
+| shopper-search | 1.15.2 |
+| shopper-seo | 1.3.1 |
+| shopper-stores | 1.4.2 |
+
+### :warning: BREAKING CHANGES :warning:
+
+**This release contains breaking changes to TypeScript signatures and to the SLAS request bodies, but it is published as a minor version (5.8.0), not a major.** Shopper Login (SLAS) now requires `login_id` and `channel_id` on the passwordless token request and `user_id` on the password reset request. Applications that call the affected helper or methods without these values will fail to type-check, and at runtime SLAS will reject the request. If you depend on this package with a caret range (`^5.x`), a routine install will pick up this release. **Pin to an exact version and follow the migration steps below before upgrading.**
+
+**Why this is a minor release (5.8.0) and not a major**
+
+These changes follow a required change in the Shopper Login (SLAS) service. They are not a redesign of the SDK. The SDK's public API is otherwise unchanged. We version the SDK to track the Commerce APIs it wraps, and API-driven breaking changes have shipped in minor releases before (for example, the Shopper Payments balance request changes in v5.7.0). We reserve major versions for changes to how the SDK itself is structured or used.
+
+We recognize that a breaking change in a minor release is unexpected under strict semver. Because of that, we recommend pinning `commerce-sdk-isomorphic` to an exact version rather than a `^` range, and upgrading deliberately using the migration steps below.
+
+- `helpers.getPasswordLessAccessToken` now requires `loginId` and `channelId`. They are sent as `login_id` and `channel_id` on the Shopper Login `POST /organizations/{organizationId}/oauth2/passwordless/token` request. `channelId` is no longer defaulted from `clientConfig.parameters.siteId`; pass it explicitly. `loginId` and `channelId` must be non-empty; the helper throws otherwise.
+- The Shopper Login `POST /organizations/{organizationId}/oauth2/passwordless/token` request body type now requires `login_id` and `channel_id`.
+- The Shopper Login `POST /organizations/{organizationId}/oauth2/password/action` request body type (`resetPassword`) now requires `user_id`.
+
+#### Migration
+
+`helpers.getPasswordLessAccessToken`: add `loginId` (the same ID the shopper used when requesting the passwordless login, which `helpers.authorizePasswordless` takes as `userid`) and `channelId` (your site ID, which is what was previously used implicitly).
+
+```ts
+// Before
+await helpers.getPasswordLessAccessToken({
+  slasClient,
+  credentials: {clientSecret},
+  parameters: {pwdlessLoginToken},
+});
+
+// After
+await helpers.getPasswordLessAccessToken({
+  slasClient,
+  credentials: {clientSecret},
+  parameters: {
+    pwdlessLoginToken,
+    loginId: userid, // must exactly match the ID used in authorizePasswordless
+    channelId: siteId, // previously defaulted from clientConfig.parameters.siteId
+  },
+});
+```
+
+`resetPassword`: include `user_id` in the request body alongside the fields you already send.
+
+```ts
+// Before
+await slasClient.resetPassword(
+  {parameters: {organizationId}, body: {pwd_action_token, channel_id, client_id, new_password}}
+);
+
+// After
+await slasClient.resetPassword(
+  {parameters: {organizationId}, body: {pwd_action_token, channel_id, client_id, new_password, user_id}}
+);
+```
+
+Direct callers of the generated passwordless token method must add `login_id` and `channel_id` to the body in the same way.
+
+## v5.7.0
+
+_ECOM v26.10_
+
+### API Versions
+
+| API Name | API Version |
+|----------|-------------|
+| shopper-login | 1.50.0 |
+| shopper-availability | 1.4.2 |
+| shopper-baskets | 1.12.2 |
+| shopper-baskets | 2.13.4 |
+| shopper-configurations | 1.4.2 |
+| shopper-consents | 1.2.2 |
+| shopper-context | 1.1.4 |
+| shopper-customers | 1.10.1 |
+| shopper-delivery-estimates | 1.2.2 |
+| shopper-experience | 1.7.2 |
+| shopper-gift-certificates | 1.3.2 |
+| shopper-orders | 1.22.4 |
+| shopper-payments | 1.7.2 |
+| shopper-products | 1.13.0 |
+| shopper-promotions | 1.4.2 |
+| shopper-search | 1.15.2 |
+| shopper-seo | 1.3.1 |
+| shopper-stores | 1.4.2 |
+
+### Enhancements
+
+- Add Shopper Delivery Estimates API (`shopperDeliveryEstimates`).
+
+### Breaking Changes
+
+- The Shopper Payments `POST /organizations/{organizationId}/payment-instruments/balance` request now requires `provider` and `providerProperties`.
+- The Shopper Payments `POST /organizations/{organizationId}/payment-instruments/balance` request now requires a non-empty `paymentMethodId` and no longer accepts `giftCard`.
+
 ## v5.6.0
 
 _ECOM v26.9_

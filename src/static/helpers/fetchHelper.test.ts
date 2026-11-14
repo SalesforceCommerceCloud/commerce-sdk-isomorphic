@@ -168,7 +168,10 @@ describe('doFetch', () => {
         .query({siteId: 'site_id'})
         .reply(200, responseBody, {sfdc_maintenance: 'system'});
 
-      const copyClientConfig = {...clientConfig, throwOnMaintenanceHeader: true};
+      const copyClientConfig = {
+        ...clientConfig,
+        throwOnMaintenanceHeader: true,
+      };
 
       try {
         await doFetch(url, options, copyClientConfig);
@@ -176,7 +179,9 @@ describe('doFetch', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(MaintenanceError);
         if (error instanceof MaintenanceError) {
-          expect(error.message).toBe('Service unavailable due to system maintenance');
+          expect(error.message).toBe(
+            'Service unavailable due to system maintenance'
+          );
         }
       }
     });
@@ -187,7 +192,10 @@ describe('doFetch', () => {
         .query({siteId: 'site_id'})
         .reply(200, responseBody, {sfdc_maintenance: 'site'});
 
-      const copyClientConfig = {...clientConfig, throwOnMaintenanceHeader: true};
+      const copyClientConfig = {
+        ...clientConfig,
+        throwOnMaintenanceHeader: true,
+      };
 
       try {
         await doFetch(url, options, copyClientConfig);
@@ -195,7 +203,9 @@ describe('doFetch', () => {
       } catch (error) {
         expect(error).toBeInstanceOf(MaintenanceError);
         if (error instanceof MaintenanceError) {
-          expect(error.message).toBe('Service unavailable due to site maintenance');
+          expect(error.message).toBe(
+            'Service unavailable due to site maintenance'
+          );
         }
       }
     });
@@ -206,7 +216,10 @@ describe('doFetch', () => {
         .query({siteId: 'site_id'})
         .reply(200, responseBody, {sfdc_maintenance: 'other'});
 
-      const copyClientConfig = {...clientConfig, throwOnMaintenanceHeader: true};
+      const copyClientConfig = {
+        ...clientConfig,
+        throwOnMaintenanceHeader: true,
+      };
       const data = await doFetch(url, options, copyClientConfig);
       expect(data).toEqual(responseBody);
     });
@@ -217,7 +230,10 @@ describe('doFetch', () => {
         .query({siteId: 'site_id'})
         .reply(200, responseBody, {sfdc_maintenance: 'system'});
 
-      const copyClientConfig = {...clientConfig, throwOnMaintenanceHeader: false};
+      const copyClientConfig = {
+        ...clientConfig,
+        throwOnMaintenanceHeader: false,
+      };
       const data = await doFetch(url, options, copyClientConfig);
       expect(data).toEqual(responseBody);
     });
@@ -238,7 +254,10 @@ describe('doFetch', () => {
         .query({siteId: 'site_id'})
         .reply(200, responseBody, {sfdc_maintenance: 'system'});
 
-      const copyClientConfig = {...clientConfig, throwOnMaintenanceHeader: true};
+      const copyClientConfig = {
+        ...clientConfig,
+        throwOnMaintenanceHeader: true,
+      };
 
       try {
         await doFetch(url, options, copyClientConfig, true);
@@ -254,7 +273,10 @@ describe('doFetch', () => {
         .query({siteId: 'site_id'})
         .reply(200, responseBody, {sfdc_maintenance: 'site'});
 
-      const copyClientConfig = {...clientConfig, throwOnMaintenanceHeader: true};
+      const copyClientConfig = {
+        ...clientConfig,
+        throwOnMaintenanceHeader: true,
+      };
 
       try {
         await doFetch(url, options, copyClientConfig);
