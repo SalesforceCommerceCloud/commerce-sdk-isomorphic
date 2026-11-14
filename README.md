@@ -379,6 +379,10 @@ console.log("categoriesResult: ", categoriesResult);
 
 **NOTE: In the next major version release, path parameters will be single encoded by default**
 
+## Contributing
+
+The SDK is generated from the SCAPI OAS specs that the ECOM monorepo publishes. To update them, see [Updating APIs](./Contributing.md#updating-apis) and the [ECOM spec source contract](./docs/ecom-spec-contract.md).
+
 ## License Information
 
 The Commerce SDK Isomorphic is licensed under BSD-3-Clause license. See the [license](./LICENSE.txt) for details.
