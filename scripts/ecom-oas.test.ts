@@ -8,11 +8,16 @@ import os from 'os';
 import path from 'path';
 import fs from 'fs-extra';
 import crypto from 'crypto';
+import {execFileSync} from 'child_process';
 import {
+  BundledApi,
+  fetchEcomBundles,
   findApiFolders,
   getEcomBundlesRoot,
   loadBundledApi,
+  replaceApis,
   resolveEcomOasRef,
+  stageApi,
 } from './ecom-oas';
 import {readApiVersions} from './utils';
 
@@ -87,10 +92,10 @@ describe('findApiFolders', () => {
 
   const writeFolder = (name: string, assetId: string, apiVersion: string) => {
     fs.ensureDirSync(path.join(apisDir, name));
-    fs.writeJSONSync(path.join(apisDir, name, 'exchange.json'), {
-      assetId,
-      apiVersion,
-    });
+    fs.writeFileSync(
+      path.join(apisDir, name, `${assetId}-${apiVersion}-public.yaml`),
+      ''
+    );
   };
 
   beforeEach(() => {
@@ -116,7 +121,7 @@ describe('findApiFolders', () => {
     expect(findApiFolders(apisDir, 'shopper-baskets-oas-v1')).toEqual([]);
   });
 
-  it('ignores folders without an exchange.json', () => {
+  it('ignores folders without a spec file', () => {
     fs.ensureDirSync(path.join(apisDir, 'stray'));
     expect(findApiFolders(apisDir, 'shopper-baskets-oas-v1')).toEqual([]);
   });
@@ -173,17 +178,8 @@ describe('loadBundledApi', () => {
       assetId: 'shopper-baskets-oas',
       apiVersion: 'v1',
       version: '1.12.3',
-      name: 'Shopper Baskets OAS',
       publicSpec: path.join(bundlesRoot, bundlePath, publicFile),
     });
-  });
-
-  it('names auth the way the generator expects', () => {
-    writeBundle({apiName: 'auth'});
-
-    expect(loadBundledApi(bundlesRoot, 'auth-oas-v1', bundlePath).name).toBe(
-      'Auth OAS'
-    );
   });
 
   it('fails when the ref has no bundle at that location', () => {
@@ -242,5 +238,190 @@ describe('loadBundledApi', () => {
     expect(() =>
       loadBundledApi(bundlesRoot, 'shopper-baskets-oas-v1', bundlePath)
     ).toThrow('does not match the SHA-256');
+  });
+});
+
+describe('stageApi', () => {
+  let workDir: string;
+
+  beforeEach(() => {
+    workDir = fs.mkdtempSync(path.join(os.tmpdir(), 'stage-'));
+  });
+
+  afterEach(() => {
+    fs.removeSync(workDir);
+  });
+
+  it('writes only the public spec, without ECOM internal header comments', () => {
+    const publicSpec = path.join(workDir, 'bundle.yaml');
+    fs.writeFileSync(
+      publicSpec,
+      '# internal source path\n# internal build command\nopenapi: 3.0.3\n# kept\n'
+    );
+    const api: BundledApi = {
+      assetId: 'shopper-baskets-oas',
+      apiVersion: 'v1',
+      version: '1.12.3',
+      publicSpec,
+    };
+    const stagedDir = path.join(workDir, 'staged');
+
+    expect(stageApi(api, stagedDir)).toBe('shopper-baskets-oas-1.12.3');
+
+    const folder = path.join(stagedDir, 'shopper-baskets-oas-1.12.3');
+    expect(fs.readdirSync(folder)).toEqual([
+      'shopper-baskets-oas-v1-public.yaml',
+    ]);
+    expect(
+      fs.readFileSync(
+        path.join(folder, 'shopper-baskets-oas-v1-public.yaml'),
+        'utf-8'
+      )
+    ).toBe('openapi: 3.0.3\n# kept\n');
+  });
+});
+
+describe('replaceApis', () => {
+  let workDir: string;
+  let stagedDir: string;
+  let apisDir: string;
+  let backupDir: string;
+
+  const writeApi = (root: string, assetId: string, version: string) => {
+    const folder = path.join(root, `${assetId}-${version}`);
+    fs.ensureDirSync(folder);
+    fs.writeFileSync(path.join(folder, `${assetId}-v1-public.yaml`), version);
+  };
+
+  beforeEach(() => {
+    workDir = fs.mkdtempSync(path.join(os.tmpdir(), 'replace-'));
+    stagedDir = path.join(workDir, 'staged');
+    apisDir = path.join(workDir, 'apis');
+    backupDir = path.join(workDir, 'old');
+    writeApi(apisDir, 'a-oas', '1.0.0');
+    writeApi(apisDir, 'b-oas', '1.0.0');
+    writeApi(stagedDir, 'a-oas', '1.1.0');
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+    fs.removeSync(workDir);
+  });
+
+  it('replaces only the named keys on a partial update and backs up the old state', () => {
+    replaceApis({stagedDir, apisDir, backupDir, keys: ['a-oas-v1']});
+
+    expect(fs.readdirSync(apisDir).sort()).toEqual([
+      'a-oas-1.1.0',
+      'b-oas-1.0.0',
+    ]);
+    expect(fs.readdirSync(backupDir).sort()).toEqual([
+      'a-oas-1.0.0',
+      'b-oas-1.0.0',
+    ]);
+  });
+
+  it('empties the apis directory first on a full refresh', () => {
+    replaceApis({stagedDir, apisDir, backupDir});
+
+    expect(fs.readdirSync(apisDir)).toEqual(['a-oas-1.1.0']);
+  });
+
+  it('restores the apis directory and rethrows when copying fails', () => {
+    jest.spyOn(console, 'error').mockImplementation(() => undefined);
+    const realCopySync = fs.copySync.bind(fs);
+    let calls = 0;
+    jest.spyOn(fs, 'copySync').mockImplementation(((
+      src: string,
+      dest: string
+    ) => {
+      calls += 1;
+      // First call is the backup, second is the staged copy.
+      if (calls === 2) {
+        throw new Error('disk full');
+      }
+      realCopySync(src, dest);
+    }) as typeof fs.copySync);
+
+    expect(() => replaceApis({stagedDir, apisDir, backupDir})).toThrow(
+      'disk full'
+    );
+    expect(fs.readdirSync(apisDir).sort()).toEqual([
+      'a-oas-1.0.0',
+      'b-oas-1.0.0',
+    ]);
+  });
+});
+
+describe('fetchEcomBundles', () => {
+  const bundlesRoot = 'bundles';
+  const bundlePath = 'shopper/checkout/shopper-baskets/v1';
+  const originalEnv = {...process.env};
+  let workDir: string;
+  let commit: string;
+
+  const git = (cwd: string, ...args: string[]) =>
+    execFileSync('git', args, {cwd, stdio: ['ignore', 'pipe', 'pipe']})
+      .toString()
+      .trim();
+
+  beforeAll(() => {
+    workDir = fs.mkdtempSync(path.join(os.tmpdir(), 'fetch-'));
+    const origin = path.join(workDir, 'origin');
+    fs.ensureDirSync(path.join(origin, bundlesRoot, bundlePath));
+    fs.ensureDirSync(path.join(origin, bundlesRoot, 'other/dir/api/v1'));
+    fs.writeFileSync(
+      path.join(origin, bundlesRoot, bundlePath, 'manifest.json'),
+      '{}'
+    );
+    fs.writeFileSync(
+      path.join(origin, bundlesRoot, 'other/dir/api/v1/manifest.json'),
+      '{}'
+    );
+    git(origin, 'init', '-q', '-b', 'main');
+    git(origin, 'config', 'uploadpack.allowFilter', 'true');
+    git(origin, 'config', 'uploadpack.allowAnySHA1InWant', 'true');
+    git(origin, 'add', '.');
+    git(
+      origin,
+      '-c',
+      'user.name=test',
+      '-c',
+      'user.email=test@example.com',
+      'commit',
+      '-q',
+      '-m',
+      'bundles'
+    );
+    commit = git(origin, 'rev-parse', 'HEAD');
+    process.env.ECOM_REPO_URL = `file://${origin}`;
+    process.env.ECOM_BUNDLES_ROOT = bundlesRoot;
+  });
+
+  afterAll(() => {
+    process.env = originalEnv;
+    fs.removeSync(workDir);
+  });
+
+  it('checks out only the requested bundles and reports the resolved commit', () => {
+    const target = path.join(workDir, 'checkout');
+
+    const result = fetchEcomBundles(target, 'main', [bundlePath]);
+
+    expect(result.commit).toBe(commit);
+    expect(result.bundlesPath).toBe(path.join(target, bundlesRoot));
+    expect(
+      fs.existsSync(path.join(result.bundlesPath, bundlePath, 'manifest.json'))
+    ).toBe(true);
+    expect(fs.existsSync(path.join(result.bundlesPath, 'other'))).toBe(false);
+  });
+
+  it('fails with an actionable message when the ref does not exist', () => {
+    jest.spyOn(console, 'error').mockImplementation(() => undefined);
+    expect(() =>
+      fetchEcomBundles(path.join(workDir, 'missing-ref'), 'no-such-ref', [
+        bundlePath,
+      ])
+    ).toThrow('Could not fetch no-such-ref from ECOM');
   });
 });

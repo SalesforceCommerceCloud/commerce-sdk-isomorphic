@@ -8,15 +8,20 @@ import crypto from 'crypto';
 import {execFileSync} from 'child_process';
 import path from 'path';
 import fs from 'fs-extra';
-import {API_VERSIONS_FILE, ecomRefForVersion, parseEcomVersion} from './utils';
+import {
+  API_VERSIONS_FILE,
+  ecomRefForVersion,
+  parseEcomVersion,
+  readApiFolderIdentity,
+} from './utils';
 
 /**
  * ECOM is the source of truth for SCAPI OAS definitions. Its build publishes one
  * bundled, self-contained spec per API into a bundles directory in git, next to a
  * `manifest.json` that records the API's identity, schema version and SHA-256. This
  * module fetches only the bundles the SDK ships and reshapes each into the on-disk
- * form the generator consumes - `apis/<assetId>-<version>/` holding the public
- * bundle plus an `exchange.json` descriptor - so `generate-oas.ts` needs no changes.
+ * form the generator consumes - `apis/<assetId>-<version>/` holding just the public
+ * bundle, whose file name carries the API's id and major version.
  *
  * We consume ECOM's public bundle rather than bundling the authoring sources
  * ourselves: the public view is produced by ECOM's own Redocly config and
@@ -64,16 +69,24 @@ export function resolveEcomOasRef(ecomVersion?: string): string {
   );
 }
 
+export type FetchedBundles = {
+  // Absolute path to the checked-out bundles root
+  bundlesPath: string;
+  // Full SHA of the ECOM commit the ref resolved to
+  commit: string;
+};
+
 /**
  * Sparse, shallow-checks out only the given API bundle directories (relative to the
  * bundles root) from the ECOM monorepo into `targetDir`, at one ref. Returns the
- * absolute path to the checked-out bundles root.
+ * absolute path to the checked-out bundles root and the full SHA of the ECOM commit
+ * the ref resolved to.
  */
 export function fetchEcomBundles(
   targetDir: string,
   ref: string,
   bundlePaths: string[]
-): string {
+): FetchedBundles {
   const repoUrl = getEcomRepoUrl();
   const bundlesRoot = getEcomBundlesRoot();
   fs.removeSync(targetDir);
@@ -81,9 +94,11 @@ export function fetchEcomBundles(
 
   // Arguments are passed as an array, not a shell string, so a ref or URL can never
   // be split or interpreted by a shell.
-  const git = (...args: string[]): void => {
-    execFileSync('git', args, {cwd: targetDir, stdio: 'inherit'});
-  };
+  const git = (...args: string[]): string =>
+    execFileSync('git', args, {
+      cwd: targetDir,
+      stdio: ['ignore', 'pipe', 'inherit'],
+    }).toString();
 
   git('init', '-q');
   git('remote', 'add', 'origin', repoUrl);
@@ -100,7 +115,7 @@ export function fetchEcomBundles(
     git('fetch', '--depth', '1', '--filter=blob:none', 'origin', '--', ref);
   } catch {
     throw new Error(
-      `Could not fetch ${ref} from ECOM (git output above). Check you can reach ECOM and that the branch, tag or full 40-character commit SHA exists; a release branch may not be cut yet.`
+      `Could not fetch ${ref} from ECOM (git output above). Check ECOM_REPO_URL, that you can reach ECOM, and that the branch, tag or full 40-character commit SHA exists; a release branch may not be cut yet.`
     );
   }
   git('checkout', '-q', 'FETCH_HEAD');
@@ -111,7 +126,7 @@ export function fetchEcomBundles(
       `${ref} exists on ECOM but has none of the requested bundles under ECOM_BUNDLES_ROOT. Bundles are published by ECOM's build; the ref may predate them or not carry them yet.`
     );
   }
-  return bundlesPath;
+  return {bundlesPath, commit: git('rev-parse', 'HEAD').trim()};
 }
 
 type BundleManifest = {
@@ -129,8 +144,6 @@ export type BundledApi = {
   apiVersion: string;
   // SemVer of the spec, e.g. "1.12.3"
   version: string;
-  // Display name the generator derives class names from, e.g. "Shopper Baskets OAS"
-  name: string;
   // Absolute path to ECOM's public bundle
   publicSpec: string;
 };
@@ -197,21 +210,40 @@ export function loadBundledApi(
     assetId,
     apiVersion: manifest.apiVersion,
     version: schemaVersion,
-    // Same "<Title Case> OAS" names Exchange used, which resolveApiName in
-    // generate-oas.ts maps to SDK class names.
-    name: `${manifest.apiName
-      .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ')} OAS`,
     publicSpec,
   };
 }
 
+const LEADING_COMMENT_LINES = /^(#[^\n]*\n)+/;
+
 /**
- * Finds the staged folders in `apisDir` that belong to one allow-list key such as
- * `shopper-baskets-oas-v1`. Matches on the `assetId` and `apiVersion` recorded in
- * each folder's `exchange.json` rather than on the folder name: the name embeds the
- * spec version, which changes on every update, and v1 and v2 share an assetId.
+ * Writes one API into `stagedDir` in the shape the generator reads: a
+ * `<assetId>-<version>` folder holding the public bundle, named
+ * `<assetId>-<apiVersion>-public.yaml`.
+ * @returns the folder name written
+ */
+export function stageApi(api: BundledApi, stagedDir: string): string {
+  const folderName = `${api.assetId}-${api.version}`;
+  const targetDir = path.join(stagedDir, folderName);
+  fs.ensureDirSync(targetDir);
+  // ECOM prefixes each bundle with a comment block naming its internal source file
+  // and build command. This repo is public, so that block is dropped; the rest of the
+  // file is copied unchanged.
+  const spec = fs
+    .readFileSync(api.publicSpec, 'utf-8')
+    .replace(LEADING_COMMENT_LINES, '');
+  fs.writeFileSync(
+    path.join(targetDir, `${api.assetId}-${api.apiVersion}-public.yaml`),
+    spec
+  );
+  return folderName;
+}
+
+/**
+ * Finds the folders in `apisDir` that belong to one allow-list key such as
+ * `shopper-baskets-oas-v1`. Matches on the `assetId` and `apiVersion` in each
+ * folder's spec file name rather than on the folder name: the name embeds the spec
+ * version, which changes on every update, and v1 and v2 share an assetId.
  */
 export function findApiFolders(apisDir: string, allowKey: string): string[] {
   if (!fs.existsSync(apisDir)) {
@@ -221,14 +253,52 @@ export function findApiFolders(apisDir: string, allowKey: string): string[] {
     .readdirSync(apisDir)
     .map(name => path.join(apisDir, name))
     .filter(dir => {
-      const descriptor = path.join(dir, 'exchange.json');
-      if (!fs.existsSync(descriptor)) {
-        return false;
-      }
-      const {assetId, apiVersion} = fs.readJSONSync(descriptor) as {
-        assetId: string;
-        apiVersion: string;
-      };
-      return `${assetId}-${apiVersion}` === allowKey;
+      const identity = readApiFolderIdentity(dir);
+      return (
+        identity !== undefined &&
+        `${identity.assetId}-${identity.apiVersion}` === allowKey
+      );
     });
+}
+
+export type ReplaceApisOptions = {
+  stagedDir: string;
+  apisDir: string;
+  // Receives a copy of `apisDir` before it changes; `diffApis` compares against it
+  backupDir: string;
+  // Only these keys' folders are replaced; when omitted, `apisDir` is emptied first
+  keys?: string[];
+};
+
+/**
+ * Moves staged APIs into `apisDir`. A partial update removes only the named keys'
+ * old folders (their names embed the old version, so they would otherwise linger
+ * beside the new ones); a full refresh empties `apisDir`. If anything fails after
+ * `apisDir` starts changing, it is restored from `backupDir` and the error rethrown.
+ */
+export function replaceApis({
+  stagedDir,
+  apisDir,
+  backupDir,
+  keys,
+}: ReplaceApisOptions): void {
+  fs.removeSync(backupDir);
+  fs.ensureDirSync(apisDir);
+  fs.copySync(apisDir, backupDir);
+
+  try {
+    if (keys) {
+      keys.forEach(key => {
+        findApiFolders(apisDir, key).forEach(dir => fs.removeSync(dir));
+      });
+    } else {
+      fs.emptyDirSync(apisDir);
+    }
+    fs.copySync(stagedDir, apisDir);
+  } catch (error) {
+    console.error(`Restoring ${apisDir} from ${backupDir}...`); // eslint-disable-line no-console
+    fs.removeSync(apisDir);
+    fs.copySync(backupDir, apisDir);
+    throw error;
+  }
 }

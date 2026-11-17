@@ -10,16 +10,24 @@ import {generateFromOas} from '@commerce-apps/raml-toolkit';
 import Handlebars from 'handlebars';
 import {
   resolveApiName,
-  getAPIDetailsFromExchange,
+  getAPIDetailsFromSpec,
   generateSDKs,
   generateIndex,
   main,
   generateVersionFile,
   getAllAPIDirectories,
 } from './generate-oas';
+import {readApiFolderIdentity} from './utils';
 
 // Mock dependencies
 jest.mock('fs-extra');
+
+// Identity parsing reads the real file system, which this suite replaces with mocks;
+// it is tested against real folders in utils.test.ts.
+jest.mock('./utils', () => ({
+  ...jest.requireActual<Record<string, unknown>>('./utils'),
+  readApiFolderIdentity: jest.fn(),
+}));
 
 jest.mock('@commerce-apps/raml-toolkit', () => ({
   generateFromOas: {
@@ -39,10 +47,9 @@ describe('generate-oas', () => {
 
     // Mock fs-extra methods
     (fs.existsSync as jest.Mock).mockReturnValue(true);
-    (fs.readJSONSync as jest.Mock).mockReturnValue({
-      main: 'api.yaml',
+    (readApiFolderIdentity as jest.Mock).mockReturnValue({
+      specFile: 'shopper-orders-oas-v1-public.yaml',
       assetId: 'shopper-orders-oas',
-      name: 'Shopper Orders OAS',
       apiVersion: 'v1',
     });
     (fs.statSync as jest.Mock).mockReturnValue({isFile: () => true});
@@ -100,48 +107,56 @@ describe('generate-oas', () => {
     });
   });
 
-  describe('getAPIDetailsFromExchange', () => {
-    it('should return correct API details from exchange.json', () => {
-      const result = getAPIDetailsFromExchange(
-        path.join(mockApiDirectory, 'shopperOrders')
-      );
-      expect(result).toEqual({
-        filepath: path.join(mockApiDirectory, 'shopperOrders', 'api.yaml'),
-        filename: 'api.yaml',
+  describe('getAPIDetailsFromSpec', () => {
+    const identify = (assetId: string, apiVersion: string) =>
+      (readApiFolderIdentity as jest.Mock).mockReturnValue({
+        specFile: `${assetId}-${apiVersion}-public.yaml`,
+        assetId,
+        apiVersion,
+      });
+
+    it('derives the generator inputs from the spec file name', () => {
+      const folder = path.join(mockApiDirectory, 'shopperOrders');
+      expect(getAPIDetailsFromSpec(folder)).toEqual({
+        filepath: path.join(folder, 'shopper-orders-oas-v1-public.yaml'),
+        filename: 'shopper-orders-oas-v1-public.yaml',
         directoryName: 'shopperOrders',
         name: 'Shopper Orders OAS',
         apiName: 'ShopperOrders',
       });
     });
 
-    it('should throw error when exchange.json does not exist', () => {
-      (fs.existsSync as jest.Mock).mockReturnValueOnce(false);
-      expect(() => getAPIDetailsFromExchange('nonexistent')).toThrow(
-        'Exchange file does not exist'
+    it('throws when the folder has no spec file', () => {
+      (readApiFolderIdentity as jest.Mock).mockReturnValue(undefined);
+      expect(() => getAPIDetailsFromSpec('nonexistent')).toThrow(
+        'No spec file found in nonexistent'
       );
     });
 
-    it('Appends V2 to the name if the apiVersion is v2', () => {
-      // Set up the mock before calling the function
-      (fs.readJSONSync as jest.Mock).mockReturnValue({
-        main: 'api.yaml',
-        assetId: 'shopper-baskets-oas',
-        name: 'Shopper Baskets OAS',
-        apiVersion: 'V2',
-      });
-
-      const result = getAPIDetailsFromExchange(
-        path.join(mockApiDirectory, 'shopperBaskets')
-      );
-
-      expect(result).toEqual({
-        filepath: path.join(mockApiDirectory, 'shopperBaskets', 'api.yaml'),
-        filename: 'api.yaml',
-        directoryName: 'shopperBasketsV2',
-        name: 'Shopper Baskets OAS',
+    it('appends V2 to the name and class name for a v2 API', () => {
+      identify('shopper-baskets-oas', 'v2');
+      expect(
+        getAPIDetailsFromSpec(path.join(mockApiDirectory, 'shopperBaskets'))
+      ).toMatchObject({
+        directoryName: 'shopperBasketsv2',
+        name: 'Shopper Baskets OAS V2',
         apiName: 'ShopperBasketsV2',
       });
     });
+
+    it.each([
+      ['auth-oas', 'v1', 'shopperLogin', 'ShopperLogin'],
+      ['shopper-seo-oas', 'v1', 'shopperSeo', 'ShopperSEO'],
+    ])(
+      'keeps the class name the old descriptor produced for %s',
+      (assetId, apiVersion, directoryName, apiName) => {
+        identify(assetId, apiVersion);
+        expect(getAPIDetailsFromSpec('folder')).toMatchObject({
+          directoryName,
+          apiName,
+        });
+      }
+    );
   });
 
   describe('generateSDKs', () => {

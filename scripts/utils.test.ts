@@ -7,10 +7,12 @@
 import fs from 'fs-extra';
 import path from 'path';
 import {
+  apiDisplayName,
   ecomRefForVersion,
   parseEcomVersion,
   parseEcomVersionArg,
   parseSingleApiArgs,
+  readApiFolderIdentity,
   readApiVersions,
   rejectUnknownArgs,
   setEcomVersionHeader,
@@ -255,4 +257,59 @@ describe('rejectUnknownArgs', () => {
       expect(() => rejectUnknownArgs(argv)).toThrow(`Unknown argument ${bad}`);
     }
   );
+});
+
+describe('readApiFolderIdentity', () => {
+  const mockFolder = (entries: string[], isDirectory = true) => {
+    mockedFs.existsSync.mockReturnValue(true);
+    mockedFs.statSync.mockReturnValue({
+      isDirectory: () => isDirectory,
+    } as never);
+    mockedFs.readdirSync.mockReturnValue(entries as never);
+  };
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it('reads the API id and major version from the spec file name', () => {
+    mockFolder(['shopper-baskets-oas-v2-public.yaml']);
+
+    expect(readApiFolderIdentity('folder')).toEqual({
+      specFile: 'shopper-baskets-oas-v2-public.yaml',
+      assetId: 'shopper-baskets-oas',
+      apiVersion: 'v2',
+    });
+  });
+
+  it('ignores other files beside the spec', () => {
+    mockFolder(['README.md', 'coupons-oas-v1-public.yaml']);
+
+    expect(readApiFolderIdentity('folder')).toMatchObject({
+      assetId: 'coupons-oas',
+    });
+  });
+
+  it('returns undefined for a folder with no spec file', () => {
+    mockFolder(['README.md']);
+
+    expect(readApiFolderIdentity('folder')).toBeUndefined();
+  });
+
+  it('returns undefined for a path that is not a folder', () => {
+    mockFolder(['coupons-oas-v1-public.yaml'], false);
+    expect(readApiFolderIdentity('file.yaml')).toBeUndefined();
+
+    mockedFs.existsSync.mockReturnValue(false);
+    expect(readApiFolderIdentity('missing')).toBeUndefined();
+  });
+});
+
+describe('apiDisplayName', () => {
+  it('title-cases the API id and adds the OAS suffix Exchange used', () => {
+    expect(apiDisplayName('source-code-groups-oas')).toBe(
+      'Source Code Groups OAS'
+    );
+    expect(apiDisplayName('shopper-seo-oas')).toBe('Shopper Seo OAS');
+  });
 });
