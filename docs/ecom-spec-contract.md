@@ -69,17 +69,14 @@ yarn updateApis --api shopper-baskets-oas-v1 --ref my-feature-branch
   Any other argument, including a mistyped flag, fails the run instead of falling back to a
   full refresh.
 - Only the named APIs are rebuilt. The old folder for each (found by the `assetId` and
-  `apiVersion` in its `exchange.json`, since folder names embed the spec version) is
+  `apiVersion` in its spec file name, since folder names embed the spec version) is
   replaced, and every other folder in `apis/` is untouched. The header is not rewritten.
-- Each rebuilt `exchange.json` records `ecomRef` and `ecomCommit`, so a mixed result is
-  visible in the diff.
 
 Then regenerate and test: `yarn renderTemplates`, `yarn build:lib`, `yarn test:unit`.
 To go back, run the release refresh.
 
 A release must come from one release branch. Before cutting a release, run the release
-refresh and check that every `apis/*/exchange.json` has the same `ecomRef`, equal to the
-header's release branch.
+refresh (not a partial update) so every API comes from the header's release branch.
 
 ## Decisions
 
@@ -100,7 +97,23 @@ sources, whose `$ref`s use a `file.yaml/#/...` form its parser resolves one dire
 deep. ECOM's bundles already are that file, and the public bundle is produced by ECOM's own
 bundler config and decorators, which strip internal-only content and resolve description
 placeholders. Using it means the SDK sees the same spec as every other ECOM consumer.
-`exchange.json` is synthesized from the manifest, so `generate-oas.ts` is unchanged.
+
+### No `exchange.json`
+Each `apis/` folder holds only `<assetId>-<apiVersion>-public.yaml`. ECOM bundles carry no
+Exchange descriptor, so `scripts/generate-oas.ts` derives the API's identity from that file
+name (`readApiFolderIdentity` in `scripts/utils.ts`). The `"<Title Case> OAS"` display name
+built from the id is the one Exchange used, so SDK class names do not change.
+`yarn diffApis` still needs an `exchange.json` marker in each folder because raml-toolkit
+looks for one; `updateApis` adds empty markers to scratch copies under `temp/diff` only.
+
+### Running `diffApis` on its own
+`yarn diffApis` compares `temp/diff/old` with `temp/diff/new` and writes
+`temp/diffApis.txt`. It is tailored to `updateApis`, which builds those two folders from the
+`apis/` backup and the updated `apis/`. You can run it by hand if you build them the same
+way: each holds one folder per API, each folder holds that API's `*-public.yaml`, plus an
+empty `exchange.json` (raml-toolkit looks for the file and never reads it). It needs
+`oasdiff` installed. Exit 0 means no differences, 1 means differences, anything else means
+the diff failed.
 
 ### Versioning
 `api-versions.txt` keeps the ECOM release in its header (the ref selector) and one

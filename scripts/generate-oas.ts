@@ -7,8 +7,9 @@
 /* eslint-disable no-console */
 import fs from 'fs-extra';
 import path from 'path';
-import {generateFromOas, download} from '@commerce-apps/raml-toolkit';
+import {generateFromOas} from '@commerce-apps/raml-toolkit';
 import Handlebars from 'handlebars';
+import {apiDisplayName, readApiFolderIdentity} from './utils';
 
 type ApiSpecDetail = {
   filepath: string;
@@ -69,32 +70,27 @@ function resolveDirectoryName(name: string, version?: string): string {
 }
 
 /**
- * Extracts details needed for API generation from the exchange.json file contained within the given directory
- * @param directory - The directory containing the exchange.json file
+ * Extracts details needed for API generation from the spec file in the given directory,
+ * whose name is `<assetId>-<apiVersion>-public.yaml`
+ * @param directory - The directory containing the spec file
  * @returns ApiSpecDetail - An object containing the details needed for API generation
  */
-export function getAPIDetailsFromExchange(directory: string): ApiSpecDetail {
-  const exchangePath = path.join(directory, 'exchange.json');
-  if (fs.existsSync(exchangePath)) {
-    const exchangeConfig = fs.readJSONSync(
-      exchangePath
-    ) as download.ExchangeConfig;
-
-    return {
-      filepath: path.join(directory, exchangeConfig.main),
-      filename: exchangeConfig.main,
-      directoryName: resolveDirectoryName(
-        exchangeConfig.assetId.replace('-oas', ''),
-        exchangeConfig.apiVersion
-      ),
-      name:
-        exchangeConfig.apiVersion === 'v2'
-          ? `${exchangeConfig.name} V2`
-          : exchangeConfig.name,
-      apiName: resolveApiName(exchangeConfig.name, exchangeConfig.apiVersion),
-    };
+export function getAPIDetailsFromSpec(directory: string): ApiSpecDetail {
+  const identity = readApiFolderIdentity(directory);
+  if (!identity) {
+    throw new Error(`No spec file found in ${directory}`);
   }
-  throw new Error(`Exchange file does not exist for ${directory}`);
+  const displayName = apiDisplayName(identity.assetId);
+  return {
+    filepath: path.join(directory, identity.specFile),
+    filename: identity.specFile,
+    directoryName: resolveDirectoryName(
+      identity.assetId.replace('-oas', ''),
+      identity.apiVersion
+    ),
+    name: identity.apiVersion === 'v2' ? `${displayName} V2` : displayName,
+    apiName: resolveApiName(displayName, identity.apiVersion),
+  };
 }
 
 /**
@@ -141,10 +137,10 @@ export function generateVersionFile(): void {
 }
 
 /**
- * Recursively finds and returns all subdirectories within the given base path with an exchange.json file
- * @param basePath - The base path to search for exchange.json files
+ * Recursively finds and returns all subdirectories within the given base path that hold an API spec file
+ * @param basePath - The base path to search for API folders
  * @param relativePath - The relative path to the base path
- * @returns An array of subdirectories with an exchange.json file
+ * @returns An array of subdirectories that hold an API spec file
  */
 export function getAllAPIDirectories(
   basePath: string,
@@ -162,9 +158,9 @@ export function getAllAPIDirectories(
         ? path.join(relativePath, item)
         : item;
 
-      // We only want to return directories with an exchange.json file as only directories with exchange.json are considered valid APIs
+      // Only folders holding a `<assetId>-<apiVersion>-public.yaml` are valid APIs
       if (fs.lstatSync(itemPath).isDirectory()) {
-        if (fs.existsSync(path.join(itemPath, 'exchange.json'))) {
+        if (readApiFolderIdentity(itemPath)) {
           directories.push(relativeItemPath);
         }
         directories.push(...getAllAPIDirectories(basePath, relativeItemPath));
@@ -201,7 +197,7 @@ export function main(): void {
 
     subDirectories.forEach((directory: string) => {
       try {
-        const details = getAPIDetailsFromExchange(
+        const details = getAPIDetailsFromSpec(
           path.join(apiDirectory, directory)
         );
         apiSpecDetails.push(details);

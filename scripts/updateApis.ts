@@ -5,15 +5,16 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 /* eslint-disable no-console */
-import {execSync, spawnSync} from 'child_process';
+import {spawnSync} from 'child_process';
 import path from 'path';
 import fs from 'fs-extra';
 import dotenv from 'dotenv';
 import {
   fetchEcomBundles,
   loadBundledApi,
+  replaceApis,
   resolveEcomOasRef,
-  findApiFolders,
+  stageApi,
 } from './ecom-oas';
 import {
   API_VERSIONS_FILE,
@@ -32,6 +33,28 @@ const PRODUCTION_API_PATH = path.join(__dirname, '../apis');
 const OLD_APIS_PATH = path.join(__dirname, '../temp/oldApis');
 const STAGED_APIS_PATH = path.join(__dirname, '../temp/stagedApis');
 const ECOM_CHECKOUT_PATH = path.join(__dirname, '../temp/ecom-oas');
+const DIFF_INPUT_PATH = path.join(__dirname, '../temp/diff');
+const DIFF_REPORT_PATH = path.join(__dirname, '../temp/diffApis.txt');
+
+// raml-toolkit's diff treats a folder as an API only if it holds an exchange.json, and
+// never reads the file. `apis/` has none, so the diff runs on scratch copies carrying an
+// empty marker. Drop this when the diff no longer uses raml-toolkit.
+function prepareDiffInputs(): void {
+  fs.removeSync(DIFF_INPUT_PATH);
+  [
+    ['old', OLD_APIS_PATH],
+    ['new', PRODUCTION_API_PATH],
+  ].forEach(([name, source]) => {
+    const target = path.join(DIFF_INPUT_PATH, name);
+    fs.copySync(source, target);
+    fs.readdirSync(target)
+      .map(entry => path.join(target, entry))
+      .filter(entryPath => fs.statSync(entryPath).isDirectory())
+      .forEach(folder => {
+        fs.writeFileSync(path.join(folder, 'exchange.json'), '{}');
+      });
+  });
+}
 
 /**
  * Populates `apis/` from the ECOM monorepo.
@@ -60,100 +83,104 @@ function updateApis(): void {
     readApiVersions().map(({apiName, bundlePath}) => [apiName, bundlePath])
   );
 
-  try {
-    const requested = partial
-      ? [...new Set(partial.apis)]
-      : [...allowList.keys()];
-    const unknown = requested.filter(key => !allowList.has(key));
-    if (unknown.length) {
-      throw new Error(
-        `${unknown.join(
-          ', '
-        )} not in api-versions.txt; add it there first so the SDK is meant to ship it`
-      );
-    }
-    const bundlePaths = requested.map(key => allowList.get(key) as string);
-
-    const ref = partial ? partial.ref : resolveEcomOasRef(ecomVersion);
-    console.log(`Fetching ${requested.length} ECOM bundle(s) at ref ${ref}`);
-    const bundlesRoot = fetchEcomBundles(ECOM_CHECKOUT_PATH, ref, bundlePaths);
-    const sha = execSync('git rev-parse HEAD', {cwd: ECOM_CHECKOUT_PATH})
-      .toString()
-      .trim();
-    console.log(`Resolved ${ref} to ECOM commit ${sha}`);
-
-    fs.removeSync(STAGED_APIS_PATH);
-    fs.ensureDirSync(STAGED_APIS_PATH);
-
-    // Load every bundle before staging any, so one bad API fails the run up front.
-    const apis = requested.map((key, index) =>
-      loadBundledApi(bundlesRoot, key, bundlePaths[index])
+  const requested = partial
+    ? [...new Set(partial.apis)]
+    : [...allowList.keys()];
+  const unknown = requested.filter(key => !allowList.has(key));
+  if (unknown.length) {
+    throw new Error(
+      `${unknown.join(
+        ', '
+      )} not in api-versions.txt; add it there first so the SDK is meant to ship it`
     );
+  }
+  const bundlePaths = requested.map(key => allowList.get(key) as string);
 
-    console.log(`\nStaged ${apis.length} API(s):`);
-    apis.forEach(api => {
-      const folderName = `${api.assetId}-${api.version}`;
-      const targetDir = path.join(STAGED_APIS_PATH, folderName);
-      const specName = `${api.assetId}-${api.apiVersion}-public.yaml`;
-      fs.ensureDirSync(targetDir);
-      fs.copySync(api.publicSpec, path.join(targetDir, specName));
-      fs.writeJSONSync(
-        path.join(targetDir, 'exchange.json'),
-        {
-          main: specName,
-          name: api.name,
-          assetId: api.assetId,
-          version: api.version,
-          classifier: 'oas',
-          apiVersion: api.apiVersion,
-          ecomRef: ref,
-          ecomCommit: sha,
-        },
-        {spaces: 2}
-      );
-      console.log(`  ${api.assetId}-${api.apiVersion} -> ${folderName}`);
-    });
-
-    // Kept for `diffApis`, which compares it against the new `apis/`.
-    fs.removeSync(OLD_APIS_PATH);
-    fs.ensureDirSync(PRODUCTION_API_PATH);
-    fs.copySync(PRODUCTION_API_PATH, OLD_APIS_PATH);
-
-    try {
-      if (partial) {
-        requested.forEach(key => {
-          findApiFolders(PRODUCTION_API_PATH, key).forEach(dir =>
-            fs.removeSync(dir)
-          );
-        });
-      } else {
-        fs.emptyDirSync(PRODUCTION_API_PATH);
-      }
-      fs.copySync(STAGED_APIS_PATH, PRODUCTION_API_PATH);
-    } catch (error) {
-      console.error('Restoring apis/ from temp/oldApis...');
-      fs.removeSync(PRODUCTION_API_PATH);
-      fs.copySync(OLD_APIS_PATH, PRODUCTION_API_PATH);
-      throw error;
-    }
-
-    if (!partial && process.env.ECOM_OAS_REF?.trim()) {
-      console.warn(
-        `WARNING: ECOM_OAS_REF=${ref} overrode the release branch, so these specs are not from the ECOM release named in api-versions.txt. Unset it before a release.`
+  const apiVersionsContent = fs.readFileSync(API_VERSIONS_FILE, 'utf-8');
+  if (ecomVersion) {
+    // Fails before anything changes if the header is missing.
+    setEcomVersionHeader(apiVersionsContent, ecomVersion);
+    if (process.env.ECOM_OAS_REF?.trim()) {
+      throw new Error(
+        '--ecom-version cannot be used while ECOM_OAS_REF is set: the header would name a release the specs did not come from. Unset ECOM_OAS_REF.'
       );
     }
-    if (ecomVersion) {
-      fs.writeFileSync(
-        API_VERSIONS_FILE,
-        setEcomVersionHeader(
-          fs.readFileSync(API_VERSIONS_FILE, 'utf-8'),
-          ecomVersion
-        )
-      );
-      console.log(`Set the api-versions.txt header to ECOM v${ecomVersion}`);
-    }
+  }
 
-    console.log('\nECOM API update completed successfully');
+  const ref = partial ? partial.ref : resolveEcomOasRef(ecomVersion);
+  // Printed before the fetch so it is seen even when the run fails or scrolls away.
+  if (!partial && process.env.ECOM_OAS_REF?.trim()) {
+    console.warn(
+      `WARNING: ECOM_OAS_REF=${ref} overrides the release branch, so these specs are not from the ECOM release named in api-versions.txt. Unset it before a release.`
+    );
+  }
+
+  console.log(`Fetching ${requested.length} ECOM bundle(s) at ref ${ref}`);
+  const {bundlesPath, commit} = fetchEcomBundles(
+    ECOM_CHECKOUT_PATH,
+    ref,
+    bundlePaths
+  );
+  console.log(`Resolved ${ref} to ECOM commit ${commit}`);
+
+  // Load every bundle before staging any, so one bad API fails the run up front.
+  const apis = requested.map((key, index) =>
+    loadBundledApi(bundlesPath, key, bundlePaths[index])
+  );
+
+  fs.removeSync(STAGED_APIS_PATH);
+  fs.ensureDirSync(STAGED_APIS_PATH);
+  console.log(`\nStaged ${apis.length} API(s):`);
+  apis.forEach(api => {
+    const folderName = stageApi(api, STAGED_APIS_PATH);
+    console.log(`  ${api.assetId}-${api.apiVersion} -> ${folderName}`);
+  });
+
+  replaceApis({
+    stagedDir: STAGED_APIS_PATH,
+    apisDir: PRODUCTION_API_PATH,
+    backupDir: OLD_APIS_PATH,
+    keys: partial ? requested : undefined,
+  });
+
+  if (ecomVersion) {
+    fs.writeFileSync(
+      API_VERSIONS_FILE,
+      setEcomVersionHeader(apiVersionsContent, ecomVersion)
+    );
+    console.log(`Set the api-versions.txt header to ECOM v${ecomVersion}`);
+  }
+
+  console.log('\nECOM API update completed successfully');
+}
+
+// Run here rather than chained in package.json: yarn appends command-line arguments
+// to the end of the script string, so `--api` would reach diffApis instead of this
+// script. diffApis exits 1 when it finds differences, which is the expected outcome
+// of an update; anything else means the diff itself failed.
+// The report is removed first because raml-toolkit writes it only when it finds
+// differences, so a clean run would otherwise leave the previous run's report behind.
+function diffUpdatedApis(): void {
+  fs.removeSync(DIFF_REPORT_PATH);
+  prepareDiffInputs();
+  const diff = spawnSync('yarn', ['diffApis'], {stdio: 'inherit'});
+  if (diff.status === 0) {
+    console.log('diffApis found no differences');
+  } else if (diff.status === 1) {
+    console.log('diffApis found differences, see temp/diffApis.txt');
+  } else {
+    throw new Error(
+      `diffApis failed (exit ${String(
+        diff.status
+      )}); apis/ is updated but not diffed`
+    );
+  }
+}
+
+if (require.main === module) {
+  try {
+    updateApis();
+    diffUpdatedApis();
   } catch (error) {
     console.error(
       'Error during ECOM API update:',
@@ -161,30 +188,4 @@ function updateApis(): void {
     );
     process.exit(1);
   }
-}
-
-try {
-  updateApis();
-  // Run here rather than chained in package.json: yarn appends command-line
-  // arguments to the end of the script string, so `--ecom-version` would reach
-  // diffApis instead of this script. diffApis exits 1 when it finds differences, which
-  // is the expected outcome of an update; anything else means the diff itself failed.
-  const diff = spawnSync('yarn', ['diffApis'], {stdio: 'inherit'});
-  if (diff.status === 0 || diff.status === 1) {
-    console.log(
-      `diffApis ${
-        diff.status === 0 ? 'found no differences' : 'found differences'
-      }, see temp/diffApis.txt`
-    );
-  } else {
-    console.error(
-      `diffApis failed (exit ${String(
-        diff.status
-      )}); apis/ is updated but not diffed`
-    );
-    process.exit(1);
-  }
-} catch (error) {
-  console.error('Unhandled error:', error);
-  process.exit(1);
 }
