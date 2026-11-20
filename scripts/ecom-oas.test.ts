@@ -390,6 +390,7 @@ describe('fetchEcomBundles', () => {
       'user.email=test@example.com',
       'commit',
       '-q',
+      '--no-gpg-sign',
       '-m',
       'bundles'
     );
