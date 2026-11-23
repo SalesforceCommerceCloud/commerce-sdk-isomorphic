@@ -11,6 +11,7 @@ import crypto from 'crypto';
 import {execFileSync} from 'child_process';
 import {
   BundledApi,
+  envWithoutGitRepoVariables,
   fetchEcomBundles,
   findApiFolders,
   getEcomBundlesRoot,
@@ -361,7 +362,11 @@ describe('fetchEcomBundles', () => {
   let commit: string;
 
   const git = (cwd: string, ...args: string[]) =>
-    execFileSync('git', args, {cwd, stdio: ['ignore', 'pipe', 'pipe']})
+    execFileSync('git', args, {
+      cwd,
+      env: envWithoutGitRepoVariables(),
+      stdio: ['ignore', 'pipe', 'pipe'],
+    })
       .toString()
       .trim();
 

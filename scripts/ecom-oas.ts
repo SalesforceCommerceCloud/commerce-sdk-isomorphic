@@ -77,6 +77,17 @@ export type FetchedBundles = {
 };
 
 /**
+ * Git exports GIT_DIR, GIT_WORK_TREE and similar to hooks (pre-push, pre-commit). If a
+ * child git inherited them it would act on the repo that triggered the hook instead of
+ * the checkout in `targetDir`.
+ */
+export function envWithoutGitRepoVariables(): NodeJS.ProcessEnv {
+  return Object.fromEntries(
+    Object.entries(process.env).filter(([name]) => !name.startsWith('GIT_'))
+  ) as NodeJS.ProcessEnv;
+}
+
+/**
  * Sparse, shallow-checks out only the given API bundle directories (relative to the
  * bundles root) from the ECOM monorepo into `targetDir`, at one ref. Returns the
  * absolute path to the checked-out bundles root and the full SHA of the ECOM commit
@@ -97,6 +108,7 @@ export function fetchEcomBundles(
   const git = (...args: string[]): string =>
     execFileSync('git', args, {
       cwd: targetDir,
+      env: envWithoutGitRepoVariables(),
       stdio: ['ignore', 'pipe', 'inherit'],
     }).toString();
 
