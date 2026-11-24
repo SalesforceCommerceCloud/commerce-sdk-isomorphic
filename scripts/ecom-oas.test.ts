@@ -354,6 +354,41 @@ describe('replaceApis', () => {
   });
 });
 
+describe('envWithoutGitRepoVariables', () => {
+  const originalEnv = {...process.env};
+
+  afterEach(() => {
+    process.env = {...originalEnv};
+  });
+
+  it('removes the variables that point git at another repository', () => {
+    process.env.GIT_DIR = '/hook/repo/.git';
+    process.env.GIT_WORK_TREE = '/hook/repo';
+    process.env.GIT_INDEX_FILE = '/hook/repo/.git/index';
+
+    const env = envWithoutGitRepoVariables();
+
+    expect(env.GIT_DIR).toBeUndefined();
+    expect(env.GIT_WORK_TREE).toBeUndefined();
+    expect(env.GIT_INDEX_FILE).toBeUndefined();
+  });
+
+  it('keeps authentication, transport and config variables so ECOM fetches can still authenticate', () => {
+    const preserved = {
+      GIT_ASKPASS: '/path/to/askpass',
+      GIT_SSH_COMMAND: 'ssh -i /path/to/key',
+      GIT_TERMINAL_PROMPT: '0',
+      GIT_CONFIG_COUNT: '1',
+      GIT_CONFIG_KEY_0: 'http.extraHeader',
+      GIT_CONFIG_VALUE_0: 'Authorization: placeholder',
+      GIT_CONFIG_PARAMETERS: "'http.extraHeader=Authorization: placeholder'",
+    };
+    Object.assign(process.env, preserved);
+
+    expect(envWithoutGitRepoVariables()).toMatchObject(preserved);
+  });
+});
+
 describe('fetchEcomBundles', () => {
   const bundlesRoot = 'bundles';
   const bundlePath = 'shopper/checkout/shopper-baskets/v1';
