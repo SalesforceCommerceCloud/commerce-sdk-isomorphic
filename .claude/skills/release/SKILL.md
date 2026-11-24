@@ -122,7 +122,7 @@ After the PR merges, the workflows create the tag and the GitHub release from th
 | The run fails before touching `apis/`, saying the manifest or bundle is missing | The ref exists but does not carry bundles for an API | Ask the maintainers which ref carries the bundles. Do not work around it. |
 | Bundle SHA-256 mismatch | ECOM's bundles were not regenerated after a spec source change | Stop. The ECOM side has to regenerate and commit the bundles. |
 | The log warns that `ECOM_OAS_REF` is set | A leftover or deliberate override | Confirm it is deliberate. If not, clear it and re-run so the release comes from the intended ref. |
-| `yarn updateApis` fails at the diff step | `oasdiff` is missing or not on your PATH | Install `oasdiff` and make sure it is on your PATH, then re-run. |
+| `yarn updateApis` fails at the diff step | `oasdiff` is missing or not on your PATH. `apis/` is already updated at this point; only the diff report is missing. | Install `oasdiff` and make sure it is on your PATH, then re-run. |
 | `--ecom-version cannot be used while ECOM_OAS_REF is set` | `ECOM_OAS_REF` is set in `.env` | Clear it and use the flag, or keep it and set the header by hand as described in step 2. |
 | `yarn build:lib` fails with a type error in generated code | A generator template does not handle a construct in the new spec | Stop and raise it with the maintainers. Do not hand-edit generated files. |
 | `yarn doc` leaves the API Versions table out of the release section | The new `## vX.Y.Z` heading was not added before running it | Add the heading and blank line at the top of `CHANGELOG.md`, then re-run `yarn doc`. |
