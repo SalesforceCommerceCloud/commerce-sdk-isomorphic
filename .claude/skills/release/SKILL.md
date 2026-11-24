@@ -25,6 +25,8 @@ Check: `yarn install` finishes, and `.env` has both required variables.
 
 ## 2. Update the specs
 
+First read the comment lines at the top of `api-versions.txt`. If one records a hand-supplied bundle that a full refresh would replace, find out whether the target ECOM bundle for that API has caught up. If it has not, stop and ask the SDK maintainers. Do not run the full refresh below; they will tell you which APIs to update individually instead. A full refresh over a hand-supplied bundle silently drops a deliberate correction that earlier releases shipped.
+
 ```
 yarn updateApis --ecom-version <XX.Y>
 ```
@@ -47,12 +49,26 @@ Check: the run ended without an error, and the resolved ref is the one you meant
 
 `updateApis` exits 0 even when the specs differ from the previous release. Read `temp/diffApis.txt` yourself, and read the `apis/` diff in git. The report file only exists when differences were found; if it is missing, the log said `diffApis found no differences`.
 
-- Removed or renamed endpoints, removed or newly required parameters, and changed response shapes are breaking. Note each one for the CHANGELOG and for choosing the version in step 6.
+- Removed or renamed endpoints, removed or newly required parameters, and changed response shapes are breaking. Note each one for the CHANGELOG and for choosing the version in step 4.
 - If a spec change looks wrong rather than intended, stop and raise it with the SDK maintainers. Do not edit files in `apis/` by hand: the next update replaces them.
 
 Check: you can describe in one sentence per API what changed.
 
-## 4. Generate and build
+## 4. Choose the version
+
+This SDK versions to track the Commerce APIs it wraps. Pick the bump like this:
+
+- **Patch:** spec or SDK fixes with no new surface.
+- **Minor:** new endpoints, new APIs, new optional parameters, and breaking changes that come only from an API change.
+- **Major:** reserved for changes to how the SDK itself is structured or used.
+
+When an API change breaks callers but the release is still minor, say so prominently in the CHANGELOG (a breaking-changes section with a migration example) and recommend pinning to an exact version. If you are unsure, ask the maintainers before bumping.
+
+Set `version` in `package.json` to the new version now. Generation writes it into the SDK's version metadata (the `User-Agent` string), so bumping after the build means you test a different version than the one that ships.
+
+Check: the new version in `package.json` matches the version you will use for the branch name and the CHANGELOG heading in the next steps.
+
+## 5. Generate and build
 
 ```
 yarn clean
@@ -66,7 +82,7 @@ If the build fails with a type error in generated code (for example a type name 
 
 Check: `yarn build:lib` finishes with no errors.
 
-## 5. Test
+## 6. Test
 
 ```
 yarn test
@@ -76,29 +92,15 @@ This runs lint, style lint, depcheck and the bundle size check (`pretest`), then
 
 Check: `yarn test` passes. A failure in an area you did not touch still blocks the release. Find out why before going on.
 
-## 6. Choose the version
-
-This SDK versions to track the Commerce APIs it wraps. Pick the bump like this:
-
-- **Patch:** spec or SDK fixes with no new surface.
-- **Minor:** new endpoints, new APIs, new optional parameters, and breaking changes that come only from an API change.
-- **Major:** reserved for changes to how the SDK itself is structured or used.
-
-When an API change breaks callers but the release is still minor, say so prominently in the CHANGELOG (a breaking-changes section with a migration example) and recommend pinning to an exact version. If you are unsure, ask the maintainers before bumping.
-
-Set `version` in `package.json` to the new version.
-
-Check: the new version in `package.json` matches the version you will use for the branch name and the CHANGELOG heading in the next steps.
-
 ## 7. Regenerate the CHANGELOG table and docs
 
 1. Add a new top section to `CHANGELOG.md`: a `## vX.Y.Z` heading followed by a blank line. The version table script writes into the first `##` section it finds, so the heading must exist first.
-2. Run `yarn doc`. It rebuilds the API Versions table inside that top section from the folders in `apis/`, then regenerates the typedoc output in `docs/`.
-3. Add the rest of the release notes under the heading: what changed, and any breaking-changes section from step 6.
+2. Run `yarn doc`. It rebuilds the API Versions table inside that top section from the folders in `apis/`, then regenerates the typedoc output in `docs/`. Typedoc empties `docs/` first, so it also deletes the handwritten `docs/ecom-spec-contract.md`. Restore it with `git restore docs/ecom-spec-contract.md`.
+3. Add the rest of the release notes under the heading: what changed, and any breaking-changes section from step 4.
 
 The release workflow reads this section for the GitHub release notes.
 
-Check: the top `## vX.Y.Z` section has the API Versions table and your notes, and `git status` shows regenerated files under `docs/`.
+Check: the top `## vX.Y.Z` section has the API Versions table and your notes, `git status` shows regenerated files under `docs/`, and `docs/ecom-spec-contract.md` is not listed as deleted.
 
 ## 8. Open the release PR
 
