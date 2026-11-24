@@ -45,7 +45,7 @@ Check: the run ended without an error, and the resolved ref is the one you meant
 
 ## 3. Review the diff for breaking changes
 
-`updateApis` exits 0 even when the specs differ from the previous release. Read `temp/diffApis.txt` yourself, and read the `apis/` diff in git.
+`updateApis` exits 0 even when the specs differ from the previous release. Read `temp/diffApis.txt` yourself, and read the `apis/` diff in git. The report file only exists when differences were found; if it is missing, the log said `diffApis found no differences`.
 
 - Removed or renamed endpoints, removed or newly required parameters, and changed response shapes are breaking. Note each one for the CHANGELOG and for choosing the version in step 6.
 - If a spec change looks wrong rather than intended, stop and raise it with the SDK maintainers. Do not edit files in `apis/` by hand: the next update replaces them.
