@@ -8,9 +8,10 @@ import os from 'os';
 import path from 'path';
 import fs from 'fs-extra';
 import crypto from 'crypto';
-import {execFileSync} from 'child_process';
+import childProcess, {execFileSync} from 'child_process';
 import {
   BundledApi,
+  envWithoutGitRepoVariables,
   fetchEcomBundles,
   findApiFolders,
   getEcomBundlesRoot,
@@ -353,6 +354,46 @@ describe('replaceApis', () => {
   });
 });
 
+describe('envWithoutGitRepoVariables', () => {
+  const originalEnv = {...process.env};
+
+  afterEach(() => {
+    Object.keys(process.env).forEach(name => {
+      if (!(name in originalEnv)) {
+        delete process.env[name];
+      }
+    });
+    Object.assign(process.env, originalEnv);
+  });
+
+  it('removes the variables that point git at another repository', () => {
+    process.env.GIT_DIR = '/hook/repo/.git';
+    process.env.GIT_WORK_TREE = '/hook/repo';
+    process.env.GIT_INDEX_FILE = '/hook/repo/.git/index';
+
+    const env = envWithoutGitRepoVariables();
+
+    expect(env.GIT_DIR).toBeUndefined();
+    expect(env.GIT_WORK_TREE).toBeUndefined();
+    expect(env.GIT_INDEX_FILE).toBeUndefined();
+  });
+
+  it('keeps authentication, transport and config variables so ECOM fetches can still authenticate', () => {
+    const preserved = {
+      GIT_ASKPASS: '/path/to/askpass',
+      GIT_SSH_COMMAND: 'ssh -i /path/to/key',
+      GIT_TERMINAL_PROMPT: '0',
+      GIT_CONFIG_COUNT: '1',
+      GIT_CONFIG_KEY_0: 'http.extraHeader',
+      GIT_CONFIG_VALUE_0: 'Authorization: placeholder',
+      GIT_CONFIG_PARAMETERS: "'http.extraHeader=Authorization: placeholder'",
+    };
+    Object.assign(process.env, preserved);
+
+    expect(envWithoutGitRepoVariables()).toMatchObject(preserved);
+  });
+});
+
 describe('fetchEcomBundles', () => {
   const bundlesRoot = 'bundles';
   const bundlePath = 'shopper/checkout/shopper-baskets/v1';
@@ -361,7 +402,11 @@ describe('fetchEcomBundles', () => {
   let commit: string;
 
   const git = (cwd: string, ...args: string[]) =>
-    execFileSync('git', args, {cwd, stdio: ['ignore', 'pipe', 'pipe']})
+    execFileSync('git', args, {
+      cwd,
+      env: envWithoutGitRepoVariables(),
+      stdio: ['ignore', 'pipe', 'pipe'],
+    })
       .toString()
       .trim();
 
@@ -415,6 +460,28 @@ describe('fetchEcomBundles', () => {
       fs.existsSync(path.join(result.bundlesPath, bundlePath, 'manifest.json'))
     ).toBe(true);
     expect(fs.existsSync(path.join(result.bundlesPath, 'other'))).toBe(false);
+  });
+
+  // Jest hands tests a copy of process.env that child processes never see, so the
+  // only way to observe the scrubbing is through the env passed to git.
+  it('does not pass a hook-inherited GIT_DIR on to git', () => {
+    process.env.GIT_DIR = '/hook/repo/.git';
+    const execSpy = jest.spyOn(childProcess, 'execFileSync');
+
+    try {
+      fetchEcomBundles(path.join(workDir, 'checkout-under-hook'), 'main', [
+        bundlePath,
+      ]);
+
+      expect(execSpy).toHaveBeenCalled();
+      execSpy.mock.calls.forEach(([, , options]) => {
+        expect(options?.env).toBeDefined();
+        expect(options?.env).not.toHaveProperty('GIT_DIR');
+      });
+    } finally {
+      execSpy.mockRestore();
+      delete process.env.GIT_DIR;
+    }
   });
 
   it('fails with an actionable message when the ref does not exist', () => {

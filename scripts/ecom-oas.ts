@@ -76,6 +76,38 @@ export type FetchedBundles = {
   commit: string;
 };
 
+// The variables that make git operate on a particular repository, matching
+// `git rev-parse --local-env-vars` minus its GIT_CONFIG* entries. Authentication and
+// transport settings (GIT_ASKPASS, GIT_SSH_COMMAND, GIT_CONFIG_*) are deliberately not
+// listed: the ECOM fetch needs them to authenticate.
+const GIT_REPO_VARIABLES = new Set([
+  'GIT_ALTERNATE_OBJECT_DIRECTORIES',
+  'GIT_COMMON_DIR',
+  'GIT_DIR',
+  'GIT_GRAFT_FILE',
+  'GIT_IMPLICIT_WORK_TREE',
+  'GIT_INDEX_FILE',
+  'GIT_NO_REPLACE_OBJECTS',
+  'GIT_OBJECT_DIRECTORY',
+  'GIT_PREFIX',
+  'GIT_REPLACE_REF_BASE',
+  'GIT_SHALLOW_FILE',
+  'GIT_WORK_TREE',
+]);
+
+/**
+ * Git exports GIT_DIR, GIT_WORK_TREE and similar to hooks (pre-push, pre-commit). If a
+ * child git inherited them it would act on the repo that triggered the hook instead of
+ * the checkout in `targetDir`.
+ */
+export function envWithoutGitRepoVariables(): NodeJS.ProcessEnv {
+  return Object.fromEntries(
+    Object.entries(process.env).filter(
+      ([name]) => !GIT_REPO_VARIABLES.has(name)
+    )
+  ) as NodeJS.ProcessEnv;
+}
+
 /**
  * Sparse, shallow-checks out only the given API bundle directories (relative to the
  * bundles root) from the ECOM monorepo into `targetDir`, at one ref. Returns the
@@ -97,6 +129,7 @@ export function fetchEcomBundles(
   const git = (...args: string[]): string =>
     execFileSync('git', args, {
       cwd: targetDir,
+      env: envWithoutGitRepoVariables(),
       stdio: ['ignore', 'pipe', 'inherit'],
     }).toString();
 

@@ -49,13 +49,13 @@ In the next major version release, the SDK will encode special characters (UTF-8
 
 ### Migration off node-fetch
 
-`node-fetch@2` is maintenance-only, and the upstream Node.js fix for the keep-alive regression (see [Node.js version compatibility](#nodejs-version-compatibility)) works around but does not remove the underlying `node-fetch` heuristic. A future release will replace `node-fetch` on the server path with the Node.js built-in `fetch` (available in Node 18 and later, which the SDK's current `^20.x`/`^22.x` requirement already satisfies). This will change how custom `agent` options work (built-in `fetch` is backed by undici and does not accept an `http.Agent`/`https.Agent`), and continue to honor a caller-supplied fetch via the [`fetch` client-config option](#custom-fetch-function).
+`node-fetch@2` is maintenance-only, and the upstream Node.js fix for the keep-alive regression (see [Node.js version compatibility](#nodejs-version-compatibility)) works around but does not remove the underlying `node-fetch` heuristic. A future release will replace `node-fetch` on the server path with the Node.js built-in `fetch` (available in Node 18 and later, which every supported Node version satisfies). This will change how custom `agent` options work (built-in `fetch` is backed by undici and does not accept an `http.Agent`/`https.Agent`), and continue to honor a caller-supplied fetch via the [`fetch` client-config option](#custom-fetch-function).
 
 ## Getting Started
 
 ### Requirements
 
-- Node `^20.x` or `^22.x`
+- Node `^20.x`, `^22.x`, `^24.x` or `^26.x`
 - The SDK requires B2C Commerce API (SCAPI) to be configured. For more info see [Getting started with SCAPI](https://developer.salesforce.com/docs/commerce/commerce-api/guide/get-started.html).
 
 ### Node.js version compatibility
