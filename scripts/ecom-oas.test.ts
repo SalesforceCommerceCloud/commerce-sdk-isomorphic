@@ -8,7 +8,7 @@ import os from 'os';
 import path from 'path';
 import fs from 'fs-extra';
 import crypto from 'crypto';
-import {execFileSync} from 'child_process';
+import childProcess, {execFileSync} from 'child_process';
 import {
   BundledApi,
   envWithoutGitRepoVariables,
@@ -358,7 +358,12 @@ describe('envWithoutGitRepoVariables', () => {
   const originalEnv = {...process.env};
 
   afterEach(() => {
-    process.env = {...originalEnv};
+    Object.keys(process.env).forEach(name => {
+      if (!(name in originalEnv)) {
+        delete process.env[name];
+      }
+    });
+    Object.assign(process.env, originalEnv);
   });
 
   it('removes the variables that point git at another repository', () => {
@@ -455,6 +460,28 @@ describe('fetchEcomBundles', () => {
       fs.existsSync(path.join(result.bundlesPath, bundlePath, 'manifest.json'))
     ).toBe(true);
     expect(fs.existsSync(path.join(result.bundlesPath, 'other'))).toBe(false);
+  });
+
+  // Jest hands tests a copy of process.env that child processes never see, so the
+  // only way to observe the scrubbing is through the env passed to git.
+  it('does not pass a hook-inherited GIT_DIR on to git', () => {
+    process.env.GIT_DIR = '/hook/repo/.git';
+    const execSpy = jest.spyOn(childProcess, 'execFileSync');
+
+    try {
+      fetchEcomBundles(path.join(workDir, 'checkout-under-hook'), 'main', [
+        bundlePath,
+      ]);
+
+      expect(execSpy).toHaveBeenCalled();
+      execSpy.mock.calls.forEach(([, , options]) => {
+        expect(options?.env).toBeDefined();
+        expect(options?.env).not.toHaveProperty('GIT_DIR');
+      });
+    } finally {
+      execSpy.mockRestore();
+      delete process.env.GIT_DIR;
+    }
   });
 
   it('fails with an actionable message when the ref does not exist', () => {
